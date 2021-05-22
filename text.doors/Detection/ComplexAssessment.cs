@@ -240,115 +240,115 @@ namespace text.doors.Detection
         //是否测试完成
         private bool IsTestFinish(ref string error)
         {
-            var testItem = DefaultBase._TestItem;
-            var specCount = DefaultBase.base_SpecCount;
-            if (specCount != _settings.dt_InfoList.Count)
-            {
-                error = "设置规格为" + specCount + "樘,当前完成" + _settings.dt_InfoList.Count + "樘";
-                return false;
-            }
+            //var testItem = DefaultBase._TestItem;
+            //var specCount = DefaultBase.base_SpecCount;
+            //if (specCount != _settings.dt_InfoList.Count)
+            //{
+            //    error = "设置规格为" + specCount + "樘,当前完成" + _settings.dt_InfoList.Count + "樘";
+            //    return false;
+            //}
 
-            if (PublicEnum.DetectionItem.抗风压性能检测 == testItem)
-            {
-                foreach (var item in _settings.dt_InfoList)
-                {
-                    if (item.WindPressure == 0)
-                    {
-                        error = item.info_DangH + "未完成抗风压性能检测";
-                        return false;
-                    }
-                }
-            }
+            //if (PublicEnum.DetectionItem.抗风压性能检测 == testItem)
+            //{
+            //    foreach (var item in _settings.dt_InfoList)
+            //    {
+            //        if (item.WindPressure == 0)
+            //        {
+            //            error = item.info_DangH + "未完成抗风压性能检测";
+            //            return false;
+            //        }
+            //    }
+            //}
 
-            if (PublicEnum.DetectionItem.气密性能及抗风压性能检测 == testItem)
-            {
-                foreach (var item in _settings.dt_InfoList)
-                {
-                    if (item.WindPressure == 0 || item.Airtight == 0)
-                    {
-                        if (item.WindPressure == 0)
-                            error = item.info_DangH + "未完成抗风压性能检测";
-                        if (item.Airtight == 0)
-                            error = item.info_DangH + "未完成气密性能检测";
+            //if (PublicEnum.DetectionItem.气密性能及抗风压性能检测 == testItem)
+            //{
+            //    foreach (var item in _settings.dt_InfoList)
+            //    {
+            //        if (item.WindPressure == 0 || item.Airtight == 0)
+            //        {
+            //            if (item.WindPressure == 0)
+            //                error = item.info_DangH + "未完成抗风压性能检测";
+            //            if (item.Airtight == 0)
+            //                error = item.info_DangH + "未完成气密性能检测";
 
-                        return false;
-                    }
-                }
-            }
-            if (PublicEnum.DetectionItem.气密性能及水密性能检测 == testItem)
-            {
-                foreach (var item in _settings.dt_InfoList)
-                {
-                    if (item.Watertight == 0 || item.Airtight == 0)
-                    {
-                        if (item.Watertight == 0)
-                            error = item.info_DangH + "未完成气密性能检测";
-                        if (item.Airtight == 0)
-                            error = item.info_DangH + "未完成气密性能检测";
+            //            return false;
+            //        }
+            //    }
+            //}
+            //if (PublicEnum.DetectionItem.气密性能及水密性能检测 == testItem)
+            //{
+            //    foreach (var item in _settings.dt_InfoList)
+            //    {
+            //        if (item.Watertight == 0 || item.Airtight == 0)
+            //        {
+                        //if (item.Watertight == 0)
+                        //    error = item.info_DangH + "未完成气密性能检测";
+                        //if (item.Airtight == 0)
+                        //    error = item.info_DangH + "未完成气密性能检测";
 
-                        return false;
-                    }
-                }
-            }
-            if (PublicEnum.DetectionItem.气密性能检测 == testItem)
-            {
-                foreach (var item in _settings.dt_InfoList)
-                {
-                    if (item.Airtight == 0)
-                    {
-                        if (item.Airtight == 0)
-                            error = item.info_DangH + "未完成气密性能检测";
-                        return false;
-                    }
-                }
-            }
+            //            return false;
+            //        }
+            //    }
+            //}
+            //if (PublicEnum.DetectionItem.气密性能检测 == testItem)
+            //{
+            //    foreach (var item in _settings.dt_InfoList)
+            //    {
+                    //if (item.Airtight == 0)
+                    //{
+                    //    if (item.Airtight == 0)
+                    //        error = item.info_DangH + "未完成气密性能检测";
+                    //    return false;
+                    //}
+            //    }
+            //}
 
-            if (PublicEnum.DetectionItem.气密水密抗风压性能检测 == testItem)
-            {
-                foreach (var item in _settings.dt_InfoList)
-                {
-                    if (item.WindPressure == 0 || item.Airtight == 0 || item.Watertight == 0)
-                    {
-                        if (item.Watertight == 0)
-                            error = item.info_DangH + "未完成水密性能检测";
-                        if (item.Airtight == 0)
-                            error = item.info_DangH + "未完成气密性能检测";
-                        if (item.WindPressure == 0)
-                            error = item.info_DangH + "未完成抗风压性能检测";
+            //if (PublicEnum.DetectionItem.气密水密抗风压性能检测 == testItem)
+            //{
+            //    foreach (var item in _settings.dt_InfoList)
+            //    {
+            //        if (item.WindPressure == 0 || item.Airtight == 0 || item.Watertight == 0)
+            //        {
+                        //if (item.Watertight == 0)
+                        //    error = item.info_DangH + "未完成水密性能检测";
+                        //if (item.Airtight == 0)
+                        //    error = item.info_DangH + "未完成气密性能检测";
+                        //if (item.WindPressure == 0)
+                        //    error = item.info_DangH + "未完成抗风压性能检测";
 
-                        return false;
-                    }
-                }
-            }
-            if (PublicEnum.DetectionItem.水密性能及抗风压性能检测 == testItem)
-            {
-                foreach (var item in _settings.dt_InfoList)
-                {
-                    if (item.WindPressure == 0 || item.Watertight == 0)
-                    {
-                        if (item.Watertight == 0)
-                            error = item.info_DangH + "未完成水密性能检测";
-                        if (item.WindPressure == 0)
-                            error = item.info_DangH + "未完成抗风压性能检测";
+            //            return false;
+            //        }
+            //    }
+            //}
+            //if (PublicEnum.DetectionItem.水密性能及抗风压性能检测 == testItem)
+            //{
+            //    foreach (var item in _settings.dt_InfoList)
+            //    {
+            //        if (item.WindPressure == 0 || item.Watertight == 0)
+            //        {
+                        //if (item.Watertight == 0)
+                        //    error = item.info_DangH + "未完成水密性能检测";
+                        //if (item.WindPressure == 0)
+                        //    error = item.info_DangH + "未完成抗风压性能检测";
 
-                        return false;
-                    }
-                }
-            }
-            if (PublicEnum.DetectionItem.水密性能检测 == testItem)
-            {
+            //            return false;
+            //        }
+            //    }
+            //}
+            //if (PublicEnum.DetectionItem.水密性能检测 == testItem)
+            //{
 
-                foreach (var item in _settings.dt_InfoList)
-                {
-                    if (item.Watertight == 0)
-                    {
-                        if (item.Watertight == 0)
-                            error = item.info_DangH + "未完成水密性能检测";
+            //    foreach (var item in _settings.dt_InfoList)
+            //    {
+            //        if (item.Watertight == 0)
+            //        {
+            //            if (item.Watertight == 0)
+            //                error = item.info_DangH + "未完成水密性能检测";
 
-                        return false;
-                    }
-                }
-            }
+            //            return false;
+            //        }
+            //    }
+            //}
             return true;
         }
 

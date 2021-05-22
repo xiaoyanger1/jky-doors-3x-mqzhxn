@@ -72,16 +72,22 @@
             this.pl_set = new System.Windows.Forms.Panel();
             this.btn_kglkz = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btn_tghl = new System.Windows.Forms.Button();
+            this.btn_tgqt = new System.Windows.Forms.Button();
+            this.btn_stfg = new System.Windows.Forms.Button();
+            this.btn_qmfg = new System.Windows.Forms.Button();
+            this.btn_qmfk = new System.Windows.Forms.Button();
+            this.btn_bhfg = new System.Windows.Forms.Button();
+            this.btn_sbtz = new System.Windows.Forms.Button();
+            this.btn_fjtz = new System.Windows.Forms.Button();
             this.btn_stfk = new System.Windows.Forms.Button();
-            this.btn_bhft = new System.Windows.Forms.Button();
+            this.btn_bhfk = new System.Windows.Forms.Button();
             this.btn_sbqd = new System.Windows.Forms.Button();
             this.btn_fjqd = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.btn_gdt = new System.Windows.Forms.Button();
-            this.btn_ddg = new System.Windows.Forms.Button();
-            this.btn_ddk = new System.Windows.Forms.Button();
+            this.txt_lqfhz = new System.Windows.Forms.TextBox();
+            this.hsb_lqfControl = new System.Windows.Forms.HScrollBar();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lbl_cydcgq = new System.Windows.Forms.Label();
@@ -139,9 +145,9 @@
             this.tsl_type,
             this.tsl_user,
             this.tsl_tcpclient});
-            this.ssp_button.Location = new System.Drawing.Point(0, 603);
+            this.ssp_button.Location = new System.Drawing.Point(0, 792);
             this.ssp_button.Name = "ssp_button";
-            this.ssp_button.Size = new System.Drawing.Size(960, 22);
+            this.ssp_button.Size = new System.Drawing.Size(997, 22);
             this.ssp_button.TabIndex = 6;
             this.ssp_button.Text = "statusStrip1";
             // 
@@ -186,7 +192,7 @@
             this.pl_top.Dock = System.Windows.Forms.DockStyle.Top;
             this.pl_top.Location = new System.Drawing.Point(0, 0);
             this.pl_top.Name = "pl_top";
-            this.pl_top.Size = new System.Drawing.Size(960, 61);
+            this.pl_top.Size = new System.Drawing.Size(997, 61);
             this.pl_top.TabIndex = 7;
             // 
             // ts_pic
@@ -211,7 +217,7 @@
             this.ts_pic.Location = new System.Drawing.Point(0, 24);
             this.ts_pic.Name = "ts_pic";
             this.ts_pic.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.ts_pic.Size = new System.Drawing.Size(960, 36);
+            this.ts_pic.Size = new System.Drawing.Size(997, 36);
             this.ts_pic.TabIndex = 2;
             this.ts_pic.Text = "toolStrip1";
             // 
@@ -337,7 +343,7 @@
             this.ms_emun.Location = new System.Drawing.Point(0, 0);
             this.ms_emun.Name = "ms_emun";
             this.ms_emun.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.ms_emun.Size = new System.Drawing.Size(960, 24);
+            this.ms_emun.Size = new System.Drawing.Size(997, 24);
             this.ms_emun.TabIndex = 1;
             this.ms_emun.Text = "menuStrip1";
             // 
@@ -399,21 +405,21 @@
             // 传感器设定ToolStripMenuItem
             // 
             this.传感器设定ToolStripMenuItem.Name = "传感器设定ToolStripMenuItem";
-            this.传感器设定ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.传感器设定ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.传感器设定ToolStripMenuItem.Text = "传感器设置";
             this.传感器设定ToolStripMenuItem.Click += new System.EventHandler(this.传感器设定ToolStripMenuItem_Click);
             // 
             // 系数设定ToolStripMenuItem1
             // 
             this.系数设定ToolStripMenuItem1.Name = "系数设定ToolStripMenuItem1";
-            this.系数设定ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.系数设定ToolStripMenuItem1.Size = new System.Drawing.Size(136, 22);
             this.系数设定ToolStripMenuItem1.Text = "系数设置";
             this.系数设定ToolStripMenuItem1.Click += new System.EventHandler(this.系数设定ToolStripMenuItem1_Click);
             // 
             // pID设置ToolStripMenuItem
             // 
             this.pID设置ToolStripMenuItem.Name = "pID设置ToolStripMenuItem";
-            this.pID设置ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pID设置ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.pID设置ToolStripMenuItem.Text = "PID设置";
             this.pID设置ToolStripMenuItem.Click += new System.EventHandler(this.pID设置ToolStripMenuItem_Click);
             // 
@@ -446,21 +452,21 @@
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem3.Text = "系统设置";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // tsm_UpdatePassWord
             // 
             this.tsm_UpdatePassWord.Name = "tsm_UpdatePassWord";
-            this.tsm_UpdatePassWord.Size = new System.Drawing.Size(180, 22);
+            this.tsm_UpdatePassWord.Size = new System.Drawing.Size(124, 22);
             this.tsm_UpdatePassWord.Text = "修改密码";
             this.tsm_UpdatePassWord.Click += new System.EventHandler(this.tsm_UpdatePassWord_Click);
             // 
             // tsm_close
             // 
             this.tsm_close.Name = "tsm_close";
-            this.tsm_close.Size = new System.Drawing.Size(180, 22);
+            this.tsm_close.Size = new System.Drawing.Size(124, 22);
             this.tsm_close.Text = "关闭系统";
             this.tsm_close.Click += new System.EventHandler(this.tsm_close_Click);
             // 
@@ -477,7 +483,7 @@
             this.pl_set.Dock = System.Windows.Forms.DockStyle.Left;
             this.pl_set.Location = new System.Drawing.Point(0, 61);
             this.pl_set.Name = "pl_set";
-            this.pl_set.Size = new System.Drawing.Size(196, 542);
+            this.pl_set.Size = new System.Drawing.Size(196, 731);
             this.pl_set.TabIndex = 8;
             // 
             // btn_kglkz
@@ -492,20 +498,108 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.btn_tghl);
+            this.groupBox4.Controls.Add(this.btn_tgqt);
+            this.groupBox4.Controls.Add(this.btn_stfg);
+            this.groupBox4.Controls.Add(this.btn_qmfg);
+            this.groupBox4.Controls.Add(this.btn_qmfk);
+            this.groupBox4.Controls.Add(this.btn_bhfg);
+            this.groupBox4.Controls.Add(this.btn_sbtz);
+            this.groupBox4.Controls.Add(this.btn_fjtz);
             this.groupBox4.Controls.Add(this.btn_stfk);
-            this.groupBox4.Controls.Add(this.btn_bhft);
+            this.groupBox4.Controls.Add(this.btn_bhfk);
             this.groupBox4.Controls.Add(this.btn_sbqd);
             this.groupBox4.Controls.Add(this.btn_fjqd);
             this.groupBox4.Location = new System.Drawing.Point(12, 76);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(178, 78);
+            this.groupBox4.Size = new System.Drawing.Size(178, 188);
             this.groupBox4.TabIndex = 11;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "开关量控制";
             // 
+            // btn_tghl
+            // 
+            this.btn_tghl.Location = new System.Drawing.Point(89, 159);
+            this.btn_tghl.Name = "btn_tghl";
+            this.btn_tghl.Size = new System.Drawing.Size(75, 23);
+            this.btn_tghl.TabIndex = 11;
+            this.btn_tghl.Text = "推杆后拉";
+            this.btn_tghl.UseVisualStyleBackColor = true;
+            this.btn_tghl.Click += new System.EventHandler(this.btn_tghl_Click);
+            // 
+            // btn_tgqt
+            // 
+            this.btn_tgqt.Location = new System.Drawing.Point(9, 159);
+            this.btn_tgqt.Name = "btn_tgqt";
+            this.btn_tgqt.Size = new System.Drawing.Size(75, 23);
+            this.btn_tgqt.TabIndex = 10;
+            this.btn_tgqt.Text = "推杆前推";
+            this.btn_tgqt.UseVisualStyleBackColor = true;
+            this.btn_tgqt.Click += new System.EventHandler(this.btn_tgqt_Click);
+            // 
+            // btn_stfg
+            // 
+            this.btn_stfg.Location = new System.Drawing.Point(88, 133);
+            this.btn_stfg.Name = "btn_stfg";
+            this.btn_stfg.Size = new System.Drawing.Size(75, 23);
+            this.btn_stfg.TabIndex = 9;
+            this.btn_stfg.Text = "四通阀关";
+            this.btn_stfg.UseVisualStyleBackColor = true;
+            this.btn_stfg.Click += new System.EventHandler(this.btn_stfg_Click);
+            // 
+            // btn_qmfg
+            // 
+            this.btn_qmfg.Location = new System.Drawing.Point(88, 107);
+            this.btn_qmfg.Name = "btn_qmfg";
+            this.btn_qmfg.Size = new System.Drawing.Size(75, 23);
+            this.btn_qmfg.TabIndex = 8;
+            this.btn_qmfg.Text = "气密阀关";
+            this.btn_qmfg.UseVisualStyleBackColor = true;
+            this.btn_qmfg.Click += new System.EventHandler(this.btn_qmfg_Click);
+            // 
+            // btn_qmfk
+            // 
+            this.btn_qmfk.Location = new System.Drawing.Point(10, 106);
+            this.btn_qmfk.Name = "btn_qmfk";
+            this.btn_qmfk.Size = new System.Drawing.Size(75, 23);
+            this.btn_qmfk.TabIndex = 7;
+            this.btn_qmfk.Text = "气密阀开";
+            this.btn_qmfk.UseVisualStyleBackColor = true;
+            this.btn_qmfk.Click += new System.EventHandler(this.btn_qmfk_Click);
+            // 
+            // btn_bhfg
+            // 
+            this.btn_bhfg.Location = new System.Drawing.Point(88, 78);
+            this.btn_bhfg.Name = "btn_bhfg";
+            this.btn_bhfg.Size = new System.Drawing.Size(75, 23);
+            this.btn_bhfg.TabIndex = 6;
+            this.btn_bhfg.Text = "保护阀关";
+            this.btn_bhfg.UseVisualStyleBackColor = true;
+            this.btn_bhfg.Click += new System.EventHandler(this.btn_bhfg_Click);
+            // 
+            // btn_sbtz
+            // 
+            this.btn_sbtz.Location = new System.Drawing.Point(88, 51);
+            this.btn_sbtz.Name = "btn_sbtz";
+            this.btn_sbtz.Size = new System.Drawing.Size(75, 23);
+            this.btn_sbtz.TabIndex = 5;
+            this.btn_sbtz.Text = "水泵停止";
+            this.btn_sbtz.UseVisualStyleBackColor = true;
+            this.btn_sbtz.Click += new System.EventHandler(this.btn_sbtz_Click);
+            // 
+            // btn_fjtz
+            // 
+            this.btn_fjtz.Location = new System.Drawing.Point(89, 25);
+            this.btn_fjtz.Name = "btn_fjtz";
+            this.btn_fjtz.Size = new System.Drawing.Size(75, 23);
+            this.btn_fjtz.TabIndex = 4;
+            this.btn_fjtz.Text = "风机停止";
+            this.btn_fjtz.UseVisualStyleBackColor = true;
+            this.btn_fjtz.Click += new System.EventHandler(this.btn_fjtz_Click);
+            // 
             // btn_stfk
             // 
-            this.btn_stfk.Location = new System.Drawing.Point(93, 49);
+            this.btn_stfk.Location = new System.Drawing.Point(8, 133);
             this.btn_stfk.Name = "btn_stfk";
             this.btn_stfk.Size = new System.Drawing.Size(75, 23);
             this.btn_stfk.TabIndex = 3;
@@ -513,19 +607,19 @@
             this.btn_stfk.UseVisualStyleBackColor = true;
             this.btn_stfk.Click += new System.EventHandler(this.btn_stfk_Click);
             // 
-            // btn_bhft
+            // btn_bhfk
             // 
-            this.btn_bhft.Location = new System.Drawing.Point(9, 49);
-            this.btn_bhft.Name = "btn_bhft";
-            this.btn_bhft.Size = new System.Drawing.Size(75, 23);
-            this.btn_bhft.TabIndex = 2;
-            this.btn_bhft.Text = "保护阀通";
-            this.btn_bhft.UseVisualStyleBackColor = true;
-            this.btn_bhft.Click += new System.EventHandler(this.btn_bhft_Click);
+            this.btn_bhfk.Location = new System.Drawing.Point(10, 77);
+            this.btn_bhfk.Name = "btn_bhfk";
+            this.btn_bhfk.Size = new System.Drawing.Size(75, 23);
+            this.btn_bhfk.TabIndex = 2;
+            this.btn_bhfk.Text = "保护阀开";
+            this.btn_bhfk.UseVisualStyleBackColor = true;
+            this.btn_bhfk.Click += new System.EventHandler(this.btn_bhft_Click);
             // 
             // btn_sbqd
             // 
-            this.btn_sbqd.Location = new System.Drawing.Point(93, 25);
+            this.btn_sbqd.Location = new System.Drawing.Point(10, 50);
             this.btn_sbqd.Name = "btn_sbqd";
             this.btn_sbqd.Size = new System.Drawing.Size(75, 23);
             this.btn_sbqd.TabIndex = 1;
@@ -545,72 +639,48 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.textBox1);
             this.groupBox5.Controls.Add(this.label2);
-            this.groupBox5.Controls.Add(this.btn_gdt);
-            this.groupBox5.Controls.Add(this.btn_ddg);
-            this.groupBox5.Controls.Add(this.btn_ddk);
-            this.groupBox5.Location = new System.Drawing.Point(14, 168);
+            this.groupBox5.Controls.Add(this.txt_lqfhz);
+            this.groupBox5.Controls.Add(this.hsb_lqfControl);
+            this.groupBox5.Location = new System.Drawing.Point(12, 270);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(178, 79);
             this.groupBox5.TabIndex = 12;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "漏气阀控制";
             // 
-            // textBox1
-            // 
-            this.textBox1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox1.Location = new System.Drawing.Point(94, 50);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(48, 21);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "0";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("宋体", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(147, 53);
+            this.label2.Location = new System.Drawing.Point(91, 24);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(18, 18);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "%";
+            this.label2.Size = new System.Drawing.Size(17, 12);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "°";
             // 
-            // btn_gdt
+            // txt_lqfhz
             // 
-            this.btn_gdt.Location = new System.Drawing.Point(9, 48);
-            this.btn_gdt.Name = "btn_gdt";
-            this.btn_gdt.Size = new System.Drawing.Size(75, 23);
-            this.btn_gdt.TabIndex = 2;
-            this.btn_gdt.Text = "关到头";
-            this.btn_gdt.UseVisualStyleBackColor = true;
-            this.btn_gdt.Click += new System.EventHandler(this.btn_gdt_Click);
+            this.txt_lqfhz.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txt_lqfhz.Location = new System.Drawing.Point(35, 20);
+            this.txt_lqfhz.Name = "txt_lqfhz";
+            this.txt_lqfhz.Size = new System.Drawing.Size(48, 21);
+            this.txt_lqfhz.TabIndex = 2;
+            this.txt_lqfhz.Text = "0";
             // 
-            // btn_ddg
+            // hsb_lqfControl
             // 
-            this.btn_ddg.Location = new System.Drawing.Point(93, 18);
-            this.btn_ddg.Name = "btn_ddg";
-            this.btn_ddg.Size = new System.Drawing.Size(75, 23);
-            this.btn_ddg.TabIndex = 1;
-            this.btn_ddg.Text = "点动关";
-            this.btn_ddg.UseVisualStyleBackColor = true;
-            this.btn_ddg.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_ddg_MouseDown);
-            this.btn_ddg.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_ddg_MouseUp);
-            // 
-            // btn_ddk
-            // 
-            this.btn_ddk.Location = new System.Drawing.Point(9, 19);
-            this.btn_ddk.Name = "btn_ddk";
-            this.btn_ddk.Size = new System.Drawing.Size(75, 23);
-            this.btn_ddk.TabIndex = 0;
-            this.btn_ddk.Text = "点动开";
-            this.btn_ddk.UseVisualStyleBackColor = true;
-            this.btn_ddk.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_ddk_MouseDown);
-            this.btn_ddk.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_ddk_MouseUp);
+            this.hsb_lqfControl.LargeChange = 6;
+            this.hsb_lqfControl.Location = new System.Drawing.Point(12, 48);
+            this.hsb_lqfControl.Maximum = 50;
+            this.hsb_lqfControl.Name = "hsb_lqfControl";
+            this.hsb_lqfControl.Size = new System.Drawing.Size(148, 17);
+            this.hsb_lqfControl.TabIndex = 3;
+            this.hsb_lqfControl.Value = 1;
+            this.hsb_lqfControl.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hsb_lqfControl_Scroll);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 594);
+            this.button1.Location = new System.Drawing.Point(12, 688);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(178, 36);
             this.button1.TabIndex = 10;
@@ -644,7 +714,7 @@
             this.groupBox3.Controls.Add(this.lbl_fscgq);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Location = new System.Drawing.Point(11, 343);
+            this.groupBox3.Location = new System.Drawing.Point(12, 449);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(179, 233);
             this.groupBox3.TabIndex = 4;
@@ -889,7 +959,7 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.txt_hz);
             this.groupBox2.Controls.Add(this.hsb_WindControl);
-            this.groupBox2.Location = new System.Drawing.Point(13, 253);
+            this.groupBox2.Location = new System.Drawing.Point(14, 355);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(178, 75);
             this.groupBox2.TabIndex = 5;
@@ -938,7 +1008,7 @@
             // 
             // btn_dyZero
             // 
-            this.btn_dyZero.Location = new System.Drawing.Point(10, 24);
+            this.btn_dyZero.Location = new System.Drawing.Point(90, 24);
             this.btn_dyZero.Name = "btn_dyZero";
             this.btn_dyZero.Size = new System.Drawing.Size(75, 23);
             this.btn_dyZero.TabIndex = 1;
@@ -948,7 +1018,7 @@
             // 
             // btn_gyZero
             // 
-            this.btn_gyZero.Location = new System.Drawing.Point(92, 24);
+            this.btn_gyZero.Location = new System.Drawing.Point(6, 24);
             this.btn_gyZero.Name = "btn_gyZero";
             this.btn_gyZero.Size = new System.Drawing.Size(75, 23);
             this.btn_gyZero.TabIndex = 0;
@@ -965,7 +1035,7 @@
             this.pl_showItem.ForeColor = System.Drawing.Color.Black;
             this.pl_showItem.Location = new System.Drawing.Point(196, 61);
             this.pl_showItem.Name = "pl_showItem";
-            this.pl_showItem.Size = new System.Drawing.Size(764, 542);
+            this.pl_showItem.Size = new System.Drawing.Size(801, 731);
             this.pl_showItem.TabIndex = 9;
             // 
             // tim_panelValue
@@ -985,7 +1055,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(960, 625);
+            this.ClientSize = new System.Drawing.Size(997, 814);
             this.Controls.Add(this.pl_showItem);
             this.Controls.Add(this.pl_set);
             this.Controls.Add(this.pl_top);
@@ -1086,20 +1156,15 @@
         private System.Windows.Forms.Timer tim_panelValue;
         private System.Windows.Forms.Button btn_dyZero;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Button btn_ddg;
-        private System.Windows.Forms.Button btn_ddk;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button btn_sbqd;
         private System.Windows.Forms.Button btn_fjqd;
         private System.Windows.Forms.Button btn_stfk;
-        private System.Windows.Forms.Button btn_bhft;
-        private System.Windows.Forms.Button btn_gdt;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btn_bhfk;
         private System.Windows.Forms.Button btn_kglkz;
         private System.Windows.Forms.Label lbl_cydcgq;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Timer tim_getdate;
         private System.Windows.Forms.ToolStripMenuItem 基础设置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 传感器设定ToolStripMenuItem;
@@ -1109,5 +1174,16 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem tsm_UpdatePassWord;
         private System.Windows.Forms.ToolStripMenuItem tsm_close;
+        private System.Windows.Forms.Button btn_sbtz;
+        private System.Windows.Forms.Button btn_fjtz;
+        private System.Windows.Forms.Button btn_tghl;
+        private System.Windows.Forms.Button btn_tgqt;
+        private System.Windows.Forms.Button btn_stfg;
+        private System.Windows.Forms.Button btn_qmfg;
+        private System.Windows.Forms.Button btn_qmfk;
+        private System.Windows.Forms.Button btn_bhfg;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txt_lqfhz;
+        private System.Windows.Forms.HScrollBar hsb_lqfControl;
     }
 }

@@ -52,7 +52,7 @@ namespace text.doors.Detection
                 return;
             }
 
-            var args = new TransmitEventArgs(dt.Rows[0]["dt_Code"].ToString(), dt.Rows[0]["info_DangH"].ToString());
+            var args = new TransmitEventArgs(dt.Rows[0]["dt_Code"].ToString());
             Transmit(this, args);
             this.Dispose();
         }
@@ -65,16 +65,13 @@ namespace text.doors.Detection
         public class TransmitEventArgs : System.EventArgs
         {
             private string _code;
-            private string _tong;
 
-            public TransmitEventArgs(string code, string tong)
+            public TransmitEventArgs(string code)
             {
                 this._code = code;
-                this._tong = tong;
 
             }
             public string Code { get { return _code; } }
-            public string Tong { get { return _tong; } }
         }
 
     }

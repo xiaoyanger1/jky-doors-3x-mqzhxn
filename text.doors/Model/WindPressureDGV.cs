@@ -21,7 +21,6 @@ namespace text.doors.Model
         {
             get
             {
-                //return System.Math.Abs(Math.Round(this.zwy2 - (this.zwy1 + this.zwy3) / 2, 2, MidpointRounding.AwayFromZero));
                 return (double)Math.Round(decimal.Parse((this.zwy2 - (this.zwy1 + this.zwy3) / 2).ToString()), 2, MidpointRounding.AwayFromZero);
             }
         }
@@ -29,7 +28,9 @@ namespace text.doors.Model
         {
             get
             {
-                return this.zzd == 0 ? 0 : Convert.ToInt32(DefaultBase.BarLength / this.zzd);
+                //todo:
+                //return this.zzd == 0 ? 0 : Convert.ToInt32(DefaultBase.BarLength / this.zzd);
+                return 0;
             }
         }
 
@@ -49,7 +50,9 @@ namespace text.doors.Model
         {
             get
             {
-                return this.fzd == 0 ? 0 : Convert.ToInt32(DefaultBase.BarLength / this.fzd);
+                //todo:
+                // return this.fzd == 0 ? 0 : Convert.ToInt32(DefaultBase.BarLength / this.fzd);
+                return 0;
             }
         }
 

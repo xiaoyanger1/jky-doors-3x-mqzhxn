@@ -25,23 +25,9 @@ namespace text.doors.Default
         /// </summary>
         public static string base_TestItem = "";
         /// <summary>
-        /// 规格数量
-        /// </summary>
-        public static int base_SpecCount = 0;
-        /// <summary>
         /// 确定是否设置樘号
         /// </summary>
         public static bool IsSetTong = false;
-
-        /// <summary>
-        /// 是否锁点
-        /// </summary>
-        public static bool LockPoint = false;
-
-        /// <summary>
-        /// 杆件长度
-        /// </summary>
-        public static int BarLength = 0;
 
 
         /// <summary>

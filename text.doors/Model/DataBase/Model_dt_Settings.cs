@@ -20,55 +20,51 @@ namespace text.doors.Model.DataBase
         public DateTime dt_Create { get; set; }
 
 
-        public string weituobianhao { get; set; }
-        public string weituodanwei { get; set; }
-        public string dizhi { get; set; }
-        public string dianhua { get; set; }
-        public string chouyangriqi { get; set; }
-        public string chouyangdidian { get; set; }
-        public string gongchengmingcheng { get; set; }
-        public string gongchengdidian { get; set; }
-        public string shengchandanwei { get; set; }
-        public string jiancexiangmu { get; set; }
-        public string jiancedidian { get; set; }
-        public string jianceriqi { get; set; }
-        public string jianceshebei { get; set; }
-        public string jianceyiju { get; set; }
-
-
-        public string yangpinmingcheng { get; set; }
-        public string yangpinshangbiao { get; set; }
-        public string yangpinzhuangtai { get; set; }
-        public string guigexinghao { get; set; }
-        public string kaiqifangshi { get; set; }
-        public string mianbanpinzhong { get; set; }
+        #region 
+        public string weituodianhua { get; set; }
+        public string songyangriqi { get; set; }
+        public string naihoujiao { get; set; }
+        public string litingxilie { get; set; }
+        public string yangpinbianhao { get; set; }
+        public string mianbancaizhi { get; set; }
+        public string mianbanxiangqianfangshi { get; set; }
+        public string mianbanxiangqiancailiao { get; set; }
+        public string kuangshanmifengcailiao { get; set; }
+        public string kekaibishijianmianji { get; set; }
+        public string caiyangfangshi { get; set; }
+        public string weituoren { get; set; }
         public string zuidamianban { get; set; }
-        public string mianbanhoudu { get; set; }
-        public string anzhuangfangshi { get; set; }
-        public string mianbanxiangqian { get; set; }
-        public string kuangshanmifeng { get; set; }
-        public string wujinpeijian { get; set; }
-        public string jianceshuliang { get; set; }
-        public string dangqiandanghao { get; set; }
-
-
-        public string dangqianwendu { get; set; }
-        public string daqiyali { get; set; }
-        public string kaiqifengchang { get; set; }
+        public string jianlidanwei { get; set; }
+        public string jianshedanwei { get; set; }
+        public string shejidanwei { get; set; }
+        public string ganCchang { get; set; }
+        public string ganBchang { get; set; }
+        public string ganAchang { get; set; }
+        public string kekaimianji { get; set; }
+        public string KaiQiFangShi { get; set; }
+        public string kekaifengchang { get; set; }
+        public string jiegoujiao { get; set; }
+        public string shijiancenggao { get; set; }
+        public string gudingmianji { get; set; }
+        public string gudingfengchang { get; set; }
+        public string shijiangaodu { get; set; }
+        public string gongchengmingcheng { get; set; }
+        public string shijiankuandu { get; set; }
+        public string GuiGeXingHao { get; set; }
+        public string YangPinMingCheng { get; set; }
+        public string jianceyiju { get; set; }
         public string shijianmianji { get; set; }
-        public string ganjianchangdu { get; set; }
-        public string penlinshuiliang { get; set; }
-        public string qimidanweifengchangshejizhi { get; set; }
-        public string qimidanweimianjishejizhi { get; set; }
-        public string shuimijingyashejizhi { get; set; }
-        public string shuimidongyashejizhi { get; set; }
-        public string kangfengyazhengyashejizhi { get; set; }
-        public string kangfengyafuyashejizhi { get; set; }
-        public string danshandansuodian { get; set; }
+        public string DaQiYaLi { get; set; }
+        public string DangQianWenDu { get; set; }
+        public string shengchandanwei { get; set; }
+        public string WeiTuoBianHao { get; set; }
+        public string baogaoriqi { get; set; }
+        public string JianCeXiangMu { get; set; }
+        public string ganjianABC { get; set; }
+        public string JianCeRiQi { get; set; }
+        public string WeiTuoDanWei { get; set; }
 
-        public string kangfengyazhengp3shejizhi { get; set; }
-        public string kangfengyazhengpmaxshejizhi { get; set; }
-
+        #endregion
 
         public List<Model_dt_Info> dt_InfoList { get; set; }
         public List<Model_dt_qm_Info> dt_qm_Info { get; set; }

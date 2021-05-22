@@ -70,7 +70,7 @@ namespace text.doors
         {
             if (_serialPortClient.sp.IsOpen)
             {
-              
+
                 _temperature = _serialPortClient.GetWDXS();
                 _temppressure = _serialPortClient.GetDQYLXS();
 
@@ -83,7 +83,7 @@ namespace text.doors
             }
         }
 
-    
+
         private void OpenSerialPortClient()
         {
             Thread thread = new Thread(new ThreadStart(() =>
@@ -127,13 +127,12 @@ namespace text.doors
 
         private void SelectDangHao(text.doors.Detection.DetectionSet.BottomType bt)
         {
-            this.tssl_SetCode.Text = string.Format("{0}  {1}", bt.Code, bt.Tong);
+            this.tssl_SetCode.Text = string.Format("{0}", bt.Code);
             if (bt.ISOK == true)
             { this.tsl_type.Visible = false; }
             else { this.tsl_type.Visible = true; }
 
             _tempCode = bt.Code;
-            _tempTong = bt.Tong;
             DefaultBase.IsSetTong = bt.ISOK;
             if (bt.ISOK)
             {
@@ -168,7 +167,7 @@ namespace text.doors
             }
 
             this.pl_showItem.Controls.Clear();
-            DetectionSet ds = new DetectionSet(_serialPortClient, _temperature, _temppressure, _tempCode, _tempTong);
+            DetectionSet ds = new DetectionSet(_serialPortClient, _temperature, _temppressure, _tempCode);
             ds.deleBottomTypeEvent += new DetectionSet.deleBottomType(SelectDangHao);
             ds.GetDangHaoTrigger();
             ds.TopLevel = false;
@@ -551,23 +550,52 @@ namespace text.doors
         }
 
 
+        void hsb_lqf_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var IsSeccess = false;
+            var diffPress = _serialPortClient.ReadLQFShow(ref IsSeccess);
+            if (!IsSeccess) return;
+
+            //需要计算
+            e.Result = diffPress;
+        }
+
+        void hsb_lqf_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //todo:确认/640
+            if (e.Result == null)
+                return;
+            var value = int.Parse(e.Result.ToString()) / 640;
+            txt_lqfhz.Text = value.ToString();
+        }
+
+
         private void pID设定ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-          
+
         }
         private void 系数设定ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-          
+
         }
 
         private void tim_panelValue_Tick(object sender, EventArgs e)
         {
             if (_serialPortClient.sp.IsOpen)
             {
+                //风机控制
                 using (BackgroundWorker bw = new BackgroundWorker())
                 {
                     bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(hsb_RunWorkerCompleted);
                     bw.DoWork += new DoWorkEventHandler(hsb_DoWork);
+                    bw.RunWorkerAsync();
+                }
+
+                //漏气阀门
+                using (BackgroundWorker bw = new BackgroundWorker())
+                {
+                    bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(hsb_lqf_RunWorkerCompleted);
+                    bw.DoWork += new DoWorkEventHandler(hsb_lqf_DoWork);
                     bw.RunWorkerAsync();
                 }
             }
@@ -587,113 +615,6 @@ namespace text.doors
 
         }
 
-        private bool _FengJiQiDongStat = false;
-
-        private void btn_fjqd_Click(object sender, EventArgs e)
-        {
-            var res = _serialPortClient.SendFengJiQiDong(ref _FengJiQiDongStat);
-            if (!res)
-            {
-                MessageBox.Show("风机启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            btn_fjqd.BackColor = _FengJiQiDongStat ? Color.Green : Color.Transparent;
-        }
-        private bool _ShuiBengQiDong = false;
-        private void btn_sbqd_Click(object sender, EventArgs e)
-        {
-            var res = _serialPortClient.SendShuiBengQiDong(ref _ShuiBengQiDong);
-            if (!res)
-            {
-                MessageBox.Show("水泵启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            btn_sbqd.BackColor = _ShuiBengQiDong ? Color.Green : Color.Transparent;
-        }
-
-        private bool _BaoHuFaTong = false;
-        private void btn_bhft_Click(object sender, EventArgs e)
-        {
-            var res = _serialPortClient.SendBaoHuFaTong(ref _BaoHuFaTong);
-            if (!res)
-            {
-                MessageBox.Show("保护阀通启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            btn_bhft.BackColor = _BaoHuFaTong ? Color.Green : Color.Transparent;
-        }
-        private bool _SiTongFaKai = false;
-        private void btn_stfk_Click(object sender, EventArgs e)
-        {
-            var res = _serialPortClient.SendSiTongFaKai(ref _SiTongFaKai);
-            if (!res)
-            {
-                MessageBox.Show("四通阀开异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            btn_stfk.BackColor = _SiTongFaKai ? Color.Green : Color.Transparent;
-        }
-
-
-        private void btn_ddk_MouseUp(object sender, MouseEventArgs e)
-        {
-
-            var res = _serialPortClient.SendDianDongKai(false);
-            if (!res)
-            {
-                MessageBox.Show("点动开异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            btn_ddk.BackColor = Color.Transparent;
-
-        }
-        private void btn_ddk_MouseDown(object sender, MouseEventArgs e)
-        {
-
-            var res = _serialPortClient.SendDianDongKai(true);
-            if (!res)
-            {
-                MessageBox.Show("点动开异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            btn_ddk.BackColor = Color.Green;
-        }
-
-        private void btn_ddg_MouseDown(object sender, MouseEventArgs e)
-        {
-            var res = _serialPortClient.SendDianDongGuan(true);
-            if (!res)
-            {
-                MessageBox.Show("水泵启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            btn_ddg.BackColor = Color.Green;
-        }
-
-        private void btn_ddg_MouseUp(object sender, MouseEventArgs e)
-        {
-            var res = _serialPortClient.SendDianDongGuan(false);
-            if (!res)
-            {
-                MessageBox.Show("水泵启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            btn_ddg.BackColor = Color.Transparent;
-        }
-
-        private bool _GuanDaoTou = false;
-        private void btn_gdt_Click(object sender, EventArgs e)
-        {
-            var res = _serialPortClient.SendGuanDaoTou(ref _GuanDaoTou);
-            if (!res)
-            {
-                MessageBox.Show("关到头异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            btn_gdt.BackColor = _GuanDaoTou ? Color.Green : Color.Transparent;
-        }
-
         private void 传感器设定ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SensorSet ss = new SensorSet(_serialPortClient);
@@ -711,6 +632,111 @@ namespace text.doors
         {
             PIDManager p = new PIDManager(_serialPortClient);
             p.Show();
+        }
+
+
+        private bool _FengJiQiDongStat = false;
+
+        private void btn_fjqd_Click(object sender, EventArgs e)
+        {
+            var res = _serialPortClient.SendFengJiQiDong(ref _FengJiQiDongStat);
+            if (!res)
+            {
+                MessageBox.Show("风机启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            btn_fjqd.BackColor = _FengJiQiDongStat ? Color.Green : Color.Transparent;
+        }
+
+        private void btn_fjtz_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private bool _ShuiBengQiDong = false;
+        private void btn_sbqd_Click(object sender, EventArgs e)
+        {
+            var res = _serialPortClient.SendShuiBengQiDong(ref _ShuiBengQiDong);
+            if (!res)
+            {
+                MessageBox.Show("水泵启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_sbqd.BackColor = _ShuiBengQiDong ? Color.Green : Color.Transparent;
+        }
+
+        private void btn_sbtz_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private bool _BaoHuFaTong = false;
+        private void btn_bhft_Click(object sender, EventArgs e)
+        {
+            var res = _serialPortClient.SendBaoHuFaTong(ref _BaoHuFaTong);
+            if (!res)
+            {
+                MessageBox.Show("保护阀通启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_bhfk.BackColor = _BaoHuFaTong ? Color.Green : Color.Transparent;
+        }
+
+        private void btn_bhfg_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void btn_qmfk_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void btn_qmfg_Click(object sender, EventArgs e)
+        {
+
+        }
+        private bool _SiTongFaKai = false;
+        private void btn_stfk_Click(object sender, EventArgs e)
+        {
+            var res = _serialPortClient.SendSiTongFaKai(ref _SiTongFaKai);
+            if (!res)
+            {
+                MessageBox.Show("四通阀开异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_stfk.BackColor = _SiTongFaKai ? Color.Green : Color.Transparent;
+        }
+        private void btn_stfg_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_tgqt_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_tghl_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void hsb_lqfControl_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (hsb_lqfControl.Value == 0)
+                txt_lqfhz.Text = "0.00";
+            else
+                txt_lqfhz.Text = (hsb_lqfControl.Value).ToString();
+
+            double value = (hsb_lqfControl.Value) * 640;
+
+            var res = _serialPortClient.SendLQFKZ(value);
+
+            if (!res)
+            {
+                MessageBox.Show("漏气阀控制异常,请确认服务器连接是否成功!", "风机", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

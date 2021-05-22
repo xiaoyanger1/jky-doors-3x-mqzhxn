@@ -70,6 +70,9 @@ namespace text.doors.Default
         public const string 正安全结束 = "T33";
         public const string 负安全结束 = "T35";
 
+        public const string 漏气阀控制 = "";
+        public const string 漏气阀设定值 = "";
+
 
         public const string 风机控制 = "D40";
         public const string 风机设定值 = "D40";
@@ -77,8 +80,6 @@ namespace text.doors.Default
         public const string 正压开始_设定值 = "D2001";
         public const string 负压预备_设定值 = "D2002";
         public const string 负压开始_设定值 = "D2005";
-
-        //todo:
 
         public const string 正压依次加压 = "T0";
 

@@ -20,7 +20,7 @@ namespace text.doors.dal
         /// <summary>
         /// 添加基本编号设置
         /// </summary>
-        public bool Add(Model_dt_Settings model, string tong)
+        public bool Add(Model_dt_Settings model)
         {
             var res = false;
             string delsql = "delete from dt_Settings where dt_Code='" + model.dt_Code + "'";
@@ -28,123 +28,115 @@ namespace text.doors.dal
 
             #region 添加主表
             string sql = string.Format(@"
-                                        insert into dt_Settings
-                                        (
-                                        weituobianhao,
-                                        weituodanwei,
-                                        dizhi,
-                                        dianhua,
-                                        chouyangriqi,
-                                        chouyangdidian,
-                                        gongchengmingcheng,
-                                        gongchengdidian,
-                                        shengchandanwei,
-                                        jiancexiangmu,
-                                        jiancedidian,
-                                        jianceriqi,
-                                        jianceshebei,
-                                        jianceyiju,
-
-                                        yangpinmingcheng,
-                                        yangpinshangbiao,
-                                        yangpinzhuangtai,
-                                        guigexinghao,
-                                        kaiqifangshi,
-                                        mianbanpinzhong,
-                                        zuidamianban,
-                                        mianbanhoudu,
-                                        anzhuangfangshi,
-                                        mianbanxiangqian,
-                                        kuangshanmifeng,
-                                        wujinpeijian,
-                                        jianceshuliang,
-                                        dangqiandanghao,
-
-                                        dangqianwendu,
-                                        daqiyali,
-                                        kaiqifengchang,
-                                        shijianmianji,
-                                        ganjianchangdu,
-                                        penlinshuiliang,
-                                        qimidanweifengchangshejizhi,
-                                        qimidanweimianjishejizhi,
-                                        shuimijingyashejizhi,
-                                        shuimidongyashejizhi,
-                                        kangfengyazhengyashejizhi,
-                                        kangfengyafuyashejizhi,                           
-                                        danshandansuodian,
-
-                                        dt_Code,
-                                        dt_Create,
-                                        kangfengyazhengp3shejizhi,
-                                        kangfengyazhengpmaxshejizhi
-                                        )
-                                        VALUES
-                                        (
-                                        '{0}','{1}','{2}' ,'{3}','{4}' , '{5}' , '{6}','{7}' ,'{8}' ,'{9}' , '{10}','{11}'  ,  '{12}' ,'{13}' ,'{14}' ,'{15}'  ,'{16}' ,'{17}','{18}' , '{19}' ,
-                                        '{20}' , '{21}' ,'{22}' ,'{23}','{24}' ,'{25}' ,'{26}' ,'{27}','{28}' , '{29}' ,'{30}','{31}' ,'{32}','{33}','{34}' ,'{35}' ,'{36}' ,'{37}' ,'{38}' ,
-                                        '{39}' ,'{40}','{41}' ,datetime('now'),'{42}','{43}')",
-                                        model.weituobianhao,
-                                        model.weituodanwei,
-                                        model.dizhi,
-                                        model.dianhua,
-                                        model.chouyangriqi,
-                                        model.chouyangdidian,
-                                        model.gongchengmingcheng,
-                                        model.gongchengdidian,
-                                        model.shengchandanwei,
-                                        model.jiancexiangmu,
-                                        model.jiancedidian,
-                                        model.jianceriqi,
-                                        model.jianceshebei,
-                                        model.jianceyiju,
-
-                                        model.yangpinmingcheng,
-                                        model.yangpinshangbiao,
-                                        model.yangpinzhuangtai,
-                                        model.guigexinghao,
-                                        model.kaiqifangshi,
-                                        model.mianbanpinzhong,
-                                        model.zuidamianban,
-                                        model.mianbanhoudu,
-                                        model.anzhuangfangshi,
-                                        model.mianbanxiangqian,
-                                        model.kuangshanmifeng,
-                                        model.wujinpeijian,
-                                        model.jianceshuliang,
-                                        model.dangqiandanghao,
-
-                                        model.dangqianwendu,
-                                        model.daqiyali,
-                                        model.kaiqifengchang,
-                                        model.shijianmianji,
-                                        model.ganjianchangdu,
-                                        model.penlinshuiliang,
-                                        model.qimidanweifengchangshejizhi,
-                                        model.qimidanweimianjishejizhi,
-                                        model.shuimijingyashejizhi,
-                                        model.shuimidongyashejizhi,
-                                        model.kangfengyazhengyashejizhi,
-                                        model.kangfengyafuyashejizhi,
-                                        model.danshandansuodian,
-                                        model.dt_Code,
-                                        model.kangfengyazhengp3shejizhi,
-                                        model.kangfengyazhengpmaxshejizhi
-                                        );
+insert into dt_Settings
+(
+weituodianhua           ,
+songyangriqi            ,
+naihoujiao              ,
+litingxilie             ,
+yangpinbianhao          ,
+mianbancaizhi           ,
+mianbanxiangqianfangshi ,
+mianbanxiangqiancailiao ,
+kuangshanmifengcailiao  ,
+kekaibishijianmianji    ,
+caiyangfangshi          ,
+weituoren               ,
+zuidamianban            ,
+jianlidanwei            ,
+jianshedanwei           ,
+shejidanwei             ,
+ganCchang               ,
+ganBchang               ,
+ganAchang               ,
+kekaimianji             ,
+KaiQiFangShi            ,
+kekaifengchang          ,
+jiegoujiao              ,
+shijiancenggao          ,
+gudingmianji            ,
+gudingfengchang         ,
+shijiangaodu            ,
+gongchengmingcheng      ,
+shijiankuandu           ,
+GuiGeXingHao            ,
+YangPinMingCheng        ,
+jianceyiju              ,
+shijianmianji           ,
+DaQiYaLi                ,
+DangQianWenDu           ,
+shengchandanwei         ,
+baogaoriqi              ,
+JianCeXiangMu           ,
+ganjianABC              ,
+JianCeRiQi              ,
+WeiTuoDanWei            ,
+WeiTuoBianHao           ,
+dt_Code,
+dt_Create
+)
+VALUES
+(
+'{0}','{1}','{2}' ,'{3}','{4}' , '{5}' , '{6}','{7}' ,'{8}' ,'{9}' , '{10}','{11}'  ,  '{12}' ,'{13}' ,'{14}' ,'{15}'  ,'{16}' ,'{17}','{18}' , '{19}' ,
+'{20}' , '{21}' ,'{22}' ,'{23}','{24}' ,'{25}' ,'{26}' ,'{27}','{28}' , '{29}' ,'{30}','{31}' ,'{32}','{33}','{34}' ,'{35}' ,'{36}' ,'{37}' ,'{38}' ,
+'{39}' ,'{40}','{41}','{42}',datetime('now'))",
+model.weituodianhua           ,
+model.songyangriqi            ,
+model.naihoujiao              ,
+model.litingxilie             ,
+model.yangpinbianhao          ,
+model.mianbancaizhi           ,
+model.mianbanxiangqianfangshi ,
+model.mianbanxiangqiancailiao ,
+model.kuangshanmifengcailiao  ,
+model.kekaibishijianmianji    ,
+model.caiyangfangshi          ,
+model.weituoren               ,
+model.zuidamianban            ,
+model.jianlidanwei            ,
+model.jianshedanwei           ,
+model.shejidanwei             ,
+model.ganCchang               ,
+model.ganBchang               ,
+model.ganAchang               ,
+model.kekaimianji             ,
+model.KaiQiFangShi            ,
+model.kekaifengchang          ,
+model.jiegoujiao              ,
+model.shijiancenggao          ,
+model.gudingmianji            ,
+model.gudingfengchang         ,
+model.shijiangaodu            ,
+model.gongchengmingcheng      ,
+model.shijiankuandu           ,
+model.GuiGeXingHao            ,
+model.YangPinMingCheng        ,
+model.jianceyiju              ,
+model.shijianmianji           ,
+model.DaQiYaLi                ,
+model.DangQianWenDu           ,
+model.shengchandanwei         ,
+model.baogaoriqi              ,
+model.JianCeXiangMu           ,
+model.ganjianABC              ,
+model.JianCeRiQi              ,
+model.WeiTuoDanWei            ,
+model.WeiTuoBianHao           ,
+model.dt_Code );
             res = SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
             #endregion
 
-            #region 添加实验樘号记录
-            if (res)
-            {
-                var table = SQLiteHelper.ExecuteDataRow("select * from dt_Info where info_DangH = '" + tong + "' and dt_Code = '" + model.dt_Code + "'")?.Table;
-                if (table == null || table.Rows.Count == 0)
-                {
-                    sql = string.Format("insert into dt_Info (info_DangH,info_Create,dt_Code,Airtight,Watertight,WindPressure) values('{0}',datetime('now'),'{1}',0,0,0)", tong, model.dt_Code);
-                    return SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
-                }
-            }
-            #endregion
+            //#region 添加实验樘号记录
+            //if (res)
+            //{
+            //    var table = SQLiteHelper.ExecuteDataRow("select * from dt_Info where info_DangH = '" + tong + "' and dt_Code = '" + model.dt_Code + "'")?.Table;
+            //    if (table == null || table.Rows.Count == 0)
+            //    {
+            //        sql = string.Format("insert into dt_Info (info_DangH,info_Create,dt_Code,Airtight,Watertight,WindPressure) values('{0}',datetime('now'),'{1}',0,0,0)", tong, model.dt_Code);
+            //        return SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
+            //    }
+            //}
+            //#endregion
 
             return true;
         }
@@ -182,13 +174,11 @@ namespace text.doors.dal
             string sql = "";
             if (string.IsNullOrWhiteSpace(code))
             {
-                sql = @"select t.*,t1.info_DangH from (select * from dt_Settings order by  dt_Create desc  LIMIT(1) ) t
-                        join dt_Info  t1 on t.dt_Code = t1.dt_Code";
+                sql = @"select * from dt_Settings order by  dt_Create desc  LIMIT(1)";
             }
             else
             {
-                sql = @"select t.*,t1.info_DangH from dt_Settings  t
-                            join dt_Info  t1 on t.dt_Code = t1.dt_Code
+                sql = @"select * from dt_Settings  t
                             where t.dt_Code ='" + code + "'";
             }
             DataRow dr = SQLiteHelper.ExecuteDataRow(sql);
@@ -321,49 +311,48 @@ namespace text.doors.dal
 
             var dt_settings = SQLiteHelper.ExecuteDataRow("select * from dt_settings where dt_Code='" + code + "'")?.Table;
 
-            settings.weituobianhao = dt_settings.Rows[0]["weituobianhao"].ToString();
-            settings.weituodanwei = dt_settings.Rows[0]["weituodanwei"].ToString();
-            settings.dizhi = dt_settings.Rows[0]["dizhi"].ToString();
-            settings.dianhua = dt_settings.Rows[0]["dianhua"].ToString();
-            settings.chouyangriqi = dt_settings.Rows[0]["chouyangriqi"].ToString();
-            settings.chouyangdidian = dt_settings.Rows[0]["chouyangdidian"].ToString();
-            settings.gongchengmingcheng = dt_settings.Rows[0]["gongchengmingcheng"].ToString();
-            settings.gongchengdidian = dt_settings.Rows[0]["gongchengdidian"].ToString();
-            settings.shengchandanwei = dt_settings.Rows[0]["shengchandanwei"].ToString();
-            settings.jiancexiangmu = dt_settings.Rows[0]["jiancexiangmu"].ToString();
-            settings.jiancedidian = dt_settings.Rows[0]["jiancedidian"].ToString();
-            settings.jianceriqi = dt_settings.Rows[0]["jianceriqi"].ToString();
-            settings.jianceshebei = dt_settings.Rows[0]["jianceshebei"].ToString();
-            settings.jianceyiju = dt_settings.Rows[0]["jianceyiju"].ToString();
-
-            settings.yangpinmingcheng = dt_settings.Rows[0]["yangpinmingcheng"].ToString();
-            settings.yangpinshangbiao = dt_settings.Rows[0]["yangpinshangbiao"].ToString();
-            settings.yangpinzhuangtai = dt_settings.Rows[0]["yangpinzhuangtai"].ToString();
-            settings.guigexinghao = dt_settings.Rows[0]["guigexinghao"].ToString();
-            settings.kaiqifangshi = dt_settings.Rows[0]["kaiqifangshi"].ToString();
-            settings.mianbanpinzhong = dt_settings.Rows[0]["mianbanpinzhong"].ToString();
+            settings.weituodianhua = dt_settings.Rows[0]["weituodianhua"].ToString();
+            settings.songyangriqi = dt_settings.Rows[0]["songyangriqi"].ToString();
+            settings.naihoujiao = dt_settings.Rows[0]["naihoujiao"].ToString();
+            settings.litingxilie = dt_settings.Rows[0]["litingxilie"].ToString();
+            settings.yangpinbianhao = dt_settings.Rows[0]["yangpinbianhao"].ToString();
+            settings.mianbancaizhi = dt_settings.Rows[0]["mianbancaizhi"].ToString();
+            settings.mianbanxiangqianfangshi = dt_settings.Rows[0]["mianbanxiangqianfangshi"].ToString();
+            settings.mianbanxiangqiancailiao = dt_settings.Rows[0]["mianbanxiangqiancailiao"].ToString();
+            settings.kuangshanmifengcailiao = dt_settings.Rows[0]["kuangshanmifengcailiao"].ToString();
+            settings.kekaibishijianmianji = dt_settings.Rows[0]["kekaibishijianmianji"].ToString();
+            settings.caiyangfangshi = dt_settings.Rows[0]["caiyangfangshi"].ToString();
+            settings.weituoren = dt_settings.Rows[0]["weituoren"].ToString();
             settings.zuidamianban = dt_settings.Rows[0]["zuidamianban"].ToString();
-            settings.mianbanhoudu = dt_settings.Rows[0]["mianbanhoudu"].ToString();
-            settings.anzhuangfangshi = dt_settings.Rows[0]["anzhuangfangshi"].ToString();
-            settings.mianbanxiangqian = dt_settings.Rows[0]["mianbanxiangqian"].ToString();
-            settings.kuangshanmifeng = dt_settings.Rows[0]["kuangshanmifeng"].ToString();
-            settings.wujinpeijian = dt_settings.Rows[0]["wujinpeijian"].ToString();
-            settings.jianceshuliang = dt_settings.Rows[0]["jianceshuliang"].ToString();
-            settings.dangqiandanghao = dt_settings.Rows[0]["dangqiandanghao"].ToString();
-
-            settings.dangqianwendu = dt_settings.Rows[0]["dangqianwendu"].ToString();
-            settings.daqiyali = dt_settings.Rows[0]["daqiyali"].ToString();
-            settings.kaiqifengchang = dt_settings.Rows[0]["kaiqifengchang"].ToString();
+            settings.jianlidanwei = dt_settings.Rows[0]["jianlidanwei"].ToString();
+            settings.jianshedanwei = dt_settings.Rows[0]["jianshedanwei"].ToString();
+            settings.shejidanwei = dt_settings.Rows[0]["shejidanwei"].ToString();
+            settings.ganCchang = dt_settings.Rows[0]["ganCchang"].ToString();
+            settings.ganBchang = dt_settings.Rows[0]["ganBchang"].ToString();
+            settings.ganAchang = dt_settings.Rows[0]["ganAchang"].ToString();
+            settings.kekaimianji = dt_settings.Rows[0]["kekaimianji"].ToString();
+            settings.KaiQiFangShi = dt_settings.Rows[0]["KaiQiFangShi"].ToString();
+            settings.kekaifengchang = dt_settings.Rows[0]["kekaifengchang"].ToString();
+            settings.jiegoujiao = dt_settings.Rows[0]["jiegoujiao"].ToString();
+            settings.shijiancenggao = dt_settings.Rows[0]["shijiancenggao"].ToString();
+            settings.gudingmianji = dt_settings.Rows[0]["gudingmianji"].ToString();
+            settings.gudingfengchang = dt_settings.Rows[0]["gudingfengchang"].ToString();
+            settings.shijiangaodu = dt_settings.Rows[0]["shijiangaodu"].ToString();
+            settings.gongchengmingcheng = dt_settings.Rows[0]["gongchengmingcheng"].ToString();
+            settings.shijiankuandu = dt_settings.Rows[0]["shijiankuandu"].ToString();
+            settings.GuiGeXingHao = dt_settings.Rows[0]["GuiGeXingHao"].ToString();
+            settings.YangPinMingCheng = dt_settings.Rows[0]["YangPinMingCheng"].ToString();
+            settings.jianceyiju = dt_settings.Rows[0]["jianceyiju"].ToString();
             settings.shijianmianji = dt_settings.Rows[0]["shijianmianji"].ToString();
-            settings.ganjianchangdu = dt_settings.Rows[0]["ganjianchangdu"].ToString();
-            settings.penlinshuiliang = dt_settings.Rows[0]["penlinshuiliang"].ToString();
-            settings.qimidanweifengchangshejizhi = dt_settings.Rows[0]["qimidanweifengchangshejizhi"].ToString();
-            settings.qimidanweimianjishejizhi = dt_settings.Rows[0]["qimidanweimianjishejizhi"].ToString();
-            settings.shuimijingyashejizhi = dt_settings.Rows[0]["shuimijingyashejizhi"].ToString();
-            settings.shuimidongyashejizhi = dt_settings.Rows[0]["shuimidongyashejizhi"].ToString();
-            settings.kangfengyazhengyashejizhi = dt_settings.Rows[0]["kangfengyazhengyashejizhi"].ToString();
-            settings.kangfengyafuyashejizhi = dt_settings.Rows[0]["kangfengyafuyashejizhi"].ToString();
-            settings.danshandansuodian = dt_settings.Rows[0]["danshandansuodian"].ToString();
+            settings.DaQiYaLi = dt_settings.Rows[0]["DaQiYaLi"].ToString();
+            settings.DangQianWenDu = dt_settings.Rows[0]["DangQianWenDu"].ToString();
+            settings.shengchandanwei = dt_settings.Rows[0]["shengchandanwei"].ToString();
+            settings.WeiTuoBianHao = dt_settings.Rows[0]["WeiTuoBianHao"].ToString();
+            settings.baogaoriqi = dt_settings.Rows[0]["baogaoriqi"].ToString();
+            settings.JianCeXiangMu = dt_settings.Rows[0]["JianCeXiangMu"].ToString();
+            settings.ganjianABC = dt_settings.Rows[0]["ganjianABC"].ToString();
+            settings.JianCeRiQi = dt_settings.Rows[0]["JianCeRiQi"].ToString();
+            settings.WeiTuoDanWei = dt_settings.Rows[0]["WeiTuoDanWei"].ToString();
             settings.dt_Code = dt_settings.Rows[0]["dt_Code"].ToString();
 
             var dt_Info = SQLiteHelper.ExecuteDataRow("select * from dt_Info where dt_Code='" + code + "'   order by  info_DangH")?.Table;
@@ -376,7 +365,6 @@ namespace text.doors.dal
                     Model_dt_Info model = new Model_dt_Info();
                     model.dt_Code = item["dt_Code"].ToString();
                     model.info_Create = item["info_Create"].ToString();
-                    model.info_DangH = item["info_DangH"].ToString();
                     model.Watertight = Convert.ToInt32(item["Watertight"].ToString());
                     model.WindPressure = Convert.ToInt32(item["WindPressure"].ToString());
                     model.Airtight = Convert.ToInt32(item["Airtight"].ToString());

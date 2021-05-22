@@ -1546,6 +1546,29 @@ namespace text.doors.Common
             return true;
         }
 
+        /// <summary>
+        /// 设置漏气阀控制
+        /// </summary>
+        public bool SendLQFKZ(double value)
+        {
+            try
+            {
+                if (sp.IsOpen)
+                {
+                    lock (syncLock)
+                    {
+                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.漏气阀控制);
+                        _MASTER.WriteSingleRegister(_SlaveID, _StartAddress, (ushort)(value));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
 
 
         /// <summary>
@@ -1561,6 +1584,33 @@ namespace text.doors.Common
                     lock (syncLock)
                     {
                         _StartAddress = BFMCommand.GetCommandDict(BFMCommand.风机设定值);
+                        ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
+                        res = int.Parse(holding_register[0].ToString());
+                        IsSuccess = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                IsSuccess = false;
+
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// 获取漏气阀显示
+        /// </summary>
+        public double ReadLQFShow(ref bool IsSuccess)
+        {
+            double res = 0;
+            try
+            {
+                if (sp.IsOpen)
+                {
+                    lock (syncLock)
+                    {
+                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.漏气阀设定值);
                         ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
                         res = int.Parse(holding_register[0].ToString());
                         IsSuccess = true;

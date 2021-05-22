@@ -1,3 +1,72 @@
 ------------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
+------------------------------------------------------------
+2021-05-22 20:49:36,983 [1] - System.Data.SQLite.SQLiteException (0x80004005): SQLite error
+43 values for 44 columns
+   在 System.Data.SQLite.SQLite3.Prepare(String strSql, SQLiteStatement previous, String& strRemain)
+   在 System.Data.SQLite.SQLiteCommand.BuildNextCommand()
+   在 System.Data.SQLite.SQLiteCommand.GetStatement(Int32 index)
+   在 System.Data.SQLite.SQLiteCommand.ExecuteNonQuery()
+   在 Young.Core.SQLite.SQLiteHelper.ExecuteNonQuery(String cmdText, Object[] p) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\Young.Core\SQLite\SQLiteHelper.cs:行号 72
+   在 text.doors.dal.DAL_dt_Settings.Add(Model_dt_Settings model) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Service\DAL_dt_Settings.cs:行号 126
+   在 text.doors.Detection.DetectionSet.btn_Ok_Click(Object sender, EventArgs e) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 55
+------------------------------------------------------------
+2021-05-22 20:53:48,430 [1] - System.ArgumentException: 列“KaiQiFengChang”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 text.doors.Detection.AirtightDetection.GetDatabaseLevelIndex(QM_TestCount qm_TestCount) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 1731
+   在 text.doors.Detection.AirtightDetection.BindLevelIndex(QM_TestCount qm_TestCount) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 389
+   在 text.doors.Detection.AirtightDetection.Init() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 87
+   在 text.doors.Detection.AirtightDetection..ctor(SerialPortClient tcpClient, String tempCode, String tempTong) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 78
+   在 text.doors.MainForm.ShowAirtightDetection() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 235
+   在 text.doors.MainForm.SelectDangHao(BottomType bt) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 139
+   在 text.doors.Detection.DetectionSet.btn_Ok_Click(Object sender, EventArgs e) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 58
+2021-05-22 20:53:52,846 [1] - System.ArgumentException: 列“kuangshanmifengcailiao ”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 text.doors.Detection.DetectionSet.BindInfoText() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 131
+2021-05-22 20:54:59,536 [1] - System.ArgumentException: 列“kuangshanmifengcailiao ”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 text.doors.Detection.DetectionSet.BindInfoText() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 131
+2021-05-22 20:55:51,908 [1] - System.ArgumentException: 列“kuangshanmifengcailiao ”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 text.doors.Detection.DetectionSet.BindInfoText() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 131
+2021-05-22 20:56:07,635 [1] - System.ArgumentException: 列“kuangshanmifengcailiao ”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 text.doors.Detection.DetectionSet.BindInfoText() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 131
+2021-05-22 20:56:20,685 [1] - System.ArgumentException: 列“kuangshanmifengcailiao ”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 text.doors.Detection.DetectionSet.BindInfoText() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 131
+------------------------------------------------------------
+2021-05-22 20:57:08,379 [1] - System.ArgumentException: 列“this.cb_KaiQiFangShi”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 text.doors.Detection.DetectionSet.BindInfoText() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 143
+------------------------------------------------------------
+2021-05-22 21:04:40,619 [1] - System.ArgumentException: 列“KaiQiFengChang”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 text.doors.Detection.AirtightDetection.GetDatabaseLevelIndex(QM_TestCount qm_TestCount) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 1731
+   在 text.doors.Detection.AirtightDetection.BindLevelIndex(QM_TestCount qm_TestCount) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 389
+   在 text.doors.Detection.AirtightDetection.Init() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 87
+   在 text.doors.Detection.AirtightDetection..ctor(SerialPortClient tcpClient, String tempCode, String tempTong) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 78
+   在 text.doors.MainForm.ShowAirtightDetection() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 235
+   在 text.doors.MainForm.SelectDangHao(BottomType bt) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 139
+   在 text.doors.Detection.DetectionSet.btn_Ok_Click(Object sender, EventArgs e) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 58
+2021-05-22 21:05:12,659 [1] - System.ArgumentException: 列“KaiQiFengChang”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 text.doors.Detection.AirtightDetection.GetDatabaseLevelIndex(QM_TestCount qm_TestCount) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 1731
+   在 text.doors.Detection.AirtightDetection.BindLevelIndex(QM_TestCount qm_TestCount) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 389
+   在 text.doors.Detection.AirtightDetection.Init() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 87
+   在 text.doors.Detection.AirtightDetection..ctor(SerialPortClient tcpClient, String tempCode, String tempTong) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 78
+   在 text.doors.MainForm.ShowAirtightDetection() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 235
+   在 text.doors.MainForm.SelectDangHao(BottomType bt) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 139
+   在 text.doors.Detection.DetectionSet.btn_Ok_Click(Object sender, EventArgs e) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 58
+------------------------------------------------------------
+------------------------------------------------------------

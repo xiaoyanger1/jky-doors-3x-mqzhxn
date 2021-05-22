@@ -79,16 +79,16 @@ namespace text.doors.Detection
             this._tempCode = tempCode;
             this._tempTong = tempTong;
 
-            if (!DefaultBase.LockPoint)
-            {
-                rdb_DWDD1.Enabled = false;
-                rdb_DWDD3.Enabled = false;
-            }
-            else
-            {
-                rdb_DWDD1.Enabled = true;
-                rdb_DWDD3.Enabled = true;
-            }
+            //if (!DefaultBase.LockPoint)
+            //{
+            //    rdb_DWDD1.Enabled = false;
+            //    rdb_DWDD3.Enabled = false;
+            //}
+            //else
+            //{
+            //    rdb_DWDD1.Enabled = true;
+            //    rdb_DWDD3.Enabled = true;
+            //}
 
             BindFromInit();
 
@@ -842,13 +842,13 @@ namespace text.doors.Detection
                         Stop();
                         OpenBtnType();
 
-                        //todo:使用那个lx?
                         double lx2 = 0;
                         double.TryParse(txt_lx.Text, out lx2);
                         double zy = 0;
                         double fy = 0;
 
-                        Formula.GetKFY(windPressureDGV, DefaultBase.BarLength, lx2, ref zy, ref fy);
+                        //todo:
+                       // Formula.GetKFY(windPressureDGV, DefaultBase.BarLength, lx2, ref zy, ref fy);
                         if (zy != -100)
                         {
                             txt_p1.Text = Math.Round(zy, 0).ToString();
@@ -910,20 +910,20 @@ namespace text.doors.Detection
 
         private void btn_datahandle_Click(object sender, EventArgs e)
         {
-            double lx = 0;
-            double.TryParse(txt_lx.Text, out lx);
-            double zy = 0;
-            double fy = 0;
+            //double lx = 0;
+            //double.TryParse(txt_lx.Text, out lx);
+            //double zy = 0;
+            //double fy = 0;
 
-            Formula.GetKFY(windPressureDGV, DefaultBase.BarLength, lx, ref zy, ref fy);
-            if (zy != -100)
-            {
-                txt_p1.Text = zy > 0 ? Math.Round(zy, 0).ToString() : "0";
-            }
-            if (fy != -100)
-                txt_f_p1.Text = fy > 0 ? Math.Round(fy, 0).ToString() : "0";
+            //Formula.GetKFY(windPressureDGV, DefaultBase.BarLength, lx, ref zy, ref fy);
+            //if (zy != -100)
+            //{
+            //    txt_p1.Text = zy > 0 ? Math.Round(zy, 0).ToString() : "0";
+            //}
+            //if (fy != -100)
+            //    txt_f_p1.Text = fy > 0 ? Math.Round(fy, 0).ToString() : "0";
 
-            currentkPa = 0;
+            //currentkPa = 0;
         }
 
 
@@ -1112,17 +1112,17 @@ namespace text.doors.Detection
                     var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
                     if (lx < def_LX)
                     {
-                        //  BindData(true);
+                        
                         Stop();
                         OpenBtnType();
 
-                        //todo:使用那个lx?
                         double lx2 = 0;
                         double.TryParse(txt_lx.Text, out lx2);
                         double zy = 0;
                         double fy = 0;
 
-                        Formula.GetKFY(windPressureDGV, DefaultBase.BarLength, lx2, ref zy, ref fy);
+                        //todo:
+                       // Formula.GetKFY(windPressureDGV, DefaultBase.BarLength, lx2, ref zy, ref fy);
                         if (zy != -100)
                         {
                             txt_p1.Text = Math.Round(zy, 0).ToString();
@@ -1492,14 +1492,14 @@ namespace text.doors.Detection
 
         private void button11_Click(object sender, EventArgs e)
         {
-            if (DefaultBase.LockPoint)
-            {
-                if (!rdb_DWDD1.Checked && !rdb_DWDD3.Checked)
-                {
-                    MessageBox.Show("请选择位移！", "请选择位移！", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-            }
+            //if (DefaultBase.LockPoint)
+            //{
+            //    if (!rdb_DWDD1.Checked && !rdb_DWDD3.Checked)
+            //    {
+            //        MessageBox.Show("请选择位移！", "请选择位移！", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //        return;
+            //    }
+            //}
             var jc = int.Parse(txt_gbjc.Text);
             if (AddKfyInfo(jc))
             {

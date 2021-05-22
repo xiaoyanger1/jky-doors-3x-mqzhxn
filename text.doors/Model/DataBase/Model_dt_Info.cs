@@ -12,10 +12,6 @@ namespace text.doors.Model.DataBase
         /// 主表外键
         /// </summary>
         public string dt_Code { get; set; }
-        /// <summary>
-        /// 当前樘号
-        /// </summary>
-        public string info_DangH { get; set; }
 
         /// <summary>
         /// 创建时间
