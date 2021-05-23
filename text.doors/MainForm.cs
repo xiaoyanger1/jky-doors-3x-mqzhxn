@@ -205,6 +205,38 @@ namespace text.doors
             rts.Parent = this.pl_showItem;
             rts.Show();
         }
+
+        /// <summary>
+        /// 平面内变形检测
+        /// </summary>
+        private void ShowPlaneDeformation()
+        {
+            if (pl_showItem.Controls.Count > 0)
+            {
+                foreach (Control con in this.pl_showItem.Controls)
+                {
+                    if (con is DetectionSet)
+                    {
+                    }
+                    else if (con is PlaneDeformation)
+                    {
+                        con.Dispose();
+                        ((Form)con).Close();
+                    }
+                    else
+                    {
+                        ((Form)con).Close();
+                    }
+                }
+            }
+            this.pl_showItem.Controls.Clear();
+            PlaneDeformation rts = new PlaneDeformation(_serialPortClient, _tempCode);
+
+            rts.TopLevel = false;
+            rts.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            rts.Parent = this.pl_showItem;
+            rts.Show();
+        }
         /// <summary>
         /// 气密监控
         /// </summary>
@@ -735,6 +767,22 @@ namespace text.doors
             {
                 MessageBox.Show("漏气阀控制异常,请确认服务器连接是否成功!", "风机", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void tsb_PlaneDeformation_Click(object sender, EventArgs e)
+        {
+            if (DefaultBase.IsSetTong)
+                ShowPlaneDeformation();
+            else
+                MessageBox.Show("请先检测设定", "检测", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void 平面内变形检测ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (DefaultBase.IsSetTong)
+                ShowPlaneDeformation();
+            else
+                MessageBox.Show("请先检测设定", "检测", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

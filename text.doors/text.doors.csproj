@@ -124,6 +124,12 @@
     <Compile Include="Detection\CorrectionFactor.Designer.cs">
       <DependentUpon>CorrectionFactor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Detection\PlaneDeformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Detection\PlaneDeformation.Designer.cs">
+      <DependentUpon>PlaneDeformation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Detection\WatertightDetection.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -225,6 +231,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Detection\CorrectionFactor.resx">
       <DependentUpon>CorrectionFactor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Detection\PlaneDeformation.resx">
+      <DependentUpon>PlaneDeformation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Detection\WatertightDetection.resx">
       <DependentUpon>WatertightDetection.cs</DependentUpon>

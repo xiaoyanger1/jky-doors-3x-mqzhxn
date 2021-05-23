@@ -204,3 +204,4 @@ E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\ICSharpCode.SharpZipLib.xm
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\log4net.xml
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\NPOI.xml
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.csproj.CopyComplete
+E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Detection.PlaneDeformation.resources

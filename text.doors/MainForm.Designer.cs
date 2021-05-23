@@ -124,6 +124,9 @@
             this.pl_showItem = new System.Windows.Forms.Panel();
             this.tim_panelValue = new System.Windows.Forms.Timer(this.components);
             this.tim_getdate = new System.Windows.Forms.Timer(this.components);
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsb_PlaneDeformation = new System.Windows.Forms.ToolStripButton();
+            this.平面内变形检测ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssp_button.SuspendLayout();
             this.pl_top.SuspendLayout();
             this.ts_pic.SuspendLayout();
@@ -210,6 +213,8 @@
             this.tsbwatertight,
             this.toolStripSeparator6,
             this.tsb_WindPressure,
+            this.toolStripSeparator4,
+            this.tsb_PlaneDeformation,
             this.toolStripSeparator2,
             this.tsb_生成报告,
             this.toolStripSeparator3,
@@ -354,7 +359,8 @@
             this.toolStripMenuItem2,
             this.气密监控ToolStripMenuItem,
             this.水密监控ToolStripMenuItem,
-            this.抗风压监控ToolStripMenuItem});
+            this.抗风压监控ToolStripMenuItem,
+            this.平面内变形检测ToolStripMenuItem});
             this.检测ToolStripMenuItem.Name = "检测ToolStripMenuItem";
             this.检测ToolStripMenuItem.Size = new System.Drawing.Size(44, 22);
             this.检测ToolStripMenuItem.Text = "检测";
@@ -1050,6 +1056,28 @@
             this.tim_getdate.Interval = 500;
             this.tim_getdate.Tick += new System.EventHandler(this.tim_getdate_Tick);
             // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 36);
+            // 
+            // tsb_PlaneDeformation
+            // 
+            this.tsb_PlaneDeformation.Image = ((System.Drawing.Image)(resources.GetObject("tsb_PlaneDeformation.Image")));
+            this.tsb_PlaneDeformation.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsb_PlaneDeformation.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsb_PlaneDeformation.Name = "tsb_PlaneDeformation";
+            this.tsb_PlaneDeformation.Size = new System.Drawing.Size(128, 33);
+            this.tsb_PlaneDeformation.Text = "平面内变形检测";
+            this.tsb_PlaneDeformation.Click += new System.EventHandler(this.tsb_PlaneDeformation_Click);
+            // 
+            // 平面内变形检测ToolStripMenuItem
+            // 
+            this.平面内变形检测ToolStripMenuItem.Name = "平面内变形检测ToolStripMenuItem";
+            this.平面内变形检测ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.平面内变形检测ToolStripMenuItem.Text = "平面内变形检测";
+            this.平面内变形检测ToolStripMenuItem.Click += new System.EventHandler(this.平面内变形检测ToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1185,5 +1213,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txt_lqfhz;
         private System.Windows.Forms.HScrollBar hsb_lqfControl;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripButton tsb_PlaneDeformation;
+        private System.Windows.Forms.ToolStripMenuItem 平面内变形检测ToolStripMenuItem;
     }
 }
