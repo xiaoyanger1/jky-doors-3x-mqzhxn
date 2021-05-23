@@ -16,7 +16,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Young.Core.Common;
 using text.doors.Model.DataBase;
 using text.doors.Default;
 using static text.doors.Default.PublicEnum;
@@ -30,18 +29,11 @@ namespace text.doors.Detection
         private SerialPortClient _serialPortClient;
         //检验编号
         private string _tempCode = "";
-        //当前樘号
-        private string _tempTong = "";
 
         /// <summary>
         /// 气密数据载体
         /// </summary>
-        Pressure pressure_One = new Pressure();
-
-        /// <summary>
-        /// 气密数据载体重复
-        /// </summary>
-        Pressure pressure_Two = new Pressure();
+        WindSpeedInfo windSpeedInfo = new WindSpeedInfo();
 
         /// <summary>
         /// 气密数据位置
@@ -53,16 +45,29 @@ namespace text.doors.Detection
         /// </summary>
         double zFc = 0, fFc = 0, zMj = 0, fMj = 0;
 
+        private DAL_dt_qm_Info dal_dt_qm_Info = new DAL_dt_qm_Info();
+
         public List<ReadT> _readT = new List<ReadT>();
 
+
+        private static List<WindSpeedInfo> windSpeedInfoList = new List<WindSpeedInfo>();
+
+
+        /// <summary>
+        /// 检测设定
+        /// </summary>
+        private DataTable tab_settings = new DataTable();
+
+        /// <summary>
+        /// 图标定时
+        /// </summary>
         public DateTime dtnow { get; set; }
-
-        private static List<Pressure> pressureList = new List<Pressure>();
-
 
         public AirtightDetection()
         {
             tc_RealTimeSurveillance.Anchor = AnchorStyles.Top;
+
+
         }
 
         public AirtightDetection(SerialPortClient tcpClient, string tempCode, string tempTong)
@@ -70,346 +75,226 @@ namespace text.doors.Detection
             InitializeComponent();
             this._serialPortClient = tcpClient;
             this._tempCode = tempCode;
-            this._tempTong = tempTong;
-
-            pressure_One = new Pressure();
-            pressure_Two = new Pressure();
 
             Init();
+            GetWindSpeed();
+            BindFlowBase();
+
+            GetDatabaseLevelIndex();
+            BindLevelIndex();
+
         }
+        #region 初始化
 
         private void Init()
         {
-            if (this.tabControl1.SelectedTab.Name == "流量原始数据")
-            {
-                GetPressureFlow(QM_TestCount.第一次);
-                BindFlowBase();
-                BindLevelIndex(QM_TestCount.第一次);
-            }
-            else if (this.tabControl1.SelectedTab.Name == "重复流量数据")
-            {
-                GetPressureFlow(QM_TestCount.第一次);
-                BindFlowBase();
-                BindLevelIndex(QM_TestCount.第二次);
-            }
+            tab_settings = new DAL_dt_Settings().Getdt_SettingsByCode(_tempCode);
 
-            BindSetPressure();
+            InitControl();
             QMchartInit();
-
+            BindSetTitle();
             Clear();
         }
 
+        private void InitControl()
+        {
+            if (tab_settings.Rows[0]["KaiQiFangShi"].ToString() == "无")
+                rdb_gfzh.Enabled = false;
+
+            this.lbl_jlgzj.Text = GetConfigSetting("PipeDiameter");
+            this.lbl_sjmj.Text = tab_settings.Rows[0]["shijianmianji"].ToString();
+            this.lbl_kkfc.Text = tab_settings.Rows[0]["kekaifengchang"].ToString();
+        }
+
+
+        private string GetConfigSetting(string value)
+        {
+            return System.Configuration.ConfigurationSettings.AppSettings[value].ToString();
+        }
         /// <summary>
         /// 绑定设定压力
         /// </summary>
-        private void BindSetPressure()
+        private void BindSetTitle()
         {
-            lbl_title.Text = string.Format("门窗气密性能检测  第{0}号 {1}", this._tempCode, this._tempTong);
+            lbl_title.Text = string.Format("门窗气密性能检测  第{0}号", this._tempCode);
         }
+        private void Clear()
+        {
+            windSpeedInfo = new WindSpeedInfo();
+            airtightPropertyTest = null;
+            tim_Top10.Enabled = false;
+        }
+        #endregion
 
         #region 数据绑定
 
         /// <summary>
-        /// 获取流量数据
+        /// 获取风速数据
         /// </summary>
         /// <returns></returns>
-        public void GetPressureFlow(PublicEnum.QM_TestCount qm_TestCount)
+        public void GetWindSpeed()
         {
-            GetWindSpeedBase((int)qm_TestCount);
+            windSpeedInfoList = new List<WindSpeedInfo>();
+            var qm_Info = dal_dt_qm_Info.GetQMListByCode(_tempCode);
+
+            if (qm_Info == null || qm_Info.Count == 0)
+            {
+                windSpeedInfoList = new WindSpeedInfo().GetWindSpeed();
+                return;
+            }
+
+            gv_list.Enabled = false;
+
+            #region 排序插入
+
+            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "50" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+            {
+                Pa = t.Pa,
+                PaType = t.PaType,
+                FJST = double.Parse(t.FJST),
+                GFZH = double.Parse(t.GFZH),
+                ZDST = double.Parse(t.ZDST)
+            }).ToList());
+
+            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "100" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+            {
+                Pa = t.Pa,
+                PaType = t.PaType,
+                FJST = double.Parse(t.FJST),
+                GFZH = double.Parse(t.GFZH),
+                ZDST = double.Parse(t.ZDST)
+            }).ToList());
+
+            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "150" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+            {
+                Pa = t.Pa,
+                PaType = t.PaType,
+                FJST = double.Parse(t.FJST),
+                GFZH = double.Parse(t.GFZH),
+                ZDST = double.Parse(t.ZDST)
+            }).ToList());
+
+            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "100" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
+            {
+                Pa = t.Pa,
+                PaType = t.PaType,
+                FJST = double.Parse(t.FJST),
+                GFZH = double.Parse(t.GFZH),
+                ZDST = double.Parse(t.ZDST)
+            }).ToList());
+
+            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "50" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
+            {
+                Pa = t.Pa,
+                PaType = t.PaType,
+                FJST = double.Parse(t.FJST),
+                GFZH = double.Parse(t.GFZH),
+                ZDST = double.Parse(t.ZDST)
+            }).ToList());
+
+            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-50" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+            {
+                Pa = t.Pa,
+                PaType = t.PaType,
+                FJST = double.Parse(t.FJST),
+                GFZH = double.Parse(t.GFZH),
+                ZDST = double.Parse(t.ZDST)
+            }).ToList());
+
+            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-100" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+            {
+                Pa = t.Pa,
+                PaType = t.PaType,
+                FJST = double.Parse(t.FJST),
+                GFZH = double.Parse(t.GFZH),
+                ZDST = double.Parse(t.ZDST)
+            }).ToList());
+            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-150" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+            {
+                Pa = t.Pa,
+                PaType = t.PaType,
+                FJST = double.Parse(t.FJST),
+                GFZH = double.Parse(t.GFZH),
+                ZDST = double.Parse(t.ZDST)
+            }).ToList());
+            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-100" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
+            {
+                Pa = t.Pa,
+                PaType = t.PaType,
+                FJST = double.Parse(t.FJST),
+                GFZH = double.Parse(t.GFZH),
+                ZDST = double.Parse(t.ZDST)
+            }).ToList());
+            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-50" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
+            {
+                Pa = t.Pa,
+                PaType = t.PaType,
+                FJST = double.Parse(t.FJST),
+                GFZH = double.Parse(t.GFZH),
+                ZDST = double.Parse(t.ZDST)
+            }).ToList());
+
+            #endregion
         }
 
         /// <summary>
-        /// 绑定流量
+        /// 绑定风速
         /// </summary>
         private void BindFlowBase()
         {
-            if (this.tabControl1.SelectedTab.Name == "流量原始数据")
-            {
-                dgv_ll.DataSource = null;
-                dgv_ll.DataSource = pressureList;
+            dgv_ll.DataSource = null;
+            dgv_ll.DataSource = windSpeedInfoList;
 
-                dgv_ll.RowHeadersVisible = false;
-                dgv_ll.AllowUserToResizeColumns = false;
-                dgv_ll.AllowUserToResizeRows = false;
-                dgv_ll.Columns[0].HeaderText = "压力Pa";
-                dgv_ll.Columns[0].Width = 50;
-                dgv_ll.Columns[0].ReadOnly = true;
-                dgv_ll.Columns[0].DataPropertyName = "PressurePa";
-                dgv_ll.Columns[1].HeaderText = "正压附加";
-                dgv_ll.Columns[1].Width = 54;
-                dgv_ll.Columns[1].DataPropertyName = "Pressure_Z";
-                dgv_ll.Columns[2].HeaderText = "正压总的";
-                dgv_ll.Columns[2].Width = 54;
-                dgv_ll.Columns[2].DataPropertyName = "Pressure_Z_Z";
-                dgv_ll.Columns[3].HeaderText = "负压附加";
-                dgv_ll.Columns[3].Width = 54;
-                dgv_ll.Columns[3].DataPropertyName = "Pressure_F";
-                dgv_ll.Columns[4].HeaderText = "负压总的";
-                dgv_ll.Columns[4].Width = 54;
-                dgv_ll.Columns[4].DataPropertyName = "Pressure_F_Z";
+            dgv_ll.RowHeadersVisible = false;
+            dgv_ll.AllowUserToResizeColumns = false;
+            dgv_ll.AllowUserToResizeRows = false;
+            dgv_ll.Columns[0].HeaderText = "压力Pa";
+            dgv_ll.Columns[0].Width = 53;
+            dgv_ll.Columns[0].ReadOnly = true;
+            dgv_ll.Columns[0].DataPropertyName = "Pa";
 
-                dgv_ll.Columns["Pressure_Z"].DefaultCellStyle.Format = "N2";
-                dgv_ll.Columns["Pressure_Z_Z"].DefaultCellStyle.Format = "N2";
-                dgv_ll.Columns["Pressure_F"].DefaultCellStyle.Format = "N2";
-                dgv_ll.Columns["Pressure_F_Z"].DefaultCellStyle.Format = "N2";
-            }
-            else
-            {
-                dgv_ll2.DataSource = null;
-                dgv_ll2.DataSource = pressureList;
+            dgv_ll.Columns[1].HeaderText = "类型";
+            dgv_ll.Columns[1].Width = 2;
+            dgv_ll.Columns[1].ReadOnly = true;
+            dgv_ll.Columns[1].Visible = false;
+            dgv_ll.Columns[1].DataPropertyName = "PaType";
 
-                dgv_ll2.RowHeadersVisible = false;
-                dgv_ll2.AllowUserToResizeColumns = false;
-                dgv_ll2.AllowUserToResizeRows = false;
-                dgv_ll2.Columns[0].HeaderText = "压力Pa";
-                dgv_ll2.Columns[0].Width = 50;
-                dgv_ll2.Columns[0].ReadOnly = true;
-                dgv_ll2.Columns[0].DataPropertyName = "PressurePa";
-                dgv_ll2.Columns[1].HeaderText = "正压附加";
-                dgv_ll2.Columns[1].Width = 54;
-                dgv_ll2.Columns[1].DataPropertyName = "Pressure_Z";
-                dgv_ll2.Columns[2].HeaderText = "正压总的";
-                dgv_ll2.Columns[2].Width = 54;
-                dgv_ll2.Columns[2].DataPropertyName = "Pressure_Z_Z";
-                dgv_ll2.Columns[3].HeaderText = "负压附加";
-                dgv_ll2.Columns[3].Width = 54;
-                dgv_ll2.Columns[3].DataPropertyName = "Pressure_F";
-                dgv_ll2.Columns[4].HeaderText = "负压总的";
-                dgv_ll2.Columns[4].Width = 54;
-                dgv_ll2.Columns[4].DataPropertyName = "Pressure_F_Z";
 
-                dgv_ll2.Columns["Pressure_Z"].DefaultCellStyle.Format = "N2";
-                dgv_ll2.Columns["Pressure_Z_Z"].DefaultCellStyle.Format = "N2";
-                dgv_ll2.Columns["Pressure_F"].DefaultCellStyle.Format = "N2";
-                dgv_ll2.Columns["Pressure_F_Z"].DefaultCellStyle.Format = "N2";
-            }
+            dgv_ll.Columns[2].HeaderText = "附加渗透";
+            dgv_ll.Columns[2].Width = 54;
+            dgv_ll.Columns[2].DataPropertyName = "FJST";
+
+            dgv_ll.Columns[3].HeaderText = "固附之和";
+            dgv_ll.Columns[3].Width = 54;
+            dgv_ll.Columns[3].DataPropertyName = "GFZH";
+
+            dgv_ll.Columns[4].HeaderText = "总的渗透量";
+            dgv_ll.Columns[4].Width = 58;
+            dgv_ll.Columns[4].DataPropertyName = "ZDST";
+
+            dgv_ll.Columns[5].HeaderText = "幕墙整体";
+            dgv_ll.Columns[5].Width = 54;
+            dgv_ll.Columns[5].ReadOnly = true;
+            dgv_ll.Columns[5].DataPropertyName = "MQZT";
+
+            dgv_ll.Columns[6].HeaderText = "可开渗透";
+            dgv_ll.Columns[6].Width = 54;
+            dgv_ll.Columns[6].ReadOnly = true;
+            dgv_ll.Columns[6].DataPropertyName = "KKST";
+
+           
+            dgv_ll.Columns[2].DefaultCellStyle.Format = "N2";
+            dgv_ll.Columns[3].DefaultCellStyle.Format = "N2";
+            dgv_ll.Columns[4].DefaultCellStyle.Format = "N2";
+            dgv_ll.Columns[5].DefaultCellStyle.Format = "N2";
+            dgv_ll.Columns[6].DefaultCellStyle.Format = "N2";
         }
 
 
-        /// <summary>
-        /// 获取流量
-        /// </summary>
-        private List<Pressure> GetWindSpeedBase(int qm_TestCount)
-        {
-            pressureList = new List<Pressure>();
-            List<Model_dt_qm_Info> qm_Info = new DAL_dt_Settings().GetQMListByCode(_tempCode);
-
-            if (qm_Info != null && qm_Info.Count > 0)
-            {
-                var qm = qm_Info.FindAll(t => t.info_DangH == _tempTong && string.IsNullOrWhiteSpace(t.qm_j_f_zd100) == false && t.testcount == qm_TestCount).OrderBy(t => t.info_DangH).ToList();
-                if ((qm != null && qm.Count() > 0))
-                {
-                    gv_list.Enabled = false;
-
-                    //监控
-                    if (qm[0].testtype == "1")
-                    {
-                        btn_ycjy_z.Enabled = false;
-                        btn_ycjyf.Enabled = false;
-
-                        //绑定风速
-                        foreach (var item in qm)
-                        {
-                            #region 赋值
-                            Pressure model4 = new Pressure();
-                            model4.Pressure_F = string.IsNullOrWhiteSpace(item.qm_s_f_fj10) ? 0 : double.Parse(item.qm_s_f_fj10);
-                            model4.Pressure_F_Z = string.IsNullOrWhiteSpace(item.qm_s_f_zd10) ? 0 : double.Parse(item.qm_s_f_zd10);
-
-                            model4.Pressure_Z = string.IsNullOrWhiteSpace(item.qm_s_z_fj10) ? 0 : double.Parse(item.qm_s_z_fj10);
-                            model4.Pressure_Z_Z = string.IsNullOrWhiteSpace(item.qm_s_z_zd10) ? 0 : double.Parse(item.qm_s_z_zd10);
-                            model4.PressurePa = "10";
-                            pressureList.Add(model4);
-
-                            Pressure model5 = new Pressure();
-                            model5.Pressure_F = string.IsNullOrWhiteSpace(item.qm_s_f_fj30) ? 0 : double.Parse(item.qm_s_f_fj30);
-                            model5.Pressure_F_Z = string.IsNullOrWhiteSpace(item.qm_s_f_zd30) ? 0 : double.Parse(item.qm_s_f_zd30);
-
-                            model5.Pressure_Z = string.IsNullOrWhiteSpace(item.qm_s_z_fj30) ? 0 : double.Parse(item.qm_s_z_fj30);
-                            model5.Pressure_Z_Z = string.IsNullOrWhiteSpace(item.qm_s_z_zd30) ? 0 : double.Parse(item.qm_s_z_zd30);
-                            model5.PressurePa = "30";
-                            pressureList.Add(model5);
-
-                            Pressure model6 = new Pressure();
-                            model6.Pressure_F = string.IsNullOrWhiteSpace(item.qm_s_f_fj50) ? 0 : double.Parse(item.qm_s_f_fj50);
-                            model6.Pressure_F_Z = string.IsNullOrWhiteSpace(item.qm_s_f_zd50) ? 0 : double.Parse(item.qm_s_f_zd50);
-
-                            model6.Pressure_Z = string.IsNullOrWhiteSpace(item.qm_s_z_fj50) ? 0 : double.Parse(item.qm_s_z_fj50);
-                            model6.Pressure_Z_Z = string.IsNullOrWhiteSpace(item.qm_s_z_zd50) ? 0 : double.Parse(item.qm_s_z_zd50);
-                            model6.PressurePa = "50";
-                            pressureList.Add(model6);
-
-                            Pressure model7 = new Pressure();
-                            model7.Pressure_F = string.IsNullOrWhiteSpace(item.qm_s_f_fj70) ? 0 : double.Parse(item.qm_s_f_fj70);
-                            model7.Pressure_F_Z = string.IsNullOrWhiteSpace(item.qm_s_f_zd70) ? 0 : double.Parse(item.qm_s_f_zd70);
-
-                            model7.Pressure_Z = string.IsNullOrWhiteSpace(item.qm_s_z_fj70) ? 0 : double.Parse(item.qm_s_z_fj70);
-                            model7.Pressure_Z_Z = string.IsNullOrWhiteSpace(item.qm_s_z_zd70) ? 0 : double.Parse(item.qm_s_z_zd70);
-                            model7.PressurePa = "70";
-                            pressureList.Add(model7);
-
-
-                            Pressure model1 = new Pressure();
-                            model1.Pressure_F = string.IsNullOrWhiteSpace(item.qm_s_f_fj100) ? 0 : double.Parse(item.qm_s_f_fj100);
-                            model1.Pressure_F_Z = string.IsNullOrWhiteSpace(item.qm_s_f_zd100) ? 0 : double.Parse(item.qm_s_f_zd100);
-
-                            model1.Pressure_Z = string.IsNullOrWhiteSpace(item.qm_s_z_fj100) ? 0 : double.Parse(item.qm_s_z_fj100);
-                            model1.Pressure_Z_Z = string.IsNullOrWhiteSpace(item.qm_s_z_zd100) ? 0 : double.Parse(item.qm_s_z_zd100);
-                            model1.PressurePa = "100";
-                            pressureList.Add(model1);
-
-                            Pressure model2 = new Pressure();
-                            model2.Pressure_F = string.IsNullOrWhiteSpace(item.qm_s_f_fj150) ? 0 : double.Parse(item.qm_s_f_fj150);
-                            model2.Pressure_F_Z = string.IsNullOrWhiteSpace(item.qm_s_f_zd150) ? 0 : double.Parse(item.qm_s_f_zd150);
-
-                            model2.Pressure_Z = string.IsNullOrWhiteSpace(item.qm_s_z_fj150) ? 0 : double.Parse(item.qm_s_z_fj150);
-                            model2.Pressure_Z_Z = string.IsNullOrWhiteSpace(item.qm_s_z_zd150) ? 0 : double.Parse(item.qm_s_z_zd150);
-                            model2.PressurePa = "150";
-                            pressureList.Add(model2);
-
-                            Pressure model3 = new Pressure();
-                            model3.Pressure_F = string.IsNullOrWhiteSpace(item.qm_j_f_fj100) ? 0 : double.Parse(item.qm_j_f_fj100);
-                            model3.Pressure_F_Z = string.IsNullOrWhiteSpace(item.qm_j_f_zd100) ? 0 : double.Parse(item.qm_j_f_zd100);
-
-                            model3.Pressure_Z = string.IsNullOrWhiteSpace(item.qm_j_z_fj100) ? 0 : double.Parse(item.qm_j_z_fj100);
-                            model3.Pressure_Z_Z = string.IsNullOrWhiteSpace(item.qm_j_z_zd100) ? 0 : double.Parse(item.qm_j_z_zd100);
-                            model3.PressurePa = "100";
-                            pressureList.Add(model3);
-
-                            Pressure model8 = new Pressure();
-                            model8.Pressure_F = string.IsNullOrWhiteSpace(item.qm_j_f_fj70) ? 0 : double.Parse(item.qm_j_f_fj70);
-                            model8.Pressure_F_Z = string.IsNullOrWhiteSpace(item.qm_j_f_zd70) ? 0 : double.Parse(item.qm_j_f_zd70);
-
-                            model8.Pressure_Z = string.IsNullOrWhiteSpace(item.qm_j_z_fj70) ? 0 : double.Parse(item.qm_j_z_fj70);
-                            model8.Pressure_Z_Z = string.IsNullOrWhiteSpace(item.qm_j_z_zd70) ? 0 : double.Parse(item.qm_j_z_zd70);
-                            model8.PressurePa = "70";
-                            pressureList.Add(model8);
-
-                            Pressure model9 = new Pressure();
-                            model9.Pressure_F = string.IsNullOrWhiteSpace(item.qm_j_f_fj50) ? 0 : double.Parse(item.qm_j_f_fj50);
-                            model9.Pressure_F_Z = string.IsNullOrWhiteSpace(item.qm_j_f_zd50) ? 0 : double.Parse(item.qm_j_f_zd50);
-
-                            model9.Pressure_Z = string.IsNullOrWhiteSpace(item.qm_j_z_fj50) ? 0 : double.Parse(item.qm_j_z_fj50);
-                            model9.Pressure_Z_Z = string.IsNullOrWhiteSpace(item.qm_j_z_zd50) ? 0 : double.Parse(item.qm_j_z_zd50);
-                            model9.PressurePa = "50";
-                            pressureList.Add(model9);
-
-                            Pressure model10 = new Pressure();
-                            model10.Pressure_F = string.IsNullOrWhiteSpace(item.qm_j_f_fj30) ? 0 : double.Parse(item.qm_j_f_fj30);
-                            model10.Pressure_F_Z = string.IsNullOrWhiteSpace(item.qm_j_f_zd30) ? 0 : double.Parse(item.qm_j_f_zd30);
-
-                            model10.Pressure_Z = string.IsNullOrWhiteSpace(item.qm_j_z_fj30) ? 0 : double.Parse(item.qm_j_z_fj30);
-                            model10.Pressure_Z_Z = string.IsNullOrWhiteSpace(item.qm_j_z_zd30) ? 0 : double.Parse(item.qm_j_z_zd30);
-                            model10.PressurePa = "30";
-                            pressureList.Add(model10);
-
-                            Pressure model11 = new Pressure();
-                            model11.Pressure_F = string.IsNullOrWhiteSpace(item.qm_j_f_fj10) ? 0 : double.Parse(item.qm_j_f_fj10);
-                            model11.Pressure_F_Z = string.IsNullOrWhiteSpace(item.qm_j_f_zd10) ? 0 : double.Parse(item.qm_j_f_zd10);
-
-                            model11.Pressure_Z = string.IsNullOrWhiteSpace(item.qm_j_z_fj10) ? 0 : double.Parse(item.qm_j_z_fj10);
-                            model11.Pressure_Z_Z = string.IsNullOrWhiteSpace(item.qm_j_z_zd10) ? 0 : double.Parse(item.qm_j_z_zd10);
-                            model11.PressurePa = "10";
-                            pressureList.Add(model11);
-
-                            Pressure model12 = new Pressure();
-                            model12.Pressure_F = 0;
-                            model12.Pressure_F_Z = 0;
-
-                            model12.Pressure_Z = 0;
-                            model12.Pressure_Z_Z = 0;
-                            model12.PressurePa = "设计值";
-                            pressureList.Add(model12);
-                            #endregion
-                        }
-
-                    }
-                    else if (qm[0].testtype == "2") //工程检测  不存在监控数据
-                    {
-                        this.btn_justready.Enabled = false;
-                        this.btn_loseready.Enabled = false;
-                        this.btn_losestart.Enabled = false;
-                        this.btn_juststart.Enabled = false;
-
-                        txt_ycjy_z.Text = qm[0].sjz_value;
-                        txt_ycjy_f.Text = qm[0].sjz_value;
-
-                        //绑定空监测数据
-                        if (qm_TestCount == (int)QM_TestCount.第一次)
-                        {
-                            pressureList = pressure_One.GetPressure();
-                        }
-                        else if (qm_TestCount == (int)QM_TestCount.第二次)
-                        {
-                            pressureList = pressure_Two.GetPressure();
-                        }
-                        //绑定设计值
-                        var sjz = pressureList.Find(t => t.PressurePa == "设计值");
-                        if (sjz != null)
-                        {
-                            sjz.Pressure_F = double.Parse(qm[0].sjz_f_fj);
-                            sjz.Pressure_F_Z = double.Parse(qm[0].sjz_f_zd);
-                            sjz.Pressure_Z = double.Parse(qm[0].sjz_z_fj);
-                            sjz.Pressure_Z_Z = double.Parse(qm[0].sjz_z_zd);
-                        }
-                    }
-                }
-                else
-                {
-                    if (qm_TestCount == (int)QM_TestCount.第一次)
-                    {
-                        pressureList = pressure_One.GetPressure();
-                    }
-                    else if (qm_TestCount == (int)QM_TestCount.第二次)
-                    {
-                        pressureList = pressure_Two.GetPressure();
-                    }
-                }
-            }
-            else
-            {
-                if (qm_TestCount == (int)QM_TestCount.第一次)
-                {
-                    pressureList = pressure_One.GetPressure();
-                }
-                else if (qm_TestCount == (int)QM_TestCount.第二次)
-                {
-                    pressureList = pressure_Two.GetPressure();
-                }
-            }
-
-            return pressureList;
-        }
-
-
-        /// <summary>
-        /// 绑定分级指标
-        /// </summary>
-        private void BindLevelIndex(QM_TestCount qm_TestCount)
-        {
-            GetDatabaseLevelIndex(qm_TestCount);
-            dgv_levelIndex.DataSource = GetLevelIndex();
-            dgv_levelIndex.RowHeadersVisible = false;
-            dgv_levelIndex.AllowUserToResizeColumns = false;
-            dgv_levelIndex.AllowUserToResizeRows = false;
-            dgv_levelIndex.Columns[0].HeaderText = "渗透量";
-            dgv_levelIndex.Columns[0].Width = 96;
-            dgv_levelIndex.Columns[0].ReadOnly = true;
-            dgv_levelIndex.Columns[0].DataPropertyName = "Quantity";
-            dgv_levelIndex.Columns[1].HeaderText = "正压";
-            dgv_levelIndex.Columns[1].Width = 87;
-            dgv_levelIndex.Columns[1].DataPropertyName = "PressureZ";
-            dgv_levelIndex.Columns[2].HeaderText = "负压";
-            dgv_levelIndex.Columns[2].Width = 87;
-            dgv_levelIndex.Columns[2].DataPropertyName = "PressureF";
-
-            dgv_levelIndex.Columns["PressureZ"].DefaultCellStyle.Format = "N2";
-            dgv_levelIndex.Columns["PressureF"].DefaultCellStyle.Format = "N2";
-        }
-
-        /// <summary>
-        /// 获取分级指标
-        /// </summary>
-        /// <returns></returns>
+        // <summary>
+        // 获取分级指标
+        // </summary>
+        // <returns></returns>
         private List<LevelIndex> GetLevelIndex()
         {
             return new List<LevelIndex>()
@@ -419,8 +304,16 @@ namespace text.doors.Detection
             };
         }
 
-
-
+        /// <summary>
+        /// 绑定分级指标
+        /// </summary>
+        private void BindLevelIndex()
+        {
+            this.lbl_z_mj.Text = zMj.ToString();
+            this.lbl_f_mj.Text = fMj.ToString();
+            this.lbl_z_fc.Text = zFc.ToString();
+            this.lbl_f_fc.Text = fFc.ToString();
+        }
 
         #endregion
 
@@ -433,8 +326,6 @@ namespace text.doors.Detection
             dtnow = DateTime.Now;
             qm_Line.GetVertAxis.SetMinMax(-600, 600);
         }
-
-
 
         private void AnimateSeries(Steema.TeeChart.TChart chart, int yl)
         {
@@ -454,36 +345,10 @@ namespace text.doors.Detection
         /// <param name="e"></param>
         private void tim_qm_Tick(object sender, EventArgs e)
         {
-
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.ZStart || airtightPropertyTest == PublicEnum.AirtightPropertyTest.FStart)
             {
                 if (this.tim_Top10.Enabled == false)
                     SetCurrType();
-            }
-
-            if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.ZYCJY)
-            {
-                if (this.tim_Top10.Enabled == false)
-                {
-                    var start = _serialPortClient.GetQiMiTimeStart(BFMCommand.正压依次加压);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.YCJY;
-                        tim_Top10.Enabled = true;
-                    }
-                }
-            }
-            else if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.FYCJY)
-            {
-                if (this.tim_Top10.Enabled == false)
-                {
-                    var start = _serialPortClient.GetQiMiTimeStart(BFMCommand.负压依次加压);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.YCJY;
-                        tim_Top10.Enabled = true;
-                    }
-                }
             }
         }
 
@@ -520,20 +385,9 @@ namespace text.doors.Detection
 
             if (index > 8)
             {
+                index = 0;
                 this.tim_Top10.Enabled = false;
-
-                if (airtightPropertyTest != PublicEnum.AirtightPropertyTest.ZYCJY && airtightPropertyTest != PublicEnum.AirtightPropertyTest.FYCJY)
-                {
-                    index = 0;
-                }
-                else
-                {
-                    btn_ycjy_z.Enabled = true;
-                    btn_ycjyf.Enabled = true;
-                    btn_ycjy_z.BackColor = Color.Transparent;
-                    btn_ycjyf.BackColor = Color.Transparent;
-                }
-                gv_list.Enabled = false;
+                this.gv_list.Enabled = false;
                 return;
             }
             gv_list.Enabled = true;
@@ -563,380 +417,159 @@ namespace text.doors.Detection
             //{
             //    Logger.Info($"附加风速：{fsvalue}当前级别：{kpa_Level}");
             //}
-            if (this.tabControl1.SelectedTab.Name == "流量原始数据")
+
+            if (rdb_fjstl.Checked)
             {
-                #region 第一次
-                if (rdb_fjstl.Checked)
+                if (kpa_Level == PublicEnum.Kpa_Level.liter50)
                 {
-                    if (kpa_Level == PublicEnum.Kpa_Level.liter10)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter10);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter10);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter30)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter30);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter30);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter50)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter50);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter50);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter70)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter70);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter70);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter100);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter100);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter150);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter150);
-
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.drop100);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.drop100);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop70)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.drop70);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.drop70);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.drop50);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.drop50);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop30)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.drop30);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.drop30);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop10)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.drop10);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.drop10);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
-                    {
-                        //todo:设计值计算
-                        fsvalue = _serialPortClient.GetFSXS();
-                        fsvalue = Formula.MathFlow(fsvalue);
-                        if (cyvalue > 0)
-                            pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.YCJY);
-                        else
-                            pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.YCJY);
-                    }
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter50);
+                    else
+                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.liter50);
                 }
-                else if (rdb_zdstl.Checked)
+                else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
                 {
-                    if (kpa_Level == PublicEnum.Kpa_Level.liter10)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter10);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter10);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter30)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter30);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter30);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter50)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter50);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter50);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter70)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter70);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter70);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter100);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter100);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter150);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter150);
-
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.drop100);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.drop100);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop70)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.drop70);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.drop70);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.drop50);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.drop50);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop30)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.drop30);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.drop30);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop10)
-                    {
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.drop10);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.drop10);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
-                    {
-                        //todo:设计值计算
-                        fsvalue = _serialPortClient.GetFSXS();
-                        fsvalue = Formula.MathFlow(fsvalue);
-
-                        if (cyvalue > 0)
-                            pressure_One.AddZYZD(fsvalue, PublicEnum.Kpa_Level.YCJY);
-                        else
-                            pressure_One.AddFYZD(fsvalue, PublicEnum.Kpa_Level.YCJY);
-                    }
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter100);
+                    else
+                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.liter100);
                 }
-                #endregion
+                else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter150);
+                    else
+                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.liter150);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.drop100);
+                    else
+                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.drop100);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.drop50);
+                    else
+                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.drop50);
+                }
             }
-            else if (this.tabControl1.SelectedTab.Name == "重复流量数据")
+            else if (rdb_gfzh.Checked)
             {
-                #region 第二次
-                if (rdb_fjstl.Checked)
+                if (kpa_Level == PublicEnum.Kpa_Level.liter50)
                 {
-                    if (kpa_Level == PublicEnum.Kpa_Level.liter10)
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter50);
+                    else
+                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter100);
+                    else
+                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter100);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter50);
+                    else
+                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.drop100);
+                    else
+                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop100);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.drop50);
+                    else
+                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
+                }
+            }
+            else if (rdb_zdstl.Checked)
+            {
+                //填充固附之和
+                if (rdb_gfzh.Enabled == false)
+                {
+                    if (kpa_Level == PublicEnum.Kpa_Level.liter50)
                     {
                         if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter10);
+                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
                         else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter10);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter30)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter30);
-                        else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter30);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter50)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter50);
-                        else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter50);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter70)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter70);
-                        else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter70);
+                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
                     }
                     else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
                     {
                         if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter100);
+                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter100);
                         else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter100);
+                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter100);
                     }
                     else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
                     {
                         if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.liter150);
+                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter150);
                         else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.liter150);
-
+                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter150);
                     }
                     else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
                     {
                         if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.drop100);
+                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop100);
                         else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.drop100);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop70)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.drop70);
-                        else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.drop70);
+                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop100);
                     }
                     else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
                     {
                         if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.drop50);
+                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
                         else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.drop50);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop30)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.drop30);
-                        else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.drop30);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop10)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.drop10);
-                        else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.drop10);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
-                    {
-                        //todo:设计值计算
-                        fsvalue = _serialPortClient.GetFSXS();
-                        fsvalue = Formula.MathFlow(fsvalue);
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.YCJY);
-                        else
-                            pressure_Two.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
                     }
                 }
-                else if (rdb_zdstl.Checked)
+                if (kpa_Level == PublicEnum.Kpa_Level.liter50)
                 {
-                    if (kpa_Level == PublicEnum.Kpa_Level.liter10)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter10);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter10);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter30)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter30);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter30);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter50)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter50);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter50);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter70)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter70);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter70);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter100);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter100);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.liter150);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.liter150);
-
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.drop100);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.drop100);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop70)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.drop70);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.drop70);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.drop50);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.drop50);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop30)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.drop30);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.drop30);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.drop10)
-                    {
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.drop10);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.drop10);
-                    }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
-                    {
-                        //todo:设计值计算
-                        fsvalue = _serialPortClient.GetFSXS();
-                        fsvalue = Formula.MathFlow(fsvalue);
-                        if (cyvalue > 0)
-                            pressure_Two.AddZYZD(fsvalue, PublicEnum.Kpa_Level.YCJY);
-                        else
-                            pressure_Two.AddFYZD(fsvalue, PublicEnum.Kpa_Level.YCJY);
-                    }
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter50);
+                    else
+                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter50);
                 }
-                #endregion
+                else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter100);
+                    else
+                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter100);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter150);
+                    else
+                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter150);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.drop100);
+                    else
+                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.drop100);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.drop50);
+                    else
+                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.drop50);
+                }
             }
         }
 
@@ -957,27 +590,7 @@ namespace text.doors.Detection
 
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.ZStart)
             {
-                if (notRead?.Key == BFMCommand.正压10TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.liter10;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
-                else if (notRead?.Key == BFMCommand.正压30TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.liter30;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
-                else if (notRead?.Key == BFMCommand.正压50TimeStart)
+                if (notRead?.Key == BFMCommand.正压50TimeStart)
                 {
                     start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
                     if (start)
@@ -987,16 +600,7 @@ namespace text.doors.Detection
                         notRead.IsRead = true;
                     }
                 }
-                else if (notRead?.Key == BFMCommand.正压70TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.liter70;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
+
                 else if (notRead?.Key == BFMCommand.正压100TimeStart)
                 {
                     start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
@@ -1027,16 +631,7 @@ namespace text.doors.Detection
                         notRead.IsRead = true;
                     }
                 }
-                else if (notRead?.Key == BFMCommand.正压_70TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.drop70;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
+
                 else if (notRead?.Key == BFMCommand.正压_50TimeStart)
                 {
                     start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
@@ -1047,77 +642,17 @@ namespace text.doors.Detection
                         notRead.IsRead = true;
                     }
                 }
-                else if (notRead?.Key == BFMCommand.正压_30TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.drop30;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
-                else if (notRead?.Key == BFMCommand.正压_10TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.drop10;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
-                //else if (notRead?.Key == BFMCommand.正压依次加压)
-                //{
-                //    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                //    if (start)
-                //    {
-                //        kpa_Level = PublicEnum.Kpa_Level.YCJY;
-                //        tim_Top10.Enabled = true;
-                //        notRead.IsRead = true;
-                //    }
-                //}
+
             }
 
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.FStart)
             {
-
-                if (notRead?.Key == BFMCommand.负压10TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.liter10;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
-                else if (notRead?.Key == BFMCommand.负压30TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.liter30;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
-                else if (notRead?.Key == BFMCommand.负压50TimeStart)
+                if (notRead?.Key == BFMCommand.负压50TimeStart)
                 {
                     start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.liter50;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
-                else if (notRead?.Key == BFMCommand.负压70TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.liter70;
                         tim_Top10.Enabled = true;
                         notRead.IsRead = true;
                     }
@@ -1152,16 +687,6 @@ namespace text.doors.Detection
                         notRead.IsRead = true;
                     }
                 }
-                else if (notRead?.Key == BFMCommand.负压_70TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.drop70;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
                 else if (notRead?.Key == BFMCommand.负压_50TimeStart)
                 {
                     start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
@@ -1172,36 +697,6 @@ namespace text.doors.Detection
                         notRead.IsRead = true;
                     }
                 }
-                else if (notRead?.Key == BFMCommand.负压_30TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.drop30;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
-                else if (notRead?.Key == BFMCommand.负压_10TimeStart)
-                {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                    if (start)
-                    {
-                        kpa_Level = PublicEnum.Kpa_Level.drop10;
-                        tim_Top10.Enabled = true;
-                        notRead.IsRead = true;
-                    }
-                }
-                //else if (notRead?.Key == BFMCommand.负压依次加压)
-                //{
-                //    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
-                //    if (start)
-                //    {
-                //        kpa_Level = PublicEnum.Kpa_Level.YCJY;
-                //        tim_Top10.Enabled = true;
-                //        notRead.IsRead = true;
-                //    }
-                //}
             }
         }
 
@@ -1228,8 +723,6 @@ namespace text.doors.Detection
             //}
             //lbl_setYL.Text = yl.ToString();
 
-
-
             var res = _serialPortClient.SetZYYB();
             if (!res)
             {
@@ -1239,13 +732,6 @@ namespace text.doors.Detection
             airtightPropertyTest = PublicEnum.AirtightPropertyTest.ZReady;
 
             btn_justready.BackColor = Color.Green;
-
-            //关闭依次加压
-            btn_ycjy_z.Enabled = false;
-            btn_ycjyf.Enabled = false;
-
-            btn_ycjy_z.BackColor = Color.Transparent;
-            btn_ycjyf.BackColor = Color.Transparent;
         }
 
         /// <summary>
@@ -1274,31 +760,33 @@ namespace text.doors.Detection
             DisableBtnType();
 
             _readT = new List<ReadT>();
-            _readT.Add(new ReadT() { Key = BFMCommand.正压10TimeStart, Order = 1, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.正压30TimeStart, Order = 2, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.正压50TimeStart, Order = 3, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.正压70TimeStart, Order = 4, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.正压100TimeStart, Order = 5, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.正压150TimeStart, Order = 6, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.正压_100TimeStart, Order = 7, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.正压_70TimeStart, Order = 8, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.正压_50TimeStart, Order = 9, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.正压_30TimeStart, Order = 10, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.正压_10TimeStart, Order = 11, IsRead = false });
+
+            _readT.Add(new ReadT() { Key = BFMCommand.正压50TimeStart, Order = 1, IsRead = false });
+            _readT.Add(new ReadT() { Key = BFMCommand.正压100TimeStart, Order = 2, IsRead = false });
+            _readT.Add(new ReadT() { Key = BFMCommand.正压150TimeStart, Order = 3, IsRead = false });
+            _readT.Add(new ReadT() { Key = BFMCommand.正压_100TimeStart, Order = 4, IsRead = false });
+            _readT.Add(new ReadT() { Key = BFMCommand.正压_50TimeStart, Order = 5, IsRead = false });
 
 
             if (rdb_fjstl.Checked)
             {
-                foreach (var item in pressureList)
+                foreach (var item in windSpeedInfoList)
                 {
-                    item.Pressure_Z = 0;
+                    item.FJST = 0;
+                }
+            }
+            else if (rdb_gfzh.Checked)
+            {
+                foreach (var item in windSpeedInfoList)
+                {
+                    item.GFZH = 0;
                 }
             }
             else if (rdb_zdstl.Checked)
             {
-                foreach (var item in pressureList)
+                foreach (var item in windSpeedInfoList)
                 {
-                    item.Pressure_Z_Z = 0;
+                    item.ZDST = 0;
                 }
 
             }
@@ -1308,13 +796,6 @@ namespace text.doors.Detection
 
             airtightPropertyTest = PublicEnum.AirtightPropertyTest.ZStart;
 
-
-            //关闭依次加压
-            btn_ycjy_z.Enabled = false;
-            btn_ycjyf.Enabled = false;
-
-            btn_ycjy_z.BackColor = Color.Transparent;
-            btn_ycjyf.BackColor = Color.Transparent;
         }
 
         private void btn_loseready_Click(object sender, EventArgs e)
@@ -1329,21 +810,11 @@ namespace text.doors.Detection
 
             var res = _serialPortClient.SendFYYB();
             if (!res)
-            {
                 return;
-            }
 
             DisableBtnType();
             btn_loseready.BackColor = Color.Green;
             airtightPropertyTest = PublicEnum.AirtightPropertyTest.FReady;
-
-
-            //关闭依次加压
-            btn_ycjy_z.Enabled = false;
-            btn_ycjyf.Enabled = false;
-
-            btn_ycjy_z.BackColor = Color.Transparent;
-            btn_ycjyf.BackColor = Color.Transparent;
         }
         /// <summary>
         /// 禁用按钮
@@ -1353,10 +824,7 @@ namespace text.doors.Detection
             this.btn_justready.Enabled = false;
             this.btn_loseready.Enabled = false;
             this.btn_losestart.Enabled = false;
-            //this.btn_datadispose.Enabled = false;
             this.btn_juststart.Enabled = false;
-            btn_ycjy_z.Enabled = false;
-            btn_ycjyf.Enabled = false;
 
 
 
@@ -1364,8 +832,6 @@ namespace text.doors.Detection
             btn_loseready.BackColor = Color.Transparent;
             btn_losestart.BackColor = Color.Transparent;
             btn_juststart.BackColor = Color.Transparent;
-            btn_ycjy_z.BackColor = Color.Transparent;
-            btn_ycjyf.BackColor = Color.Transparent;
         }
 
         /// <summary>
@@ -1378,15 +844,11 @@ namespace text.doors.Detection
             this.btn_losestart.Enabled = true;
             this.btn_datadispose.Enabled = true;
             this.btn_juststart.Enabled = true;
-            //btn_ycjy_z.Enabled = true;
-            //btn_ycjyf.Enabled = true;
 
             btn_justready.BackColor = Color.Transparent;
             btn_loseready.BackColor = Color.Transparent;
             btn_losestart.BackColor = Color.Transparent;
             btn_juststart.BackColor = Color.Transparent;
-            btn_ycjy_z.BackColor = Color.Transparent;
-            btn_ycjyf.BackColor = Color.Transparent;
         }
 
 
@@ -1406,47 +868,39 @@ namespace text.doors.Detection
 
             _readT = new List<ReadT>();
 
-            _readT.Add(new ReadT() { Key = BFMCommand.负压10TimeStart, Order = 1, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.负压30TimeStart, Order = 2, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.负压50TimeStart, Order = 3, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.负压70TimeStart, Order = 4, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.负压100TimeStart, Order = 5, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.负压150TimeStart, Order = 6, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.负压_100TimeStart, Order = 7, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.负压_70TimeStart, Order = 8, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.负压_50TimeStart, Order = 9, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.负压_30TimeStart, Order = 10, IsRead = false });
-            _readT.Add(new ReadT() { Key = BFMCommand.负压_10TimeStart, Order = 11, IsRead = false });
-
+            _readT.Add(new ReadT() { Key = BFMCommand.负压50TimeStart, Order = 1, IsRead = false });
+            _readT.Add(new ReadT() { Key = BFMCommand.负压100TimeStart, Order = 2, IsRead = false });
+            _readT.Add(new ReadT() { Key = BFMCommand.负压150TimeStart, Order = 3, IsRead = false });
+            _readT.Add(new ReadT() { Key = BFMCommand.负压_100TimeStart, Order = 4, IsRead = false });
+            _readT.Add(new ReadT() { Key = BFMCommand.负压_50TimeStart, Order = 5, IsRead = false });
 
 
             if (rdb_fjstl.Checked)
             {
-                foreach (var item in pressureList)
+                foreach (var item in windSpeedInfoList)
                 {
-                    item.Pressure_F = 0;
+                    item.FJST = 0;
+                }
+            }
+            else
+            if (rdb_gfzh.Checked)
+            {
+                foreach (var item in windSpeedInfoList)
+                {
+                    item.GFZH = 0;
                 }
             }
             else if (rdb_zdstl.Checked)
             {
-                foreach (var item in pressureList)
+                foreach (var item in windSpeedInfoList)
                 {
-                    item.Pressure_F_Z = 0;
+                    item.ZDST = 0;
                 }
             }
             BindFlowBase();
 
-
             btn_losestart.BackColor = Color.Green;
             airtightPropertyTest = PublicEnum.AirtightPropertyTest.FStart;
-
-
-            //关闭依次加压
-            btn_ycjy_z.Enabled = false;
-            btn_ycjyf.Enabled = false;
-
-            btn_ycjy_z.BackColor = Color.Transparent;
-            btn_ycjyf.BackColor = Color.Transparent;
         }
 
 
@@ -1462,252 +916,73 @@ namespace text.doors.Detection
 
         private void export_image_qm_Click(object sender, EventArgs e)
         {
-
             this.tChart_qm.Export.ShowExportDialog();
         }
 
-        private string group = Guid.NewGuid().ToString();
 
         private void btn_datadispose_Click(object sender, EventArgs e)
         {
+            GetDatabaseLevelIndex();
+            BindLevelIndex();
 
-            if (this.tabControl1.SelectedTab.Name == "流量原始数据")
+            //获取分级指标
+            var qmZBInfo = GetQMZBInfo();
+
+            //获取实验结果
+            var qmInfoList = GetQMInfoList();
+            if (qmInfoList != null && qmInfoList.Count > 0)
             {
-                GetDatabaseLevelIndex(QM_TestCount.第一次);
-                BindLevelIndex(QM_TestCount.第一次);
-                if (AddQMResult(QM_TestCount.第一次))
+                var res = dal_dt_qm_Info.AddQM(qmInfoList, qmZBInfo);
+                if (res)
                 {
                     MessageBox.Show("处理完成！", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            else if (this.tabControl1.SelectedTab.Name == "重复流量数据")
+            else
             {
-                GetDatabaseLevelIndex(QM_TestCount.第二次);
-                BindLevelIndex(QM_TestCount.第二次);
-                if (AddQMResult(QM_TestCount.第二次))
-                {
-                    MessageBox.Show("处理完成！", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                MessageBox.Show("暂无数据处理！", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+
         }
 
         /// <summary>
-        /// 添加气密结果
+        /// 获取气密结果
         /// </summary>
         /// <returns></returns>
-        private bool AddQMResult(QM_TestCount qm_TestCount)
+        private List<Model_dt_qm_Info> GetQMInfoList()
         {
+            List<Model_dt_qm_Info> list = new List<Model_dt_qm_Info>();
 
-            var sjzValue = txt_ycjy_z.Text;
-            DAL_dt_qm_Info dal = new DAL_dt_qm_Info();
-
-            Model_dt_qm_Info model = new Model_dt_qm_Info();
-            model.testcount = (int)qm_TestCount;
-            model.testtype = int.Parse(sjzValue) > 0 ? "2" : "1";
-
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i <= 9; i++)
             {
-                var desc = this.dgv_levelIndex.Rows[i].Cells["Quantity"].Value.ToString();
-                model.info_DangH = _tempTong;
+                Model_dt_qm_Info model = new Model_dt_qm_Info();
                 model.dt_Code = _tempCode;
-                if (desc == "单位缝长")
-                {
-                    model.qm_Z_FC = double.Parse(this.dgv_levelIndex.Rows[i].Cells["PressureZ"].Value.ToString()).ToString("f2");
-                    model.qm_F_FC = double.Parse(this.dgv_levelIndex.Rows[i].Cells["PressureF"].Value.ToString()).ToString("f2");
-                }
-                else if (desc == "单位面积")
-                {
-                    model.qm_Z_MJ = double.Parse(this.dgv_levelIndex.Rows[i].Cells["PressureZ"].Value.ToString()).ToString("f2");
-                    model.qm_F_MJ = double.Parse(this.dgv_levelIndex.Rows[i].Cells["PressureF"].Value.ToString()).ToString("f2");
-                }
-            }
+                model.Pa = this.dgv_ll.Rows[i].Cells["pa"].Value.ToString();
 
-            for (int i = 0; i < 12; i++)
-            {
-                if (qm_TestCount == QM_TestCount.第一次)
-                {
-                    #region 赋值
-                    if (i == 0)
-                    {
-                        model.qm_s_z_fj10 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd10 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj10 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd10 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 1)
-                    {
-                        model.qm_s_z_fj30 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd30 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj30 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd30 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 2)
-                    {
-                        model.qm_s_z_fj50 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd50 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj50 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd50 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 3)
-                    {
-                        model.qm_s_z_fj70 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd70 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj70 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd70 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 4)
-                    {
-                        model.qm_s_z_fj100 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd100 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj100 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd100 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 5)
-                    {
-                        model.qm_s_z_fj150 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd150 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj150 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd150 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 6)
-                    {
-                        model.qm_j_z_fj100 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_z_zd100 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_fj100 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_zd100 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 7)
-                    {
-                        model.qm_j_z_fj70 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_z_zd70 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_fj70 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_zd70 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 8)
-                    {
-                        model.qm_j_z_fj50 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_z_zd50 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_fj50 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_zd50 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 9)
-                    {
-                        model.qm_j_z_fj30 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_z_zd30 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_fj30 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_zd30 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 10)
-                    {
-                        model.qm_j_z_fj10 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_z_zd10 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_fj10 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_zd10 = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 11)
-                    {
-                        model.sjz_value = txt_ycjy_z.Text;
-                        model.sjz_z_fj = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.sjz_z_zd = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.sjz_f_fj = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.sjz_f_zd = double.Parse(this.dgv_ll.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    #endregion
-                }
-                else if (qm_TestCount == QM_TestCount.第二次)
-                {
-                    #region 赋值
-                    if (i == 0)
-                    {
-                        model.qm_s_z_fj10 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd10 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj10 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd10 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 1)
-                    {
-                        model.qm_s_z_fj30 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd30 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj30 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd30 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 2)
-                    {
-                        model.qm_s_z_fj50 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd50 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj50 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd50 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 3)
-                    {
-                        model.qm_s_z_fj70 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd70 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj70 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd70 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 4)
-                    {
-                        model.qm_s_z_fj100 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd100 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj100 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd100 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 5)
-                    {
-                        model.qm_s_z_fj150 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_z_zd150 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_fj150 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_s_f_zd150 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 6)
-                    {
-                        model.qm_j_z_fj100 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_z_zd100 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_fj100 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_zd100 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 7)
-                    {
-                        model.qm_j_z_fj70 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_z_zd70 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_fj70 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_zd70 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 8)
-                    {
-                        model.qm_j_z_fj50 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_z_zd50 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_fj50 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_zd50 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 9)
-                    {
-                        model.qm_j_z_fj30 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_z_zd30 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_fj30 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_zd30 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 10)
-                    {
-                        model.qm_j_z_fj10 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_z_zd10 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_fj10 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.qm_j_f_zd10 = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    if (i == 11)
-                    {
-                        model.sjz_value = txt_ycjy_z.Text;
-                        model.sjz_z_fj = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z"].Value.ToString()).ToString("f2");
-                        model.sjz_z_zd = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_Z_Z"].Value.ToString()).ToString("f2");
-                        model.sjz_f_fj = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F"].Value.ToString()).ToString("f2");
-                        model.sjz_f_zd = double.Parse(this.dgv_ll2.Rows[i].Cells["Pressure_F_Z"].Value.ToString()).ToString("f2");
-                    }
-                    #endregion
-                }
+                model.PaType = int.Parse(this.dgv_ll.Rows[i].Cells[1].Value.ToString());
+                model.FJST = double.Parse(this.dgv_ll.Rows[i].Cells[2].Value.ToString()).ToString("f2");
+                model.GFZH = double.Parse(this.dgv_ll.Rows[i].Cells[3].Value.ToString()).ToString("f2");
+                model.ZDST = double.Parse(this.dgv_ll.Rows[i].Cells[4].Value.ToString()).ToString("f2");
+                model.MQZT = double.Parse(this.dgv_ll.Rows[i].Cells[5].Value.ToString()).ToString("f2");
+                model.KKST = double.Parse(this.dgv_ll.Rows[i].Cells[6].Value.ToString()).ToString("f2");
+                list.Add(model);
             }
-            return dal.Add(model);
+            return list;
         }
-
+        /// <summary>
+        /// 获取指标
+        /// </summary>
+        /// <returns></returns>
+        private Model_dt_qm_zb_Info GetQMZBInfo()
+        {
+            Model_dt_qm_zb_Info model = new Model_dt_qm_zb_Info();
+            model.dt_Code = _tempCode;
+            model.Z_MJ = this.lbl_z_mj.Text;
+            model.F_MJ = this.lbl_f_mj.Text;
+            model.Z_FC = this.lbl_z_fc.Text;
+            model.F_FC = this.lbl_f_fc.Text;
+            return model;
+        }
 
         /// <summary>
         /// 获取分级指标
@@ -1716,251 +991,54 @@ namespace text.doors.Detection
         /// <param name="fFc">负压缝长</param>
         /// <param name="zMj">正压面积</param>
         /// <param name="fMj">负压面积</param>
-        private void GetDatabaseLevelIndex(QM_TestCount qm_TestCount)
+        private void GetDatabaseLevelIndex()
         {
-            //double kPa = 0;
-            //double tempTemperature = 0;
-            //double stitchLength = 0;
-            //double sumArea = 0;
+            // double kPa = 0;
+            // double tempTemperature = 0;
+            // double stitchLength = 0;
+            // double sumArea = 0;
 
-            //DataTable dt = new DAL_dt_Settings().Getdt_SettingsByCode(_tempCode);
-            //if (dt != null && dt.Rows.Count > 0)
+            // if (tab_settings != null && tab_settings.Rows.Count > 0)
+            // {
+            //     kPa = double.Parse(tab_settings.Rows[0]["DaQiYaLi"].ToString());
+            //     tempTemperature = double.Parse(tab_settings.Rows[0]["DangQianWenDu"].ToString());
+            //     stitchLength = double.Parse(tab_settings.Rows[0]["KaiQiFengChang"].ToString());
+            //     sumArea = double.Parse(tab_settings.Rows[0]["shijianmianji"].ToString());
+            // }
+            //// List<AirtightCalculation> airtightCalculation = new List<AirtightCalculation>();
+
+
+            // zFc = Formula.GetIndexStitchLengthAndArea(
+            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
+            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z"].Value.ToString()),
+            //     true, kPa, tempTemperature, stitchLength, sumArea);
+
+            // fFc = Formula.GetIndexStitchLengthAndArea(
+            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
+            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F"].Value.ToString()),
+            //      true, kPa, tempTemperature, stitchLength, sumArea);
+
+            // zMj = Formula.GetIndexStitchLengthAndArea(
+            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
+            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z"].Value.ToString()),
+            //     false, kPa, tempTemperature, stitchLength, sumArea);
+
+            // fMj = Formula.GetIndexStitchLengthAndArea(
+            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
+            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F"].Value.ToString()),
+            //     false, kPa, tempTemperature, stitchLength, sumArea);
+
+
+            //获取分级指标
+            //var indexStitchLengthAndArea = Formula.GetJK_IndexStitchLengthAndArea(airtightCalculation, stitchLength, sumArea);
+            //if (indexStitchLengthAndArea != null)
             //{
-            //    kPa = double.Parse(dt.Rows[0]["DaQiYaLi"].ToString());
-            //    tempTemperature = double.Parse(dt.Rows[0]["DangQianWenDu"].ToString());
-            //    stitchLength = double.Parse(dt.Rows[0]["KaiQiFengChang"].ToString());
-            //    sumArea = double.Parse(dt.Rows[0]["shijianmianji"].ToString());
+            //    zFc = indexStitchLengthAndArea.ZY_FC;
+            //    fFc = indexStitchLengthAndArea.FY_FC;
+            //    zMj = indexStitchLengthAndArea.ZY_MJ;
+            //    fMj = indexStitchLengthAndArea.FY_MJ;
             //}
-            //List<AirtightCalculation> airtightCalculation = new List<AirtightCalculation>();
-            //if (qm_TestCount == QM_TestCount.第一次)
-            //{
-            //    if (this.dgv_ll.Rows[11].Cells["Pressure_Z_Z"].Value.ToString().ToString() != "0" || this.dgv_ll.Rows[11].Cells["Pressure_F_Z"].Value.ToString().ToString() != "0")
-            //    {
-            //        zFc = Formula.GetIndexStitchLengthAndArea(
-            //            double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z"].Value.ToString()),
-            //            true, kPa, tempTemperature, stitchLength, sumArea);
-
-            //        fFc = Formula.GetIndexStitchLengthAndArea(
-            //            double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
-            //            double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F"].Value.ToString()),
-            //             true, kPa, tempTemperature, stitchLength, sumArea);
-
-            //        zMj = Formula.GetIndexStitchLengthAndArea(
-            //            double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z"].Value.ToString()),
-            //            false, kPa, tempTemperature, stitchLength, sumArea);
-
-            //        fMj = Formula.GetIndexStitchLengthAndArea(
-            //            double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
-            //            double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F"].Value.ToString()),
-            //            false, kPa, tempTemperature, stitchLength, sumArea);
-            //    }
-            //    else
-            //    {
-            //        airtightCalculation.Add(new AirtightCalculation()
-            //        {
-            //            PaValue = 10,
-            //            Z_S_ZZ_Value = double.Parse(this.dgv_ll.Rows[0].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_J_ZZ_Value = double.Parse(this.dgv_ll.Rows[10].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_S_FJ_Value = double.Parse(this.dgv_ll.Rows[0].Cells["Pressure_Z"].Value.ToString()),
-            //            Z_J_FJ_Value = double.Parse(this.dgv_ll.Rows[10].Cells["Pressure_Z"].Value.ToString()),
-
-            //            F_S_ZZ_Value = double.Parse(this.dgv_ll.Rows[0].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_J_ZZ_Value = double.Parse(this.dgv_ll.Rows[10].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_S_FJ_Value = double.Parse(this.dgv_ll.Rows[0].Cells["Pressure_F"].Value.ToString()),
-            //            F_J_FJ_Value = double.Parse(this.dgv_ll.Rows[10].Cells["Pressure_F"].Value.ToString()),
-
-            //            kPa = kPa,
-            //            CurrentTemperature = tempTemperature
-            //        });
-            //        airtightCalculation.Add(new AirtightCalculation()
-            //        {
-            //            PaValue = 30,
-            //            Z_S_ZZ_Value = double.Parse(this.dgv_ll.Rows[1].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_J_ZZ_Value = double.Parse(this.dgv_ll.Rows[9].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_S_FJ_Value = double.Parse(this.dgv_ll.Rows[1].Cells["Pressure_Z"].Value.ToString()),
-            //            Z_J_FJ_Value = double.Parse(this.dgv_ll.Rows[9].Cells["Pressure_Z"].Value.ToString()),
-
-            //            F_S_ZZ_Value = double.Parse(this.dgv_ll.Rows[1].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_J_ZZ_Value = double.Parse(this.dgv_ll.Rows[9].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_S_FJ_Value = double.Parse(this.dgv_ll.Rows[1].Cells["Pressure_F"].Value.ToString()),
-            //            F_J_FJ_Value = double.Parse(this.dgv_ll.Rows[9].Cells["Pressure_F"].Value.ToString()),
-            //            kPa = kPa,
-            //            CurrentTemperature = tempTemperature
-            //        });
-            //        airtightCalculation.Add(new AirtightCalculation()
-            //        {
-            //            PaValue = 50,
-            //            Z_S_ZZ_Value = double.Parse(this.dgv_ll.Rows[2].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_J_ZZ_Value = double.Parse(this.dgv_ll.Rows[8].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_S_FJ_Value = double.Parse(this.dgv_ll.Rows[2].Cells["Pressure_Z"].Value.ToString()),
-            //            Z_J_FJ_Value = double.Parse(this.dgv_ll.Rows[8].Cells["Pressure_Z"].Value.ToString()),
-
-            //            F_S_ZZ_Value = double.Parse(this.dgv_ll.Rows[2].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_J_ZZ_Value = double.Parse(this.dgv_ll.Rows[8].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_S_FJ_Value = double.Parse(this.dgv_ll.Rows[2].Cells["Pressure_F"].Value.ToString()),
-            //            F_J_FJ_Value = double.Parse(this.dgv_ll.Rows[8].Cells["Pressure_F"].Value.ToString()),
-            //            kPa = kPa,
-            //            CurrentTemperature = tempTemperature
-            //        });
-            //        airtightCalculation.Add(new AirtightCalculation()
-            //        {
-            //            PaValue = 70,
-            //            Z_S_ZZ_Value = double.Parse(this.dgv_ll.Rows[3].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_J_ZZ_Value = double.Parse(this.dgv_ll.Rows[7].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_S_FJ_Value = double.Parse(this.dgv_ll.Rows[3].Cells["Pressure_Z"].Value.ToString()),
-            //            Z_J_FJ_Value = double.Parse(this.dgv_ll.Rows[7].Cells["Pressure_Z"].Value.ToString()),
-
-            //            F_S_ZZ_Value = double.Parse(this.dgv_ll.Rows[3].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_J_ZZ_Value = double.Parse(this.dgv_ll.Rows[7].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_S_FJ_Value = double.Parse(this.dgv_ll.Rows[3].Cells["Pressure_F"].Value.ToString()),
-            //            F_J_FJ_Value = double.Parse(this.dgv_ll.Rows[7].Cells["Pressure_F"].Value.ToString()),
-            //            kPa = kPa,
-            //            //  _Z_Q_SJ_P = 35.815,
-            //            CurrentTemperature = tempTemperature
-            //        });
-            //        airtightCalculation.Add(new AirtightCalculation()
-            //        {
-            //            PaValue = 100,
-            //            Z_S_ZZ_Value = double.Parse(this.dgv_ll.Rows[4].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_J_ZZ_Value = double.Parse(this.dgv_ll.Rows[6].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_S_FJ_Value = double.Parse(this.dgv_ll.Rows[4].Cells["Pressure_Z"].Value.ToString()),
-            //            Z_J_FJ_Value = double.Parse(this.dgv_ll.Rows[4].Cells["Pressure_Z"].Value.ToString()),
-
-            //            F_S_ZZ_Value = double.Parse(this.dgv_ll.Rows[4].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_J_ZZ_Value = double.Parse(this.dgv_ll.Rows[6].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_S_FJ_Value = double.Parse(this.dgv_ll.Rows[4].Cells["Pressure_F"].Value.ToString()),
-            //            F_J_FJ_Value = double.Parse(this.dgv_ll.Rows[4].Cells["Pressure_F"].Value.ToString()),
-            //            kPa = kPa,
-            //            CurrentTemperature = tempTemperature
-            //        });
-
-            //        //获取分级指标
-            //        var indexStitchLengthAndArea = Formula.GetJK_IndexStitchLengthAndArea(airtightCalculation, stitchLength, sumArea);
-            //        if (indexStitchLengthAndArea != null)
-            //        {
-            //            zFc = indexStitchLengthAndArea.ZY_FC;
-            //            fFc = indexStitchLengthAndArea.FY_FC;
-            //            zMj = indexStitchLengthAndArea.ZY_MJ;
-            //            fMj = indexStitchLengthAndArea.FY_MJ;
-            //        }
-            //    }
-
-            //}
-            //else if (qm_TestCount == QM_TestCount.第二次)
-            //{
-            //    if (this.dgv_ll2.Rows[11].Cells["Pressure_Z_Z"].Value.ToString().ToString() != "0" || this.dgv_ll2.Rows[11].Cells["Pressure_F_Z"].Value.ToString().ToString() != "0")
-            //    {
-            //        zFc = Formula.GetIndexStitchLengthAndArea(
-            //             double.Parse(this.dgv_ll2.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
-            //             double.Parse(this.dgv_ll2.Rows[11].Cells["Pressure_Z_F"].Value.ToString()),
-            //             true, kPa, tempTemperature, stitchLength, sumArea);
-
-            //        fFc = Formula.GetIndexStitchLengthAndArea(
-            //            double.Parse(this.dgv_ll2.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
-            //            double.Parse(this.dgv_ll2.Rows[11].Cells["Pressure_F_F"].Value.ToString()),
-            //             true, kPa, tempTemperature, stitchLength, sumArea);
-
-            //        zMj = Formula.GetIndexStitchLengthAndArea(
-            //            double.Parse(this.dgv_ll2.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            double.Parse(this.dgv_ll2.Rows[11].Cells["Pressure_Z_F"].Value.ToString()),
-            //            false, kPa, tempTemperature, stitchLength, sumArea);
-
-            //        fMj = Formula.GetIndexStitchLengthAndArea(
-            //            double.Parse(this.dgv_ll2.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
-            //            double.Parse(this.dgv_ll2.Rows[11].Cells["Pressure_F_F"].Value.ToString()),
-            //            false, kPa, tempTemperature, stitchLength, sumArea);
-            //    }
-            //    else
-            //    {
-            //        airtightCalculation.Add(new AirtightCalculation()
-            //        {
-            //            PaValue = 10,
-            //            Z_S_ZZ_Value = double.Parse(this.dgv_ll2.Rows[0].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_J_ZZ_Value = double.Parse(this.dgv_ll2.Rows[10].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_S_FJ_Value = double.Parse(this.dgv_ll2.Rows[0].Cells["Pressure_Z"].Value.ToString()),
-            //            Z_J_FJ_Value = double.Parse(this.dgv_ll2.Rows[10].Cells["Pressure_Z"].Value.ToString()),
-
-            //            F_S_ZZ_Value = double.Parse(this.dgv_ll2.Rows[0].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_J_ZZ_Value = double.Parse(this.dgv_ll2.Rows[10].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_S_FJ_Value = double.Parse(this.dgv_ll2.Rows[0].Cells["Pressure_F"].Value.ToString()),
-            //            F_J_FJ_Value = double.Parse(this.dgv_ll2.Rows[10].Cells["Pressure_F"].Value.ToString()),
-            //            kPa = kPa,
-            //            CurrentTemperature = tempTemperature
-            //        });
-            //        airtightCalculation.Add(new AirtightCalculation()
-            //        {
-            //            PaValue = 30,
-            //            Z_S_ZZ_Value = double.Parse(this.dgv_ll2.Rows[1].Cells["Pressure_F_Z"].Value.ToString()),
-            //            Z_J_ZZ_Value = double.Parse(this.dgv_ll2.Rows[9].Cells["Pressure_F_Z"].Value.ToString()),
-            //            Z_S_FJ_Value = double.Parse(this.dgv_ll2.Rows[1].Cells["Pressure_F"].Value.ToString()),
-            //            Z_J_FJ_Value = double.Parse(this.dgv_ll2.Rows[9].Cells["Pressure_F"].Value.ToString()),
-
-            //            F_S_ZZ_Value = double.Parse(this.dgv_ll2.Rows[1].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_J_ZZ_Value = double.Parse(this.dgv_ll2.Rows[9].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_S_FJ_Value = double.Parse(this.dgv_ll2.Rows[1].Cells["Pressure_F"].Value.ToString()),
-            //            F_J_FJ_Value = double.Parse(this.dgv_ll2.Rows[9].Cells["Pressure_F"].Value.ToString()),
-            //            kPa = kPa,
-            //            CurrentTemperature = tempTemperature
-            //        });
-            //        airtightCalculation.Add(new AirtightCalculation()
-            //        {
-            //            PaValue = 50,
-            //            Z_S_ZZ_Value = double.Parse(this.dgv_ll2.Rows[2].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_J_ZZ_Value = double.Parse(this.dgv_ll2.Rows[8].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_S_FJ_Value = double.Parse(this.dgv_ll2.Rows[2].Cells["Pressure_Z"].Value.ToString()),
-            //            Z_J_FJ_Value = double.Parse(this.dgv_ll2.Rows[8].Cells["Pressure_Z"].Value.ToString()),
-
-            //            F_S_ZZ_Value = double.Parse(this.dgv_ll2.Rows[2].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_J_ZZ_Value = double.Parse(this.dgv_ll2.Rows[8].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_S_FJ_Value = double.Parse(this.dgv_ll2.Rows[2].Cells["Pressure_F"].Value.ToString()),
-            //            F_J_FJ_Value = double.Parse(this.dgv_ll2.Rows[8].Cells["Pressure_F"].Value.ToString()),
-            //            kPa = kPa,
-            //            CurrentTemperature = tempTemperature
-            //        });
-            //        airtightCalculation.Add(new AirtightCalculation()
-            //        {
-            //            PaValue = 70,
-            //            Z_S_ZZ_Value = double.Parse(this.dgv_ll2.Rows[3].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_J_ZZ_Value = double.Parse(this.dgv_ll2.Rows[7].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_S_FJ_Value = double.Parse(this.dgv_ll2.Rows[3].Cells["Pressure_Z"].Value.ToString()),
-            //            Z_J_FJ_Value = double.Parse(this.dgv_ll2.Rows[7].Cells["Pressure_Z"].Value.ToString()),
-
-            //            F_S_ZZ_Value = double.Parse(this.dgv_ll2.Rows[3].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_J_ZZ_Value = double.Parse(this.dgv_ll2.Rows[7].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_S_FJ_Value = double.Parse(this.dgv_ll2.Rows[3].Cells["Pressure_F"].Value.ToString()),
-            //            F_J_FJ_Value = double.Parse(this.dgv_ll2.Rows[7].Cells["Pressure_F"].Value.ToString()),
-            //            kPa = kPa,
-            //            CurrentTemperature = tempTemperature
-            //        });
-            //        airtightCalculation.Add(new AirtightCalculation()
-            //        {
-            //            PaValue = 100,
-            //            Z_S_ZZ_Value = double.Parse(this.dgv_ll2.Rows[4].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_J_ZZ_Value = double.Parse(this.dgv_ll2.Rows[6].Cells["Pressure_Z_Z"].Value.ToString()),
-            //            Z_S_FJ_Value = double.Parse(this.dgv_ll2.Rows[4].Cells["Pressure_Z"].Value.ToString()),
-            //            Z_J_FJ_Value = double.Parse(this.dgv_ll2.Rows[4].Cells["Pressure_Z"].Value.ToString()),
-
-            //            F_S_ZZ_Value = double.Parse(this.dgv_ll2.Rows[4].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_J_ZZ_Value = double.Parse(this.dgv_ll2.Rows[6].Cells["Pressure_F_Z"].Value.ToString()),
-            //            F_S_FJ_Value = double.Parse(this.dgv_ll2.Rows[4].Cells["Pressure_F"].Value.ToString()),
-            //            F_J_FJ_Value = double.Parse(this.dgv_ll2.Rows[4].Cells["Pressure_F"].Value.ToString()),
-            //            kPa = kPa,
-            //            CurrentTemperature = tempTemperature
-            //        });
-
-            //        //获取分级指标
-            //        var indexStitchLengthAndArea = Formula.GetJK_IndexStitchLengthAndArea(airtightCalculation, stitchLength, sumArea);
-            //        if (indexStitchLengthAndArea != null)
-            //        {
-            //            zFc = indexStitchLengthAndArea.ZY_FC;
-            //            fFc = indexStitchLengthAndArea.FY_FC;
-            //            zMj = indexStitchLengthAndArea.ZY_MJ;
-            //            fMj = indexStitchLengthAndArea.FY_MJ;
-            //        }
-            //    }
-            //}
+            // }
         }
 
         private void btn_stop_Click(object sender, EventArgs e)
@@ -2049,62 +1127,24 @@ namespace text.doors.Detection
         {
             try
             {
-                //if (this.tabControl1.SelectedTab.Name == "流量原始数据")
-                //{
-                //    BindFlowBase(QM_TestCount.第一次);
-                //}
-                //else if (this.tabControl1.SelectedTab.Name == "重复流量数据")
-                //{
-                //    BindFlowBase(QM_TestCount.第二次);
-                //}
+                var windSpeed = windSpeedInfo.GetWindSpeed();
 
-                if (this.tabControl1.SelectedTab.Name == "流量原始数据")
+                for (int i = 0; i < windSpeed.Count; i++)
                 {
-                    var oneList = pressure_One.GetPressure();
-
-                    for (int i = 0; i < oneList.Count; i++)
+                    if (windSpeed[i].GFZH > 0)
                     {
-                        if (oneList[i].Pressure_F > 0)
-                        {
-                            pressureList[i].Pressure_F = oneList[i].Pressure_F;
-                        }
-                        if (oneList[i].Pressure_F_Z > 0)
-                        {
-                            pressureList[i].Pressure_F_Z = oneList[i].Pressure_F_Z;
-                        }
-                        if (oneList[i].Pressure_Z > 0)
-                        {
-                            pressureList[i].Pressure_Z = oneList[i].Pressure_Z;
-                        }
-                        if (oneList[i].Pressure_Z_Z > 0)
-                        {
-                            pressureList[i].Pressure_Z_Z = oneList[i].Pressure_Z_Z;
-                        }
+                        windSpeedInfoList[i].GFZH = windSpeed[i].GFZH;
+                    }
+                    if (windSpeed[i].FJST > 0)
+                    {
+                        windSpeedInfoList[i].FJST = windSpeed[i].FJST;
+                    }
+                    if (windSpeed[i].ZDST > 0)
+                    {
+                        windSpeedInfoList[i].ZDST = windSpeed[i].ZDST;
                     }
                 }
-                else if (this.tabControl1.SelectedTab.Name == "重复流量数据")
-                {
-                    var twoList = pressure_Two.GetPressure();
-                    for (int i = 0; i < twoList.Count; i++)
-                    {
-                        if (twoList[i].Pressure_F > 0)
-                        {
-                            pressureList[i].Pressure_F = twoList[i].Pressure_F;
-                        }
-                        if (twoList[i].Pressure_F_Z > 0)
-                        {
-                            pressureList[i].Pressure_F_Z = twoList[i].Pressure_F_Z;
-                        }
-                        if (twoList[i].Pressure_Z > 0)
-                        {
-                            pressureList[i].Pressure_Z = twoList[i].Pressure_Z;
-                        }
-                        if (twoList[i].Pressure_Z_Z > 0)
-                        {
-                            pressureList[i].Pressure_Z_Z = twoList[i].Pressure_Z_Z;
-                        }
-                    }
-                }
+
                 BindFlowBase();
             }
             catch (Exception ex)
@@ -2113,164 +1153,11 @@ namespace text.doors.Detection
             }
         }
 
-        private void Clear()
-        {
-            pressure_One = new Pressure();
-            pressure_Two = new Pressure();
-            airtightPropertyTest = null;
-            tim_Top10.Enabled = false;
-        }
-
-
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //if (this.tabControl1.SelectedTab.Name == "流量原始数据")
-            //{
-            //    BindFlowBase(QM_TestCount.第一次);
-            //    BindLevelIndex(QM_TestCount.第一次);
-            //}
-            //else if (this.tabControl1.SelectedTab.Name == "重复流量数据")
-            //{
-            //    BindFlowBase(QM_TestCount.第二次);
-            //    BindLevelIndex(QM_TestCount.第二次);
-            //}
-
-            if (this.tabControl1.SelectedTab.Name == "流量原始数据")
-            {
-                GetPressureFlow(QM_TestCount.第一次);
-            }
-            else if (this.tabControl1.SelectedTab.Name == "重复流量数据")
-            {
-                GetPressureFlow(QM_TestCount.第二次);
-            }
-            BindFlowBase();
-        }
-
-        private void btn_ycjy_z_Click(object sender, EventArgs e)
-        {
-            index = 0;
-            this.btn_ycjy_z.Enabled = false;
-            int value = 0;
-            int.TryParse(txt_ycjy_z.Text, out value);
-
-            if (value == 0)
-            {
-                this.btn_ycjy_z.Enabled = true;
-                return;
-            }
-            var res = _serialPortClient.Set_FY_Value(BFMCommand.正依次加压值, BFMCommand.正依次加压, value);
-            if (!res)
-            {
-                MessageBox.Show("正依次加压！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            //重复做
-            if (rdb_fjstl.Checked)
-            {
-                foreach (var item in pressureList)
-                {
-                    item.Pressure_Z = 0;
-                }
-            }
-            else if (rdb_zdstl.Checked)
-            {
-                foreach (var item in pressureList)
-                {
-                    item.Pressure_Z_Z = 0;
-                }
-
-            }
-            BindFlowBase();
-
-
-            //本程序控制
-            btn_ycjy_z.BackColor = Color.Green;
-
-            airtightPropertyTest = PublicEnum.AirtightPropertyTest.ZYCJY;
-
-
-            //关闭监控按钮
-            this.btn_justready.Enabled = false;
-            this.btn_loseready.Enabled = false;
-            this.btn_losestart.Enabled = false;
-            this.btn_juststart.Enabled = false;
-
-
-            btn_justready.BackColor = Color.Transparent;
-            btn_loseready.BackColor = Color.Transparent;
-            btn_losestart.BackColor = Color.Transparent;
-            btn_juststart.BackColor = Color.Transparent;
-        }
-
-        private void btn_ycjyf_Click(object sender, EventArgs e)
-        {
-            index = 0;
-            this.btn_ycjyf.Enabled = false;
-            int value = 0;
-
-            int.TryParse(txt_ycjy_f.Text, out value);
-
-            if (value == 0)
-            {
-                this.btn_ycjyf.Enabled = true;
-                return;
-            }
-
-            var res = _serialPortClient.Set_FY_Value(BFMCommand.负依次加压值, BFMCommand.负依次加压, value);
-            if (!res)
-            {
-                MessageBox.Show("负依次加压异常！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (rdb_fjstl.Checked)
-            {
-                foreach (var item in pressureList)
-                {
-                    item.Pressure_F = 0;
-                }
-            }
-            else if (rdb_zdstl.Checked)
-            {
-                foreach (var item in pressureList)
-                {
-                    item.Pressure_F_Z = 0;
-                }
-            }
-            BindFlowBase();
-
-            //本程序控制
-            btn_ycjyf.BackColor = Color.Green;
-            airtightPropertyTest = PublicEnum.AirtightPropertyTest.FYCJY;
-
-            //关闭监控按钮
-            this.btn_justready.Enabled = false;
-            this.btn_loseready.Enabled = false;
-            this.btn_losestart.Enabled = false;
-            this.btn_juststart.Enabled = false;
-
-            btn_justready.BackColor = Color.Transparent;
-            btn_loseready.BackColor = Color.Transparent;
-            btn_losestart.BackColor = Color.Transparent;
-            btn_juststart.BackColor = Color.Transparent;
-        }
-
-        private void tim_getsjz_Tick(object sender, EventArgs e)
+        private void groupBox3_Enter(object sender, EventArgs e)
         {
 
         }
 
-        private void txt_ycjy_z_TextChanged(object sender, EventArgs e)
-        {
-            txt_ycjy_f.Text = txt_ycjy_z.Text;
-
-        }
-
-        private void txt_ycjy_f_TextChanged(object sender, EventArgs e)
-        {
-            txt_ycjy_z.Text = txt_ycjy_f.Text;
-        }
 
         private void tChart_sm_MouseDown(object sender, MouseEventArgs e)
         {
@@ -2291,9 +1178,6 @@ namespace text.doors.Detection
         {
             var res = _serialPortClient.Stop();
 
-            // MessageBox.Show("急停异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-            //Stop();
             this.Close();
         }
     }

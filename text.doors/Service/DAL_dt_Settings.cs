@@ -12,6 +12,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using NPOI.SS.Formula.Functions;
 using System.Windows.Forms;
 using text.doors.Detection;
+using text.doors.Service;
 
 namespace text.doors.dal
 {
@@ -80,49 +81,49 @@ VALUES
 '{0}','{1}','{2}' ,'{3}','{4}' , '{5}' , '{6}','{7}' ,'{8}' ,'{9}' , '{10}','{11}'  ,  '{12}' ,'{13}' ,'{14}' ,'{15}'  ,'{16}' ,'{17}','{18}' , '{19}' ,
 '{20}' , '{21}' ,'{22}' ,'{23}','{24}' ,'{25}' ,'{26}' ,'{27}','{28}' , '{29}' ,'{30}','{31}' ,'{32}','{33}','{34}' ,'{35}' ,'{36}' ,'{37}' ,'{38}' ,
 '{39}' ,'{40}','{41}','{42}',datetime('now'))",
-model.weituodianhua           ,
-model.songyangriqi            ,
-model.naihoujiao              ,
-model.litingxilie             ,
-model.yangpinbianhao          ,
-model.mianbancaizhi           ,
-model.mianbanxiangqianfangshi ,
-model.mianbanxiangqiancailiao ,
-model.kuangshanmifengcailiao  ,
-model.kekaibishijianmianji    ,
-model.caiyangfangshi          ,
-model.weituoren               ,
-model.zuidamianban            ,
-model.jianlidanwei            ,
-model.jianshedanwei           ,
-model.shejidanwei             ,
-model.ganCchang               ,
-model.ganBchang               ,
-model.ganAchang               ,
-model.kekaimianji             ,
-model.KaiQiFangShi            ,
-model.kekaifengchang          ,
-model.jiegoujiao              ,
-model.shijiancenggao          ,
-model.gudingmianji            ,
-model.gudingfengchang         ,
-model.shijiangaodu            ,
-model.gongchengmingcheng      ,
-model.shijiankuandu           ,
-model.GuiGeXingHao            ,
-model.YangPinMingCheng        ,
-model.jianceyiju              ,
-model.shijianmianji           ,
-model.DaQiYaLi                ,
-model.DangQianWenDu           ,
-model.shengchandanwei         ,
-model.baogaoriqi              ,
-model.JianCeXiangMu           ,
-model.ganjianABC              ,
-model.JianCeRiQi              ,
-model.WeiTuoDanWei            ,
-model.WeiTuoBianHao           ,
-model.dt_Code );
+model.weituodianhua,
+model.songyangriqi,
+model.naihoujiao,
+model.litingxilie,
+model.yangpinbianhao,
+model.mianbancaizhi,
+model.mianbanxiangqianfangshi,
+model.mianbanxiangqiancailiao,
+model.kuangshanmifengcailiao,
+model.kekaibishijianmianji,
+model.caiyangfangshi,
+model.weituoren,
+model.zuidamianban,
+model.jianlidanwei,
+model.jianshedanwei,
+model.shejidanwei,
+model.ganCchang,
+model.ganBchang,
+model.ganAchang,
+model.kekaimianji,
+model.KaiQiFangShi,
+model.kekaifengchang,
+model.jiegoujiao,
+model.shijiancenggao,
+model.gudingmianji,
+model.gudingfengchang,
+model.shijiangaodu,
+model.gongchengmingcheng,
+model.shijiankuandu,
+model.GuiGeXingHao,
+model.YangPinMingCheng,
+model.jianceyiju,
+model.shijianmianji,
+model.DaQiYaLi,
+model.DangQianWenDu,
+model.shengchandanwei,
+model.baogaoriqi,
+model.JianCeXiangMu,
+model.ganjianABC,
+model.JianCeRiQi,
+model.WeiTuoDanWei,
+model.WeiTuoBianHao,
+model.dt_Code);
             res = SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
             #endregion
 
@@ -187,118 +188,31 @@ model.dt_Code );
             return dr.Table;
         }
 
-        public List<Model_dt_qm_Info> GetQMListByCode(string code)
+
+        /// <summary>
+        /// 获取气密指标
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public Model_dt_qm_zb_Info GetQMZB(string code)
         {
-            List<Model_dt_qm_Info> list = new List<Model_dt_qm_Info>();
+            Model_dt_qm_zb_Info dt_qm_zb_Info = null;
+            //获取指标
+            var dt_qm_zb_info = SQLiteHelper.ExecuteDataRow("select * from dt_qm_zb_info where dt_Code='" + code + "'")?.Table;
 
-            var dt_qm_Info = SQLiteHelper.ExecuteDataRow("select * from dt_qm_Info where dt_Code='" + code + "' order by  info_DangH")?.Table;
-            if (dt_qm_Info != null)
+            if (dt_qm_zb_info != null && dt_qm_zb_info.Rows.Count > 0)
             {
-                foreach (DataRow item in dt_qm_Info.Rows)
-                {
-                    #region
-                    Model_dt_qm_Info model = new Model_dt_qm_Info();
-                    model.dt_Code = item["dt_Code"].ToString();
-                    model.info_DangH = item["info_DangH"].ToString();
-                    model.qm_Z_FC = item["qm_Z_FC"].ToString();
-                    model.qm_F_FC = item["qm_F_FC"].ToString();
-                    model.qm_Z_MJ = item["qm_Z_MJ"].ToString();
-                    model.qm_F_MJ = item["qm_F_MJ"].ToString();
-
-                    model.qm_s_z_fj10 = item["qm_s_z_fj10"].ToString();
-                    model.qm_s_z_fj30 = item["qm_s_z_fj30"].ToString();
-                    model.qm_s_z_fj50 = item["qm_s_z_fj50"].ToString();
-                    model.qm_s_z_fj70 = item["qm_s_z_fj70"].ToString();
-                    model.qm_s_z_fj100 = item["qm_s_z_fj100"].ToString();
-                    model.qm_s_z_fj150 = item["qm_s_z_fj150"].ToString();
-                    model.qm_j_z_fj100 = item["qm_j_z_fj100"].ToString();
-                    model.qm_j_z_fj70 = item["qm_j_z_fj70"].ToString();
-                    model.qm_j_z_fj50 = item["qm_j_z_fj50"].ToString();
-                    model.qm_j_z_fj30 = item["qm_j_z_fj30"].ToString();
-                    model.qm_j_z_fj10 = item["qm_j_z_fj10"].ToString();
-
-                    model.qm_s_z_zd10 = item["qm_s_z_zd10"].ToString();
-                    model.qm_s_z_zd30 = item["qm_s_z_zd30"].ToString();
-                    model.qm_s_z_zd50 = item["qm_s_z_zd50"].ToString();
-                    model.qm_s_z_zd70 = item["qm_s_z_zd70"].ToString();
-                    model.qm_s_z_zd100 = item["qm_s_z_zd100"].ToString();
-                    model.qm_s_z_zd150 = item["qm_s_z_zd150"].ToString();
-                    model.qm_j_z_zd100 = item["qm_j_z_zd100"].ToString();
-                    model.qm_j_z_zd70 = item["qm_j_z_zd70"].ToString();
-                    model.qm_j_z_zd50 = item["qm_j_z_zd50"].ToString();
-                    model.qm_j_z_zd30 = item["qm_j_z_zd30"].ToString();
-                    model.qm_j_z_zd10 = item["qm_j_z_zd10"].ToString();
-
-
-                    model.qm_s_f_fj10 = item["qm_s_f_fj10"].ToString();
-                    model.qm_s_f_fj30 = item["qm_s_f_fj30"].ToString();
-                    model.qm_s_f_fj50 = item["qm_s_f_fj50"].ToString();
-                    model.qm_s_f_fj70 = item["qm_s_f_fj70"].ToString();
-                    model.qm_s_f_fj100 = item["qm_s_f_fj100"].ToString();
-                    model.qm_s_f_fj150 = item["qm_s_f_fj150"].ToString();
-                    model.qm_j_f_fj100 = item["qm_j_f_fj100"].ToString();
-                    model.qm_j_f_fj70 = item["qm_j_f_fj70"].ToString();
-                    model.qm_j_f_fj50 = item["qm_j_f_fj50"].ToString();
-                    model.qm_j_f_fj30 = item["qm_j_f_fj30"].ToString();
-                    model.qm_j_f_fj10 = item["qm_j_f_fj10"].ToString();
-
-
-                    model.qm_s_f_zd10 = item["qm_s_f_zd10"].ToString();
-                    model.qm_s_f_zd30 = item["qm_s_f_zd30"].ToString();
-                    model.qm_s_f_zd50 = item["qm_s_f_zd50"].ToString();
-                    model.qm_s_f_zd70 = item["qm_s_f_zd70"].ToString();
-                    model.qm_s_f_zd100 = item["qm_s_f_zd100"].ToString();
-                    model.qm_s_f_zd150 = item["qm_s_f_zd150"].ToString();
-                    model.qm_j_f_zd100 = item["qm_j_f_zd100"].ToString();
-                    model.qm_j_f_zd70 = item["qm_j_f_zd70"].ToString();
-                    model.qm_j_f_zd50 = item["qm_j_f_zd50"].ToString();
-                    model.qm_j_f_zd30 = item["qm_j_f_zd30"].ToString();
-                    model.qm_j_f_zd10 = item["qm_j_f_zd10"].ToString();
-                    model.testcount = int.Parse(item["testcount"].ToString());
-
-
-                    model.testtype = item["testtype"]?.ToString();
-                    model.sjz_z_fj = item["sjz_z_fj"]?.ToString();
-                    model.sjz_z_zd = item["sjz_z_zd"]?.ToString();
-                    model.sjz_f_zd = item["sjz_f_zd"]?.ToString();
-                    model.sjz_f_fj = item["sjz_f_fj"]?.ToString();
-                    model.sjz_value = item["sjz_value"]?.ToString();
-
-
-                    list.Add(model);
-                    #endregion
-                }
+                dt_qm_zb_Info = new Model_dt_qm_zb_Info();
+                dt_qm_zb_Info.dt_Code = dt_qm_zb_info.Rows[0]["dt_Code"].ToString();
+                dt_qm_zb_Info.Z_FC = dt_qm_zb_info.Rows[0]["Z_FC"].ToString();
+                dt_qm_zb_Info.F_FC = dt_qm_zb_info.Rows[0]["F_FC"].ToString();
+                dt_qm_zb_Info.Z_MJ = dt_qm_zb_info.Rows[0]["Z_MJ"].ToString();
+                dt_qm_zb_Info.F_MJ = dt_qm_zb_info.Rows[0]["F_MJ"].ToString();
             }
-            return list;
+            return dt_qm_zb_Info;
         }
 
-        public List<Model_dt_sm_Info> GetSMListByCode(string code)
-        {
 
-            List<Model_dt_sm_Info> list = new List<Model_dt_sm_Info>();
-            var dt_sm_Info = SQLiteHelper.ExecuteDataRow("select * from dt_sm_Info where dt_Code='" + code + "' order by  info_DangH")?.Table;
-            if (dt_sm_Info != null)
-            {
-                foreach (DataRow item in dt_sm_Info.Rows)
-                {
-                    #region
-                    Model_dt_sm_Info model = new Model_dt_sm_Info();
-                    model.dt_Code = item["dt_Code"].ToString();
-                    model.info_DangH = item["info_DangH"].ToString();
-                    model.sm_PaDesc = item["sm_PaDesc"].ToString();
-                    model.sm_Pa = item["sm_Pa"].ToString();
-                    model.sm_Remark = item["sm_Remark"].ToString();
-                    model.Method = item["Method"].ToString();
-                    model.testcount = int.Parse(item["testcount"].ToString());
-                    model.sxyl = item["sxyl"].ToString();
-                    model.xxyl = item["xxyl"].ToString();
-                    model.gongchengjiance = item["gongchengjiance"].ToString();
-                    list.Add(model);
-                    #endregion
-                }
-            }
-            return list;
-        }
 
         /// <summary>
         /// 根据编号获取本次检测信息
@@ -375,60 +289,18 @@ model.dt_Code );
                 if (list.Count > 0)
                     settings.dt_InfoList = list;
             }
-            var dt_qm_Info = SQLiteHelper.ExecuteDataRow("select * from dt_qm_Info where dt_Code='" + code + "' order by  info_DangH")?.Table;
-            if (dt_qm_Info != null)
-            {
-                List<Model_dt_qm_Info> list = new List<Model_dt_qm_Info>();
-                foreach (DataRow item in dt_qm_Info.Rows)
-                {
-                    #region
-                    Model_dt_qm_Info model = new Model_dt_qm_Info();
-                    model.dt_Code = item["dt_Code"].ToString();
-                    model.info_DangH = item["info_DangH"].ToString();
-                    model.qm_Z_FC = item["qm_Z_FC"].ToString();
-                    model.qm_F_FC = item["qm_F_FC"].ToString();
-                    model.qm_Z_MJ = item["qm_Z_MJ"].ToString();
-                    model.qm_F_MJ = item["qm_F_MJ"].ToString();
-                    model.qm_s_z_fj100 = item["qm_s_z_fj100"].ToString();
-                    model.qm_s_z_fj150 = item["qm_s_z_fj150"].ToString();
-                    model.qm_j_z_fj100 = item["qm_j_z_fj100"].ToString();
-                    model.qm_s_z_zd100 = item["qm_s_z_zd100"].ToString();
-                    model.qm_s_z_zd150 = item["qm_s_z_zd150"].ToString();
-                    model.qm_j_z_zd100 = item["qm_j_z_zd100"].ToString();
-                    model.qm_s_f_fj100 = item["qm_s_f_fj100"].ToString();
-                    model.qm_s_f_fj150 = item["qm_s_f_fj150"].ToString();
-                    model.qm_j_f_fj100 = item["qm_j_f_fj100"].ToString();
-                    model.qm_s_f_zd100 = item["qm_s_f_zd100"].ToString();
-                    model.qm_s_f_zd150 = item["qm_s_f_zd150"].ToString();
-                    model.qm_j_f_zd100 = item["qm_j_f_zd100"].ToString();
-                    list.Add(model);
-                    #endregion
-                }
 
-                if (list.Count > 0)
-                    settings.dt_qm_Info = list;
-            }
-            var dt_sm_Info = SQLiteHelper.ExecuteDataRow("select * from dt_sm_Info where dt_Code='" + code + "' order by  info_DangH")?.Table;
-            if (dt_sm_Info != null)
-            {
-                List<Model_dt_sm_Info> list = new List<Model_dt_sm_Info>();
-                foreach (DataRow item in dt_sm_Info.Rows)
-                {
-                    #region
-                    Model_dt_sm_Info model = new Model_dt_sm_Info();
-                    model.dt_Code = item["dt_Code"].ToString();
-                    model.info_DangH = item["info_DangH"].ToString();
-                    model.sm_PaDesc = item["sm_PaDesc"].ToString();
-                    model.sm_Pa = item["sm_Pa"].ToString();
-                    model.sm_Remark = item["sm_Remark"].ToString();
-                    model.Method = item["Method"].ToString();
-                    list.Add(model);
-                    #endregion
-                }
-                if (list.Count > 0)
-                    settings.dt_sm_Info = list;
+            //获取气密
+            var qmList = new DAL_dt_qm_Info().GetQMListByCode(code);
+            if (qmList != null && qmList.Count > 0)
+                settings.dt_qm_Info = qmList;
 
-            }
+            //获取指标
+            settings.dt_qm_zb_Info = new DAL_dt_qm_Info().GetQMZB(code);
+
+            //获取水密
+            settings.dt_sm_Info = new DAL_dt_sm_Info().GetSMListByCode(code);
+
             var dt_kfy_Info = SQLiteHelper.ExecuteDataRow("select * from dt_kfy_Info where dt_Code='" + code + "' order by  info_DangH")?.Table;
             if (dt_kfy_Info != null)
             {

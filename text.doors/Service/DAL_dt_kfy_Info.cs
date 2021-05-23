@@ -315,7 +315,7 @@ model.testtype
             var res = SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
             if (res)
             {
-                return new DAL_dt_Info().UpdateTestType(model.dt_Code, model.info_DangH, PublicEnum.SystemItem.AirPressure, 1);
+                return new DAL_dt_Info().UpdateTestType(model.dt_Code, PublicEnum.SystemItem.AirPressure, 1);
             }
             return true;
         }

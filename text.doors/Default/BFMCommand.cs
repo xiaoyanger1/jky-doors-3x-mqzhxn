@@ -83,36 +83,33 @@ namespace text.doors.Default
 
         public const string 正压依次加压 = "T0";
 
-        public const string 正压10TimeStart = "T41";
-        public const string 正压30TimeStart = "T42";
+        //public const string 正压10TimeStart = "T41";
+        //public const string 正压30TimeStart = "T42";
         public const string 正压50TimeStart = "T43";
-        public const string 正压70TimeStart = "T44";
-
+        // public const string 正压70TimeStart = "T44";
         public const string 正压100TimeStart = "T45";
         public const string 正压150TimeStart = "T46";
         public const string 正压_100TimeStart = "T47";
-
-        public const string 正压_70TimeStart = "T48";
+        //  public const string 正压_70TimeStart = "T48";
         public const string 正压_50TimeStart = "T49";
-        public const string 正压_30TimeStart = "T50";
-        public const string 正压_10TimeStart = "T51";
+        //public const string 正压_30TimeStart = "T50";
+        //public const string 正压_10TimeStart = "T51";
 
 
-
-        public const string 负压依次加压 = "T2";
-        public const string 负压10TimeStart = "T61";
-        public const string 负压30TimeStart = "T62";
+        //public const string 负压依次加压 = "T2";
+        //public const string 负压10TimeStart = "T61";
+        //public const string 负压30TimeStart = "T62";
         public const string 负压50TimeStart = "T63";
-        public const string 负压70TimeStart = "T64";
+        //public const string 负压70TimeStart = "T64";
 
         public const string 负压100TimeStart = "T65";
         public const string 负压150TimeStart = "T66";
         public const string 负压_100TimeStart = "T67";
 
-        public const string 负压_70TimeStart = "T68";
+        //public const string 负压_70TimeStart = "T68";
         public const string 负压_50TimeStart = "T69";
-        public const string 负压_30TimeStart = "T70";
-        public const string 负压_10TimeStart = "T71";
+        //public const string 负压_30TimeStart = "T70";
+        //public const string 负压_10TimeStart = "T71";
 
 
         public const string 水密预备结束 = "D32";
@@ -128,12 +125,12 @@ namespace text.doors.Default
         public const string 负PMAX = "M37";
 
         public const string 正PMAX值 = "D590";
-     
+
         public const string 负PMAX值 = "D592";
 
 
 
-        public const string 正依次加压= "M34";
+        public const string 正依次加压 = "M34";
         public const string 负依次加压 = "M35";
         public const string 正依次加压值 = "D260";
         public const string 负依次加压值 = "D280";

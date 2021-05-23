@@ -10,22 +10,20 @@ namespace text.doors.Model.DataBase
     {
         public string dt_Code { get; set; }
 
-        /// <summary>
-        /// 樘号描述
-        /// </summary>
-        public int testcount { get; set; }
-        /// <summary>
-        /// 樘号描述
-        /// </summary>
-        public string info_DangH { get; set; }
+       
         /// <summary>
         /// 备注
         /// </summary>
         public string sm_PaDesc { get; set; }
+        public string sm_PaDesc2 { get; set; }
         /// <summary>
         /// 结果描述
         /// </summary>
-        public string sm_Pa { get; set; }
+        public int sm_Pa { get; set; }
+        /// <summary>
+        /// 结果描述
+        /// </summary>
+        public int sm_Pa2 { get; set; }
         /// <summary>
         /// 描述
         /// </summary>

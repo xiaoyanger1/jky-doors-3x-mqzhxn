@@ -124,17 +124,17 @@
     <Compile Include="Detection\CorrectionFactor.Designer.cs">
       <DependentUpon>CorrectionFactor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Detection\ExportReport.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Detection\ExportReport.Designer.cs">
-      <DependentUpon>ExportReport.cs</DependentUpon>
-    </Compile>
     <Compile Include="Detection\WatertightDetection.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Detection\WatertightDetection.Designer.cs">
       <DependentUpon>WatertightDetection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Detection\WindPressureDetection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Detection\WindPressureDetection.Designer.cs">
+      <DependentUpon>WindPressureDetection.cs</DependentUpon>
     </Compile>
     <Compile Include="Help\About.cs">
       <SubType>Form</SubType>
@@ -162,16 +162,11 @@
     <Compile Include="Detection\SystemManager.Designer.cs">
       <DependentUpon>SystemManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Detection\WindPressureDetection.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Detection\WindPressureDetection.Designer.cs">
-      <DependentUpon>WindPressureDetection.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\AirtightCalculation.cs" />
     <Compile Include="Model\Calibrating_Dict.cs" />
     <Compile Include="Model\DataBase\Model_dt_kfy_Info.cs" />
-    <Compile Include="Model\Pressure.cs" />
+    <Compile Include="Model\DataBase\Model_dt_qm_zb_Info.cs" />
+    <Compile Include="Model\WindSpeedInfo.cs" />
     <Compile Include="Default\BFMCommand.cs" />
     <Compile Include="Default\PublicEnum.cs" />
     <Compile Include="Model\WindPressureDGV.cs" />
@@ -181,12 +176,6 @@
     <Compile Include="Service\DAL_dt_kfy_Info.cs" />
     <Compile Include="Service\DAL_dt_qm_Info.cs" />
     <Compile Include="Service\DAL_dt_Settings.cs" />
-    <Compile Include="Detection\ComplexAssessment.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Detection\ComplexAssessment.Designer.cs">
-      <DependentUpon>ComplexAssessment.cs</DependentUpon>
-    </Compile>
     <Compile Include="Detection\DetectionSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -237,17 +226,14 @@
     <EmbeddedResource Include="Detection\CorrectionFactor.resx">
       <DependentUpon>CorrectionFactor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Detection\ExportReport.resx">
-      <DependentUpon>ExportReport.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Detection\WatertightDetection.resx">
       <DependentUpon>WatertightDetection.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Detection\WindPressureDetection.resx">
+      <DependentUpon>WindPressureDetection.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Help\About.resx">
       <DependentUpon>About.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Detection\ComplexAssessment.resx">
-      <DependentUpon>ComplexAssessment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Detection\DetectionSet.resx">
       <DependentUpon>DetectionSet.cs</DependentUpon>
@@ -266,9 +252,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Detection\SystemManager.resx">
       <DependentUpon>SystemManager.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Detection\WindPressureDetection.resx">
-      <DependentUpon>WindPressureDetection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>

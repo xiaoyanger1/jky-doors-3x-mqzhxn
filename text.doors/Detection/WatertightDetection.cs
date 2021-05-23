@@ -31,9 +31,6 @@ namespace text.doors.Detection
         private SerialPortClient _serialPortClient;
         //检验编号
         private string _tempCode = "";
-        //当前樘号
-        private string _tempTong = "";
-
 
         /// <summary>
         /// 水密按钮位置
@@ -45,6 +42,8 @@ namespace text.doors.Detection
         /// </summary>
         private bool IsSeccess = false;
 
+        private DAL_dt_sm_Info dal_dt_sm_Info = new DAL_dt_sm_Info();
+
 
         public DateTime dtnow { get; set; }
         public WatertightDetection()
@@ -52,27 +51,18 @@ namespace text.doors.Detection
 
         }
 
-        public WatertightDetection(SerialPortClient serialPortClient, string tempCode, string tempTong)
+        public WatertightDetection(SerialPortClient serialPortClient, string tempCode)
         {
             InitializeComponent();
             this._serialPortClient = serialPortClient;
             this._tempCode = tempCode;
-            this._tempTong = tempTong;
             Init();
 
         }
 
         private void Init()
         {
-            if (this.tabControl1.SelectedTab.Name == "水密")
-            {
-                Initial(QM_TestCount.第一次);
-            }
-            else if (this.tabControl1.SelectedTab.Name == "重复水密")
-            {
-                Initial(QM_TestCount.第二次);
-            }
-
+            Initial();
             Title();
             SMchartInit();
         }
@@ -81,328 +71,225 @@ namespace text.doors.Detection
         /// <summary>
         /// 绑定水密初始值
         /// </summary>
-        private void Initial(QM_TestCount qm_TestCount)
+        private void Initial()
         {
-            int type = (int)qm_TestCount;
-            List<Model_dt_sm_Info> sm_Info = new DAL_dt_Settings().GetSMListByCode(_tempCode);
-            List<Pressure> pressureList = new List<Pressure>();
-            if (sm_Info != null && sm_Info.Count > 0)
+            var smInfo = dal_dt_sm_Info.GetSMListByCode(_tempCode);
+
+            if (smInfo != null)
             {
-                var sm = sm_Info.FindAll(t => t.info_DangH == _tempTong && t.testcount == type);
-                if (sm != null && sm.Count() > 0)
+                #region 绑定
+                var checkDesc = smInfo.sm_PaDesc;
+                var sm_pa = smInfo.sm_Pa;
+                var remark = smInfo.sm_Remark;
+                var method = smInfo.Method;
+
+                var sm_pa2 = smInfo.sm_Pa2;
+                var checkDesc2 = smInfo.sm_PaDesc2;
+                if (method == "稳定加压")
                 {
-                    #region 绑定
-                    var checkDesc = sm[0].sm_PaDesc;
-                    var sm_pa = sm[0].sm_Pa;
-                    var remark = sm[0].sm_Remark;
-                    var method = sm[0].Method;
+                    this.rdb_wdjy.Checked = true;
+                }
+                else if (method == "波动加压")
+                {
+                    this.rdb_bdjy.Checked = true;
 
+                    txt_maxValue.Text = smInfo.sxyl;
+                    txt_minValue.Text = smInfo.xxyl;
+                }
+                else
+                {
+                    this.rdb_wdjy.Checked = true;
+                }
 
+                txt_ycjy.Text = smInfo.gongchengjiance;
 
-                    if (method == "稳定加压")
+                //可开
+                if (!string.IsNullOrWhiteSpace(checkDesc))
+                {
+                    var flish = "";
+                    var two = "";
+
+                    SplitDest(checkDesc, ref flish, ref two);
+
+                    if (checkDesc.Contains("●") || checkDesc.Contains("▲"))
                     {
-                        this.rdb_wdjy.Checked = true;
-                    }
-                    else if (method == "波动加压")
-                    {
-                        this.rdb_bdjy.Checked = true;
+                        if (sm_pa == 250)
+                        {
+                            cbb_1_350Pa.Text = flish;
+                            cbb_2_350Pa.Text = two;
+                        }
 
-                        txt_maxValue.Text = sm[0].sxyl;
-                        txt_minValue.Text = sm[0].xxyl;
+                        if (sm_pa == 350)
+                        {
+                            cbb_1_500Pa.Text = flish;
+                            cbb_2_500Pa.Text = two;
+                        }
+
+                        if (sm_pa == 500)
+                        {
+                            cbb_1_700Pa.Text = flish;
+                            cbb_2_700Pa.Text = two;
+                        }
+
+                        if (sm_pa == 700)
+                        {
+                            cbb_1_1000Pa.Text = flish;
+                            cbb_2_1000Pa.Text = two;
+                        }
+                        if (sm_pa == 1000)
+                        {
+                            cbb_1_1000Pa.Text = flish;
+                            cbb_2_1000Pa.Text = two;
+                        }
                     }
                     else
                     {
-                        this.rdb_wdjy.Checked = true;
-                    }
+                        if (sm_pa == 250)
+                        {
+                            cbb_1_250Pa.Text = flish;
+                            cbb_2_250Pa.Text = two;
+                        }
 
-                    txt_ycjy.Text = sm[0].gongchengjiance;
+                        if (sm_pa == 350)
+                        {
+                            cbb_1_350Pa.Text = flish;
+                            cbb_2_350Pa.Text = two;
+                        }
+
+                        if (sm_pa == 500)
+                        {
+                            cbb_1_500Pa.Text = flish;
+                            cbb_2_500Pa.Text = two;
+                        }
+
+                        if (sm_pa == 700)
+                        {
+                            cbb_1_700Pa.Text = flish;
+                            cbb_2_700Pa.Text = two;
+                        }
+                        if (sm_pa == 1000)
+                        {
+                            cbb_1_1000Pa.Text = flish;
+                            cbb_2_1000Pa.Text = two;
+                        }
+                    }
+                    txt_fjzb_kk.Text = sm_pa.ToString();
+                    txt_desc.Text = remark;
+
+                }
+                if (!string.IsNullOrWhiteSpace(checkDesc2))
+                {
                     var flish = "";
                     var two = "";
-                    string[] temp = null;
-                    if (!string.IsNullOrWhiteSpace(checkDesc))
-                    {
-                        if (checkDesc.Contains("〇"))
-                        {
-                            temp = checkDesc.Split(new char[] { '〇' }, StringSplitOptions.RemoveEmptyEntries);
-                            flish = temp[0];
-                            two = "〇" + temp[1];
-                        }
-                        else if (checkDesc.Contains("□"))
-                        {
-                            temp = checkDesc.Split(new char[] { '□' }, StringSplitOptions.RemoveEmptyEntries);
-                            flish = temp[0];
-                            two = "□" + temp[1];
-                        }
-                        else if (checkDesc.Contains("△"))
-                        {
-                            temp = checkDesc.Split(new char[] { '△' }, StringSplitOptions.RemoveEmptyEntries);
-                            flish = temp[0];
-                            two = "△" + temp[1];
-                        }
-                        else if (checkDesc.Contains("▲"))
-                        {
-                            temp = checkDesc.Split(new char[] { '▲' }, StringSplitOptions.RemoveEmptyEntries);
-                            flish = temp[0];
-                            two = "▲" + temp[1];
-                        }
-                        else if (checkDesc.Contains("●"))
-                        {
-                            temp = checkDesc.Split(new char[] { '●' }, StringSplitOptions.RemoveEmptyEntries);
-                            flish = temp[0];
-                            two = "●" + temp[1];
-                        }
-                        else
-                        {
-                            temp = checkDesc.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                            flish = temp[0];
-                            two = temp[1];
-                        }
 
-                        if (qm_TestCount == QM_TestCount.第一次)
+                    SplitDest(checkDesc2, ref flish, ref two);
+                    if (checkDesc2.Contains("●") || checkDesc2.Contains("▲"))
+                    {
+                        if (sm_pa2 == 500)
                         {
-                            if (checkDesc.Contains("●") || checkDesc.Contains("▲"))
-                            {
-                                if (sm_pa == "0")
-                                {
-                                    cbb_1_100Pa.Text = flish;
-                                    cbb_2_100Pa.Text = two;
-                                }
-                                if (sm_pa == "100")
-                                {
-                                    cbb_1_150Pa.Text = flish;
-                                    cbb_2_150Pa.Text = two;
-                                }
-                                if (sm_pa == "150")
-                                {
-                                    cbb_1_200Pa.Text = flish;
-                                    cbb_2_200Pa.Text = two;
-                                }
-                                if (sm_pa == "200")
-                                {
-                                    cbb_1_250Pa.Text = flish;
-                                    cbb_2_250Pa.Text = two;
-                                }
-                                if (sm_pa == "250")
-                                {
-                                    cbb_1_300Pa.Text = flish;
-                                    cbb_2_300Pa.Text = two;
-                                }
-                                if (sm_pa == "300")
-                                {
-                                    cbb_1_350Pa.Text = flish;
-                                    cbb_2_350Pa.Text = two;
-                                }
-                                if (sm_pa == "350")
-                                {
-                                    cbb_1_400Pa.Text = flish;
-                                    cbb_2_400Pa.Text = two;
-                                }
-                                if (sm_pa == "400")
-                                {
-                                    cbb_1_500Pa.Text = flish;
-                                    cbb_2_500Pa.Text = two;
-                                }
-                                if (sm_pa == "500")
-                                {
-                                    cbb_1_600Pa.Text = flish;
-                                    cbb_2_600Pa.Text = two;
-                                }
-                                if (sm_pa == "600")
-                                {
-                                    cbb_1_700Pa.Text = flish;
-                                    cbb_2_700Pa.Text = two;
-                                }
-                                if (sm_pa == "700")
-                                {
-                                    cbb_1_700Pa.Text = flish;
-                                    cbb_2_700Pa.Text = two;
-                                }
-                            }
-                            else
-                            {
-                                if (sm_pa == "0")
-                                {
-                                    cbb_1_0Pa.Text = flish;
-                                    cbb_2_0Pa.Text = two;
-                                }
-                                if (sm_pa == "100")
-                                {
-                                    cbb_1_100Pa.Text = flish;
-                                    cbb_2_100Pa.Text = two;
-                                }
-                                if (sm_pa == "150")
-                                {
-                                    cbb_1_150Pa.Text = flish;
-                                    cbb_2_150Pa.Text = two;
-                                }
-                                if (sm_pa == "200")
-                                {
-                                    cbb_1_200Pa.Text = flish;
-                                    cbb_2_200Pa.Text = two;
-                                }
-                                if (sm_pa == "250")
-                                {
-                                    cbb_1_250Pa.Text = flish;
-                                    cbb_2_250Pa.Text = two;
-                                }
-                                if (sm_pa == "300")
-                                {
-                                    cbb_1_300Pa.Text = flish;
-                                    cbb_2_300Pa.Text = two;
-                                }
-                                if (sm_pa == "350")
-                                {
-                                    cbb_1_350Pa.Text = flish;
-                                    cbb_2_350Pa.Text = two;
-                                }
-                                if (sm_pa == "400")
-                                {
-                                    cbb_1_400Pa.Text = flish;
-                                    cbb_2_400Pa.Text = two;
-                                }
-                                if (sm_pa == "500")
-                                {
-                                    cbb_1_500Pa.Text = flish;
-                                    cbb_2_500Pa.Text = two;
-                                }
-                                if (sm_pa == "600")
-                                {
-                                    cbb_1_600Pa.Text = flish;
-                                    cbb_2_600Pa.Text = two;
-                                }
-                                if (sm_pa == "700")
-                                {
-                                    cbb_1_700Pa.Text = flish;
-                                    cbb_2_700Pa.Text = two;
-                                }
-                            }
-                            txt_zgfy.Text = sm_pa;
-                            txt_desc.Text = remark;
+                            cbb_1_700Pa_cf.Text = flish;
+                            cbb_2_700Pa_cf.Text = two;
                         }
-                        else if (qm_TestCount == QM_TestCount.第二次)
+                        if (sm_pa2 == 700)
                         {
-                            if (checkDesc.Contains("●") || checkDesc.Contains("▲"))
-                            {
-                                if (sm_pa == "0")
-                                {
-                                    cbb_1_100Pa_cf.Text = flish;
-                                    cbb_2_100Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "100")
-                                {
-                                    cbb_1_150Pa_cf.Text = flish;
-                                    cbb_2_150Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "150")
-                                {
-                                    cbb_1_200Pa_cf.Text = flish;
-                                    cbb_2_200Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "200")
-                                {
-                                    cbb_1_250Pa_cf.Text = flish;
-                                    cbb_2_250Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "250")
-                                {
-                                    cbb_1_300Pa_cf.Text = flish;
-                                    cbb_2_300Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "300")
-                                {
-                                    cbb_1_350Pa_cf.Text = flish;
-                                    cbb_2_350Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "350")
-                                {
-                                    cbb_1_400Pa_cf.Text = flish;
-                                    cbb_2_400Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "400")
-                                {
-                                    cbb_1_500Pa_cf.Text = flish;
-                                    cbb_2_500Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "500")
-                                {
-                                    cbb_1_600Pa_cf.Text = flish;
-                                    cbb_2_600Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "600")
-                                {
-                                    cbb_1_700Pa_cf.Text = flish;
-                                    cbb_2_700Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "700")
-                                {
-                                    cbb_1_700Pa_cf.Text = flish;
-                                    cbb_2_700Pa_cf.Text = two;
-                                }
-                            }
-                            else
-                            {
-                                if (sm_pa == "0")
-                                {
-                                    cbb_1_0Pa_cf.Text = flish;
-                                    cbb_2_0Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "100")
-                                {
-                                    cbb_1_100Pa_cf.Text = flish;
-                                    cbb_2_100Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "150")
-                                {
-                                    cbb_1_150Pa_cf.Text = flish;
-                                    cbb_2_150Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "200")
-                                {
-                                    cbb_1_200Pa_cf.Text = flish;
-                                    cbb_2_200Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "250")
-                                {
-                                    cbb_1_250Pa_cf.Text = flish;
-                                    cbb_2_250Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "300")
-                                {
-                                    cbb_1_300Pa_cf.Text = flish;
-                                    cbb_2_300Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "350")
-                                {
-                                    cbb_1_350Pa_cf.Text = flish;
-                                    cbb_2_350Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "400")
-                                {
-                                    cbb_1_400Pa_cf.Text = flish;
-                                    cbb_2_400Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "500")
-                                {
-                                    cbb_1_500Pa_cf.Text = flish;
-                                    cbb_2_500Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "600")
-                                {
-                                    cbb_1_600Pa_cf.Text = flish;
-                                    cbb_2_600Pa_cf.Text = two;
-                                }
-                                if (sm_pa == "700")
-                                {
-                                    cbb_1_700Pa_cf.Text = flish;
-                                    cbb_2_700Pa_cf.Text = two;
-                                }
-                            }
+                            cbb_1_1000Pa_cf.Text = flish;
+                            cbb_2_1000Pa_cf.Text = two;
                         }
-                        txt_zgfy_cf.Text = sm_pa;
-                        txt_desc_cf.Text = remark;
+                        if (sm_pa2 == 1000)
+                        {
+                            cbb_1_1500Pa_cf.Text = flish;
+                            cbb_2_1500Pa_cf.Text = two;
+                        }
+                        if (sm_pa2 == 1500)
+                        {
+                            cbb_1_2000Pa_cf.Text = flish;
+                            cbb_2_2000Pa_cf.Text = two;
+                        }
+                        if (sm_pa2 == 2000)
+                        {
+                            cbb_1_2000Pa_cf.Text = flish;
+                            cbb_2_2000Pa_cf.Text = two;
+                        }
                     }
-                    #endregion
+                    else
+                    {
+                        if (sm_pa2 == 500)
+                        {
+                            cbb_1_500Pa_cf.Text = flish;
+                            cbb_2_500Pa_cf.Text = two;
+                        }
+                        if (sm_pa2 == 700)
+                        {
+                            cbb_1_700Pa_cf.Text = flish;
+                            cbb_2_700Pa_cf.Text = two;
+                        }
+                        if (sm_pa2 == 1000)
+                        {
+                            cbb_1_1000Pa_cf.Text = flish;
+                            cbb_2_1000Pa_cf.Text = two;
+                        }
+                        if (sm_pa2 == 1500)
+                        {
+                            cbb_1_1500Pa_cf.Text = flish;
+                            cbb_2_1500Pa_cf.Text = two;
+                        }
+                        if (sm_pa2 == 2000)
+                        {
+                            cbb_1_2000Pa_cf.Text = flish;
+                            cbb_2_2000Pa_cf.Text = two;
+                        }
+                    }
                 }
+                txt_fjzb_gd.Text = sm_pa2.ToString();
+                txt_desc_cf.Text = remark;
+                #endregion
+            }
+        }
+
+        /// <summary>
+        /// 拆分desc
+        /// </summary>
+        /// <param name="checkDesc"></param>
+        /// <param name="flish"></param>
+        /// <param name="two"></param>
+        private void SplitDest(string checkDesc, ref string flish, ref string two)
+        {
+            string[] temp = null;
+            if (checkDesc.Contains("〇"))
+            {
+                temp = checkDesc.Split(new char[] { '〇' }, StringSplitOptions.RemoveEmptyEntries);
+                flish = temp[0];
+                two = "〇" + temp[1];
+            }
+            else if (checkDesc.Contains("□"))
+            {
+                temp = checkDesc.Split(new char[] { '□' }, StringSplitOptions.RemoveEmptyEntries);
+                flish = temp[0];
+                two = "□" + temp[1];
+            }
+            else if (checkDesc.Contains("△"))
+            {
+                temp = checkDesc.Split(new char[] { '△' }, StringSplitOptions.RemoveEmptyEntries);
+                flish = temp[0];
+                two = "△" + temp[1];
+            }
+            else if (checkDesc.Contains("▲"))
+            {
+                temp = checkDesc.Split(new char[] { '▲' }, StringSplitOptions.RemoveEmptyEntries);
+                flish = temp[0];
+                two = "▲" + temp[1];
+            }
+            else if (checkDesc.Contains("●"))
+            {
+                temp = checkDesc.Split(new char[] { '●' }, StringSplitOptions.RemoveEmptyEntries);
+                flish = temp[0];
+                two = "●" + temp[1];
+            }
+            else
+            {
+                temp = checkDesc.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                flish = temp[0];
+                two = temp[1];
             }
         }
         /// <summary>
@@ -410,7 +297,7 @@ namespace text.doors.Detection
         /// </summary>
         private void Title()
         {
-            lbl_smjc.Text = string.Format("门窗水密性能检测  第{0}号 {1}", this._tempCode, this._tempTong);
+            lbl_smjc.Text = string.Format("门窗水密性能检测  第{0}号 ", this._tempCode);
 
             btn_ksbd.Enabled = false;
             btn_tzbd.Enabled = false;
@@ -427,7 +314,7 @@ namespace text.doors.Detection
         private void SMchartInit()
         {
             dtnow = DateTime.Now;
-            sm_Line.GetVertAxis.SetMinMax(-1100, 1100);
+            sm_Line.GetVertAxis.SetMinMax(-2500, 2500);
         }
 
         private void AnimateSeries(Steema.TeeChart.TChart chart, int yl)
@@ -474,9 +361,6 @@ namespace text.doors.Detection
             if (!res)
                 MessageBox.Show("急停异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
-
-
-
 
         private void btn_next_Click(object sender, EventArgs e)
         {
@@ -572,8 +456,6 @@ namespace text.doors.Detection
             this.btn_next.Enabled = false;
             this.btn_shuibeng.Enabled = false;
             this.btn_upKpa.Enabled = false;
-
-
 
             btn_ready.BackColor = Color.Green;
             waterTightPropertyTest = PublicEnum.WaterTightPropertyTest.Ready;
@@ -709,92 +591,18 @@ namespace text.doors.Detection
         /// </summary>
         private int CheckValue = 0;
 
-        private void cbb_2_0Pa_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
-            if (string.IsNullOrWhiteSpace(cbb_1_0Pa.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_0Pa.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
 
-            CheckPosition = cbb_1_0Pa.Text;
-            CheckProblem = cbb_2_0Pa.Text;
-            CheckValue = 0;
+        private string CheckPosition2 = "";
 
-            txt_zgfy.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_100Pa_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_100Pa.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_100Pa.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_100Pa.Text;
-            CheckProblem = cbb_2_100Pa.Text;
-            CheckValue = 100;
-
-            if (cbb_2_100Pa.Text.Contains("▲") || cbb_2_100Pa.Text.Contains("●"))
-            {
-                CheckValue = 0;
-            }
-
-            txt_zgfy.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_150Pa_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_150Pa.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_150Pa.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_150Pa.Text;
-            CheckProblem = cbb_2_150Pa.Text;
-            CheckValue = 150;
-
-            if (cbb_2_150Pa.Text.Contains("▲") || cbb_2_150Pa.Text.Contains("●"))
-            {
-                CheckValue = 100;
-            }
-            txt_zgfy.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_200Pa_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_200Pa.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_200Pa.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_200Pa.Text;
-            CheckProblem = cbb_2_200Pa.Text;
-            CheckValue = 200;
-
-            if (cbb_2_200Pa.Text.Contains("▲") || cbb_2_200Pa.Text.Contains("●"))
-            {
-                CheckValue = 150;
-            }
-            txt_zgfy.Text = CheckValue.ToString();
-        }
+        /// <summary>
+        /// 问题2
+        /// </summary>
+        private string CheckProblem2 = "";
+        /// <summary>
+        /// 数值2
+        /// </summary>
+        private int CheckValue2 = 0;
 
         private void cbb_2_250Pa_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -815,29 +623,7 @@ namespace text.doors.Detection
             {
                 CheckValue = 200;
             }
-            txt_zgfy.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_300Pa_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_300Pa.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_300Pa.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_300Pa.Text;
-            CheckProblem = cbb_2_300Pa.Text;
-            CheckValue = 300;
-
-            if (cbb_2_300Pa.Text.Contains("▲") || cbb_2_300Pa.Text.Contains("●"))
-            {
-                CheckValue = 250;
-            }
-            txt_zgfy.Text = CheckValue.ToString();
+            txt_fjzb_kk.Text = CheckValue.ToString();
         }
 
         private void cbb_2_350Pa_SelectedIndexChanged(object sender, EventArgs e)
@@ -857,31 +643,9 @@ namespace text.doors.Detection
 
             if (cbb_2_350Pa.Text.Contains("▲") || cbb_2_350Pa.Text.Contains("●"))
             {
-                CheckValue = 300;
+                CheckValue = 250;
             }
-            txt_zgfy.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_400Pa_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_400Pa.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_400Pa.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_400Pa.Text;
-            CheckProblem = cbb_2_400Pa.Text;
-            CheckValue = 400;
-
-            if (cbb_2_400Pa.Text.Contains("▲") || cbb_2_400Pa.Text.Contains("●"))
-            {
-                CheckValue = 350;
-            }
-            txt_zgfy.Text = CheckValue.ToString();
+            txt_fjzb_kk.Text = CheckValue.ToString();
         }
 
         private void cbb_2_500Pa_SelectedIndexChanged(object sender, EventArgs e)
@@ -901,31 +665,9 @@ namespace text.doors.Detection
 
             if (cbb_2_500Pa.Text.Contains("▲") || cbb_2_500Pa.Text.Contains("●"))
             {
-                CheckValue = 400;
+                CheckValue = 350;
             }
-            txt_zgfy.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_600Pa_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_600Pa.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_600Pa.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_600Pa.Text;
-            CheckProblem = cbb_2_600Pa.Text;
-            CheckValue = 600;
-
-            if (cbb_2_600Pa.Text.Contains("▲") || cbb_2_600Pa.Text.Contains("●"))
-            {
-                CheckValue = 500;
-            }
-            txt_zgfy.Text = CheckValue.ToString();
+            txt_fjzb_kk.Text = CheckValue.ToString();
         }
 
         private void cbb_2_700Pa_SelectedIndexChanged(object sender, EventArgs e)
@@ -945,16 +687,39 @@ namespace text.doors.Detection
 
             if (cbb_2_700Pa.Text.Contains("▲") || cbb_2_700Pa.Text.Contains("●"))
             {
-                CheckValue = 600;
+                CheckValue = 500;
             }
-            txt_zgfy.Text = CheckValue.ToString();
+            txt_fjzb_kk.Text = CheckValue.ToString();
+        }
+
+
+        private void cbb_2_1000Pa_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(cbb_1_1000Pa.Text))
+            {
+                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbb_2_1000Pa.Text = "";
+                CheckProblem = "";
+                CheckPosition = "";
+                CheckValue = 0;
+                return;
+            }
+            CheckPosition = cbb_1_1000Pa.Text;
+            CheckProblem = cbb_2_1000Pa.Text;
+            CheckValue = 1000;
+
+            if (cbb_2_1000Pa.Text.Contains("▲") || cbb_2_1000Pa.Text.Contains("●"))
+            {
+                CheckValue = 700;
+            }
+            txt_fjzb_kk.Text = CheckValue.ToString();
         }
 
         private void txt_zgfy_KeyPress(object sender, KeyPressEventArgs e)
         {
             try
             {
-                int zgfy = int.Parse(txt_zgfy.Text);
+                int zgfy = int.Parse(txt_fjzb_kk.Text);
                 CheckValue = zgfy;
             }
             catch
@@ -977,14 +742,17 @@ namespace text.doors.Detection
             }
             Model_dt_sm_Info model = new Model_dt_sm_Info();
             model.dt_Code = _tempCode;
-            model.info_DangH = _tempTong;
-            model.sm_Pa = CheckValue.ToString();
+            model.sm_Pa = CheckValue;
             model.sm_PaDesc = CheckPosition + "," + CheckProblem;
+            model.sm_Pa2 = CheckValue2;
+            model.sm_PaDesc2 = CheckPosition2 + "," + CheckProblem2;
+
+
             model.sm_Remark = txt_desc.Text;
 
-            model.testcount = 1;
-            model.gongchengjiance = txt_ycjy.Text;
 
+
+            model.gongchengjiance = txt_ycjy.Text;
 
             if (this.rdb_bdjy.Checked == true)
             {
@@ -1079,10 +847,7 @@ namespace text.doors.Detection
 
             tim_upNext.Enabled = false;
 
-
-
             btn_ksbd.BackColor = Color.Green;
-
             btn_tzbd.BackColor = Color.Transparent;
             btn_ready.BackColor = Color.Transparent;
             btn_start.BackColor = Color.Transparent;
@@ -1192,190 +957,10 @@ namespace text.doors.Detection
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            if (this.tabControl1.SelectedTab.Name == "水密")
-            {
-                Initial(QM_TestCount.第一次);
-            }
-            else if (this.tabControl1.SelectedTab.Name == "重复水密")
-            {
-                Initial(QM_TestCount.第二次);
-            }
-        }
-
-        private void cbb_2_0Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            if (string.IsNullOrWhiteSpace(cbb_1_0Pa_cf.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_0Pa_cf.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-
-            CheckPosition = cbb_1_0Pa_cf.Text;
-            CheckProblem = cbb_2_0Pa_cf.Text;
-            CheckValue = 0;
-
-            txt_zgfy_cf.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_100Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_100Pa_cf.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_100Pa_cf.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_100Pa_cf.Text;
-            CheckProblem = cbb_2_100Pa_cf.Text;
-            CheckValue = 100;
-
-            if (cbb_2_100Pa_cf.Text.Contains("▲") || cbb_2_100Pa_cf.Text.Contains("●"))
-            {
-                CheckValue = 0;
-            }
-
-            txt_zgfy_cf.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_150Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_150Pa_cf.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_150Pa_cf.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_150Pa_cf.Text;
-            CheckProblem = cbb_2_150Pa_cf.Text;
-            CheckValue = 150;
-
-            if (cbb_2_150Pa_cf.Text.Contains("▲") || cbb_2_150Pa_cf.Text.Contains("●"))
-            {
-                CheckValue = 100;
-            }
-            txt_zgfy_cf.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_200Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_200Pa_cf.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_200Pa_cf.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_200Pa_cf.Text;
-            CheckProblem = cbb_2_200Pa_cf.Text;
-            CheckValue = 200;
-
-            if (cbb_2_200Pa_cf.Text.Contains("▲") || cbb_2_200Pa_cf.Text.Contains("●"))
-            {
-                CheckValue = 150;
-            }
-            txt_zgfy_cf.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_250Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_250Pa_cf.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_250Pa_cf.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_250Pa_cf.Text;
-            CheckProblem = cbb_2_250Pa_cf.Text;
-            CheckValue = 250;
-
-            if (cbb_2_250Pa_cf.Text.Contains("▲") || cbb_2_250Pa_cf.Text.Contains("●"))
-            {
-                CheckValue = 200;
-            }
-            txt_zgfy_cf.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_300Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_300Pa_cf.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_300Pa_cf.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_300Pa_cf.Text;
-            CheckProblem = cbb_2_300Pa_cf.Text;
-            CheckValue = 300;
-
-            if (cbb_2_300Pa_cf.Text.Contains("▲") || cbb_2_300Pa_cf.Text.Contains("●"))
-            {
-                CheckValue = 250;
-            }
-            txt_zgfy_cf.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_350Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_350Pa_cf.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_350Pa_cf.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_350Pa_cf.Text;
-            CheckProblem = cbb_2_350Pa_cf.Text;
-            CheckValue = 350;
-
-            if (cbb_2_350Pa_cf.Text.Contains("▲") || cbb_2_350Pa_cf.Text.Contains("●"))
-            {
-                CheckValue = 300;
-            }
-            txt_zgfy_cf.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_400Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_400Pa_cf.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_400Pa_cf.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_400Pa_cf.Text;
-            CheckProblem = cbb_2_400Pa_cf.Text;
-            CheckValue = 400;
-
-            if (cbb_2_400Pa_cf.Text.Contains("▲") || cbb_2_400Pa_cf.Text.Contains("●"))
-            {
-                CheckValue = 350;
-            }
-            txt_zgfy_cf.Text = CheckValue.ToString();
+            //if (this.tabControl1.SelectedTab.Name == "可开部分")
+            //{
+            //    Initial();
+            //}
         }
 
         private void cbb_2_500Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
@@ -1384,42 +969,20 @@ namespace text.doors.Detection
             {
                 MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cbb_2_500Pa_cf.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
+                CheckProblem2 = "";
+                CheckPosition2 = "";
+                CheckValue2 = 0;
                 return;
             }
-            CheckPosition = cbb_1_500Pa_cf.Text;
-            CheckProblem = cbb_2_500Pa_cf.Text;
-            CheckValue = 500;
+            CheckPosition2 = cbb_1_500Pa_cf.Text;
+            CheckProblem2 = cbb_2_500Pa_cf.Text;
+            CheckValue2 = 500;
 
             if (cbb_2_500Pa_cf.Text.Contains("▲") || cbb_2_500Pa_cf.Text.Contains("●"))
             {
-                CheckValue = 400;
+                CheckValue2 = 400;
             }
-            txt_zgfy_cf.Text = CheckValue.ToString();
-        }
-
-        private void cbb_2_600Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(cbb_1_600Pa_cf.Text))
-            {
-                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbb_2_600Pa_cf.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
-                return;
-            }
-            CheckPosition = cbb_1_600Pa_cf.Text;
-            CheckProblem = cbb_2_600Pa_cf.Text;
-            CheckValue = 600;
-
-            if (cbb_2_600Pa_cf.Text.Contains("▲") || cbb_2_600Pa_cf.Text.Contains("●"))
-            {
-                CheckValue = 500;
-            }
-            txt_zgfy_cf.Text = CheckValue.ToString();
+            txt_fjzb_gd.Text = CheckValue2.ToString();
         }
 
         private void cbb_2_700Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
@@ -1428,21 +991,89 @@ namespace text.doors.Detection
             {
                 MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cbb_2_700Pa_cf.Text = "";
-                CheckProblem = "";
-                CheckPosition = "";
-                CheckValue = 0;
+                CheckProblem2 = "";
+                CheckPosition2 = "";
+                CheckValue2 = 0;
                 return;
             }
-            CheckPosition = cbb_1_700Pa_cf.Text;
-            CheckProblem = cbb_2_700Pa_cf.Text;
-            CheckValue = 700;
+            CheckPosition2 = cbb_1_700Pa_cf.Text;
+            CheckProblem2 = cbb_2_700Pa_cf.Text;
+            CheckValue2 = 700;
 
             if (cbb_2_700Pa_cf.Text.Contains("▲") || cbb_2_700Pa_cf.Text.Contains("●"))
             {
-                CheckValue = 600;
+                CheckValue2 = 500;
             }
-            txt_zgfy_cf.Text = CheckValue.ToString();
+            txt_fjzb_gd.Text = CheckValue2.ToString();
         }
+
+        private void cbb_2_1000Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(cbb_1_1000Pa_cf.Text))
+            {
+                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbb_2_1000Pa_cf.Text = "";
+                CheckProblem2 = "";
+                CheckPosition2 = "";
+                CheckValue2 = 0;
+                return;
+            }
+            CheckPosition2 = cbb_1_1000Pa_cf.Text;
+            CheckProblem2 = cbb_2_1000Pa_cf.Text;
+            CheckValue2 = 1000;
+
+            if (cbb_2_1000Pa_cf.Text.Contains("▲") || cbb_2_1000Pa_cf.Text.Contains("●"))
+            {
+                CheckValue2 = 700;
+            }
+            txt_fjzb_gd.Text = CheckValue2.ToString();
+        }
+
+        private void cbb_2_1500Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(cbb_1_1500Pa_cf.Text))
+            {
+                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbb_2_1500Pa_cf.Text = "";
+                CheckProblem2 = "";
+                CheckPosition2 = "";
+                CheckValue2 = 0;
+                return;
+            }
+            CheckPosition2 = cbb_1_1500Pa_cf.Text;
+            CheckProblem2 = cbb_2_1500Pa_cf.Text;
+            CheckValue2 = 1500;
+
+            if (cbb_2_1500Pa_cf.Text.Contains("▲") || cbb_2_1500Pa_cf.Text.Contains("●"))
+            {
+                CheckValue2 = 1000;
+            }
+            txt_fjzb_gd.Text = CheckValue2.ToString();
+        }
+
+        private void cbb_2_2000Pa_cf_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(cbb_1_2000Pa_cf.Text))
+            {
+                MessageBox.Show("请选择位置", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbb_2_2000Pa_cf.Text = "";
+                CheckProblem2 = "";
+                CheckPosition2 = "";
+                CheckValue2 = 0;
+                return;
+            }
+            CheckPosition2 = cbb_1_2000Pa_cf.Text;
+            CheckProblem2 = cbb_2_2000Pa_cf.Text;
+            CheckValue2 = 2000;
+
+            if (cbb_2_2000Pa_cf.Text.Contains("▲") || cbb_2_2000Pa_cf.Text.Contains("●"))
+            {
+                CheckValue2 = 1500;
+            }
+            txt_fjzb_gd.Text = CheckValue2.ToString();
+        }
+
+
 
         private void btn_1sjcl_Click(object sender, EventArgs e)
         {
@@ -1453,11 +1084,13 @@ namespace text.doors.Detection
             }
             Model_dt_sm_Info model = new Model_dt_sm_Info();
             model.dt_Code = _tempCode;
-            model.info_DangH = _tempTong;
-            model.sm_Pa = CheckValue.ToString();
+            model.sm_Pa = CheckValue;
             model.sm_PaDesc = CheckPosition + "," + CheckProblem;
+            //以前是重复水密，现在改成【可开、固定】
+            model.sm_Pa2 = CheckValue2;
+            model.sm_PaDesc = CheckPosition2 + "," + CheckProblem2;
+
             model.sm_Remark = txt_desc_cf.Text;
-            model.testcount = 2;
             model.gongchengjiance = txt_ycjy.Text;
 
             if (this.rdb_bdjy.Checked == true)
@@ -1498,5 +1131,6 @@ namespace text.doors.Detection
         {
             btn_next.BackColor = Color.Transparent;
         }
+
     }
 }

@@ -13,19 +13,11 @@ namespace text.doors.Default
         /// </summary>
         public enum Kpa_Level
         {
-            liter10,//升10 
-            liter30,//升30 
             liter50,//升50 
-            liter70,//升70 
             liter100,//升100 
             liter150,//升150
             drop100,//降100
-            drop70,//降70
             drop50,//降50
-            drop30,//降30
-            drop10,//降10
-
-            YCJY,//依次加压
         }
 
 
@@ -81,8 +73,6 @@ namespace text.doors.Default
             ZStart,//正压开始
             FReady,//负压预备
             FStart,//负压开始
-            ZYCJY,//正依次加压
-            FYCJY,//负依次加压
             Stop//停止
         }
 

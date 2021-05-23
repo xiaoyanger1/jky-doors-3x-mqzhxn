@@ -19,7 +19,7 @@ namespace text.doors.dal
         /// type:0未完成，1完成
         /// </summary>
         /// <returns></returns>
-        public bool UpdateTestType(string code, string info_DangH, SystemItem systemItem, int type)
+        public bool UpdateTestType(string code,SystemItem systemItem, int type)
         {
             string sql = "update dt_Info  set";
             if (systemItem == SystemItem.Airtight)
@@ -34,7 +34,7 @@ namespace text.doors.dal
             {
                 sql += " WindPressure=" + type + "";
             }
-            sql += " where info_DangH = '" + info_DangH + "' and dt_Code='" + code + "'";
+            sql += " where dt_Code='" + code + "'";
             return SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
         }
         

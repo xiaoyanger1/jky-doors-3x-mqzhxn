@@ -159,10 +159,8 @@ E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.csprojAssemblyR
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.csproj.ResolveComReference.cache
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Detection.AirtightDetection.resources
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Detection.CorrectionFactor.resources
-E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Detection.ExportReport.resources
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Detection.WatertightDetection.resources
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.About.resources
-E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Detection.ComplexAssessment.resources
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Detection.DetectionSet.resources
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Detection.TakePhotos.resources
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Detection.PIDManager.resources

@@ -155,7 +155,6 @@ namespace text.doors
                     else if (con is WindPressureDetection)
                     {
                         con.Dispose();
-                        //WindPressureDetection.releaseThread();
                         ((Form)con).Close();
                     }
                     else
@@ -189,7 +188,6 @@ namespace text.doors
                     }
                     else if (con is WindPressureDetection)
                     {
-                        //WindPressureDetection.releaseThread();
                         con.Dispose();
                         ((Form)con).Close();
                     }
@@ -200,7 +198,7 @@ namespace text.doors
                 }
             }
             this.pl_showItem.Controls.Clear();
-            WatertightDetection rts = new WatertightDetection(_serialPortClient, _tempCode, _tempTong);
+            WatertightDetection rts = new WatertightDetection(_serialPortClient, _tempCode);
 
             rts.TopLevel = false;
             rts.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -448,12 +446,12 @@ namespace text.doors
             if (!DefaultBase.IsSetTong)
                 MessageBox.Show("请先检测设定", "检测", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-            ComplexAssessment ca = new ComplexAssessment(_tempCode);
-            if (DefaultBase.IsOpenComplexAssessment)
-            {
-                ca.Show();
-                ca.TopMost = true;
-            }
+            //ComplexAssessment ca = new ComplexAssessment(_tempCode);
+            //if (DefaultBase.IsOpenComplexAssessment)
+            //{
+            //    ca.Show();
+            //    ca.TopMost = true;
+            //}
 
         }
 

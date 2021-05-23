@@ -1,0 +1,71 @@
+------------------------------------------------------------
+2021-05-23 18:04:22,026 [1] - System.IndexOutOfRangeException: 在位置 0 处没有任何行。
+   在 System.Data.RBTree`1.GetNodeByIndex(Int32 userIndex)
+   在 System.Data.DataRowCollection.get_Item(Int32 index)
+   在 text.doors.Detection.AirtightDetection.Init() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 92
+   在 text.doors.Detection.AirtightDetection..ctor(SerialPortClient tcpClient, String tempCode, String tempTong) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 80
+   在 text.doors.MainForm.ShowAirtightDetection() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 233
+   在 text.doors.MainForm.SelectDangHao(BottomType bt) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 139
+   在 text.doors.Detection.DetectionSet.btn_Ok_Click(Object sender, EventArgs e) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 58
+2021-05-23 18:05:33,064 [1] - System.IndexOutOfRangeException: 在位置 0 处没有任何行。
+   在 System.Data.RBTree`1.GetNodeByIndex(Int32 userIndex)
+   在 System.Data.DataRowCollection.get_Item(Int32 index)
+   在 text.doors.Detection.AirtightDetection.Init() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 92
+   在 text.doors.Detection.AirtightDetection..ctor(SerialPortClient tcpClient, String tempCode, String tempTong) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 80
+   在 text.doors.MainForm.ShowAirtightDetection() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 233
+   在 text.doors.MainForm.SelectDangHao(BottomType bt) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 139
+   在 text.doors.Detection.DetectionSet.btn_Ok_Click(Object sender, EventArgs e) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 58
+2021-05-23 18:05:38,968 [1] - System.IndexOutOfRangeException: 在位置 0 处没有任何行。
+   在 System.Data.RBTree`1.GetNodeByIndex(Int32 userIndex)
+   在 System.Data.DataRowCollection.get_Item(Int32 index)
+   在 text.doors.Detection.AirtightDetection.Init() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 92
+   在 text.doors.Detection.AirtightDetection..ctor(SerialPortClient tcpClient, String tempCode, String tempTong) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\AirtightDetection.cs:行号 80
+   在 text.doors.MainForm.ShowAirtightDetection() 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 233
+   在 text.doors.MainForm.SelectDangHao(BottomType bt) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\MainForm.cs:行号 139
+   在 text.doors.Detection.DetectionSet.btn_Ok_Click(Object sender, EventArgs e) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\DetectionSet.cs:行号 58
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+2021-05-23 20:00:44,520 [1] - System.Data.SQLite.SQLiteException (0x80004005): SQLite error
+no such column: 稳定加压
+   在 System.Data.SQLite.SQLite3.Prepare(String strSql, SQLiteStatement previous, String& strRemain)
+   在 System.Data.SQLite.SQLiteCommand.BuildNextCommand()
+   在 System.Data.SQLite.SQLiteCommand.GetStatement(Int32 index)
+   在 System.Data.SQLite.SQLiteCommand.ExecuteNonQuery()
+   在 Young.Core.SQLite.SQLiteHelper.ExecuteNonQuery(String cmdText, Object[] p) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\Young.Core\SQLite\SQLiteHelper.cs:行号 72
+   在 text.doors.Service.DAL_dt_sm_Info.Add(Model_dt_sm_Info model) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Service\DAL_dt_sm_Info.cs:行号 29
+   在 text.doors.Detection.WatertightDetection.btn_2sjcl_Click(Object sender, EventArgs e) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\WatertightDetection.cs:行号 758
+   在 System.Windows.Forms.Control.OnClick(EventArgs e)
+   在 System.Windows.Forms.Button.OnClick(EventArgs e)
+   在 System.Windows.Forms.Button.OnMouseUp(MouseEventArgs mevent)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ButtonBase.WndProc(Message& m)
+   在 System.Windows.Forms.Button.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+------------------------------------------------------------
+2021-05-23 20:02:33,720 [1] - System.Data.SQLite.SQLiteException (0x80004005): SQLite error
+no such column: 稳定加压
+   在 System.Data.SQLite.SQLite3.Prepare(String strSql, SQLiteStatement previous, String& strRemain)
+   在 System.Data.SQLite.SQLiteCommand.BuildNextCommand()
+   在 System.Data.SQLite.SQLiteCommand.GetStatement(Int32 index)
+   在 System.Data.SQLite.SQLiteCommand.ExecuteNonQuery()
+   在 Young.Core.SQLite.SQLiteHelper.ExecuteNonQuery(String cmdText, Object[] p) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\Young.Core\SQLite\SQLiteHelper.cs:行号 72
+   在 text.doors.Service.DAL_dt_sm_Info.Add(Model_dt_sm_Info model) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Service\DAL_dt_sm_Info.cs:行号 29
+   在 text.doors.Detection.WatertightDetection.btn_2sjcl_Click(Object sender, EventArgs e) 位置 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\Detection\WatertightDetection.cs:行号 764
+   在 System.Windows.Forms.Control.OnClick(EventArgs e)
+   在 System.Windows.Forms.Button.OnClick(EventArgs e)
+   在 System.Windows.Forms.Button.OnMouseUp(MouseEventArgs mevent)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ButtonBase.WndProc(Message& m)
+   在 System.Windows.Forms.Button.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------

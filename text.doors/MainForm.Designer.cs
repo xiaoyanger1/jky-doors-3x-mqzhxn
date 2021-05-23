@@ -1064,7 +1064,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.ms_emun;
             this.Name = "MainForm";
-            this.Text = "建筑外门窗物理性能检测系统";
+            this.Text = "幕墙气密性能检测系统";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ssp_button.ResumeLayout(false);

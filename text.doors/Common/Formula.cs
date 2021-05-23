@@ -474,7 +474,7 @@ namespace text.doors.Common
 
             //    value = value / waterTight.Count;
             //}
-            value = int.Parse(waterTight.Min(t => t.sm_Pa));
+           // value = int.Parse(waterTight.Min(t => t.sm_Pa));
 
             return Formula.GetWaterTightLevel(value);
         }
@@ -540,7 +540,7 @@ namespace text.doors.Common
             if (list.Count == 3)
             {
                 List<int> pas = new List<int>();
-                list.ForEach(t => pas.Add(int.Parse(t.sm_Pa)));
+                list.ForEach(t => pas.Add(t.sm_Pa));
                 pas.Sort();
 
                 int min = pas[0];
@@ -565,23 +565,21 @@ namespace text.doors.Common
             }
             else
             {
-                for (int i = 0; i < list.Count; i++)
-                {
-                    if (string.IsNullOrWhiteSpace(list[i].sm_Pa))
-                    {
-                        value = 0;
-                        break;
-                    }
-                    value += int.Parse(list[i].sm_Pa.ToString());
-                }
+                //for (int i = 0; i < list.Count; i++)
+                //{
+                //    if (string.IsNullOrWhiteSpace(list[i].sm_Pa))
+                //    {
+                //        value = 0;
+                //        break;
+                //    }
+                //    value += int.Parse(list[i].sm_Pa.ToString());
+                //}
                 value = value / list.Count;
             }
 
 
             return value;
         }
-
-
 
 
 
@@ -593,18 +591,19 @@ namespace text.doors.Common
         /// <returns></returns>
         public int Get_Z_AirTightLevel(List<Model_dt_qm_Info> airTight)
         {
-            if (airTight == null || airTight.Count == 0)
-                return 0;
+            //if (airTight == null || airTight.Count == 0)
+            //    return 0;
 
-            double zFc = Math.Round(double.Parse(airTight.Max(t => t.qm_Z_FC)), 2);//Math.Round(airTight.Sum(t => double.Parse(t.qm_Z_FC)) / airTight.Count, 2);
-            double zMj = Math.Round(double.Parse(airTight.Max(t => t.qm_Z_MJ)), 2);//Math.Round(airTight.Sum(t => double.Parse(t.qm_Z_MJ)) / airTight.Count, 2);
+            //double zFc = Math.Round(double.Parse(airTight.Max(t => t.qm_Z_FC)), 2);//Math.Round(airTight.Sum(t => double.Parse(t.qm_Z_FC)) / airTight.Count, 2);
+            //double zMj = Math.Round(double.Parse(airTight.Max(t => t.qm_Z_MJ)), 2);//Math.Round(airTight.Sum(t => double.Parse(t.qm_Z_MJ)) / airTight.Count, 2);
 
-            List<int> level = new List<int>();
-            level.Add(Formula.GetStitchLengthLevel(zFc));
-            level.Add(Formula.GetAreaLevel(zMj));
-            level.Sort();
+            //List<int> level = new List<int>();
+            //level.Add(Formula.GetStitchLengthLevel(zFc));
+            //level.Add(Formula.GetAreaLevel(zMj));
+            //level.Sort();
 
-            return level[0];
+            //return level[0];
+            return 0;
         }
 
 
@@ -616,18 +615,19 @@ namespace text.doors.Common
         /// <returns></returns>
         public int Get_F_AirTightLevel(List<Model_dt_qm_Info> airTight)
         {
-            if (airTight == null || airTight.Count == 0)
-                return 0;
+            //if (airTight == null || airTight.Count == 0)
+            //    return 0;
 
-            double fFc = Math.Round(airTight.Sum(t => double.Parse(t.qm_F_FC)) / airTight.Count, 2);
-            double fMj = Math.Round(airTight.Sum(t => double.Parse(t.qm_F_MJ)) / airTight.Count, 2);
+            //double fFc = Math.Round(airTight.Sum(t => double.Parse(t.qm_F_FC)) / airTight.Count, 2);
+            //double fMj = Math.Round(airTight.Sum(t => double.Parse(t.qm_F_MJ)) / airTight.Count, 2);
 
-            List<int> level = new List<int>();
-            level.Add(Formula.GetStitchLengthLevel(fFc));
-            level.Add(Formula.GetAreaLevel(fMj));
-            level.Sort();
+            //List<int> level = new List<int>();
+            //level.Add(Formula.GetStitchLengthLevel(fFc));
+            //level.Add(Formula.GetAreaLevel(fMj));
+            //level.Sort();
 
-            return level[0];
+            //return level[0];
+            return 0;
         }
 
         /// <summary>
