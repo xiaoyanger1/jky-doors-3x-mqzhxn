@@ -146,7 +146,7 @@ namespace text.doors.Service
                     DemarcateList = GetCalibrating_Dict();
                 }
                 if (_displacement1Dict == null)
-                    displacement1Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器1.ToString()).OrderBy(t => t.x).ToList();
+                    displacement1Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器A1.ToString()).OrderBy(t => t.x).ToList();
                 return _displacement1Dict;
             }
             set
@@ -167,7 +167,7 @@ namespace text.doors.Service
                     DemarcateList = GetCalibrating_Dict();
                 }
                 if (_displacement2Dict == null)
-                    displacement2Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器2.ToString()).OrderBy(t => t.x).ToList();
+                    displacement2Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器A2.ToString()).OrderBy(t => t.x).ToList();
                 return _displacement2Dict;
             }
             set
@@ -189,7 +189,7 @@ namespace text.doors.Service
                     DemarcateList = GetCalibrating_Dict();
                 }
                 if (_displacement3Dict == null)
-                    displacement3Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器3.ToString()).OrderBy(t => t.x).ToList();
+                    displacement3Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器A3.ToString()).OrderBy(t => t.x).ToList();
                 return _displacement3Dict;
             }
             set
@@ -197,6 +197,144 @@ namespace text.doors.Service
                 _displacement3Dict = value;
             }
         }
+
+        //<summary>
+        //位移传感器3
+        //</summary>
+        private static List<Calibrating_Dict> _displacement4Dict = null;
+        public static List<Calibrating_Dict> displacement4Dict
+        {
+            get
+            {
+                if (DemarcateList.Count == 0)
+                {
+                    DemarcateList = GetCalibrating_Dict();
+                }
+                if (_displacement4Dict == null)
+                    displacement4Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器B1.ToString()).OrderBy(t => t.x).ToList();
+                return _displacement4Dict;
+            }
+            set
+            {
+                _displacement4Dict = value;
+            }
+        }
+
+
+        //<summary>
+        //位移传感器3
+        //</summary>
+        private static List<Calibrating_Dict> _displacement5Dict = null;
+        public static List<Calibrating_Dict> displacement5Dict
+        {
+            get
+            {
+                if (DemarcateList.Count == 0)
+                {
+                    DemarcateList = GetCalibrating_Dict();
+                }
+                if (_displacement5Dict == null)
+                    displacement5Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器B2.ToString()).OrderBy(t => t.x).ToList();
+                return _displacement5Dict;
+            }
+            set
+            {
+                _displacement5Dict = value;
+            }
+        }
+
+
+        //<summary>
+        //位移传感器B3
+        //</summary>
+        private static List<Calibrating_Dict> _displacement6Dict = null;
+        public static List<Calibrating_Dict> displacement6Dict
+        {
+            get
+            {
+                if (DemarcateList.Count == 0)
+                {
+                    DemarcateList = GetCalibrating_Dict();
+                }
+                if (_displacement6Dict == null)
+                    displacement6Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器B3.ToString()).OrderBy(t => t.x).ToList();
+                return _displacement6Dict;
+            }
+            set
+            {
+                _displacement6Dict = value;
+            }
+        }
+
+
+        //<summary>
+        //位移传感器c1
+        //</summary>
+        private static List<Calibrating_Dict> _displacement7Dict = null;
+        public static List<Calibrating_Dict> displacement7Dict
+        {
+            get
+            {
+                if (DemarcateList.Count == 0)
+                {
+                    DemarcateList = GetCalibrating_Dict();
+                }
+                if (_displacement7Dict == null)
+                    displacement7Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器C1.ToString()).OrderBy(t => t.x).ToList();
+                return _displacement7Dict;
+            }
+            set
+            {
+                _displacement7Dict = value;
+            }
+        }
+
+
+        //<summary>
+        //位移传感器C2
+        //</summary>
+        private static List<Calibrating_Dict> _displacement8Dict = null;
+        public static List<Calibrating_Dict> displacement8Dict
+        {
+            get
+            {
+                if (DemarcateList.Count == 0)
+                {
+                    DemarcateList = GetCalibrating_Dict();
+                }
+                if (_displacement8Dict == null)
+                    displacement8Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器C2.ToString()).OrderBy(t => t.x).ToList();
+                return _displacement8Dict;
+            }
+            set
+            {
+                _displacement8Dict = value;
+            }
+        }
+
+
+        //<summary>
+        //位移传感器C3
+        //</summary>
+        private static List<Calibrating_Dict> _displacement9Dict = null;
+        public static List<Calibrating_Dict> displacement9Dict
+        {
+            get
+            {
+                if (DemarcateList.Count == 0)
+                {
+                    DemarcateList = GetCalibrating_Dict();
+                }
+                if (_displacement9Dict == null)
+                    displacement9Dict = DemarcateList.FindAll(t => t.Enum == PublicEnum.DemarcateType.位移传感器C3.ToString()).OrderBy(t => t.x).ToList();
+                return _displacement9Dict;
+            }
+            set
+            {
+                _displacement9Dict = value;
+            }
+        }
+
 
 
         private static List<Calibrating_Dict> GetCalibrating_Dict()

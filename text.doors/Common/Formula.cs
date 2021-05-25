@@ -112,17 +112,41 @@ namespace text.doors.Common
             {
                 return DAL_Demarcate_Dict.temperatureDict;
             }
-            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器1)
+            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器A1)
             {
                 return DAL_Demarcate_Dict.displacement1Dict;
             }
-            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器2)
+            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器A2)
             {
                 return DAL_Demarcate_Dict.displacement2Dict;
             }
-            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器3)
+            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器A3)
             {
                 return DAL_Demarcate_Dict.displacement3Dict;
+            }
+            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器B1)
+            {
+                return DAL_Demarcate_Dict.displacement4Dict;
+            }
+            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器B2)
+            {
+                return DAL_Demarcate_Dict.displacement5Dict;
+            }
+            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器B3)
+            {
+                return DAL_Demarcate_Dict.displacement6Dict;
+            }
+            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器C1)
+            {
+                return DAL_Demarcate_Dict.displacement7Dict;
+            }
+            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器C2)
+            {
+                return DAL_Demarcate_Dict.displacement8Dict;
+            }
+            if (enum_Demarcate == PublicEnum.DemarcateType.位移传感器C3)
+            {
+                return DAL_Demarcate_Dict.displacement9Dict;
             }
             return new List<Calibrating_Dict>();
         }

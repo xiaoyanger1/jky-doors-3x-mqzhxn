@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WatertightDetection));
             this.tc_RealTimeSurveillance = new System.Windows.Forms.TabControl();
             this.page_watertight = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -43,11 +44,8 @@
             this.txt_desc = new System.Windows.Forms.TextBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.lbldqyl = new System.Windows.Forms.Label();
-            this.lbl_max = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.lbl_smjc = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.lbl_sdyl = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.tChart_sm = new Steema.TeeChart.TChart();
             this.chart_cms_sm_click = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -257,11 +255,8 @@
             // groupBox10
             // 
             this.groupBox10.Controls.Add(this.lbldqyl);
-            this.groupBox10.Controls.Add(this.lbl_max);
             this.groupBox10.Controls.Add(this.label19);
             this.groupBox10.Controls.Add(this.lbl_smjc);
-            this.groupBox10.Controls.Add(this.label20);
-            this.groupBox10.Controls.Add(this.lbl_sdyl);
             this.groupBox10.Location = new System.Drawing.Point(8, 18);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(788, 61);
@@ -278,17 +273,6 @@
             this.lbldqyl.Size = new System.Drawing.Size(17, 16);
             this.lbldqyl.TabIndex = 29;
             this.lbldqyl.Text = "0";
-            // 
-            // lbl_max
-            // 
-            this.lbl_max.AutoSize = true;
-            this.lbl_max.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbl_max.Location = new System.Drawing.Point(671, -1);
-            this.lbl_max.Name = "lbl_max";
-            this.lbl_max.Size = new System.Drawing.Size(17, 16);
-            this.lbl_max.TabIndex = 30;
-            this.lbl_max.Text = "0";
-            this.lbl_max.Visible = false;
             // 
             // label19
             // 
@@ -309,28 +293,6 @@
             this.lbl_smjc.Size = new System.Drawing.Size(257, 16);
             this.lbl_smjc.TabIndex = 25;
             this.lbl_smjc.Text = "门窗水密性能检测  第0号 第0樘";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label20.Location = new System.Drawing.Point(428, -3);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(144, 16);
-            this.label20.TabIndex = 26;
-            this.label20.Text = "设定压力（帕）：";
-            this.label20.Visible = false;
-            // 
-            // lbl_sdyl
-            // 
-            this.lbl_sdyl.AutoSize = true;
-            this.lbl_sdyl.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbl_sdyl.Location = new System.Drawing.Point(603, -2);
-            this.lbl_sdyl.Name = "lbl_sdyl";
-            this.lbl_sdyl.Size = new System.Drawing.Size(17, 16);
-            this.lbl_sdyl.TabIndex = 28;
-            this.lbl_sdyl.Text = "0";
-            this.lbl_sdyl.Visible = false;
             // 
             // groupBox8
             // 
@@ -1333,9 +1295,7 @@
         private Steema.TeeChart.TChart tChart_sm;
         private Steema.TeeChart.Styles.FastLine sm_Line;
         private System.Windows.Forms.Label lbldqyl;
-        private System.Windows.Forms.Label lbl_sdyl;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label lbl_smjc;
         private System.Windows.Forms.Timer tim_upNext;
         private System.Windows.Forms.ContextMenuStrip chart_cms_sm_click;
@@ -1348,7 +1308,6 @@
         private System.Windows.Forms.Button btn_ksbd;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label lbl_max;
         private System.Windows.Forms.Timer tim_PainPic;
         private System.Windows.Forms.Timer tim_getType;
         public System.Windows.Forms.Timer tim_sm;

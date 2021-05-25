@@ -364,7 +364,6 @@ namespace text.doors.Detection
 
         private void btn_next_Click(object sender, EventArgs e)
         {
-
             var yl = _serialPortClient.GetSMYBSDYL(ref IsSeccess, "XYJ");
             if (this.rdb_bdjy.Checked == true)
             {
@@ -385,7 +384,7 @@ namespace text.doors.Detection
             }
             else
             {
-                if (yl == 700)
+                if (yl == 2000)
                 {
                     Stop();
                     this.btn_ready.Enabled = true;
@@ -789,8 +788,6 @@ namespace text.doors.Detection
         {
             if (!_serialPortClient.sp.IsOpen)
                 return;
-
-            //lbldqyl.Text = RegisterData.CY_High_Value.ToString();
 
             var value = _serialPortClient.GetCY_High();
 

@@ -45,8 +45,8 @@ namespace text.doors.dal
             if (item != null)
             {
                 model.dt_Code = item.Rows[0]["dt_Code"].ToString();
-                model.test_result = item.Rows[0]["Pa"].ToString();
-                model.test_desc = item.Rows[0]["PaType"].ToString();
+                model.test_result = item.Rows[0]["test_result"].ToString();
+                model.test_desc = item.Rows[0]["test_desc"].ToString();
             }
             return model;
         }

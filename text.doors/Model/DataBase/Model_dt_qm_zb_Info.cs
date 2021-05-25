@@ -27,5 +27,23 @@ namespace text.doors.Model.DataBase
         /// </summary>
         public string F_MJ { get; set; }
 
+        public int sjz_value { get; set; }
+        /// <summary>
+        /// 设计值正附加
+        /// </summary>
+        public string sjz_z_fj { get; set; }
+        /// <summary>
+        /// 设计值正总的
+        /// </summary>
+        public string sjz_z_zd { get; set; }
+        /// <summary>
+        /// 设计值负附加
+        /// </summary>
+        public string sjz_f_fj { get; set; }
+        /// <summary>
+        /// 设计值负总的
+        /// </summary>
+        public string sjz_f_zd { get; set; }
+
     }
 }

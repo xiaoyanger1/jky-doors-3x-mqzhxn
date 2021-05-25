@@ -231,17 +231,41 @@ namespace text.doors.Detection
             {
                 enum_Demarcate = PublicEnum.DemarcateType.大气压力传感器;
             }
-            if (name == "位移传感器1(mm)")
+            if (name == "位移传感器A1(mm)")
             {
-                enum_Demarcate = PublicEnum.DemarcateType.位移传感器1;
+                enum_Demarcate = PublicEnum.DemarcateType.位移传感器A1;
             }
-            if (name == "位移传感器2(mm)")
+            if (name == "位移传感器A2(mm)")
             {
-                enum_Demarcate = PublicEnum.DemarcateType.位移传感器2;
+                enum_Demarcate = PublicEnum.DemarcateType.位移传感器A2;
             }
-            if (name == "位移传感器3(mm)")
+            if (name == "位移传感器A3(mm)")
             {
-                enum_Demarcate = PublicEnum.DemarcateType.位移传感器3;
+                enum_Demarcate = PublicEnum.DemarcateType.位移传感器A3;
+            }
+            if (name == "位移传感器B1(mm)")
+            {
+                enum_Demarcate = PublicEnum.DemarcateType.位移传感器B1;
+            }
+            if (name == "位移传感器B2(mm)")
+            {
+                enum_Demarcate = PublicEnum.DemarcateType.位移传感器B2;
+            }
+            if (name == "位移传感器B3(mm)")
+            {
+                enum_Demarcate = PublicEnum.DemarcateType.位移传感器B3;
+            }
+            if (name == "位移传感器C1(mm)")
+            {
+                enum_Demarcate = PublicEnum.DemarcateType.位移传感器C1;
+            }
+            if (name == "位移传感器C2(mm)")
+            {
+                enum_Demarcate = PublicEnum.DemarcateType.位移传感器C2;
+            }
+            if (name == "位移传感器C3(mm)")
+            {
+                enum_Demarcate = PublicEnum.DemarcateType.位移传感器C3;
             }
 
             return enum_Demarcate;

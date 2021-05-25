@@ -135,7 +135,14 @@ namespace text.doors.Detection
             windSpeedInfoList = new List<WindSpeedInfo>();
             var qm_Info = dal_dt_qm_Info.GetQMListByCode(_tempCode);
 
+            var qm_zb_info = dal_dt_qm_Info.GetQMZB(_tempCode);
+
             if (qm_Info == null || qm_Info.Count == 0)
+            {
+                windSpeedInfoList = new WindSpeedInfo().GetWindSpeed();
+                return;
+            }
+            if (qm_zb_info == null)
             {
                 windSpeedInfoList = new WindSpeedInfo().GetWindSpeed();
                 return;
@@ -144,6 +151,9 @@ namespace text.doors.Detection
             gv_list.Enabled = false;
 
             #region 排序插入
+
+            //if (qm_Info.First().testtype == "1")
+            //{
 
             windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "50" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
             {
@@ -232,6 +242,39 @@ namespace text.doors.Detection
                 ZDST = double.Parse(t.ZDST)
             }).ToList());
 
+            //设计值
+            //windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "设计值" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+            //{
+            //    Pa = t.Pa,
+            //    PaType = t.PaType,
+            //    FJST = 0d,
+            //    GFZH = 0d,
+            //    ZDST = 0d
+            //}).ToList());
+            //}
+            //else if (qm_Info.First().testtype == "2")//工程检测  不存在监控数据
+            //{
+            //    this.btn_justready.Enabled = false;
+            //    this.btn_loseready.Enabled = false;
+            //    this.btn_losestart.Enabled = false;
+            //    this.btn_juststart.Enabled = false;
+
+            //    txt_ycjy_z.Text = qm_zb_info.sjz_value.ToString();
+            //    txt_ycjy_f.Text = qm_zb_info.sjz_value.ToString();
+
+            //    //绑定空监测数据
+
+            //    windSpeedInfoList = new WindSpeedInfo().GetWindSpeed();
+
+            //    //绑定设计值
+            //    var sjz = windSpeedInfoList.Find(t => t.Pa == "设计值");
+            //    if (sjz != null)
+            //    {
+            //        sjz.Pressure_F = double.Parse(qm_zb_info.sjz_f_fj);
+            //        sjz.Pressure_F_Z = double.Parse(qm_zb_info.sjz_f_zd);
+            //        sjz.Pressure_Z = double.Parse(qm_zb_info.sjz_z_fj);
+            //        sjz.Pressure_Z_Z = double.Parse(qm_zb_info.sjz_z_zd);
+            //    }
             #endregion
         }
 
@@ -280,26 +323,12 @@ namespace text.doors.Detection
             dgv_ll.Columns[6].ReadOnly = true;
             dgv_ll.Columns[6].DataPropertyName = "KKST";
 
-           
+
             dgv_ll.Columns[2].DefaultCellStyle.Format = "N2";
             dgv_ll.Columns[3].DefaultCellStyle.Format = "N2";
             dgv_ll.Columns[4].DefaultCellStyle.Format = "N2";
             dgv_ll.Columns[5].DefaultCellStyle.Format = "N2";
             dgv_ll.Columns[6].DefaultCellStyle.Format = "N2";
-        }
-
-
-        // <summary>
-        // 获取分级指标
-        // </summary>
-        // <returns></returns>
-        private List<LevelIndex> GetLevelIndex()
-        {
-            return new List<LevelIndex>()
-            {
-                new  LevelIndex(){ Quantity="单位缝长",  PressureZ =Math.Round(zFc,2), PressureF  =Math.Round(fFc,2)},
-                new  LevelIndex(){ Quantity="单位面积",  PressureZ =Math.Round(zMj,2), PressureF  =Math.Round(fMj,2)}
-            };
         }
 
         /// <summary>
@@ -355,15 +384,7 @@ namespace text.doors.Detection
             if (!_serialPortClient.sp.IsOpen)
                 return;
 
-            int c = 0;
-            if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.ZReady || airtightPropertyTest == PublicEnum.AirtightPropertyTest.FReady)
-            {
-                c = _serialPortClient.GetCY_High();
-            }
-            else
-            {
-                c = _serialPortClient.GetCY_Low();
-            }
+            int c = _serialPortClient.GetCY_Low();
 
 
             lbl_dqyl.Text = c.ToString();
@@ -907,7 +928,7 @@ namespace text.doors.Detection
         private List<Model_dt_qm_Info> GetQMInfoList()
         {
             List<Model_dt_qm_Info> list = new List<Model_dt_qm_Info>();
-
+            var sjzValue = txt_ycjy_z.Text;
             for (int i = 0; i <= 9; i++)
             {
                 Model_dt_qm_Info model = new Model_dt_qm_Info();
@@ -920,6 +941,7 @@ namespace text.doors.Detection
                 model.ZDST = double.Parse(this.dgv_ll.Rows[i].Cells[4].Value.ToString()).ToString("f2");
                 model.MQZT = double.Parse(this.dgv_ll.Rows[i].Cells[5].Value.ToString()).ToString("f2");
                 model.KKST = double.Parse(this.dgv_ll.Rows[i].Cells[6].Value.ToString()).ToString("f2");
+                model.testtype = int.Parse(sjzValue) > 0 ? "2" : "1";
                 list.Add(model);
             }
             return list;
@@ -1035,7 +1057,6 @@ namespace text.doors.Detection
                 if (value == 3)
                 {
                     airtightPropertyTest = PublicEnum.AirtightPropertyTest.Stop;
-                    //lbl_setYL.Text = "0";
                     OpenBtnType();
                 }
             }
@@ -1046,8 +1067,6 @@ namespace text.doors.Detection
                 if (value >= 15)
                 {
                     airtightPropertyTest = PublicEnum.AirtightPropertyTest.Stop;
-                    //IsStart = false;
-                    //lbl_setYL.Text = "0";
                     OpenBtnType();
                 }
             }
@@ -1059,7 +1078,6 @@ namespace text.doors.Detection
                 if (value == 3)
                 {
                     airtightPropertyTest = PublicEnum.AirtightPropertyTest.Stop;
-                    //lbl_setYL.Text = "0";
                     OpenBtnType();
                 }
             }
@@ -1071,8 +1089,6 @@ namespace text.doors.Detection
                 if (value >= 15)
                 {
                     airtightPropertyTest = PublicEnum.AirtightPropertyTest.Stop;
-                    //IsStart = false;
-                    //lbl_setYL.Text = "0";
                     OpenBtnType();
                 }
             }
@@ -1113,6 +1129,114 @@ namespace text.doors.Detection
 
         }
 
+        private void btn_ycjy_z_Click(object sender, EventArgs e)
+        {
+            //index = 0;
+            //this.btn_ycjy_z.Enabled = false;
+            //int value = 0;
+            //int.TryParse(txt_ycjy_z.Text, out value);
+
+            //if (value == 0)
+            //{
+            //    this.btn_ycjy_z.Enabled = true;
+            //    return;
+            //}
+            //var res = _serialPortClient.Set_FY_Value(BFMCommand.正依次加压值, BFMCommand.正依次加压, value);
+            //if (!res)
+            //{
+            //    MessageBox.Show("正依次加压！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+            ////重复做
+            //if (rdb_fjstl.Checked)
+            //{
+            //    foreach (var item in windSpeedInfoList)
+            //    {
+            //        item.Pressure_Z = 0;
+            //    }
+            //}
+            //else if (rdb_zdstl.Checked)
+            //{
+            //    foreach (var item in windSpeedInfoList)
+            //    {
+            //        item.Pressure_Z_Z = 0;
+            //    }
+
+            //}
+            //BindFlowBase();
+
+
+            ////本程序控制
+            //btn_ycjy_z.BackColor = Color.Green;
+
+            //airtightPropertyTest = PublicEnum.AirtightPropertyTest.ZYCJY;
+
+
+            ////关闭监控按钮
+            //this.btn_justready.Enabled = false;
+            //this.btn_loseready.Enabled = false;
+            //this.btn_losestart.Enabled = false;
+            //this.btn_juststart.Enabled = false;
+
+
+            //btn_justready.BackColor = Color.Transparent;
+            //btn_loseready.BackColor = Color.Transparent;
+            //btn_losestart.BackColor = Color.Transparent;
+            //btn_juststart.BackColor = Color.Transparent;
+        }
+
+        private void btn_ycjyf_Click(object sender, EventArgs e)
+        {
+            //index = 0;
+            //this.btn_ycjyf.Enabled = false;
+            //int value = 0;
+
+            //int.TryParse(txt_ycjy_f.Text, out value);
+
+            //if (value == 0)
+            //{
+            //    this.btn_ycjyf.Enabled = true;
+            //    return;
+            //}
+
+            //var res = _serialPortClient.Set_FY_Value(BFMCommand.负依次加压值, BFMCommand.负依次加压, value);
+            //if (!res)
+            //{
+            //    MessageBox.Show("负依次加压异常！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
+            //if (rdb_fjstl.Checked)
+            //{
+            //    foreach (var item in windSpeedInfoList)
+            //    {
+            //        item.Pressure_F = 0;
+            //    }
+            //}
+            //else if (rdb_zdstl.Checked)
+            //{
+            //    foreach (var item in windSpeedInfoList)
+            //    {
+            //        item.Pressure_F_Z = 0;
+            //    }
+            //}
+            //BindFlowBase();
+
+            ////本程序控制
+            //btn_ycjyf.BackColor = Color.Green;
+            //airtightPropertyTest = PublicEnum.AirtightPropertyTest.FYCJY;
+
+            ////关闭监控按钮
+            //this.btn_justready.Enabled = false;
+            //this.btn_loseready.Enabled = false;
+            //this.btn_losestart.Enabled = false;
+            //this.btn_juststart.Enabled = false;
+
+            //btn_justready.BackColor = Color.Transparent;
+            //btn_loseready.BackColor = Color.Transparent;
+            //btn_losestart.BackColor = Color.Transparent;
+            //btn_juststart.BackColor = Color.Transparent;
+        }
 
         private void tChart_sm_MouseDown(object sender, MouseEventArgs e)
         {

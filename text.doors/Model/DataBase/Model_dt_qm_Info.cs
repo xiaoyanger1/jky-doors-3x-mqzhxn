@@ -9,24 +9,10 @@ namespace text.doors.Model.DataBase
     public class Model_dt_qm_Info
     {
         public string dt_Code { get; set; }
-       
-        ///// <summary>
-        ///// 正压缝长
-        ///// </summary>
-        //public string qm_Z_FC { get; set; }
-        ///// <summary>
-        ///// 正压缝长
-        ///// </summary>
-        //public string qm_F_FC { get; set; }
-        ///// <summary>
-        ///// 正压面积
-        ///// </summary>
-        //public string qm_Z_MJ { get; set; }
-        ///// <summary>
-        ///// 负压面积
-        ///// </summary>
-        //public string qm_F_MJ { get; set; }
-
+        /// <summary>
+        /// 1.监控 2.工程检测
+        /// </summary>
+        public string testtype { get; set; }
         public string Pa { get; set; }
 
         /// <summary>

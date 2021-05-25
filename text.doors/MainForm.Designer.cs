@@ -94,17 +94,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lbl_cydcgq = new System.Windows.Forms.Label();
-            this.lbl_Displace3 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.lbl_Displace2 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.lbl_Displace1 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.lbl_dqylcgq = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -684,9 +675,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(91, 24);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(17, 12);
+            this.label2.Size = new System.Drawing.Size(11, 12);
             this.label2.TabIndex = 1;
-            this.label2.Text = "°";
+            this.label2.Text = "%";
             // 
             // txt_lqfhz
             // 
@@ -701,7 +692,7 @@
             // 
             this.hsb_lqfControl.LargeChange = 6;
             this.hsb_lqfControl.Location = new System.Drawing.Point(12, 48);
-            this.hsb_lqfControl.Maximum = 50;
+            this.hsb_lqfControl.Maximum = 105;
             this.hsb_lqfControl.Name = "hsb_lqfControl";
             this.hsb_lqfControl.Size = new System.Drawing.Size(148, 17);
             this.hsb_lqfControl.TabIndex = 3;
@@ -721,17 +712,8 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.lbl_cydcgq);
-            this.groupBox3.Controls.Add(this.lbl_Displace3);
             this.groupBox3.Controls.Add(this.label19);
-            this.groupBox3.Controls.Add(this.label17);
             this.groupBox3.Controls.Add(this.label20);
-            this.groupBox3.Controls.Add(this.label18);
-            this.groupBox3.Controls.Add(this.lbl_Displace2);
-            this.groupBox3.Controls.Add(this.label12);
-            this.groupBox3.Controls.Add(this.label15);
-            this.groupBox3.Controls.Add(this.lbl_Displace1);
-            this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.lbl_dqylcgq);
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.label14);
@@ -746,7 +728,7 @@
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Location = new System.Drawing.Point(13, 446);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(179, 213);
+            this.groupBox3.Size = new System.Drawing.Size(179, 151);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "测量结果：";
@@ -761,17 +743,6 @@
             this.lbl_cydcgq.TabIndex = 8;
             this.lbl_cydcgq.Text = "0";
             // 
-            // lbl_Displace3
-            // 
-            this.lbl_Displace3.AutoSize = true;
-            this.lbl_Displace3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbl_Displace3.Location = new System.Drawing.Point(88, 184);
-            this.lbl_Displace3.Name = "lbl_Displace3";
-            this.lbl_Displace3.Size = new System.Drawing.Size(16, 16);
-            this.lbl_Displace3.TabIndex = 20;
-            this.lbl_Displace3.Text = "0";
-            this.lbl_Displace3.Visible = false;
-            // 
             // label19
             // 
             this.label19.AutoSize = true;
@@ -781,16 +752,6 @@
             this.label19.TabIndex = 6;
             this.label19.Text = "Pa";
             // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(153, 187);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(17, 12);
-            this.label17.TabIndex = 18;
-            this.label17.Text = "mm";
-            this.label17.Visible = false;
-            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -799,78 +760,6 @@
             this.label20.Size = new System.Drawing.Size(53, 12);
             this.label20.TabIndex = 7;
             this.label20.Text = "差压低：";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(0, 187);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(71, 12);
-            this.label18.TabIndex = 19;
-            this.label18.Text = "位移传感器3";
-            this.label18.Visible = false;
-            // 
-            // lbl_Displace2
-            // 
-            this.lbl_Displace2.AutoSize = true;
-            this.lbl_Displace2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbl_Displace2.Location = new System.Drawing.Point(88, 162);
-            this.lbl_Displace2.Name = "lbl_Displace2";
-            this.lbl_Displace2.Size = new System.Drawing.Size(16, 16);
-            this.lbl_Displace2.TabIndex = 17;
-            this.lbl_Displace2.Text = "0";
-            this.lbl_Displace2.Visible = false;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(153, 166);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(17, 12);
-            this.label12.TabIndex = 15;
-            this.label12.Text = "mm";
-            this.label12.Visible = false;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(1, 166);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(71, 12);
-            this.label15.TabIndex = 16;
-            this.label15.Text = "位移传感器2";
-            this.label15.Visible = false;
-            // 
-            // lbl_Displace1
-            // 
-            this.lbl_Displace1.AutoSize = true;
-            this.lbl_Displace1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbl_Displace1.Location = new System.Drawing.Point(88, 139);
-            this.lbl_Displace1.Name = "lbl_Displace1";
-            this.lbl_Displace1.Size = new System.Drawing.Size(16, 16);
-            this.lbl_Displace1.TabIndex = 14;
-            this.lbl_Displace1.Text = "0";
-            this.lbl_Displace1.Visible = false;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(154, 143);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(17, 12);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "mm";
-            this.label5.Visible = false;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(0, 143);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(71, 12);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "位移传感器1";
-            this.label6.Visible = false;
             // 
             // lbl_dqylcgq
             // 
@@ -1018,7 +907,7 @@
             // 
             this.hsb_WindControl.LargeChange = 6;
             this.hsb_WindControl.Location = new System.Drawing.Point(14, 48);
-            this.hsb_WindControl.Maximum = 50;
+            this.hsb_WindControl.Maximum = 55;
             this.hsb_WindControl.Name = "hsb_WindControl";
             this.hsb_WindControl.Size = new System.Drawing.Size(148, 17);
             this.hsb_WindControl.TabIndex = 0;
@@ -1166,15 +1055,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripStatusLabel tsl_tcpclient;
-        private System.Windows.Forms.Label lbl_Displace3;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label lbl_Displace2;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label lbl_Displace1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ToolStripMenuItem 水密监控ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 气密监控ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 抗风压监控ToolStripMenuItem;

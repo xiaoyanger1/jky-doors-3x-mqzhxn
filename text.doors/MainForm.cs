@@ -477,14 +477,6 @@ namespace text.doors
         {
             if (!DefaultBase.IsSetTong)
                 MessageBox.Show("请先检测设定", "检测", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-            //ComplexAssessment ca = new ComplexAssessment(_tempCode);
-            //if (DefaultBase.IsOpenComplexAssessment)
-            //{
-            //    ca.Show();
-            //    ca.TopMost = true;
-            //}
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -592,10 +584,9 @@ namespace text.doors
 
         void hsb_lqf_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //todo:确认/640
             if (e.Result == null)
                 return;
-            var value = int.Parse(e.Result.ToString()) / 640;
+            var value = int.Parse(e.Result.ToString()) / 320;
             txt_lqfhz.Text = value.ToString();
         }
 
@@ -664,9 +655,6 @@ namespace text.doors
             p.Show();
         }
 
-
-        // private bool _FengJiQiDongStat = false;
-
         private void btn_fjqd_Click(object sender, EventArgs e)
         {
             var res = _serialPortClient.SendFengJiQiDong(1);
@@ -676,7 +664,6 @@ namespace text.doors
                 return;
             }
 
-            //btn_fjqd.BackColor = _FengJiQiDongStat ? Color.Green : Color.Transparent;
             btn_fjqd.BackColor = Color.Green;
             btn_fjtz.BackColor = Color.Transparent;
         }
@@ -695,7 +682,6 @@ namespace text.doors
             btn_fjqd.BackColor = Color.Transparent;
         }
 
-        //private bool _ShuiBengQiDong = false;
         private void btn_sbqd_Click(object sender, EventArgs e)
         {
             var res = _serialPortClient.SendShuiBengQiDong(1);
@@ -765,7 +751,6 @@ namespace text.doors
             btn_qmfk.BackColor = Color.Transparent;
             btn_qmfg.BackColor = Color.Green;
         }
-        // private bool _SiTongFaKai = false;
         private void btn_stfk_Click(object sender, EventArgs e)
         {
             var res = _serialPortClient.SendSiTongFaKai(1);
@@ -797,7 +782,7 @@ namespace text.doors
             else
                 txt_lqfhz.Text = (hsb_lqfControl.Value).ToString();
 
-            double value = (hsb_lqfControl.Value) * 640;
+            double value = (hsb_lqfControl.Value) * 320;
 
             var res = _serialPortClient.SendLQFKZ(value);
 

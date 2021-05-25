@@ -7,12 +7,14 @@ using System.Drawing;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using text.doors.Common;
 using text.doors.dal;
 using text.doors.Model;
 using text.doors.Model.DataBase;
+using static text.doors.Detection.WindPressureDetection;
 
 namespace text.doors.Detection
 {
@@ -29,12 +31,18 @@ namespace text.doors.Detection
 
         private DAL_dt_pd_Info dal_dt_pd_Info = new DAL_dt_pd_Info();
 
+        public static Thread td;
+
         public PlaneDeformation(SerialPortClient serialPortClient, string tempCode)
         {
             InitializeComponent();
             this._serialPortClient = serialPortClient;
             this._tempCode = tempCode;
             Init();
+
+            td = new Thread(BindFromInput);
+            td.IsBackground = true;
+            td.Start();
 
         }
 
@@ -55,6 +63,37 @@ namespace text.doors.Detection
                 txt_reslevel.Text = model.test_result;
             }
         }
+
+        /// <summary>
+        /// 实时绑定数据
+        /// </summary>
+        private void BindFromInput()
+        {
+            SetRealTimeData st1 = new SetRealTimeData(Update_wy10_Text);
+
+            while (true)
+            {
+                try
+                {
+                    if (txt_biaojilingdian.InvokeRequired)
+                        txt_biaojilingdian.Invoke(st1, _serialPortClient.GetDisplace10().ToString());
+                    else
+                        txt_biaojilingdian.Text = _serialPortClient.GetDisplace10().ToString();
+                }
+                catch (Exception ex)
+                {
+                    td.Abort();
+                }
+            }
+        }
+        public delegate void SetRealTimeData(string value);
+
+        private void Update_wy10_Text(string value)
+        {
+            txt_biaojilingdian.Text = value;
+        }
+
+
         #region 图表控制
         /// <summary>
         /// 风速图标
@@ -62,7 +101,7 @@ namespace text.doors.Detection
         private void PMchartInit()
         {
             dtnow = DateTime.Now;
-            pm_Line.GetVertAxis.SetMinMax(-600, 600);
+            pm_Line.GetVertAxis.SetMinMax(-200, 200);
         }
 
         private void AnimateSeries(Steema.TeeChart.TChart chart, int yl)
@@ -93,17 +132,17 @@ namespace text.doors.Detection
             dgv_level.AllowUserToResizeColumns = false;
             dgv_level.AllowUserToResizeRows = false;
             dgv_level.Columns[0].HeaderText = "等级";
-            dgv_level.Columns[0].Width = 53;
+            dgv_level.Columns[0].Width = 60;
             dgv_level.Columns[0].ReadOnly = true;
             dgv_level.Columns[0].DataPropertyName = "Level";
 
             dgv_level.Columns[1].HeaderText = "振幅";
-            dgv_level.Columns[1].Width = 2;
+            dgv_level.Columns[1].Width = 60;
             dgv_level.Columns[1].DataPropertyName = "ZhenFu";
 
 
             dgv_level.Columns[2].HeaderText = "修正";
-            dgv_level.Columns[2].Width = 54;
+            dgv_level.Columns[2].Width = 60;
             dgv_level.Columns[2].DataPropertyName = "XiuZheng";
 
 
@@ -126,25 +165,21 @@ namespace text.doors.Detection
             return list;
         }
 
-        private bool _TuiGanQianTui = false;
-        private void btn_qt_Click(object sender, EventArgs e)
-        {
-
-        }
-        private bool _TuiGanHouLa = false;
-        private void btn_hl_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void btn_zore_Click(object sender, EventArgs e)
         {
-
+            if (!_serialPortClient.sp.IsOpen)
+                return;
+            _serialPortClient.SendWYGL_PM();
         }
 
         private void btn_level1_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SendLevelBtn(1);
+            double v1 = 0d;
+            double v2 = 0d;
+            GetDGVValue(1, ref v1, ref v2);
+
+            var res = _serialPortClient.SendLevelBtn(1, v1, v2);
             if (!res)
             {
                 MessageBox.Show("第一级异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -158,9 +193,13 @@ namespace text.doors.Detection
             btn_level5.BackColor = Color.Transparent;
         }
 
+
         private void btn_level2_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SendLevelBtn(2);
+            double v1 = 0d;
+            double v2 = 0d;
+            GetDGVValue(2, ref v1, ref v2);
+            var res = _serialPortClient.SendLevelBtn(2, v1, v2);
             if (!res)
             {
                 MessageBox.Show("第二级异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -176,7 +215,10 @@ namespace text.doors.Detection
 
         private void btn_level3_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SendLevelBtn(3);
+            double v1 = 0d;
+            double v2 = 0d;
+            GetDGVValue(3, ref v1, ref v2);
+            var res = _serialPortClient.SendLevelBtn(3, v1, v2);
             if (!res)
             {
                 MessageBox.Show("第三级异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -192,7 +234,10 @@ namespace text.doors.Detection
 
         private void btn_level4_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SendLevelBtn(4);
+            double v1 = 0d;
+            double v2 = 0d;
+            GetDGVValue(4, ref v1, ref v2);
+            var res = _serialPortClient.SendLevelBtn(4, v1, v2);
             if (!res)
             {
                 MessageBox.Show("第四级异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -208,7 +253,10 @@ namespace text.doors.Detection
 
         private void btn_level5_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SendLevelBtn(5);
+            double v1 = 0d;
+            double v2 = 0d;
+            GetDGVValue(5, ref v1, ref v2);
+            var res = _serialPortClient.SendLevelBtn(5, v1, v2);
             if (!res)
             {
                 MessageBox.Show("第五级异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -237,25 +285,47 @@ namespace text.doors.Detection
             btn_level5.BackColor = Color.Transparent;
         }
 
+
+        private void GetDGVValue(int level, ref double v1, ref double v2)
+        {
+
+            if (level == 1)
+            {
+                v1 = double.Parse(this.dgv_level.Rows[0].Cells[1].Value.ToString());
+                v2 = double.Parse(this.dgv_level.Rows[0].Cells[2].Value.ToString());
+            }
+            else if (level == 2)
+            {
+                v1 = double.Parse(this.dgv_level.Rows[1].Cells[1].Value.ToString());
+                v2 = double.Parse(this.dgv_level.Rows[1].Cells[2].Value.ToString());
+            }
+            else if (level == 3)
+            {
+                v1 = double.Parse(this.dgv_level.Rows[2].Cells[1].Value.ToString());
+                v2 = double.Parse(this.dgv_level.Rows[2].Cells[2].Value.ToString());
+            }
+            else if (level == 4)
+            {
+                v1 = double.Parse(this.dgv_level.Rows[3].Cells[1].Value.ToString());
+                v2 = double.Parse(this.dgv_level.Rows[3].Cells[2].Value.ToString());
+            }
+            else if (level == 5)
+            {
+                v1 = double.Parse(this.dgv_level.Rows[4].Cells[1].Value.ToString());
+                v2 = double.Parse(this.dgv_level.Rows[4].Cells[2].Value.ToString());
+            }
+        }
+
         private void tim_PainPic_Tick(object sender, EventArgs e)
         {
             if (!_serialPortClient.sp.IsOpen)
                 return;
 
-            int c = 0;
-            //if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.ZReady || airtightPropertyTest == PublicEnum.AirtightPropertyTest.FReady)
-            //{
-            //    c = _serialPortClient.GetCY_High();
-            //}
-            //else
-            //{
-            //    c = _serialPortClient.GetCY_Low();
-            //}
-
+            double c = _serialPortClient.GetDisplace10();
 
             lbl_dqyl.Text = c.ToString();
 
-            AnimateSeries(this.tChart_pm, c);
+            AnimateSeries(this.tChart_pm, (int)c);
         }
 
         private void btn_datadispose_Click(object sender, EventArgs e)
@@ -269,7 +339,16 @@ namespace text.doors.Detection
             model.dt_Code = _tempCode;
             model.test_result = txt_reslevel.Text;
             model.test_desc = txt_desc.Text;
-            dal_dt_pd_Info.AddPD(model);
+            if (dal_dt_pd_Info.AddPD(model))
+            {
+                MessageBox.Show("处理完成！", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("处理失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
         }
 
         private void btn_qt_MouseDown(object sender, MouseEventArgs e)
@@ -314,6 +393,37 @@ namespace text.doors.Detection
                 return;
             }
             btn_hl.BackColor = Color.Transparent;
+        }
+
+        private void tim_WY_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_tgstart_Click(object sender, EventArgs e)
+        {
+            var res = _serialPortClient.SendTuiGanQiDong(1);
+            if (!res)
+            {
+                MessageBox.Show("推杆启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            btn_tgstart.BackColor = Color.Green;
+            btn_stop.BackColor = Color.Transparent;
+        }
+
+        private void btn_stop_Click(object sender, EventArgs e)
+        {
+            var res = _serialPortClient.SendTuiGanQiDong(0);
+            if (!res)
+            {
+                MessageBox.Show("推杆停止异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            btn_tgstart.BackColor = Color.Transparent;
+            btn_stop.BackColor = Color.Green;
         }
     }
 }

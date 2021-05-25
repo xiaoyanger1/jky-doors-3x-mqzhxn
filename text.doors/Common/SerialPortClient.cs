@@ -777,7 +777,7 @@ namespace text.doors.Common
                         if (holding_register.Length > 0)
                         {
                             res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器1, float.Parse(res.ToString()));
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器A1, float.Parse(res.ToString()));
                         }
                     }
                     else if (level == "B")
@@ -787,7 +787,7 @@ namespace text.doors.Common
                         if (holding_register.Length > 0)
                         {
                             res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器4, float.Parse(res.ToString()));
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器B1, float.Parse(res.ToString()));
                         }
                     }
                     else if (level == "C")
@@ -797,7 +797,7 @@ namespace text.doors.Common
                         if (holding_register.Length > 0)
                         {
                             res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器7, float.Parse(res.ToString()));
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器C1, float.Parse(res.ToString()));
                         }
                     }
                 }
@@ -823,7 +823,7 @@ namespace text.doors.Common
                         if (holding_register.Length > 0)
                         {
                             res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器2, float.Parse(res.ToString()));
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器A2, float.Parse(res.ToString()));
                         }
                     }
                     else if (level == "B")
@@ -833,7 +833,7 @@ namespace text.doors.Common
                         if (holding_register.Length > 0)
                         {
                             res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器5, float.Parse(res.ToString()));
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器B2, float.Parse(res.ToString()));
                         }
                     }
                     else if (level == "C")
@@ -843,9 +843,47 @@ namespace text.doors.Common
                         if (holding_register.Length > 0)
                         {
                             res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器8, float.Parse(res.ToString()));
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器B3, float.Parse(res.ToString()));
                         }
                     }
+                }
+                catch (Exception)
+                { }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// 获取位移传感器10
+        /// </summary>
+        public double GetDisplace10()
+        {
+            double res = 0;
+            if (sp.IsOpen)
+            {
+                try
+                {
+
+                    _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移10);
+                    ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
+
+                    var f = double.Parse(holding_register[0].ToString());
+
+                    if (int.Parse(holding_register[0].ToString()) > 35000)
+                    {
+                        Logger.Info("位移负数" + double.Parse(holding_register[0].ToString()));
+                        f = -(65535 - int.Parse(holding_register[0].ToString()));
+                    }
+                    else
+                    {
+                        Logger.Info("位移正数" + double.Parse(holding_register[0].ToString()));
+                        f = int.Parse(holding_register[0].ToString());
+                    }
+                    f = f / 100;
+                    res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器PM, float.Parse(f.ToString()));
+                    return double.Parse(Math.Round(res, 2).ToString());
+
+
                 }
                 catch (Exception)
                 { }
@@ -871,7 +909,7 @@ namespace text.doors.Common
                         if (holding_register.Length > 0)
                         {
                             res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器3, float.Parse(res.ToString()));
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器A3, float.Parse(res.ToString()));
                         }
                     }
                     else if (level == "B")
@@ -881,7 +919,7 @@ namespace text.doors.Common
                         if (holding_register.Length > 0)
                         {
                             res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器6, float.Parse(res.ToString()));
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器B3, float.Parse(res.ToString()));
                         }
                     }
                     else if (level == "C")
@@ -891,7 +929,7 @@ namespace text.doors.Common
                         if (holding_register.Length > 0)
                         {
                             res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器9, float.Parse(res.ToString()));
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器C3, float.Parse(res.ToString()));
                         }
                     }
                 }
@@ -909,8 +947,6 @@ namespace text.doors.Common
             {
                 if (sp.IsOpen)
                 {
-                    //lock (syncLock)
-                    //{
                     _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移1标零);
                     bool[] readCoils = _MASTER.ReadCoils(_SlaveID, _StartAddress, _NumOfPoints);
                     if (readCoils[0])
@@ -919,7 +955,6 @@ namespace text.doors.Common
                     {
                         _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, true);
                     }
-                    //}
                 }
             }
             catch (Exception ex)
@@ -930,69 +965,32 @@ namespace text.doors.Common
             return true;
         }
 
-
-
         /// <summary>
-        /// 设置位移归零
+        /// 设置位移归零平面
         /// </summary>
-        public bool SendWYGL2()
+        public bool SendWYGL_PM()
         {
             try
             {
                 if (sp.IsOpen)
                 {
-                    lock (syncLock)
+                    _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移10标零);
+                    bool[] readCoils = _MASTER.ReadCoils(_SlaveID, _StartAddress, _NumOfPoints);
+                    if (readCoils[0])
+                        _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, false);
+                    else
                     {
-                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移2标零);
-                        bool[] readCoils2 = _MASTER.ReadCoils(_SlaveID, _StartAddress, _NumOfPoints);
-                        if (readCoils2[0])
-                            _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, false);
-                        else
-                        {
-                            _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, true);
-                        }
+                        _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, true);
                     }
                 }
             }
             catch (Exception ex)
             {
-
+                Logger.Error(ex);
                 return false;
             }
             return true;
         }
-
-
-        /// <summary>
-        /// 设置位移归零
-        /// </summary>
-        public bool SendWYGL3()
-        {
-            try
-            {
-                if (sp.IsOpen)
-                {
-                    lock (syncLock)
-                    {
-                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移3标零);
-                        bool[] readCoils3 = _MASTER.ReadCoils(_SlaveID, _StartAddress, _NumOfPoints);
-                        if (readCoils3[0])
-                            _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, false);
-                        else
-                        {
-                            _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, true);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-                return false;
-            }
-            return true;
-        }
-
 
 
 
@@ -1537,8 +1535,6 @@ namespace text.doors.Common
             {
                 try
                 {
-                    //lock (syncLock)
-                    //{
                     _StartAddress = BFMCommand.GetCommandDict(BFMCommand.差压低显示);
 
                     ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
@@ -1554,7 +1550,6 @@ namespace text.doors.Common
                         f = double.Parse((f / 10).ToString());
                         res = Formula.GetValues(PublicEnum.DemarcateType.差压传感器低, float.Parse(f.ToString()));
                         return int.Parse(Math.Round(res, 0).ToString());
-                        //}
                     }
                 }
                 catch (Exception ex) { }
@@ -2203,7 +2198,7 @@ namespace text.doors.Common
         /// <summary>
         /// 级别按钮
         /// </summary>
-        public bool SendLevelBtn(int commonNum)
+        public bool SendLevelBtn(int commonNum, double v1, double v2)
         {
             try
             {
@@ -2211,31 +2206,40 @@ namespace text.doors.Common
                 {
                     lock (syncLock)
                     {
-                        string btnNum = "";
+                        string btn_ZF_Num = "";
+                        string btn_XZ_Num = "";
                         if (commonNum == 1)
                         {
-                            btnNum = BFMCommand.第一级;
+                            btn_ZF_Num = BFMCommand.第一级振幅;
+                            btn_XZ_Num = BFMCommand.第一级修正;
                         }
                         else if (commonNum == 2)
                         {
-                            btnNum = BFMCommand.第二级;
+                            btn_ZF_Num = BFMCommand.第一级振幅;
+                            btn_XZ_Num = BFMCommand.第一级修正;
                         }
                         else if (commonNum == 3)
                         {
-                            btnNum = BFMCommand.第三级;
+                            btn_ZF_Num = BFMCommand.第一级振幅;
+                            btn_XZ_Num = BFMCommand.第一级修正;
                         }
                         else if (commonNum == 4)
                         {
-                            btnNum = BFMCommand.第四级;
+                            btn_ZF_Num = BFMCommand.第一级振幅;
+                            btn_XZ_Num = BFMCommand.第一级修正;
                         }
                         else if (commonNum == 5)
                         {
-                            btnNum = BFMCommand.第五级;
+                            btn_ZF_Num = BFMCommand.第一级振幅;
+                            btn_XZ_Num = BFMCommand.第一级修正;
                         }
 
 
-                        _StartAddress = BFMCommand.GetCommandDict(btnNum);
-                        _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, true);
+                        _StartAddress = BFMCommand.GetCommandDict(btn_ZF_Num);
+                        _MASTER.WriteSingleRegister(_SlaveID, _StartAddress, (ushort)(v1));
+
+                        _StartAddress = BFMCommand.GetCommandDict(btn_XZ_Num);
+                        _MASTER.WriteSingleRegister(_SlaveID, _StartAddress, (ushort)(v2));
                     }
                 }
             }
@@ -2314,6 +2318,33 @@ namespace text.doors.Common
             return true;
         }
 
+        public bool SendTuiGanQiDong(int stat)
+        {
+            try
+            {
+                if (sp.IsOpen)
+                {
+                    lock (syncLock)
+                    {
+                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.推杆启动);
 
+                        if (stat == 1)
+                        {
+                            _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, true);
+                        }
+                        else
+                        {
+                            _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, false);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+            return true;
+        }
     }
 }

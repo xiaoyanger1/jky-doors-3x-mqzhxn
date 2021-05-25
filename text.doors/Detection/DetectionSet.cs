@@ -62,13 +62,11 @@ namespace text.doors.Detection
                     this.btn_select.Enabled = true;
                     this.btn_delete.Enabled = true;
                     this.btn_Ok.Enabled = true;
-
-                    // this.Close();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("添加异常！", "异常", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("数据异常！", "异常", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Logger.Error(ex);
             }
         }

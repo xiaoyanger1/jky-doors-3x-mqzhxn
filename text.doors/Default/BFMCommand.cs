@@ -119,14 +119,23 @@ namespace text.doors.Default
 
 
         //平面水平
-        public const string 第一级 = "M93";
-        public const string 第二级 = "M94";
-        public const string 第三级 = "M95";
-        public const string 第四级 = "M96";
-        public const string 第五级 = "M97";
+
+
+        public const string 第一级振幅 = "D234";
+        public const string 第一级修正 = "D244";
+        public const string 第二级振幅 = "D236";
+        public const string 第二级修正 = "D246";
+        public const string 第三级振幅 = "D238";
+        public const string 第三级修正 = "D248";
+        public const string 第四级振幅 = "D240";
+        public const string 第四级修正 = "D250";
+        public const string 第五级振幅 = "D242";
+        public const string 第五级修正 = "D252";
 
 
         public const string 水平停止 = "M99";
+
+        public const string 推杆启动 = "M85";
 
         #region  波动加压
 
@@ -163,7 +172,7 @@ namespace text.doors.Default
 
         #region 风压
 
-        
+
         public const string 位移1 = "D870";
         public const string 位移2 = "D872";
         public const string 位移3 = "D874";
@@ -176,14 +185,16 @@ namespace text.doors.Default
         public const string 位移8 = "D884";
         public const string 位移9 = "D886";
 
+        public const string 位移10 = "D888";
+
 
         public const string 风压正压预备 = "M55";
         public const string 风压正压开始 = "M56";
         public const string 风压负压预备 = "M57";
         public const string 风压负压开始 = "M58";
         public const string 位移1标零 = "M67";
-        public const string 位移2标零 = "M68";
-        public const string 位移3标零 = "M69";
+
+        public const string 位移10标零 = "M68";
 
         public const string 风压_正压是否计时 = "T23";
         public const string 风压_负压是否计时 = "T26";
@@ -213,6 +224,8 @@ namespace text.doors.Default
         public const string 负反复 = "M81";
         public const string 正安全 = "M82";
         public const string 负安全 = "M83";
+
+
 
 
         #endregion
