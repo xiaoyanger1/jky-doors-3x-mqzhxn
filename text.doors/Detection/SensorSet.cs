@@ -73,17 +73,40 @@ namespace text.doors.Detection
             }
             if (name == "位移传感器1(mm)")
             {
-                res = _serialPortClient.GetDisplace1();
+                res = _serialPortClient.GetDisplace1("A");
             }
             if (name == "位移传感器2(mm)")
             {
-                res = _serialPortClient.GetDisplace2();
+                res = _serialPortClient.GetDisplace2("A");
             }
             if (name == "位移传感器3(mm)")
             {
-                res = _serialPortClient.GetDisplace3();
+                res = _serialPortClient.GetDisplace3("A");
             }
-
+            if (name == "位移传感器4(mm)")
+            {
+                res = _serialPortClient.GetDisplace1("B");
+            }
+            if (name == "位移传感器5(mm)")
+            {
+                res = _serialPortClient.GetDisplace2("B");
+            }
+            if (name == "位移传感器6(mm)")
+            {
+                res = _serialPortClient.GetDisplace3("B");
+            }
+            if (name == "位移传感器7(mm)")
+            {
+                res = _serialPortClient.GetDisplace1("C");
+            }
+            if (name == "位移传感器8(mm)")
+            {
+                res = _serialPortClient.GetDisplace2("C");
+            }
+            if (name == "位移传感器9(mm)")
+            {
+                res = _serialPortClient.GetDisplace3("C");
+            }
             lvi.Text = res.ToString();
             lvi.SubItems.Add(DateTime.Now.ToString("HH:mm:ss"));
 

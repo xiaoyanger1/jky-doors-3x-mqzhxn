@@ -395,27 +395,6 @@ namespace text.doors.Detection
             //获取风速
             var fsvalue = _serialPortClient.GetFSXS();
 
-            //if (rdb_zdstl.Checked)
-            //{
-            //    Logger.Info($"总的风速：{fsvalue}当前级别：{kpa_Level}");
-            //}
-            //else
-            //{
-            //    Logger.Info($"附加风速：{fsvalue}当前级别：{kpa_Level}");
-            //}
-
-            //转换流量
-            fsvalue = Formula.MathFlow(fsvalue);
-
-            //if (rdb_zdstl.Checked)
-            //{
-            //    Logger.Info($"总的风速：{fsvalue}当前级别：{kpa_Level}");
-            //}
-            //else
-            //{
-            //    Logger.Info($"附加风速：{fsvalue}当前级别：{kpa_Level}");
-            //}
-
             if (rdb_fjstl.Checked)
             {
                 if (kpa_Level == PublicEnum.Kpa_Level.liter50)
@@ -766,28 +745,6 @@ namespace text.doors.Detection
             _readT.Add(new ReadT() { Key = BFMCommand.正压_50TimeStart, Order = 5, IsRead = false });
 
 
-            if (rdb_fjstl.Checked)
-            {
-                foreach (var item in windSpeedInfoList)
-                {
-                    item.FJST = 0;
-                }
-            }
-            else if (rdb_gfzh.Checked)
-            {
-                foreach (var item in windSpeedInfoList)
-                {
-                    item.GFZH = 0;
-                }
-            }
-            else if (rdb_zdstl.Checked)
-            {
-                foreach (var item in windSpeedInfoList)
-                {
-                    item.ZDST = 0;
-                }
-
-            }
             BindFlowBase();
 
             btn_juststart.BackColor = Color.Green;
@@ -873,28 +830,28 @@ namespace text.doors.Detection
             _readT.Add(new ReadT() { Key = BFMCommand.负压_50TimeStart, Order = 5, IsRead = false });
 
 
-            if (rdb_fjstl.Checked)
-            {
-                foreach (var item in windSpeedInfoList)
-                {
-                    item.FJST = 0;
-                }
-            }
-            else
-            if (rdb_gfzh.Checked)
-            {
-                foreach (var item in windSpeedInfoList)
-                {
-                    item.GFZH = 0;
-                }
-            }
-            else if (rdb_zdstl.Checked)
-            {
-                foreach (var item in windSpeedInfoList)
-                {
-                    item.ZDST = 0;
-                }
-            }
+            //if (rdb_fjstl.Checked)
+            //{
+            //    foreach (var item in windSpeedInfoList)
+            //    {
+            //        item.FJST = 0;
+            //    }
+            //}
+            //else
+            //if (rdb_gfzh.Checked)
+            //{
+            //    foreach (var item in windSpeedInfoList)
+            //    {
+            //        item.GFZH = 0;
+            //    }
+            //}
+            //else if (rdb_zdstl.Checked)
+            //{
+            //    foreach (var item in windSpeedInfoList)
+            //    {
+            //        item.ZDST = 0;
+            //    }
+            //}
             BindFlowBase();
 
             btn_losestart.BackColor = Color.Green;

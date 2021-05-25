@@ -19,7 +19,7 @@ namespace text.doors.dal
         /// type:0未完成，1完成
         /// </summary>
         /// <returns></returns>
-        public bool UpdateTestType(string code,SystemItem systemItem, int type)
+        public bool UpdateTestType(string code, SystemItem systemItem, int type)
         {
             string sql = "update dt_Info  set";
             if (systemItem == SystemItem.Airtight)
@@ -34,10 +34,37 @@ namespace text.doors.dal
             {
                 sql += " WindPressure=" + type + "";
             }
+            else if (systemItem == SystemItem.PlaneDeformation)
+            {
+                sql += " PlaneDeformation=" + type + "";
+            }
+            
             sql += " where dt_Code='" + code + "'";
             return SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
         }
-        
+
+        public List<Model_dt_Info> GetDTInfo(string code)
+        {
+            List<Model_dt_Info> list = new List<Model_dt_Info>();
+            var dt_Info = SQLiteHelper.ExecuteDataRow("select * from dt_Info where dt_Code='" + code + "'")?.Table;
+            if (dt_Info != null)
+            {
+                foreach (DataRow item in dt_Info.Rows)
+                {
+                    #region
+                    Model_dt_Info model = new Model_dt_Info();
+                    model.dt_Code = item["dt_Code"].ToString();
+                    model.info_Create = item["info_Create"].ToString();
+                    model.Watertight = Convert.ToInt32(item["Watertight"].ToString());
+                    model.WindPressure = Convert.ToInt32(item["WindPressure"].ToString());
+                    model.Airtight = Convert.ToInt32(item["Airtight"].ToString());
+                    model.PlaneDeformation = Convert.ToInt32(item["PlaneDeformation"].ToString());
+                    list.Add(model);
+                    #endregion
+                }
+            }
+            return list;
+        }
         ///// <summary>
         ///// 获取检验记录
         ///// </summary>
@@ -77,6 +104,11 @@ namespace text.doors.dal
             sb.AppendFormat("delete from dt_qm_Info where dt_Code ='{0}';", code);
             sb.AppendFormat("delete from dt_sm_Info where dt_Code ='{0}';", code);
             sb.AppendFormat("delete from dt_kfy_Info where dt_Code ='{0}';", code);
+            sb.AppendFormat("delete from dt_pd_Info where dt_Code ='{0}';", code);
+            sb.AppendFormat("delete from dt_qm_zb_info where dt_Code ='{0}';", code);
+            sb.AppendFormat("delete from dt_kfy_res_Info where dt_Code ='{0}';", code);
+            
+
             return SQLiteHelper.ExecuteNonQuery(sb.ToString()) > 0 ? true : false;
         }
     }

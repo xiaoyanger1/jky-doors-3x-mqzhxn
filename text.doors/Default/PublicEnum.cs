@@ -61,7 +61,10 @@ namespace text.doors.Default
             /// <summary>
             /// 风压
             /// </summary>
-            AirPressure
+            AirPressure,
+            //平面水平
+            PlaneDeformation
+
         }
 
         /// <summary>
@@ -159,7 +162,13 @@ namespace text.doors.Default
             大气压力传感器,
             位移传感器1,
             位移传感器2,
-            位移传感器3
+            位移传感器3,
+            位移传感器4,
+            位移传感器5,
+            位移传感器6,
+            位移传感器7,
+            位移传感器8,
+            位移传感器9
         }
 
         /// <summary>

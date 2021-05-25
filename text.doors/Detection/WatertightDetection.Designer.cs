@@ -39,19 +39,20 @@
             this.btn_2sjcl = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.txt_fjzb_kk = new System.Windows.Forms.TextBox();
-            this.lbl_max = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.txt_desc = new System.Windows.Forms.TextBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.lbldqyl = new System.Windows.Forms.Label();
+            this.lbl_max = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.lbl_smjc = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.lbl_sdyl = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.tChart_sm = new Steema.TeeChart.TChart();
             this.chart_cms_sm_click = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.export_image_sm = new System.Windows.Forms.ToolStripMenuItem();
             this.sm_Line = new Steema.TeeChart.Styles.FastLine();
-            this.lbl_sdyl = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.btn_shuibeng = new System.Windows.Forms.Button();
             this.btn_stop = new System.Windows.Forms.Button();
@@ -68,7 +69,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btn_upKpa = new System.Windows.Forms.Button();
             this.txt_ycjy = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.可开部分 = new System.Windows.Forms.TabPage();
@@ -236,17 +236,6 @@
             this.txt_fjzb_kk.Text = "0";
             this.txt_fjzb_kk.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_zgfy_KeyPress);
             // 
-            // lbl_max
-            // 
-            this.lbl_max.AutoSize = true;
-            this.lbl_max.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbl_max.Location = new System.Drawing.Point(671, 15);
-            this.lbl_max.Name = "lbl_max";
-            this.lbl_max.Size = new System.Drawing.Size(17, 16);
-            this.lbl_max.TabIndex = 30;
-            this.lbl_max.Text = "0";
-            this.lbl_max.Visible = false;
-            // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.txt_desc);
@@ -284,17 +273,28 @@
             // 
             this.lbldqyl.AutoSize = true;
             this.lbldqyl.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbldqyl.Location = new System.Drawing.Point(604, 37);
+            this.lbldqyl.Location = new System.Drawing.Point(604, 25);
             this.lbldqyl.Name = "lbldqyl";
             this.lbldqyl.Size = new System.Drawing.Size(17, 16);
             this.lbldqyl.TabIndex = 29;
             this.lbldqyl.Text = "0";
             // 
+            // lbl_max
+            // 
+            this.lbl_max.AutoSize = true;
+            this.lbl_max.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbl_max.Location = new System.Drawing.Point(671, -1);
+            this.lbl_max.Name = "lbl_max";
+            this.lbl_max.Size = new System.Drawing.Size(17, 16);
+            this.lbl_max.TabIndex = 30;
+            this.lbl_max.Text = "0";
+            this.lbl_max.Visible = false;
+            // 
             // label19
             // 
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label19.Location = new System.Drawing.Point(428, 37);
+            this.label19.Location = new System.Drawing.Point(428, 25);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(144, 16);
             this.label19.TabIndex = 27;
@@ -309,6 +309,28 @@
             this.lbl_smjc.Size = new System.Drawing.Size(257, 16);
             this.lbl_smjc.TabIndex = 25;
             this.lbl_smjc.Text = "门窗水密性能检测  第0号 第0樘";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label20.Location = new System.Drawing.Point(428, -3);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(144, 16);
+            this.label20.TabIndex = 26;
+            this.label20.Text = "设定压力（帕）：";
+            this.label20.Visible = false;
+            // 
+            // lbl_sdyl
+            // 
+            this.lbl_sdyl.AutoSize = true;
+            this.lbl_sdyl.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbl_sdyl.Location = new System.Drawing.Point(603, -2);
+            this.lbl_sdyl.Name = "lbl_sdyl";
+            this.lbl_sdyl.Size = new System.Drawing.Size(17, 16);
+            this.lbl_sdyl.TabIndex = 28;
+            this.lbl_sdyl.Text = "0";
+            this.lbl_sdyl.Visible = false;
             // 
             // groupBox8
             // 
@@ -463,17 +485,6 @@
             // 
             // 
             this.sm_Line.YValues.DataMember = "Y";
-            // 
-            // lbl_sdyl
-            // 
-            this.lbl_sdyl.AutoSize = true;
-            this.lbl_sdyl.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbl_sdyl.Location = new System.Drawing.Point(603, 14);
-            this.lbl_sdyl.Name = "lbl_sdyl";
-            this.lbl_sdyl.Size = new System.Drawing.Size(17, 16);
-            this.lbl_sdyl.TabIndex = 28;
-            this.lbl_sdyl.Text = "0";
-            this.lbl_sdyl.Visible = false;
             // 
             // groupBox4
             // 
@@ -656,17 +667,6 @@
             this.txt_ycjy.TabIndex = 0;
             this.txt_ycjy.Text = "0";
             // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label20.Location = new System.Drawing.Point(428, 13);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(144, 16);
-            this.label20.TabIndex = 26;
-            this.label20.Text = "设定压力（帕）：";
-            this.label20.Visible = false;
-            // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.tabControl1);
@@ -729,21 +729,14 @@
             // 
             this.cbb_1_500Pa.FormattingEnabled = true;
             this.cbb_1_500Pa.Items.AddRange(new object[] {
+            "",
             "所有位置",
-            "边框左上角",
-            "边框左下角",
-            "边框右上角",
-            "边框右下角",
             "左开启扇上部",
             "左开启扇下部",
             "右开启扇上部",
             "右开启扇下部",
-            "批水板下",
             "左推拉扇下部",
-            "右推拉扇下部",
-            "铰链安装",
-            "执手安装",
-            "五金安装"});
+            "右推拉扇下部"});
             this.cbb_1_500Pa.Location = new System.Drawing.Point(54, 68);
             this.cbb_1_500Pa.Name = "cbb_1_500Pa";
             this.cbb_1_500Pa.Size = new System.Drawing.Size(93, 20);
@@ -756,7 +749,7 @@
             this.cbb_2_500Pa.Items.AddRange(new object[] {
             "",
             "无渗漏",
-            "〇窗内侧出现水滴",
+            "〇内侧出现水滴",
             "□水珠连成线，但未渗出",
             "△局部少量喷溅",
             "▲喷溅出窗试件界面",
@@ -781,21 +774,14 @@
             // 
             this.cbb_1_1000Pa.FormattingEnabled = true;
             this.cbb_1_1000Pa.Items.AddRange(new object[] {
+            "",
             "所有位置",
-            "边框左上角",
-            "边框左下角",
-            "边框右上角",
-            "边框右下角",
             "左开启扇上部",
             "左开启扇下部",
             "右开启扇上部",
             "右开启扇下部",
-            "批水板下",
             "左推拉扇下部",
-            "右推拉扇下部",
-            "铰链安装",
-            "执手安装",
-            "五金安装"});
+            "右推拉扇下部"});
             this.cbb_1_1000Pa.Location = new System.Drawing.Point(54, 129);
             this.cbb_1_1000Pa.Name = "cbb_1_1000Pa";
             this.cbb_1_1000Pa.Size = new System.Drawing.Size(93, 20);
@@ -808,7 +794,7 @@
             this.cbb_2_1000Pa.Items.AddRange(new object[] {
             "",
             "无渗漏",
-            "〇窗内侧出现水滴",
+            "〇内侧出现水滴",
             "□水珠连成线，但未渗出",
             "△局部少量喷溅",
             "▲喷溅出窗试件界面",
@@ -833,21 +819,14 @@
             // 
             this.cbb_1_700Pa.FormattingEnabled = true;
             this.cbb_1_700Pa.Items.AddRange(new object[] {
+            "",
             "所有位置",
-            "边框左上角",
-            "边框左下角",
-            "边框右上角",
-            "边框右下角",
             "左开启扇上部",
             "左开启扇下部",
             "右开启扇上部",
             "右开启扇下部",
-            "批水板下",
             "左推拉扇下部",
-            "右推拉扇下部",
-            "铰链安装",
-            "执手安装",
-            "五金安装"});
+            "右推拉扇下部"});
             this.cbb_1_700Pa.Location = new System.Drawing.Point(54, 98);
             this.cbb_1_700Pa.Name = "cbb_1_700Pa";
             this.cbb_1_700Pa.Size = new System.Drawing.Size(93, 20);
@@ -876,21 +855,14 @@
             // 
             this.cbb_1_350Pa.FormattingEnabled = true;
             this.cbb_1_350Pa.Items.AddRange(new object[] {
+            "",
             "所有位置",
-            "边框左上角",
-            "边框左下角",
-            "边框右上角",
-            "边框右下角",
             "左开启扇上部",
             "左开启扇下部",
             "右开启扇上部",
             "右开启扇下部",
-            "批水板下",
             "左推拉扇下部",
-            "右推拉扇下部",
-            "铰链安装",
-            "执手安装",
-            "五金安装"});
+            "右推拉扇下部"});
             this.cbb_1_350Pa.Location = new System.Drawing.Point(54, 38);
             this.cbb_1_350Pa.Name = "cbb_1_350Pa";
             this.cbb_1_350Pa.Size = new System.Drawing.Size(93, 20);
@@ -901,21 +873,14 @@
             // 
             this.cbb_1_250Pa.FormattingEnabled = true;
             this.cbb_1_250Pa.Items.AddRange(new object[] {
+            "",
             "所有位置",
-            "边框左上角",
-            "边框左下角",
-            "边框右上角",
-            "边框右下角",
             "左开启扇上部",
             "左开启扇下部",
             "右开启扇上部",
             "右开启扇下部",
-            "批水板下",
             "左推拉扇下部",
-            "右推拉扇下部",
-            "铰链安装",
-            "执手安装",
-            "五金安装"});
+            "右推拉扇下部"});
             this.cbb_1_250Pa.Location = new System.Drawing.Point(54, 10);
             this.cbb_1_250Pa.Name = "cbb_1_250Pa";
             this.cbb_1_250Pa.Size = new System.Drawing.Size(93, 20);
@@ -928,7 +893,7 @@
             this.cbb_2_250Pa.Items.AddRange(new object[] {
             "",
             "无渗漏",
-            "〇窗内侧出现水滴",
+            "〇内侧出现水滴",
             "□水珠连成线，但未渗出",
             "△局部少量喷溅",
             "▲喷溅出窗试件界面",
@@ -946,7 +911,7 @@
             this.cbb_2_700Pa.Items.AddRange(new object[] {
             "",
             "无渗漏",
-            "〇窗内侧出现水滴",
+            "〇内侧出现水滴",
             "□水珠连成线，但未渗出",
             "△局部少量喷溅",
             "▲喷溅出窗试件界面",
@@ -964,7 +929,7 @@
             this.cbb_2_350Pa.Items.AddRange(new object[] {
             "",
             "无渗漏",
-            "〇窗内侧出现水滴",
+            "〇内侧出现水滴",
             "□水珠连成线，但未渗出",
             "△局部少量喷溅",
             "▲喷溅出窗试件界面",
@@ -1015,18 +980,12 @@
             // 
             this.cbb_1_2000Pa_cf.FormattingEnabled = true;
             this.cbb_1_2000Pa_cf.Items.AddRange(new object[] {
+            "",
             "所有位置",
             "边框左上角",
             "边框左下角",
             "边框右上角",
             "边框右下角",
-            "左开启扇上部",
-            "左开启扇下部",
-            "右开启扇上部",
-            "右开启扇下部",
-            "批水板下",
-            "左推拉扇下部",
-            "右推拉扇下部",
             "铰链安装",
             "执手安装",
             "五金安装"});
@@ -1042,7 +1001,7 @@
             this.cbb_2_2000Pa_cf.Items.AddRange(new object[] {
             "",
             "无渗漏",
-            "〇窗内侧出现水滴",
+            "〇内侧出现水滴",
             "□水珠连成线，但未渗出",
             "△局部少量喷溅",
             "▲喷溅出窗试件界面",
@@ -1067,18 +1026,12 @@
             // 
             this.cbb_1_1500Pa_cf.FormattingEnabled = true;
             this.cbb_1_1500Pa_cf.Items.AddRange(new object[] {
+            "",
             "所有位置",
             "边框左上角",
             "边框左下角",
             "边框右上角",
             "边框右下角",
-            "左开启扇上部",
-            "左开启扇下部",
-            "右开启扇上部",
-            "右开启扇下部",
-            "批水板下",
-            "左推拉扇下部",
-            "右推拉扇下部",
             "铰链安装",
             "执手安装",
             "五金安装"});
@@ -1094,7 +1047,7 @@
             this.cbb_2_1500Pa_cf.Items.AddRange(new object[] {
             "",
             "无渗漏",
-            "〇窗内侧出现水滴",
+            "〇内侧出现水滴",
             "□水珠连成线，但未渗出",
             "△局部少量喷溅",
             "▲喷溅出窗试件界面",
@@ -1119,18 +1072,12 @@
             // 
             this.cbb_1_1000Pa_cf.FormattingEnabled = true;
             this.cbb_1_1000Pa_cf.Items.AddRange(new object[] {
+            "",
             "所有位置",
             "边框左上角",
             "边框左下角",
             "边框右上角",
             "边框右下角",
-            "左开启扇上部",
-            "左开启扇下部",
-            "右开启扇上部",
-            "右开启扇下部",
-            "批水板下",
-            "左推拉扇下部",
-            "右推拉扇下部",
             "铰链安装",
             "执手安装",
             "五金安装"});
@@ -1146,7 +1093,7 @@
             this.cbb_2_1000Pa_cf.Items.AddRange(new object[] {
             "",
             "无渗漏",
-            "〇窗内侧出现水滴",
+            "〇内侧出现水滴",
             "□水珠连成线，但未渗出",
             "△局部少量喷溅",
             "▲喷溅出窗试件界面",
@@ -1198,18 +1145,12 @@
             // 
             this.cbb_1_700Pa_cf.FormattingEnabled = true;
             this.cbb_1_700Pa_cf.Items.AddRange(new object[] {
+            "",
             "所有位置",
             "边框左上角",
             "边框左下角",
             "边框右上角",
             "边框右下角",
-            "左开启扇上部",
-            "左开启扇下部",
-            "右开启扇上部",
-            "右开启扇下部",
-            "批水板下",
-            "左推拉扇下部",
-            "右推拉扇下部",
             "铰链安装",
             "执手安装",
             "五金安装"});
@@ -1223,18 +1164,12 @@
             // 
             this.cbb_1_500Pa_cf.FormattingEnabled = true;
             this.cbb_1_500Pa_cf.Items.AddRange(new object[] {
+            "",
             "所有位置",
             "边框左上角",
             "边框左下角",
             "边框右上角",
             "边框右下角",
-            "左开启扇上部",
-            "左开启扇下部",
-            "右开启扇上部",
-            "右开启扇下部",
-            "批水板下",
-            "左推拉扇下部",
-            "右推拉扇下部",
             "铰链安装",
             "执手安装",
             "五金安装"});
@@ -1250,7 +1185,7 @@
             this.cbb_2_700Pa_cf.Items.AddRange(new object[] {
             "",
             "无渗漏",
-            "〇窗内侧出现水滴",
+            "〇内侧出现水滴",
             "□水珠连成线，但未渗出",
             "△局部少量喷溅",
             "▲喷溅出窗试件界面",
@@ -1268,7 +1203,7 @@
             this.cbb_2_500Pa_cf.Items.AddRange(new object[] {
             "",
             "无渗漏",
-            "〇窗内侧出现水滴",
+            "〇内侧出现水滴",
             "□水珠连成线，但未渗出",
             "△局部少量喷溅",
             "▲喷溅出窗试件界面",

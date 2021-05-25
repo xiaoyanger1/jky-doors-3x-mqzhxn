@@ -70,8 +70,13 @@ namespace text.doors.Model.DataBase
         public List<Model_dt_qm_Info> dt_qm_Info { get; set; }
         public Model_dt_qm_zb_Info dt_qm_zb_Info { get; set; }
         public Model_dt_sm_Info dt_sm_Info { get; set; }
+        public Model_dt_pd_Info dt_pd_Info { get; set; }
 
         public List<Model_dt_kfy_Info> dt_kfy_Info { get; set; }
+
+        public Model_dt_kfy_res_Info dt_kfy_res_Info { get; set; }
+
+        
     }
 
 

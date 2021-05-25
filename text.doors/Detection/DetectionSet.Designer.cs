@@ -355,7 +355,9 @@
             // 
             this.txt_mianbancaizhi.FormattingEnabled = true;
             this.txt_mianbancaizhi.Items.AddRange(new object[] {
-            "钢化中空玻璃"});
+            "钢化中空玻璃",
+            "铝塑板",
+            "石材"});
             this.txt_mianbancaizhi.Location = new System.Drawing.Point(781, 359);
             this.txt_mianbancaizhi.Name = "txt_mianbancaizhi";
             this.txt_mianbancaizhi.Size = new System.Drawing.Size(276, 20);
@@ -375,7 +377,9 @@
             // 
             this.txt_mianbanxiangqianfangshi.FormattingEnabled = true;
             this.txt_mianbanxiangqianfangshi.Items.AddRange(new object[] {
-            "千法（指胶条）"});
+            "千法（指胶条）",
+            "湿法（指硅胶等）",
+            "干法+湿法"});
             this.txt_mianbanxiangqianfangshi.Location = new System.Drawing.Point(827, 326);
             this.txt_mianbanxiangqianfangshi.Name = "txt_mianbanxiangqianfangshi";
             this.txt_mianbanxiangqianfangshi.Size = new System.Drawing.Size(230, 20);
@@ -395,7 +399,13 @@
             // 
             this.txt_mianbanxiangqiancailiao.FormattingEnabled = true;
             this.txt_mianbanxiangqiancailiao.Items.AddRange(new object[] {
-            "硅胶"});
+            "硅胶",
+            "胶条",
+            "胶条加硅胶",
+            "快干油灰",
+            "油灰",
+            "压条、橡胶键嵌密封条",
+            "其他胶"});
             this.txt_mianbanxiangqiancailiao.Location = new System.Drawing.Point(827, 298);
             this.txt_mianbanxiangqiancailiao.Name = "txt_mianbanxiangqiancailiao";
             this.txt_mianbanxiangqiancailiao.Size = new System.Drawing.Size(230, 20);
@@ -415,7 +425,13 @@
             // 
             this.txt_kuangshanmifengcailiao.FormattingEnabled = true;
             this.txt_kuangshanmifengcailiao.Items.AddRange(new object[] {
-            "橡塑密封条"});
+            "橡胶密封条",
+            "尼龙毛刷密封条",
+            "橡塑密封条",
+            "泡沫塑料密封条",
+            "聚氨酯密封条",
+            "橡胶键嵌密封条",
+            "无密封材料"});
             this.txt_kuangshanmifengcailiao.Location = new System.Drawing.Point(827, 266);
             this.txt_kuangshanmifengcailiao.Name = "txt_kuangshanmifengcailiao";
             this.txt_kuangshanmifengcailiao.Size = new System.Drawing.Size(228, 20);
@@ -462,7 +478,9 @@
             // 
             this.txt_caiyangfangshi.FormattingEnabled = true;
             this.txt_caiyangfangshi.Items.AddRange(new object[] {
-            "委托送检"});
+            "委托送检",
+            "见证取样",
+            "监督抽查"});
             this.txt_caiyangfangshi.Location = new System.Drawing.Point(781, 200);
             this.txt_caiyangfangshi.Name = "txt_caiyangfangshi";
             this.txt_caiyangfangshi.Size = new System.Drawing.Size(276, 20);
@@ -931,7 +949,7 @@
             this.cb_jianceyiju.Name = "cb_jianceyiju";
             this.cb_jianceyiju.Size = new System.Drawing.Size(619, 21);
             this.cb_jianceyiju.TabIndex = 248;
-            this.cb_jianceyiju.Text = "GB/T  7106-2019 建筑外门窗气密、水密、抗风压性能检测方法 ";
+            this.cb_jianceyiju.Text = "GB/T 15227-2019，GB/T 18250-2015";
             // 
             // label9
             // 
@@ -1117,13 +1135,8 @@
             // 
             this.cb_JianCeXiangMu.FormattingEnabled = true;
             this.cb_JianCeXiangMu.Items.AddRange(new object[] {
-            "气密、水密、抗风压性能检测",
-            "气密性能检测",
-            "水密性能检测",
-            "抗风压性能检测",
-            "气密性能及水密性能检测",
-            "气密性能及抗风压性能检测",
-            "水密性能及抗风压性能检测"});
+            "气密、水密、抗风压",
+            "气密、水密、抗风压、平面内变形"});
             this.cb_JianCeXiangMu.Location = new System.Drawing.Point(83, 168);
             this.cb_JianCeXiangMu.Name = "cb_JianCeXiangMu";
             this.cb_JianCeXiangMu.Size = new System.Drawing.Size(618, 20);

@@ -119,7 +119,13 @@
             "大气压力传感器(KPa)",
             "位移传感器1(mm)",
             "位移传感器2(mm)",
-            "位移传感器3(mm)"});
+            "位移传感器3(mm)",
+            "位移传感器4(mm)",
+            "位移传感器5(mm)",
+            "位移传感器6(mm)",
+            "位移传感器7(mm)",
+            "位移传感器8(mm)",
+            "位移传感器9(mm)"});
             this.cbb_type.Location = new System.Drawing.Point(163, 34);
             this.cbb_type.Margin = new System.Windows.Forms.Padding(4);
             this.cbb_type.Name = "cbb_type";
@@ -373,7 +379,13 @@
             "大气压力传感器(KPa)",
             "位移传感器1(mm)",
             "位移传感器2(mm)",
-            "位移传感器3(mm)"});
+            "位移传感器3(mm)",
+            "位移传感器4(mm)",
+            "位移传感器5(mm)",
+            "位移传感器6(mm)",
+            "位移传感器7(mm)",
+            "位移传感器8(mm)",
+            "位移传感器9(mm)"});
             this.cbb_cgq.Location = new System.Drawing.Point(160, 27);
             this.cbb_cgq.Margin = new System.Windows.Forms.Padding(4);
             this.cbb_cgq.Name = "cbb_cgq";

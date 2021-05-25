@@ -21,6 +21,7 @@ namespace text.doors.Model.DataBase
         public int Airtight { get; set; }
 
         public int Watertight { get; set; }
+        public int PlaneDeformation { get; set; }
         public int WindPressure { get; set; }
     }
 }

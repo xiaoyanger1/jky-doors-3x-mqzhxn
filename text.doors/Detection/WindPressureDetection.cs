@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NPOI.SS.Formula.Functions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,8 +25,6 @@ namespace text.doors.Detection
         private SerialPortClient _serialPortClient;
         //检验编号
         private string _tempCode = "";
-        //当前樘号
-        private string _tempTong = "";
 
 
         private static object obj = new object();
@@ -33,16 +32,32 @@ namespace text.doors.Detection
 
 
         //默认
-        private List<DefKFYPa> defKFYPa = new List<DefKFYPa>();
+        private List<DefKFYPa> defKFYPa_A = new List<DefKFYPa>();
+
+        private List<DefKFYPa> defKFYPa_B = new List<DefKFYPa>();
+
+        private List<DefKFYPa> defKFYPa_C = new List<DefKFYPa>();
 
         public static double _displace1 = 0;
         public static double _displace2 = 0;
         public static double _displace3 = 0;
 
+        public static double _displace4 = 0;
+        public static double _displace5 = 0;
+        public static double _displace6 = 0;
+
+        public static double _displace7 = 0;
+        public static double _displace8 = 0;
+        public static double _displace9 = 0;
+
         public static bool IsGCJC = false;
 
 
-        public List<WindPressureDGV> windPressureDGV = new List<WindPressureDGV>();
+        public List<WindPressureDGV> windPressureDGV_A = new List<WindPressureDGV>();
+
+        public List<WindPressureDGV> windPressureDGV_B = new List<WindPressureDGV>();
+
+        public List<WindPressureDGV> windPressureDGV_C = new List<WindPressureDGV>();
         /// <summary>
         /// 抗风压数据位置
         /// </summary>
@@ -53,12 +68,17 @@ namespace text.doors.Detection
         public static System.Timers.Timer tim_static1;
         public static Thread td;
 
+        private static DAL_dt_kfy_Info dal_dt_kfy_Info = new DAL_dt_kfy_Info();
+
+
+        private static DAL_dt_Info dal_dt_Info = new DAL_dt_Info();
+
         public WindPressureDetection()
         {
 
         }
 
-        public WindPressureDetection(SerialPortClient tcpClient, string tempCode, string tempTong)
+        public WindPressureDetection(SerialPortClient tcpClient, string tempCode)
         {
             InitializeComponent();
 
@@ -77,7 +97,6 @@ namespace text.doors.Detection
 
             this._serialPortClient = tcpClient;
             this._tempCode = tempCode;
-            this._tempTong = tempTong;
 
             //if (!DefaultBase.LockPoint)
             //{
@@ -92,7 +111,11 @@ namespace text.doors.Detection
 
             BindFromInit();
 
-            BindData(false);
+            BindData_A(false);
+
+            BindData_B(false);
+
+            BindData_C(false);
 
             td = new Thread(BindFromInput);
             td.IsBackground = true;
@@ -114,20 +137,38 @@ namespace text.doors.Detection
             {
                 try
                 {
+
+                    var groupStr = "";
+                    if (tbc_group.SelectedTab.Text == "A组")
+                    {
+                        groupStr = "A";
+                    }
+                    else if (tbc_group.SelectedTab.Text == "B组")
+                    {
+                        groupStr = "B";
+                    }
+                    else if (tbc_group.SelectedTab.Text == "C组")
+                    {
+                        groupStr = "C";
+                    }
+
+
                     if (lbl_wy1.InvokeRequired)
-                        lbl_wy1.Invoke(st1, _serialPortClient.GetDisplace1().ToString());
+                        lbl_wy1.Invoke(st1, _serialPortClient.GetDisplace1(groupStr).ToString());
                     else
-                        lbl_wy1.Text = _serialPortClient.GetDisplace1().ToString();
+                        lbl_wy1.Text = _serialPortClient.GetDisplace1(groupStr).ToString();
 
                     if (lbl_wy2.InvokeRequired)
-                        lbl_wy2.Invoke(st2, _serialPortClient.GetDisplace2().ToString());
+                        lbl_wy2.Invoke(st2, _serialPortClient.GetDisplace2(groupStr).ToString());
                     else
-                        lbl_wy2.Text = _serialPortClient.GetDisplace2().ToString();
+                        lbl_wy2.Text = _serialPortClient.GetDisplace2(groupStr).ToString();
 
                     if (lbl_wy3.InvokeRequired)
-                        lbl_wy3.Invoke(st3, _serialPortClient.GetDisplace3().ToString());
+                        lbl_wy3.Invoke(st3, _serialPortClient.GetDisplace3(groupStr).ToString());
                     else
-                        lbl_wy3.Text = _serialPortClient.GetDisplace3().ToString();
+                        lbl_wy3.Text = _serialPortClient.GetDisplace3(groupStr).ToString();
+
+
 
                     if (lbl_dqyl.InvokeRequired)
                         lbl_dqyl.Invoke(st4, _serialPortClient.GetCY_High().ToString());
@@ -137,7 +178,6 @@ namespace text.doors.Detection
                 catch (Exception ex)
                 {
                     td.Abort();
-                    //Logger.Info(ex);
                 }
             }
         }
@@ -170,7 +210,7 @@ namespace text.doors.Detection
         private void BindFromInit()
         {
             // 绑定设定压力
-            lbl_title.Text = string.Format("门窗抗风压性能检测  第{0}号 {1}", this._tempCode, this._tempTong);
+            lbl_title.Text = string.Format("门窗抗风压性能检测  第{0}号", this._tempCode);
 
             //改变极差默认
             var jcValue = _serialPortClient.GetKFYjC();
@@ -185,114 +225,288 @@ namespace text.doors.Detection
 
 
         /// <summary>
-        /// 
+        /// A
         /// </summary>
         /// <param name="isUpdate">是否修改</param>
-        private void BindData(bool isUpdate)
+        private void BindData_A(bool isUpdate)
         {
             #region 绑定
             List<WindPressureDGV> dataSource = new List<WindPressureDGV>();
             if (isUpdate)
             {
-                dataSource = windPressureDGV;
+                dataSource = windPressureDGV_A;
             }
             else
             {
-                dataSource = GetWindPressureDGV();
+                dataSource = GetWindPressureDGV_A();
             }
-            dgv_WindPressure.DataSource = dataSource;
-            dgv_WindPressure.RowHeadersVisible = false;
-            dgv_WindPressure.AllowUserToResizeColumns = false;
-            dgv_WindPressure.AllowUserToResizeRows = false;
+            dgv_WindPressure_A.DataSource = dataSource;
+            dgv_WindPressure_A.RowHeadersVisible = false;
+            dgv_WindPressure_A.AllowUserToResizeColumns = false;
+            dgv_WindPressure_A.AllowUserToResizeRows = false;
 
-            dgv_WindPressure.Columns[0].HeaderText = "国际检测";
-            dgv_WindPressure.Columns[0].Width = 85;
-            dgv_WindPressure.Columns[0].ReadOnly = true;
-            dgv_WindPressure.Columns[0].DataPropertyName = "Pa";
-
-
-            dgv_WindPressure.Columns[1].HeaderText = "位移1";
-            dgv_WindPressure.Columns[1].Width = 75;
-            dgv_WindPressure.Columns[1].DataPropertyName = "zwy1";
+            dgv_WindPressure_A.Columns[0].HeaderText = "国际检测";
+            dgv_WindPressure_A.Columns[0].Width = 85;
+            dgv_WindPressure_A.Columns[0].ReadOnly = true;
+            dgv_WindPressure_A.Columns[0].DataPropertyName = "Pa";
 
 
-            dgv_WindPressure.Columns[2].HeaderText = "位移2";
-            dgv_WindPressure.Columns[2].Width = 75;
-            dgv_WindPressure.Columns[2].DataPropertyName = "zwy2";
-
-            dgv_WindPressure.Columns[3].HeaderText = "位移3";
-            dgv_WindPressure.Columns[3].Width = 75;
-            dgv_WindPressure.Columns[3].DataPropertyName = "zwy3";
-
-            dgv_WindPressure.Columns[4].HeaderText = "挠度";
-            dgv_WindPressure.Columns[4].Width = 75;
-            dgv_WindPressure.Columns[4].DataPropertyName = "zzd";
-
-            dgv_WindPressure.Columns[5].HeaderText = "l/X";
-            dgv_WindPressure.Columns[5].Width = 75;
-            dgv_WindPressure.Columns[5].DataPropertyName = "zlx";
+            dgv_WindPressure_A.Columns[1].HeaderText = "位移1";
+            dgv_WindPressure_A.Columns[1].Width = 75;
+            dgv_WindPressure_A.Columns[1].DataPropertyName = "zwy1";
 
 
-            dgv_WindPressure.Columns[6].HeaderText = "位移1";
-            dgv_WindPressure.Columns[6].Width = 75;
-            dgv_WindPressure.Columns[6].DataPropertyName = "fwy1";
+            dgv_WindPressure_A.Columns[2].HeaderText = "位移2";
+            dgv_WindPressure_A.Columns[2].Width = 75;
+            dgv_WindPressure_A.Columns[2].DataPropertyName = "zwy2";
+
+            dgv_WindPressure_A.Columns[3].HeaderText = "位移3";
+            dgv_WindPressure_A.Columns[3].Width = 75;
+            dgv_WindPressure_A.Columns[3].DataPropertyName = "zwy3";
+
+            dgv_WindPressure_A.Columns[4].HeaderText = "挠度";
+            dgv_WindPressure_A.Columns[4].Width = 75;
+            dgv_WindPressure_A.Columns[4].DataPropertyName = "zzd";
+
+            dgv_WindPressure_A.Columns[5].HeaderText = "l/X";
+            dgv_WindPressure_A.Columns[5].Width = 75;
+            dgv_WindPressure_A.Columns[5].DataPropertyName = "zlx";
 
 
-            dgv_WindPressure.Columns[7].HeaderText = "位移2";
-            dgv_WindPressure.Columns[7].Width = 74;
-            dgv_WindPressure.Columns[7].DataPropertyName = "fwy2";
-
-            dgv_WindPressure.Columns[8].HeaderText = "位移3";
-            dgv_WindPressure.Columns[8].Width = 75;
-            dgv_WindPressure.Columns[8].DataPropertyName = "fwy3";
-
-            dgv_WindPressure.Columns[9].HeaderText = "挠度";
-            dgv_WindPressure.Columns[9].Width = 75;
-            dgv_WindPressure.Columns[9].DataPropertyName = "fzd";
-
-            dgv_WindPressure.Columns[10].HeaderText = "l/X";
-            dgv_WindPressure.Columns[10].Width = 75;
-            dgv_WindPressure.Columns[10].DataPropertyName = "flx";
+            dgv_WindPressure_A.Columns[6].HeaderText = "位移1";
+            dgv_WindPressure_A.Columns[6].Width = 75;
+            dgv_WindPressure_A.Columns[6].DataPropertyName = "fwy1";
 
 
-            dgv_WindPressure.Columns["zwy1"].DefaultCellStyle.Format = "N2";
-            dgv_WindPressure.Columns["zwy2"].DefaultCellStyle.Format = "N2";
-            dgv_WindPressure.Columns["zwy3"].DefaultCellStyle.Format = "N2";
-            dgv_WindPressure.Columns["zzd"].DefaultCellStyle.Format = "N2";
-            //dgv_WindPressure.Columns["zlx"].DefaultCellStyle.Format = "N0";
-            dgv_WindPressure.Columns["PaValue"].Visible = false;
+            dgv_WindPressure_A.Columns[7].HeaderText = "位移2";
+            dgv_WindPressure_A.Columns[7].Width = 74;
+            dgv_WindPressure_A.Columns[7].DataPropertyName = "fwy2";
 
-            dgv_WindPressure.Columns["fwy1"].DefaultCellStyle.Format = "N2";
-            dgv_WindPressure.Columns["fwy2"].DefaultCellStyle.Format = "N2";
-            dgv_WindPressure.Columns["fwy3"].DefaultCellStyle.Format = "N2";
-            dgv_WindPressure.Columns["fzd"].DefaultCellStyle.Format = "N2";
-            //dgv_WindPressure.Columns["flx"].DefaultCellStyle.Format = "N0";
-            dgv_WindPressure.Columns["PaValue"].Visible = false;
+            dgv_WindPressure_A.Columns[8].HeaderText = "位移3";
+            dgv_WindPressure_A.Columns[8].Width = 75;
+            dgv_WindPressure_A.Columns[8].DataPropertyName = "fwy3";
+
+            dgv_WindPressure_A.Columns[9].HeaderText = "挠度";
+            dgv_WindPressure_A.Columns[9].Width = 75;
+            dgv_WindPressure_A.Columns[9].DataPropertyName = "fzd";
+
+            dgv_WindPressure_A.Columns[10].HeaderText = "l/X";
+            dgv_WindPressure_A.Columns[10].Width = 75;
+            dgv_WindPressure_A.Columns[10].DataPropertyName = "flx";
 
 
-            dgv_WindPressure.Refresh();
+            dgv_WindPressure_A.Columns["zwy1"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_A.Columns["zwy2"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_A.Columns["zwy3"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_A.Columns["zzd"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_A.Columns["PaValue"].Visible = false;
+
+            dgv_WindPressure_A.Columns["fwy1"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_A.Columns["fwy2"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_A.Columns["fwy3"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_A.Columns["fzd"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_A.Columns["PaValue"].Visible = false;
+
+
+            dgv_WindPressure_A.Refresh();
+            #endregion
+        }
+
+        /// <summary>
+        /// B
+        /// </summary>
+        /// <param name="isUpdate">是否修改</param>
+        private void BindData_B(bool isUpdate)
+        {
+            #region 绑定
+            List<WindPressureDGV> dataSource = new List<WindPressureDGV>();
+            if (isUpdate)
+            {
+                dataSource = windPressureDGV_B;
+            }
+            else
+            {
+                dataSource = GetWindPressureDGV_B();
+            }
+            dgv_WindPressure_B.DataSource = dataSource;
+            dgv_WindPressure_B.RowHeadersVisible = false;
+            dgv_WindPressure_B.AllowUserToResizeColumns = false;
+            dgv_WindPressure_B.AllowUserToResizeRows = false;
+
+            dgv_WindPressure_B.Columns[0].HeaderText = "国际检测";
+            dgv_WindPressure_B.Columns[0].Width = 85;
+            dgv_WindPressure_B.Columns[0].ReadOnly = true;
+            dgv_WindPressure_B.Columns[0].DataPropertyName = "Pa";
+
+
+            dgv_WindPressure_B.Columns[1].HeaderText = "位移1";
+            dgv_WindPressure_B.Columns[1].Width = 75;
+            dgv_WindPressure_B.Columns[1].DataPropertyName = "zwy1";
+
+
+            dgv_WindPressure_B.Columns[2].HeaderText = "位移2";
+            dgv_WindPressure_B.Columns[2].Width = 75;
+            dgv_WindPressure_B.Columns[2].DataPropertyName = "zwy2";
+
+            dgv_WindPressure_B.Columns[3].HeaderText = "位移3";
+            dgv_WindPressure_B.Columns[3].Width = 75;
+            dgv_WindPressure_B.Columns[3].DataPropertyName = "zwy3";
+
+            dgv_WindPressure_B.Columns[4].HeaderText = "挠度";
+            dgv_WindPressure_B.Columns[4].Width = 75;
+            dgv_WindPressure_B.Columns[4].DataPropertyName = "zzd";
+
+            dgv_WindPressure_B.Columns[5].HeaderText = "l/X";
+            dgv_WindPressure_B.Columns[5].Width = 75;
+            dgv_WindPressure_B.Columns[5].DataPropertyName = "zlx";
+
+
+            dgv_WindPressure_B.Columns[6].HeaderText = "位移1";
+            dgv_WindPressure_B.Columns[6].Width = 75;
+            dgv_WindPressure_B.Columns[6].DataPropertyName = "fwy1";
+
+
+            dgv_WindPressure_B.Columns[7].HeaderText = "位移2";
+            dgv_WindPressure_B.Columns[7].Width = 74;
+            dgv_WindPressure_B.Columns[7].DataPropertyName = "fwy2";
+
+            dgv_WindPressure_B.Columns[8].HeaderText = "位移3";
+            dgv_WindPressure_B.Columns[8].Width = 75;
+            dgv_WindPressure_B.Columns[8].DataPropertyName = "fwy3";
+
+            dgv_WindPressure_B.Columns[9].HeaderText = "挠度";
+            dgv_WindPressure_B.Columns[9].Width = 75;
+            dgv_WindPressure_B.Columns[9].DataPropertyName = "fzd";
+
+            dgv_WindPressure_B.Columns[10].HeaderText = "l/X";
+            dgv_WindPressure_B.Columns[10].Width = 75;
+            dgv_WindPressure_B.Columns[10].DataPropertyName = "flx";
+
+
+            dgv_WindPressure_B.Columns["zwy1"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_B.Columns["zwy2"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_B.Columns["zwy3"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_B.Columns["zzd"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_B.Columns["PaValue"].Visible = false;
+
+            dgv_WindPressure_B.Columns["fwy1"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_B.Columns["fwy2"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_B.Columns["fwy3"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_B.Columns["fzd"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_B.Columns["PaValue"].Visible = false;
+
+
+            dgv_WindPressure_B.Refresh();
             #endregion
         }
 
 
-        private List<WindPressureDGV> GetWindPressureDGV()
+        /// <summary>
+        /// C
+        /// </summary>
+        /// <param name="isUpdate">是否修改</param>
+        private void BindData_C(bool isUpdate)
         {
-            windPressureDGV = new List<WindPressureDGV>();
+            #region 绑定
+            List<WindPressureDGV> dataSource = new List<WindPressureDGV>();
+            if (isUpdate)
+            {
+                dataSource = windPressureDGV_C;
+            }
+            else
+            {
+                dataSource = GetWindPressureDGV_C();
+            }
+            dgv_WindPressure_C.DataSource = dataSource;
+            dgv_WindPressure_C.RowHeadersVisible = false;
+            dgv_WindPressure_C.AllowUserToResizeColumns = false;
+            dgv_WindPressure_C.AllowUserToResizeRows = false;
+
+            dgv_WindPressure_C.Columns[0].HeaderText = "国际检测";
+            dgv_WindPressure_C.Columns[0].Width = 85;
+            dgv_WindPressure_C.Columns[0].ReadOnly = true;
+            dgv_WindPressure_C.Columns[0].DataPropertyName = "Pa";
+
+
+            dgv_WindPressure_C.Columns[1].HeaderText = "位移1";
+            dgv_WindPressure_C.Columns[1].Width = 75;
+            dgv_WindPressure_C.Columns[1].DataPropertyName = "zwy1";
+
+
+            dgv_WindPressure_C.Columns[2].HeaderText = "位移2";
+            dgv_WindPressure_C.Columns[2].Width = 75;
+            dgv_WindPressure_C.Columns[2].DataPropertyName = "zwy2";
+
+            dgv_WindPressure_C.Columns[3].HeaderText = "位移3";
+            dgv_WindPressure_C.Columns[3].Width = 75;
+            dgv_WindPressure_C.Columns[3].DataPropertyName = "zwy3";
+
+            dgv_WindPressure_C.Columns[4].HeaderText = "挠度";
+            dgv_WindPressure_C.Columns[4].Width = 75;
+            dgv_WindPressure_C.Columns[4].DataPropertyName = "zzd";
+
+            dgv_WindPressure_C.Columns[5].HeaderText = "l/X";
+            dgv_WindPressure_C.Columns[5].Width = 75;
+            dgv_WindPressure_C.Columns[5].DataPropertyName = "zlx";
+
+
+            dgv_WindPressure_C.Columns[6].HeaderText = "位移1";
+            dgv_WindPressure_C.Columns[6].Width = 75;
+            dgv_WindPressure_C.Columns[6].DataPropertyName = "fwy1";
+
+
+            dgv_WindPressure_C.Columns[7].HeaderText = "位移2";
+            dgv_WindPressure_C.Columns[7].Width = 74;
+            dgv_WindPressure_C.Columns[7].DataPropertyName = "fwy2";
+
+            dgv_WindPressure_C.Columns[8].HeaderText = "位移3";
+            dgv_WindPressure_C.Columns[8].Width = 75;
+            dgv_WindPressure_C.Columns[8].DataPropertyName = "fwy3";
+
+            dgv_WindPressure_C.Columns[9].HeaderText = "挠度";
+            dgv_WindPressure_C.Columns[9].Width = 75;
+            dgv_WindPressure_C.Columns[9].DataPropertyName = "fzd";
+
+            dgv_WindPressure_C.Columns[10].HeaderText = "l/X";
+            dgv_WindPressure_C.Columns[10].Width = 75;
+            dgv_WindPressure_C.Columns[10].DataPropertyName = "flx";
+
+
+            dgv_WindPressure_C.Columns["zwy1"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_C.Columns["zwy2"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_C.Columns["zwy3"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_C.Columns["zzd"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_C.Columns["PaValue"].Visible = false;
+
+            dgv_WindPressure_C.Columns["fwy1"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_C.Columns["fwy2"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_C.Columns["fwy3"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_C.Columns["fzd"].DefaultCellStyle.Format = "N2";
+            dgv_WindPressure_C.Columns["PaValue"].Visible = false;
+
+
+            dgv_WindPressure_C.Refresh();
+            #endregion
+        }
+
+
+        private List<WindPressureDGV> GetWindPressureDGV_A()
+        {
+            windPressureDGV_A = new List<WindPressureDGV>();
 
             if (_serialPortClient.sp.IsOpen)
             {
                 if (int.Parse(txt_gbjc.Text) == 0)
                 {
-                    return windPressureDGV;
+                    return windPressureDGV_A;
                 }
             }
-            var dt = new DAL_dt_kfy_Info().GetkfyByCodeAndTong(_tempCode, _tempTong);
+            var dt = new DAL_dt_kfy_Info().GetkfyByCodeToLevel(_tempCode, "A");
             if (dt != null && dt.Rows.Count > 0)
             {
                 DataRow dr = dt.Rows[0];
                 if (!_serialPortClient.sp.IsOpen)
                 {
-                    //极差
                     txt_gbjc.Text = dr["defJC"].ToString();
                 }
 
@@ -318,14 +532,14 @@ namespace text.doors.Detection
 
                 var jcvalue = int.Parse(txt_gbjc.Text);
 
-                defKFYPa = new List<DefKFYPa>();
+                defKFYPa_A = new List<DefKFYPa>();
                 for (int i = 1; i < 9; i++)
                 {
-                    defKFYPa.Add(new DefKFYPa() { Value = jcvalue * i });
+                    defKFYPa_A.Add(new DefKFYPa() { Value = jcvalue * i });
                 }
-                foreach (var paInfo in defKFYPa)
+                foreach (var paInfo in defKFYPa_A)
                 {
-                    windPressureDGV.Add(new WindPressureDGV()
+                    windPressureDGV_A.Add(new WindPressureDGV()
                     {
                         Pa = paInfo.Value + "Pa",
                         PaValue = paInfo.Value,
@@ -358,7 +572,7 @@ namespace text.doors.Detection
                         name = "PMax/残余变形";
                         field = "pMaxcanyubianxing";
                     }
-                    windPressureDGV.Add(new WindPressureDGV()
+                    windPressureDGV_A.Add(new WindPressureDGV()
                     {
                         Pa = name,
                         PaValue = -1,
@@ -389,17 +603,17 @@ namespace text.doors.Detection
 
                 var jcvalue = int.Parse(txt_gbjc.Text);
 
-                defKFYPa = new List<DefKFYPa>();
+                defKFYPa_A = new List<DefKFYPa>();
                 for (int i = 1; i < 9; i++)
                 {
-                    defKFYPa.Add(new DefKFYPa() { Value = jcvalue * i });
+                    defKFYPa_A.Add(new DefKFYPa() { Value = jcvalue * i });
                 }
 
-                windPressureDGV = new List<WindPressureDGV>();
+                windPressureDGV_A = new List<WindPressureDGV>();
 
-                foreach (var paInfo in defKFYPa)
+                foreach (var paInfo in defKFYPa_A)
                 {
-                    windPressureDGV.Add(new WindPressureDGV()
+                    windPressureDGV_A.Add(new WindPressureDGV()
                     {
                         Pa = paInfo.Value + "Pa",
                         PaValue = paInfo.Value,
@@ -432,7 +646,7 @@ namespace text.doors.Detection
                         name = "PMax/残余变形";
                         paValue = -3;
                     }
-                    windPressureDGV.Add(new WindPressureDGV()
+                    windPressureDGV_A.Add(new WindPressureDGV()
                     {
                         Pa = name,
                         PaValue = paValue,
@@ -446,7 +660,355 @@ namespace text.doors.Detection
                 }
                 #endregion
             }
-            return windPressureDGV;
+            return windPressureDGV_A;
+        }
+
+        private List<WindPressureDGV> GetWindPressureDGV_B()
+        {
+            windPressureDGV_B = new List<WindPressureDGV>();
+
+            if (_serialPortClient.sp.IsOpen)
+            {
+                if (int.Parse(txt_gbjc.Text) == 0)
+                {
+                    return windPressureDGV_B;
+                }
+            }
+            var dt = new DAL_dt_kfy_Info().GetkfyByCodeToLevel(_tempCode);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.Rows[0];
+                if (!_serialPortClient.sp.IsOpen)
+                {
+                    //极差
+                    txt_gbjc.Text = dr["defJC"].ToString();
+                }
+
+                IsGCJC = int.Parse(dr["testtype"].ToString()) == 2 ? true : false;
+
+                if (IsGCJC)
+                {
+                    btn_gcjc.BackColor = Color.Green;
+                }
+                else
+                {
+                    btn_gcjc.BackColor = Color.Transparent;
+                }
+
+
+                txt_lx.Text = dr["lx"].ToString();
+                txt_desc.Text = dr["desc"].ToString();
+                //绑定锁点
+                if (dr["CheckLock"].ToString() == "1")
+                    rdb_DWDD1.Checked = true;
+                if (dr["CheckLock"].ToString() == "3")
+                    rdb_DWDD3.Checked = true;
+
+                var jcvalue = int.Parse(txt_gbjc.Text);
+
+                defKFYPa_B = new List<DefKFYPa>();
+                for (int i = 1; i < 9; i++)
+                {
+                    defKFYPa_B.Add(new DefKFYPa() { Value = jcvalue * i });
+                }
+                foreach (var paInfo in defKFYPa_B)
+                {
+                    windPressureDGV_B.Add(new WindPressureDGV()
+                    {
+                        Pa = paInfo.Value + "Pa",
+                        PaValue = paInfo.Value,
+                        zwy1 = string.IsNullOrWhiteSpace(dr["z_one_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["z_one_" + paInfo.Value].ToString()),
+                        zwy2 = string.IsNullOrWhiteSpace(dr["z_two_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["z_two_" + paInfo.Value].ToString()),
+                        zwy3 = string.IsNullOrWhiteSpace(dr["z_three_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["z_three_" + paInfo.Value].ToString()),
+
+                        fwy1 = string.IsNullOrWhiteSpace(dr["f_one_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["f_one_" + paInfo.Value].ToString()),
+                        fwy2 = string.IsNullOrWhiteSpace(dr["f_two_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["f_two_" + paInfo.Value].ToString()),
+                        fwy3 = string.IsNullOrWhiteSpace(dr["f_three_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["f_three_" + paInfo.Value].ToString()),
+                    });
+                }
+                //极差
+                for (int i = 0; i < 3; i++)
+                {
+                    var name = "";
+                    var field = "";
+                    if (i == 0)
+                    {
+                        name = "P3阶段";
+                        field = "p3jieduan";
+                    }
+                    else if (i == 1)
+                    {
+                        name = "P3残余变形";
+                        field = "p3canyubianxing";
+                    }
+                    else if (i == 2)
+                    {
+                        name = "PMax/残余变形";
+                        field = "pMaxcanyubianxing";
+                    }
+                    windPressureDGV_B.Add(new WindPressureDGV()
+                    {
+                        Pa = name,
+                        PaValue = -1,
+                        zwy1 = string.IsNullOrWhiteSpace(dr["z_one_" + field].ToString()) ? 0 : double.Parse(dr["z_one_" + field].ToString()),
+                        zwy2 = string.IsNullOrWhiteSpace(dr["z_two_" + field].ToString()) ? 0 : double.Parse(dr["z_two_" + field].ToString()),
+                        zwy3 = string.IsNullOrWhiteSpace(dr["z_three_" + field].ToString()) ? 0 : double.Parse(dr["z_three_" + field].ToString()),
+
+                        fwy1 = string.IsNullOrWhiteSpace(dr["f_one_" + field].ToString()) ? 0 : double.Parse(dr["f_one_" + field].ToString()),
+                        fwy2 = string.IsNullOrWhiteSpace(dr["f_two_" + field].ToString()) ? 0 : double.Parse(dr["f_two_" + field].ToString()),
+                        fwy3 = string.IsNullOrWhiteSpace(dr["f_three_" + field].ToString()) ? 0 : double.Parse(dr["f_three_" + field].ToString()),
+                    });
+                }
+
+                this.txt_p1.Text = dr["p1"] == null ? "0" : dr["p1"].ToString();
+                this.txt_p2.Text = dr["p2"] == null ? "0" : dr["p2"].ToString();
+                this.txt_p3.Text = dr["p3"] == null ? "0" : dr["p3"].ToString();
+                this.txt_f_p1.Text = dr["_p1"] == null ? "0" : dr["_p1"].ToString();
+                this.txt_f_p2.Text = dr["_p2"] == null ? "0" : dr["_p2"].ToString();
+                this.txt_f_p3.Text = dr["_p3"] == null ? "0" : dr["_p3"].ToString();
+                this.txt_zpmax.Text = dr["z_pMax"] == null ? "0" : dr["z_pMax"].ToString();
+                this.txt_fpmax.Text = dr["f_pMax"] == null ? "0" : dr["f_pMax"].ToString();
+
+
+            }
+            else
+            {
+                #region 添加默认
+
+                var jcvalue = int.Parse(txt_gbjc.Text);
+
+                defKFYPa_B = new List<DefKFYPa>();
+                for (int i = 1; i < 9; i++)
+                {
+                    defKFYPa_B.Add(new DefKFYPa() { Value = jcvalue * i });
+                }
+
+                windPressureDGV_B = new List<WindPressureDGV>();
+
+                foreach (var paInfo in defKFYPa_B)
+                {
+                    windPressureDGV_B.Add(new WindPressureDGV()
+                    {
+                        Pa = paInfo.Value + "Pa",
+                        PaValue = paInfo.Value,
+                        zwy1 = 0.00,
+                        zwy2 = 0.00,
+                        zwy3 = 0.00,
+                        fwy1 = 0.00,
+                        fwy2 = 0.00,
+                        fwy3 = 0.00,
+                    });
+                }
+                //极差
+                for (int i = 0; i < 3; i++)
+                {
+                    var name = "";
+                    var paValue = 0;
+                    if (i == 0)
+                    {
+                        name = "P3阶段";
+                        paValue = -1;
+                    }
+                    else if (i == 1)
+                    {
+                        name = "P3残余变形";
+                        paValue = -2;
+                    }
+
+                    else if (i == 2)
+                    {
+                        name = "PMax/残余变形";
+                        paValue = -3;
+                    }
+                    windPressureDGV_B.Add(new WindPressureDGV()
+                    {
+                        Pa = name,
+                        PaValue = paValue,
+                        zwy1 = 0.00,
+                        zwy2 = 0.00,
+                        zwy3 = 0.00,
+                        fwy1 = 0.00,
+                        fwy2 = 0.00,
+                        fwy3 = 0.00,
+                    });
+                }
+                #endregion
+            }
+            return windPressureDGV_B;
+        }
+
+        private List<WindPressureDGV> GetWindPressureDGV_C()
+        {
+            windPressureDGV_C = new List<WindPressureDGV>();
+
+            if (_serialPortClient.sp.IsOpen)
+            {
+                if (int.Parse(txt_gbjc.Text) == 0)
+                {
+                    return windPressureDGV_C;
+                }
+            }
+            var dt = new DAL_dt_kfy_Info().GetkfyByCodeToLevel(_tempCode);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.Rows[0];
+                if (!_serialPortClient.sp.IsOpen)
+                {
+                    //极差
+                    txt_gbjc.Text = dr["defJC"].ToString();
+                }
+
+                IsGCJC = int.Parse(dr["testtype"].ToString()) == 2 ? true : false;
+
+                if (IsGCJC)
+                {
+                    btn_gcjc.BackColor = Color.Green;
+                }
+                else
+                {
+                    btn_gcjc.BackColor = Color.Transparent;
+                }
+
+
+                txt_lx.Text = dr["lx"].ToString();
+                txt_desc.Text = dr["desc"].ToString();
+                //绑定锁点
+                if (dr["CheckLock"].ToString() == "1")
+                    rdb_DWDD1.Checked = true;
+                if (dr["CheckLock"].ToString() == "3")
+                    rdb_DWDD3.Checked = true;
+
+                var jcvalue = int.Parse(txt_gbjc.Text);
+
+                defKFYPa_C = new List<DefKFYPa>();
+                for (int i = 1; i < 9; i++)
+                {
+                    defKFYPa_C.Add(new DefKFYPa() { Value = jcvalue * i });
+                }
+                foreach (var paInfo in defKFYPa_C)
+                {
+                    windPressureDGV_C.Add(new WindPressureDGV()
+                    {
+                        Pa = paInfo.Value + "Pa",
+                        PaValue = paInfo.Value,
+                        zwy1 = string.IsNullOrWhiteSpace(dr["z_one_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["z_one_" + paInfo.Value].ToString()),
+                        zwy2 = string.IsNullOrWhiteSpace(dr["z_two_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["z_two_" + paInfo.Value].ToString()),
+                        zwy3 = string.IsNullOrWhiteSpace(dr["z_three_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["z_three_" + paInfo.Value].ToString()),
+
+                        fwy1 = string.IsNullOrWhiteSpace(dr["f_one_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["f_one_" + paInfo.Value].ToString()),
+                        fwy2 = string.IsNullOrWhiteSpace(dr["f_two_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["f_two_" + paInfo.Value].ToString()),
+                        fwy3 = string.IsNullOrWhiteSpace(dr["f_three_" + paInfo.Value].ToString()) ? 0 : double.Parse(dr["f_three_" + paInfo.Value].ToString()),
+                    });
+                }
+                //极差
+                for (int i = 0; i < 3; i++)
+                {
+                    var name = "";
+                    var field = "";
+                    if (i == 0)
+                    {
+                        name = "P3阶段";
+                        field = "p3jieduan";
+                    }
+                    else if (i == 1)
+                    {
+                        name = "P3残余变形";
+                        field = "p3canyubianxing";
+                    }
+                    else if (i == 2)
+                    {
+                        name = "PMax/残余变形";
+                        field = "pMaxcanyubianxing";
+                    }
+                    windPressureDGV_C.Add(new WindPressureDGV()
+                    {
+                        Pa = name,
+                        PaValue = -1,
+                        zwy1 = string.IsNullOrWhiteSpace(dr["z_one_" + field].ToString()) ? 0 : double.Parse(dr["z_one_" + field].ToString()),
+                        zwy2 = string.IsNullOrWhiteSpace(dr["z_two_" + field].ToString()) ? 0 : double.Parse(dr["z_two_" + field].ToString()),
+                        zwy3 = string.IsNullOrWhiteSpace(dr["z_three_" + field].ToString()) ? 0 : double.Parse(dr["z_three_" + field].ToString()),
+
+                        fwy1 = string.IsNullOrWhiteSpace(dr["f_one_" + field].ToString()) ? 0 : double.Parse(dr["f_one_" + field].ToString()),
+                        fwy2 = string.IsNullOrWhiteSpace(dr["f_two_" + field].ToString()) ? 0 : double.Parse(dr["f_two_" + field].ToString()),
+                        fwy3 = string.IsNullOrWhiteSpace(dr["f_three_" + field].ToString()) ? 0 : double.Parse(dr["f_three_" + field].ToString()),
+                    });
+                }
+
+                this.txt_p1.Text = dr["p1"] == null ? "0" : dr["p1"].ToString();
+                this.txt_p2.Text = dr["p2"] == null ? "0" : dr["p2"].ToString();
+                this.txt_p3.Text = dr["p3"] == null ? "0" : dr["p3"].ToString();
+                this.txt_f_p1.Text = dr["_p1"] == null ? "0" : dr["_p1"].ToString();
+                this.txt_f_p2.Text = dr["_p2"] == null ? "0" : dr["_p2"].ToString();
+                this.txt_f_p3.Text = dr["_p3"] == null ? "0" : dr["_p3"].ToString();
+                this.txt_zpmax.Text = dr["z_pMax"] == null ? "0" : dr["z_pMax"].ToString();
+                this.txt_fpmax.Text = dr["f_pMax"] == null ? "0" : dr["f_pMax"].ToString();
+
+
+            }
+            else
+            {
+                #region 添加默认
+
+                var jcvalue = int.Parse(txt_gbjc.Text);
+
+                defKFYPa_C = new List<DefKFYPa>();
+                for (int i = 1; i < 9; i++)
+                {
+                    defKFYPa_C.Add(new DefKFYPa() { Value = jcvalue * i });
+                }
+
+                windPressureDGV_C = new List<WindPressureDGV>();
+
+                foreach (var paInfo in defKFYPa_C)
+                {
+                    windPressureDGV_C.Add(new WindPressureDGV()
+                    {
+                        Pa = paInfo.Value + "Pa",
+                        PaValue = paInfo.Value,
+                        zwy1 = 0.00,
+                        zwy2 = 0.00,
+                        zwy3 = 0.00,
+                        fwy1 = 0.00,
+                        fwy2 = 0.00,
+                        fwy3 = 0.00,
+                    });
+                }
+                //极差
+                for (int i = 0; i < 3; i++)
+                {
+                    var name = "";
+                    var paValue = 0;
+                    if (i == 0)
+                    {
+                        name = "P3阶段";
+                        paValue = -1;
+                    }
+                    else if (i == 1)
+                    {
+                        name = "P3残余变形";
+                        paValue = -2;
+                    }
+
+                    else if (i == 2)
+                    {
+                        name = "PMax/残余变形";
+                        paValue = -3;
+                    }
+                    windPressureDGV_C.Add(new WindPressureDGV()
+                    {
+                        Pa = name,
+                        PaValue = paValue,
+                        zwy1 = 0.00,
+                        zwy2 = 0.00,
+                        zwy3 = 0.00,
+                        fwy1 = 0.00,
+                        fwy2 = 0.00,
+                        fwy3 = 0.00,
+                    });
+                }
+                #endregion
+            }
+            return windPressureDGV_C;
         }
 
 
@@ -456,8 +1018,6 @@ namespace text.doors.Detection
             if (!_serialPortClient.sp.IsOpen)
                 return;
             AnimateSeries(this.tChart_qm, _serialPortClient.GetCY_High());
-            // AnimateSeries(this.tChart_qm, RegisterData.CY_High_Value);
-
         }
         private void AnimateSeries(Steema.TeeChart.TChart chart, int yl)
         {
@@ -472,177 +1032,514 @@ namespace text.doors.Detection
         }
 
 
-        private bool AddKfyInfo(int defJC)
+        private bool Add(int defJC)
         {
-            DAL_dt_kfy_Info dal = new DAL_dt_kfy_Info();
-            Model_dt_kfy_Info model = new Model_dt_kfy_Info();
-            model.dt_Code = _tempCode;
-            model.info_DangH = _tempTong;
-            model.defJC = defJC;
-            model.lx = int.Parse(txt_lx.Text);
+            var kfy = AddKfy();
+
+            var resRes = AddKfyRes(defJC);
+
+            dal_dt_Info.UpdateTestType(_tempCode, PublicEnum.SystemItem.AirPressure, 1);
+            return true;
+        }
+
+        private bool AddKfy()
+        {
+            List<Model_dt_kfy_Info> list = new List<Model_dt_kfy_Info>();
+
+            //A
             for (int i = 0; i < 11; i++)
             {
-                #region 获取
+
+                Model_dt_kfy_Info model = new Model_dt_kfy_Info();
+                model.dt_Code = _tempCode;
+                #region 获取 A
                 if (i == 0)
                 {
-                    model.z_one_250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
-                    model.z_two_250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
-                    model.z_three_250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
-                    model.z_nd_250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
-                    model.z_ix_250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
-                    model.f_one_250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
-                    model.f_two_250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
-                    model.f_three_250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
-                    model.f_nd_250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
-                    model.f_ix_250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                    model.z_one_250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
                 }
                 if (i == 1)
                 {
-                    model.z_one_500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
-                    model.z_two_500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
-                    model.z_three_500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
-                    model.z_nd_500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
-                    model.z_ix_500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
-                    model.f_one_500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
-                    model.f_two_500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
-                    model.f_three_500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
-                    model.f_nd_500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
-                    model.f_ix_500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                    model.z_one_500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
                 }
                 if (i == 2)
                 {
-                    model.z_one_750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
-                    model.z_two_750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
-                    model.z_three_750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
-                    model.z_nd_750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
-                    model.z_ix_750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
-                    model.f_one_750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
-                    model.f_two_750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
-                    model.f_three_750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
-                    model.f_nd_750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
-                    model.f_ix_750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                    model.z_one_750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
                 }
                 if (i == 3)
                 {
-                    model.z_one_1000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
-                    model.z_two_1000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
-                    model.z_three_1000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
-                    model.z_nd_1000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
-                    model.z_ix_1000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
-                    model.f_one_1000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
-                    model.f_two_1000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
-                    model.f_three_1000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
-                    model.f_nd_1000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
-                    model.f_ix_1000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                    model.z_one_1000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
                 }
                 if (i == 4)
                 {
-                    model.z_one_1250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
-                    model.z_two_1250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
-                    model.z_three_1250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
-                    model.z_nd_1250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
-                    model.z_ix_1250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
-                    model.f_one_1250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
-                    model.f_two_1250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
-                    model.f_three_1250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
-                    model.f_nd_1250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
-                    model.f_ix_1250 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                    model.z_one_1250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1250 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
                 }
                 if (i == 5)
                 {
-                    model.z_one_1500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
-                    model.z_two_1500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
-                    model.z_three_1500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
-                    model.z_nd_1500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
-                    model.z_ix_1500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
-                    model.f_one_1500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
-                    model.f_two_1500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
-                    model.f_three_1500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
-                    model.f_nd_1500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
-                    model.f_ix_1500 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                    model.z_one_1500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1500 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
                 }
                 if (i == 6)
                 {
-                    model.z_one_1750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
-                    model.z_two_1750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
-                    model.z_three_1750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
-                    model.z_nd_1750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
-                    model.z_ix_1750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
-                    model.f_one_1750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
-                    model.f_two_1750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
-                    model.f_three_1750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
-                    model.f_nd_1750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
-                    model.f_ix_1750 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                    model.z_one_1750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1750 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
                 }
                 if (i == 7)
                 {
-                    model.z_one_2000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
-                    model.z_two_2000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
-                    model.z_three_2000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
-                    model.z_nd_2000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
-                    model.z_ix_2000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
-                    model.f_one_2000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
-                    model.f_two_2000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
-                    model.f_three_2000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
-                    model.f_nd_2000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
-                    model.f_ix_2000 = double.Parse(this.dgv_WindPressure.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                    model.z_one_2000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_2000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_2000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_2000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_2000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_2000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_2000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_2000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_2000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_2000 = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
                 }
                 if (i == 8)
                 {
-                    model.z_one_p3jieduan = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
-                    model.z_two_p3jieduan = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
-                    model.z_three_p3jieduan = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
-                    model.z_nd_p3jieduan = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
-                    model.z_ix_p3jieduan = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.z_one_p3jieduan = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_p3jieduan = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_p3jieduan = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_p3jieduan = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_p3jieduan = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
 
 
-                    model.f_one_p3jieduan = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
-                    model.f_two_p3jieduan = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
-                    model.f_three_p3jieduan = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
-                    model.f_nd_p3jieduan = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
-                    model.f_ix_p3jieduan = double.Parse(this.dgv_WindPressure.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                    model.f_one_p3jieduan = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_p3jieduan = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_p3jieduan = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_p3jieduan = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_p3jieduan = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
                 }
                 if (i == 9)
                 {
-                    model.z_one_p3canyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
-                    model.z_two_p3canyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
-                    model.z_three_p3canyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
-                    model.z_nd_p3canyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
-                    model.z_ix_p3canyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
-                    model.f_one_p3canyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
-                    model.f_two_p3canyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
-                    model.f_three_p3canyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
-                    model.f_nd_p3canyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
-                    model.f_ix_p3canyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                    model.z_one_p3canyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_p3canyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_p3canyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_p3canyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_p3canyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_p3canyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_p3canyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_p3canyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_p3canyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_p3canyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
                 }
                 if (i == 10)
                 {
-                    model.z_one_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
-                    model.z_two_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
-                    model.z_three_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
-                    model.z_nd_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
-                    model.z_ix_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
-                    model.f_one_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
-                    model.f_two_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
-                    model.f_three_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
-                    model.f_nd_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
-                    model.f_ix_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                    model.z_one_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_A.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+
+                    list.Add(model);
                 }
                 #endregion
             }
+
+            //B
+            for (int i = 0; i < 11; i++)
+            {
+
+                Model_dt_kfy_Info model = new Model_dt_kfy_Info();
+                model.dt_Code = _tempCode;
+                #region 获取 b
+                if (i == 0)
+                {
+                    model.z_one_250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 1)
+                {
+                    model.z_one_500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 2)
+                {
+                    model.z_one_750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 3)
+                {
+                    model.z_one_1000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 4)
+                {
+                    model.z_one_1250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1250 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 5)
+                {
+                    model.z_one_1500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1500 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 6)
+                {
+                    model.z_one_1750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1750 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 7)
+                {
+                    model.z_one_2000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_2000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_2000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_2000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_2000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_2000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_2000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_2000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_2000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_2000 = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 8)
+                {
+                    model.z_one_p3jieduan = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_p3jieduan = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_p3jieduan = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_p3jieduan = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_p3jieduan = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+
+
+                    model.f_one_p3jieduan = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_p3jieduan = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_p3jieduan = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_p3jieduan = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_p3jieduan = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 9)
+                {
+                    model.z_one_p3canyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_p3canyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_p3canyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_p3canyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_p3canyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_p3canyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_p3canyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_p3canyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_p3canyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_p3canyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 10)
+                {
+                    model.z_one_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_B.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+
+                    list.Add(model);
+                }
+                #endregion
+            }
+
+            //C
+            for (int i = 0; i < 11; i++)
+            {
+
+                Model_dt_kfy_Info model = new Model_dt_kfy_Info();
+                model.dt_Code = _tempCode;
+                #region 获取 C
+                if (i == 0)
+                {
+                    model.z_one_250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 1)
+                {
+                    model.z_one_500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 2)
+                {
+                    model.z_one_750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 3)
+                {
+                    model.z_one_1000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 4)
+                {
+                    model.z_one_1250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1250 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 5)
+                {
+                    model.z_one_1500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1500 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 6)
+                {
+                    model.z_one_1750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_1750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_1750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_1750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_1750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_1750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_1750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_1750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_1750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_1750 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 7)
+                {
+                    model.z_one_2000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_2000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_2000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_2000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_2000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_2000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_2000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_2000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_2000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_2000 = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 8)
+                {
+                    model.z_one_p3jieduan = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_p3jieduan = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_p3jieduan = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_p3jieduan = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_p3jieduan = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+
+
+                    model.f_one_p3jieduan = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_p3jieduan = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_p3jieduan = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_p3jieduan = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_p3jieduan = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 9)
+                {
+                    model.z_one_p3canyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_p3canyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_p3canyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_p3canyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_p3canyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_p3canyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_p3canyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_p3canyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_p3canyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_p3canyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+                }
+                if (i == 10)
+                {
+                    model.z_one_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy1"].Value.ToString()).ToString("f2");
+                    model.z_two_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy2"].Value.ToString()).ToString("f2");
+                    model.z_three_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zwy3"].Value.ToString()).ToString("f2");
+                    model.z_nd_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zzd"].Value.ToString()).ToString("f2");
+                    model.z_ix_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["zlx"].Value.ToString()).ToString("f2");
+                    model.f_one_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy1"].Value.ToString()).ToString("f2");
+                    model.f_two_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy2"].Value.ToString()).ToString("f2");
+                    model.f_three_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fwy3"].Value.ToString()).ToString("f2");
+                    model.f_nd_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["fzd"].Value.ToString()).ToString("f2");
+                    model.f_ix_pMaxcanyubianxing = double.Parse(this.dgv_WindPressure_C.Rows[i].Cells["flx"].Value.ToString()).ToString("f2");
+
+                    list.Add(model);
+                }
+                #endregion
+            }
+
+
+            return dal_dt_kfy_Info.Add_kfy_Info(list, _tempCode);
+        }
+
+
+        public bool AddKfyRes(int defJC)
+        {
+            Model_dt_kfy_res_Info model = new Model_dt_kfy_res_Info();
+            model.dt_Code = _tempCode;
+            model.defJC = defJC;
+            model.lx = int.Parse(txt_lx.Text);
             model.p1 = txt_p1.Text;
             model.p2 = txt_p2.Text;
             model.p3 = txt_p3.Text;
             model._p1 = txt_f_p1.Text;
             model._p2 = txt_f_p2.Text;
             model._p3 = txt_f_p3.Text;
-
             model.testtype = IsGCJC == true ? 2 : 1;
             model.pMax = txt_zpmax.Text;
             model._pMax = txt_fpmax.Text;
             model.desc = txt_desc.Text;
             model.CheckLock = rdb_DWDD1.Checked ? 1 : rdb_DWDD3.Checked ? 3 : 0;
-            return dal.Add_kfy_Info(model);
+            return dal_dt_kfy_Info.Add_kfy_res_Info(model);
         }
 
         private void btn_zff_Click(object sender, EventArgs e)
@@ -697,7 +1594,6 @@ namespace text.doors.Detection
             var res = _serialPortClient.Send_FY_Btn(BFMCommand.风压正压开始);
             if (!res)
             {
-                //MessageBox.Show("正压开始异常！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -719,50 +1615,143 @@ namespace text.doors.Detection
             if (!IsOk)
                 return;
 
-            if (windPressureTest == PublicEnum.WindPressureTest.ZStart)
-            {
-                var cyValue = _serialPortClient.GetCY_High();
-                var val = defKFYPa.Find(t => cyValue >= t.MinValue && cyValue <= t.MaxValue);
-                if (val != null && !complete.Exists(t => t == val.Value))
-                {
-                    complete.Add(val.Value);
-                    currentkPa = val.Value;
 
-                    tim_static1 = new System.Timers.Timer(500);
-                    tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
-                    tim_static1.Enabled = true;
+            if (tbc_group.SelectedTab.Text == "A组")
+            {
+                if (windPressureTest == PublicEnum.WindPressureTest.ZStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_A.Find(t => cyValue >= t.MinValue && cyValue <= t.MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static1 = new System.Timers.Timer(500);
+                        tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
+                        tim_static1.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.FStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_A.Find(t => cyValue >= t._MinValue && cyValue <= t._MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static1 = new System.Timers.Timer(500);
+                        tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
+                        tim_static1.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.ZSafety || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                {
+                    if (!complete.Exists(t => t == -1))
+                    {
+                        complete.Add(-1);
+                        currentkPa = -1;
+
+                        tim_static1 = new System.Timers.Timer(500);
+                        tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
+                        tim_static1.Enabled = true;
+                    }
+                }
+            }
+            else if (tbc_group.SelectedTab.Text == "B组")
+            {
+                if (windPressureTest == PublicEnum.WindPressureTest.ZStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_B.Find(t => cyValue >= t.MinValue && cyValue <= t.MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static1 = new System.Timers.Timer(500);
+                        tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
+                        tim_static1.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.FStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_B.Find(t => cyValue >= t._MinValue && cyValue <= t._MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static1 = new System.Timers.Timer(500);
+                        tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
+                        tim_static1.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.ZSafety || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                {
+                    if (!complete.Exists(t => t == -1))
+                    {
+                        complete.Add(-1);
+                        currentkPa = -1;
+
+                        tim_static1 = new System.Timers.Timer(500);
+                        tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
+                        tim_static1.Enabled = true;
+                    }
+                }
+            }
+            else if (tbc_group.SelectedTab.Text == "C组")
+            {
+                if (windPressureTest == PublicEnum.WindPressureTest.ZStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_C.Find(t => cyValue >= t.MinValue && cyValue <= t.MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static1 = new System.Timers.Timer(500);
+                        tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
+                        tim_static1.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.FStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_C.Find(t => cyValue >= t._MinValue && cyValue <= t._MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static1 = new System.Timers.Timer(500);
+                        tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
+                        tim_static1.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.ZSafety || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                {
+                    if (!complete.Exists(t => t == -1))
+                    {
+                        complete.Add(-1);
+                        currentkPa = -1;
+
+                        tim_static1 = new System.Timers.Timer(500);
+                        tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
+                        tim_static1.Enabled = true;
+                    }
                 }
             }
 
-            if (windPressureTest == PublicEnum.WindPressureTest.FStart)
-            {
-                var cyValue = _serialPortClient.GetCY_High();
-                var val = defKFYPa.Find(t => cyValue >= t._MinValue && cyValue <= t._MaxValue);
-                if (val != null && !complete.Exists(t => t == val.Value))
-                {
-                    complete.Add(val.Value);
-                    currentkPa = val.Value;
-
-                    tim_static1 = new System.Timers.Timer(500);
-                    tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
-                    tim_static1.Enabled = true;
-                }
-            }
-
-            if (windPressureTest == PublicEnum.WindPressureTest.ZSafety || windPressureTest == PublicEnum.WindPressureTest.FSafety)
-            {
-                if (!complete.Exists(t => t == -1))
-                {
-                    complete.Add(-1);
-                    currentkPa = -1;
-
-                    tim_static1 = new System.Timers.Timer(500);
-                    tim_static1.Elapsed += new System.Timers.ElapsedEventHandler(staticTimer);  //到达时间的时候执行倒计时事件timeout；
-                    tim_static1.Enabled = true;
-
-                    //  tim_static.Enabled = true;
-                }
-            }
         }
 
         private void staticTimer(object source, System.Timers.ElapsedEventArgs e)
@@ -796,77 +1785,220 @@ namespace text.doors.Detection
                 return;
             }
 
-
-            if (staticIndex < maxIndex)
+            if (tbc_group.SelectedTab.Text == "A组")
             {
-                var _displace1 = _serialPortClient.GetDisplace1();
-                var _displace2 = _serialPortClient.GetDisplace2();
-                var _displace3 = _serialPortClient.GetDisplace3();
-                average.Add(new Tuple<double, double, double>(_displace1, _displace2, _displace3));
-            }
-            else
-            {
-                double ave1 = 0, ave2 = 0, ave3 = 0;
-                foreach (var item in average)
+                if (staticIndex < maxIndex)
                 {
-                    ave1 += item.Item1;
-                    ave2 += item.Item2;
-                    ave3 += item.Item3;
+                    var _displace1 = _serialPortClient.GetDisplace1("A");
+                    var _displace2 = _serialPortClient.GetDisplace2("A");
+                    var _displace3 = _serialPortClient.GetDisplace3("");
+                    average.Add(new Tuple<double, double, double>(_displace1, _displace2, _displace3));
                 }
-                var pa = windPressureDGV.Find(t => t.PaValue == currentkPa);
-
-                if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.ZSafety)
+                else
                 {
-                    pa.zwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
-                    pa.zwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
-                    pa.zwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
-                }
-                else if (windPressureTest == PublicEnum.WindPressureTest.FStart || windPressureTest == PublicEnum.WindPressureTest.FSafety)
-                {
-                    pa.fwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
-                    pa.fwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
-                    pa.fwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
-                }
-
-                //清空初始化
-                BindData(true);
-
-                if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
-                {
-                    var def_LX = 0;
-                    int.TryParse(txt_lx.Text, out def_LX);
-
-                    var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
-                    if (lx < def_LX)
+                    double ave1 = 0, ave2 = 0, ave3 = 0;
+                    foreach (var item in average)
                     {
-                        Stop();
-                        OpenBtnType();
+                        ave1 += item.Item1;
+                        ave2 += item.Item2;
+                        ave3 += item.Item3;
+                    }
+                    var pa = windPressureDGV_A.Find(t => t.PaValue == currentkPa);
 
-                        double lx2 = 0;
-                        double.TryParse(txt_lx.Text, out lx2);
-                        double zy = 0;
-                        double fy = 0;
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.ZSafety)
+                    {
+                        pa.zwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
+                    else if (windPressureTest == PublicEnum.WindPressureTest.FStart || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                    {
+                        pa.fwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
 
-                        //todo:
-                       // Formula.GetKFY(windPressureDGV, DefaultBase.BarLength, lx2, ref zy, ref fy);
-                        if (zy != -100)
+                    //清空初始化
+                    BindData_A(true);
+
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
+                    {
+                        var def_LX = 0;
+                        int.TryParse(txt_lx.Text, out def_LX);
+
+                        var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
+                        if (lx < def_LX)
                         {
-                            txt_p1.Text = Math.Round(zy, 0).ToString();
-                        }
-                        if (fy != -100)
-                        {
-                            txt_f_p1.Text = Math.Round(fy, 0).ToString();
+                            Stop();
+                            OpenBtnType();
+
+                            double lx2 = 0;
+                            double.TryParse(txt_lx.Text, out lx2);
+                            double zy = 0;
+                            double fy = 0;
+
+                            if (zy != -100)
+                            {
+                                txt_p1.Text = Math.Round(zy, 0).ToString();
+                            }
+                            if (fy != -100)
+                            {
+                                txt_f_p1.Text = Math.Round(fy, 0).ToString();
+                            }
                         }
                     }
-                }
 
-                tim_static1.Enabled = false;
-                //this.tim_static.Enabled = false;
-                average = new List<Tuple<double, double, double>>();
-                staticIndex = 0;
-                IsOk = true;
+                    tim_static1.Enabled = false;
+                    average = new List<Tuple<double, double, double>>();
+                    staticIndex = 0;
+                    IsOk = true;
+                }
+                staticIndex++;
             }
-            staticIndex++;
+            else if (tbc_group.SelectedTab.Text == "C组")
+            {
+
+                if (staticIndex < maxIndex)
+                {
+                    var _displace1 = _serialPortClient.GetDisplace1("B");
+                    var _displace2 = _serialPortClient.GetDisplace2("B");
+                    var _displace3 = _serialPortClient.GetDisplace3("B");
+                    average.Add(new Tuple<double, double, double>(_displace1, _displace2, _displace3));
+                }
+                else
+                {
+                    double ave1 = 0, ave2 = 0, ave3 = 0;
+                    foreach (var item in average)
+                    {
+                        ave1 += item.Item1;
+                        ave2 += item.Item2;
+                        ave3 += item.Item3;
+                    }
+                    var pa = windPressureDGV_B.Find(t => t.PaValue == currentkPa);
+
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.ZSafety)
+                    {
+                        pa.zwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
+                    else if (windPressureTest == PublicEnum.WindPressureTest.FStart || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                    {
+                        pa.fwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
+
+                    //清空初始化
+                    BindData_B(true);
+
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
+                    {
+                        var def_LX = 0;
+                        int.TryParse(txt_lx.Text, out def_LX);
+
+                        var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
+                        if (lx < def_LX)
+                        {
+                            Stop();
+                            OpenBtnType();
+
+                            double lx2 = 0;
+                            double.TryParse(txt_lx.Text, out lx2);
+                            double zy = 0;
+                            double fy = 0;
+
+                            if (zy != -100)
+                            {
+                                txt_p1.Text = Math.Round(zy, 0).ToString();
+                            }
+                            if (fy != -100)
+                            {
+                                txt_f_p1.Text = Math.Round(fy, 0).ToString();
+                            }
+                        }
+                    }
+
+                    tim_static1.Enabled = false;
+                    average = new List<Tuple<double, double, double>>();
+                    staticIndex = 0;
+                    IsOk = true;
+                }
+                staticIndex++;
+            }
+            else if (tbc_group.SelectedTab.Text == "C组")
+            {
+                if (staticIndex < maxIndex)
+                {
+                    var _displace1 = _serialPortClient.GetDisplace1("C");
+                    var _displace2 = _serialPortClient.GetDisplace2("C");
+                    var _displace3 = _serialPortClient.GetDisplace3("C");
+                    average.Add(new Tuple<double, double, double>(_displace1, _displace2, _displace3));
+                }
+                else
+                {
+                    double ave1 = 0, ave2 = 0, ave3 = 0;
+                    foreach (var item in average)
+                    {
+                        ave1 += item.Item1;
+                        ave2 += item.Item2;
+                        ave3 += item.Item3;
+                    }
+                    var pa = windPressureDGV_C.Find(t => t.PaValue == currentkPa);
+
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.ZSafety)
+                    {
+                        pa.zwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
+                    else if (windPressureTest == PublicEnum.WindPressureTest.FStart || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                    {
+                        pa.fwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
+
+                    //清空初始化
+                    BindData_C(true);
+
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
+                    {
+                        var def_LX = 0;
+                        int.TryParse(txt_lx.Text, out def_LX);
+
+                        var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
+                        if (lx < def_LX)
+                        {
+                            Stop();
+                            OpenBtnType();
+
+                            double lx2 = 0;
+                            double.TryParse(txt_lx.Text, out lx2);
+                            double zy = 0;
+                            double fy = 0;
+
+                            if (zy != -100)
+                            {
+                                txt_p1.Text = Math.Round(zy, 0).ToString();
+                            }
+                            if (fy != -100)
+                            {
+                                txt_f_p1.Text = Math.Round(fy, 0).ToString();
+                            }
+                        }
+                    }
+
+                    tim_static1.Enabled = false;
+                    average = new List<Tuple<double, double, double>>();
+                    staticIndex = 0;
+                    IsOk = true;
+                }
+                staticIndex++;
+            }
+
+
+
         }
         private void btn_fyyb_Click(object sender, EventArgs e)
         {
@@ -971,7 +2103,6 @@ namespace text.doors.Detection
             }
             complete = new List<int>();
             windPressureTest = PublicEnum.WindPressureTest.ZSafety;
-            //this.tim_fy.Enabled = true;
             DisableBtnType();
             btn_zaq.BackColor = Color.Green;
             tim_fy1 = new System.Timers.Timer(1000);
@@ -987,46 +2118,129 @@ namespace text.doors.Detection
 
         private void tim_fy_Tick(object sender, EventArgs e)
         {
-
             if (!IsOk)
                 return;
 
-            if (windPressureTest == PublicEnum.WindPressureTest.ZStart)
+            if (tbc_group.SelectedTab.Text == "A组")
             {
-                var cyValue = _serialPortClient.GetCY_High();
-                var val = defKFYPa.Find(t => cyValue >= t.MinValue && cyValue <= t.MaxValue);
-                if (val != null && !complete.Exists(t => t == val.Value))
-                {
-                    complete.Add(val.Value);
-                    currentkPa = val.Value;
 
-                    tim_static.Enabled = true;
+                if (windPressureTest == PublicEnum.WindPressureTest.ZStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_A.Find(t => cyValue >= t.MinValue && cyValue <= t.MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.FStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_B.Find(t => cyValue >= t._MinValue && cyValue <= t._MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.ZSafety || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                {
+                    if (!complete.Exists(t => t == -1))
+                    {
+                        complete.Add(-1);
+                        currentkPa = -1;
+
+                        tim_static.Enabled = true;
+                    }
+                }
+            }
+            else if (tbc_group.SelectedTab.Text == "B组")
+            {
+                if (windPressureTest == PublicEnum.WindPressureTest.ZStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_B.Find(t => cyValue >= t.MinValue && cyValue <= t.MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.FStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_B.Find(t => cyValue >= t._MinValue && cyValue <= t._MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.ZSafety || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                {
+                    if (!complete.Exists(t => t == -1))
+                    {
+                        complete.Add(-1);
+                        currentkPa = -1;
+
+                        tim_static.Enabled = true;
+                    }
+                }
+            }
+            else if (tbc_group.SelectedTab.Text == "C组")
+            {
+                if (windPressureTest == PublicEnum.WindPressureTest.ZStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_C.Find(t => cyValue >= t.MinValue && cyValue <= t.MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.FStart)
+                {
+                    var cyValue = _serialPortClient.GetCY_High();
+                    var val = defKFYPa_C.Find(t => cyValue >= t._MinValue && cyValue <= t._MaxValue);
+                    if (val != null && !complete.Exists(t => t == val.Value))
+                    {
+                        complete.Add(val.Value);
+                        currentkPa = val.Value;
+
+                        tim_static.Enabled = true;
+                    }
+                }
+
+                if (windPressureTest == PublicEnum.WindPressureTest.ZSafety || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                {
+                    if (!complete.Exists(t => t == -1))
+                    {
+                        complete.Add(-1);
+                        currentkPa = -1;
+
+                        tim_static.Enabled = true;
+                    }
                 }
             }
 
-            if (windPressureTest == PublicEnum.WindPressureTest.FStart)
-            {
-                var cyValue = _serialPortClient.GetCY_High();
-                var val = defKFYPa.Find(t => cyValue >= t._MinValue && cyValue <= t._MaxValue);
-                if (val != null && !complete.Exists(t => t == val.Value))
-                {
-                    complete.Add(val.Value);
-                    currentkPa = val.Value;
 
-                    tim_static.Enabled = true;
-                }
-            }
-
-            if (windPressureTest == PublicEnum.WindPressureTest.ZSafety || windPressureTest == PublicEnum.WindPressureTest.FSafety)
-            {
-                if (!complete.Exists(t => t == -1))
-                {
-                    complete.Add(-1);
-                    currentkPa = -1;
-
-                    tim_static.Enabled = true;
-                }
-            }
         }
         //稳压次数
         private int staticIndex = 0;
@@ -1070,76 +2284,222 @@ namespace text.doors.Detection
             }
 
 
-            if (staticIndex < maxIndex)
+            if (tbc_group.SelectedTab.Text == "A组")
             {
-                var _displace1 = _serialPortClient.GetDisplace1();
-                var _displace2 = _serialPortClient.GetDisplace2();
-                var _displace3 = _serialPortClient.GetDisplace3();
-                average.Add(new Tuple<double, double, double>(_displace1, _displace2, _displace3));
-            }
-            else
-            {
-                double ave1 = 0, ave2 = 0, ave3 = 0;
-                foreach (var item in average)
+
+                if (staticIndex < maxIndex)
                 {
-                    ave1 += item.Item1;
-                    ave2 += item.Item2;
-                    ave3 += item.Item3;
+                    var _displace1 = _serialPortClient.GetDisplace1("A");
+                    var _displace2 = _serialPortClient.GetDisplace2("A");
+                    var _displace3 = _serialPortClient.GetDisplace3("A");
+                    average.Add(new Tuple<double, double, double>(_displace1, _displace2, _displace3));
                 }
-                var pa = windPressureDGV.Find(t => t.PaValue == currentkPa);
-
-                if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.ZSafety)
+                else
                 {
-                    pa.zwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
-                    pa.zwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
-                    pa.zwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
-                }
-                else if (windPressureTest == PublicEnum.WindPressureTest.FStart || windPressureTest == PublicEnum.WindPressureTest.FSafety)
-                {
-                    pa.fwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
-                    pa.fwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
-                    pa.fwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
-                }
-
-                //清空初始化
-                BindData(true);
-
-                if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
-                {
-                    var def_LX = 0;
-                    int.TryParse(txt_lx.Text, out def_LX);
-
-                    var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
-                    if (lx < def_LX)
+                    double ave1 = 0, ave2 = 0, ave3 = 0;
+                    foreach (var item in average)
                     {
-                        
-                        Stop();
-                        OpenBtnType();
+                        ave1 += item.Item1;
+                        ave2 += item.Item2;
+                        ave3 += item.Item3;
+                    }
+                    var pa = windPressureDGV_A.Find(t => t.PaValue == currentkPa);
 
-                        double lx2 = 0;
-                        double.TryParse(txt_lx.Text, out lx2);
-                        double zy = 0;
-                        double fy = 0;
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.ZSafety)
+                    {
+                        pa.zwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
+                    else if (windPressureTest == PublicEnum.WindPressureTest.FStart || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                    {
+                        pa.fwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
 
-                        //todo:
-                       // Formula.GetKFY(windPressureDGV, DefaultBase.BarLength, lx2, ref zy, ref fy);
-                        if (zy != -100)
+                    //清空初始化
+                    BindData_A(true);
+
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
+                    {
+                        var def_LX = 0;
+                        int.TryParse(txt_lx.Text, out def_LX);
+
+                        var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
+                        if (lx < def_LX)
                         {
-                            txt_p1.Text = Math.Round(zy, 0).ToString();
-                        }
-                        if (fy != -100)
-                        {
-                            txt_f_p1.Text = Math.Round(fy, 0).ToString();
+
+                            Stop();
+                            OpenBtnType();
+
+                            double lx2 = 0;
+                            double.TryParse(txt_lx.Text, out lx2);
+                            double zy = 0;
+                            double fy = 0;
+
+                            if (zy != -100)
+                            {
+                                txt_p1.Text = Math.Round(zy, 0).ToString();
+                            }
+                            if (fy != -100)
+                            {
+                                txt_f_p1.Text = Math.Round(fy, 0).ToString();
+                            }
                         }
                     }
-                }
 
-                this.tim_static.Enabled = false;
-                average = new List<Tuple<double, double, double>>();
-                staticIndex = 0;
-                IsOk = true;
+                    this.tim_static.Enabled = false;
+                    average = new List<Tuple<double, double, double>>();
+                    staticIndex = 0;
+                    IsOk = true;
+                }
+                staticIndex++;
             }
-            staticIndex++;
+            else if (tbc_group.SelectedTab.Text == "B组")
+            {
+
+                if (staticIndex < maxIndex)
+                {
+                    var _displace1 = _serialPortClient.GetDisplace1("B");
+                    var _displace2 = _serialPortClient.GetDisplace2("B");
+                    var _displace3 = _serialPortClient.GetDisplace3("B");
+                    average.Add(new Tuple<double, double, double>(_displace1, _displace2, _displace3));
+                }
+                else
+                {
+                    double ave1 = 0, ave2 = 0, ave3 = 0;
+                    foreach (var item in average)
+                    {
+                        ave1 += item.Item1;
+                        ave2 += item.Item2;
+                        ave3 += item.Item3;
+                    }
+                    var pa = windPressureDGV_B.Find(t => t.PaValue == currentkPa);
+
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.ZSafety)
+                    {
+                        pa.zwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
+                    else if (windPressureTest == PublicEnum.WindPressureTest.FStart || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                    {
+                        pa.fwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
+
+                    //清空初始化
+                    BindData_B(true);
+
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
+                    {
+                        var def_LX = 0;
+                        int.TryParse(txt_lx.Text, out def_LX);
+
+                        var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
+                        if (lx < def_LX)
+                        {
+
+                            Stop();
+                            OpenBtnType();
+
+                            double lx2 = 0;
+                            double.TryParse(txt_lx.Text, out lx2);
+                            double zy = 0;
+                            double fy = 0;
+
+                            if (zy != -100)
+                            {
+                                txt_p1.Text = Math.Round(zy, 0).ToString();
+                            }
+                            if (fy != -100)
+                            {
+                                txt_f_p1.Text = Math.Round(fy, 0).ToString();
+                            }
+                        }
+                    }
+
+                    this.tim_static.Enabled = false;
+                    average = new List<Tuple<double, double, double>>();
+                    staticIndex = 0;
+                    IsOk = true;
+                }
+                staticIndex++;
+            }
+            else if (tbc_group.SelectedTab.Text == "C组")
+            {
+                if (staticIndex < maxIndex)
+                {
+                    var _displace1 = _serialPortClient.GetDisplace1("C");
+                    var _displace2 = _serialPortClient.GetDisplace2("C");
+                    var _displace3 = _serialPortClient.GetDisplace3("C");
+                    average.Add(new Tuple<double, double, double>(_displace1, _displace2, _displace3));
+                }
+                else
+                {
+                    double ave1 = 0, ave2 = 0, ave3 = 0;
+                    foreach (var item in average)
+                    {
+                        ave1 += item.Item1;
+                        ave2 += item.Item2;
+                        ave3 += item.Item3;
+                    }
+                    var pa = windPressureDGV_C.Find(t => t.PaValue == currentkPa);
+
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.ZSafety)
+                    {
+                        pa.zwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.zwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
+                    else if (windPressureTest == PublicEnum.WindPressureTest.FStart || windPressureTest == PublicEnum.WindPressureTest.FSafety)
+                    {
+                        pa.fwy1 = Math.Round(ave1 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy2 = Math.Round(ave2 / average.Count, 2, MidpointRounding.AwayFromZero);
+                        pa.fwy3 = Math.Round(ave3 / average.Count, 2, MidpointRounding.AwayFromZero);
+                    }
+
+                    //清空初始化
+                    BindData_C(true);
+
+                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
+                    {
+                        var def_LX = 0;
+                        int.TryParse(txt_lx.Text, out def_LX);
+
+                        var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
+                        if (lx < def_LX)
+                        {
+
+                            Stop();
+                            OpenBtnType();
+
+                            double lx2 = 0;
+                            double.TryParse(txt_lx.Text, out lx2);
+                            double zy = 0;
+                            double fy = 0;
+
+                            if (zy != -100)
+                            {
+                                txt_p1.Text = Math.Round(zy, 0).ToString();
+                            }
+                            if (fy != -100)
+                            {
+                                txt_f_p1.Text = Math.Round(fy, 0).ToString();
+                            }
+                        }
+                    }
+
+                    this.tim_static.Enabled = false;
+                    average = new List<Tuple<double, double, double>>();
+                    staticIndex = 0;
+                    IsOk = true;
+                }
+                staticIndex++;
+            }
+
         }
 
         /// <summary>
@@ -1384,7 +2744,6 @@ namespace text.doors.Detection
         {
             var res = _serialPortClient.Stop();
             if (!res) { }
-            //MessageBox.Show("急停异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
 
@@ -1457,21 +2816,20 @@ namespace text.doors.Detection
 
         private void dgv_WindPressure_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
             //获得当前选中的行   
             int rowindex = e.RowIndex;
-            var name = dgv_WindPressure.Rows[rowindex].Cells[0].Value.ToString();
+            var name = dgv_WindPressure_A.Rows[rowindex].Cells[0].Value.ToString();
 
-            var z_wy1 = dgv_WindPressure.Rows[rowindex].Cells[1].Value.ToString();
-            var z_wy2 = dgv_WindPressure.Rows[rowindex].Cells[2].Value.ToString();
-            var z_wy3 = dgv_WindPressure.Rows[rowindex].Cells[3].Value.ToString();
+            var z_wy1 = dgv_WindPressure_A.Rows[rowindex].Cells[1].Value.ToString();
+            var z_wy2 = dgv_WindPressure_A.Rows[rowindex].Cells[2].Value.ToString();
+            var z_wy3 = dgv_WindPressure_A.Rows[rowindex].Cells[3].Value.ToString();
 
-            var f_wy1 = dgv_WindPressure.Rows[rowindex].Cells[6].Value.ToString();
-            var f_wy2 = dgv_WindPressure.Rows[rowindex].Cells[7].Value.ToString();
-            var f_wy3 = dgv_WindPressure.Rows[rowindex].Cells[8].Value.ToString();
+            var f_wy1 = dgv_WindPressure_A.Rows[rowindex].Cells[6].Value.ToString();
+            var f_wy2 = dgv_WindPressure_A.Rows[rowindex].Cells[7].Value.ToString();
+            var f_wy3 = dgv_WindPressure_A.Rows[rowindex].Cells[8].Value.ToString();
 
 
-            var item = windPressureDGV.Find(t => t.Pa == name);
+            var item = windPressureDGV_A.Find(t => t.Pa == name);
             item.zwy1 = double.Parse(z_wy1);
             item.zwy2 = double.Parse(z_wy2);
             item.zwy3 = double.Parse(z_wy3);
@@ -1479,7 +2837,59 @@ namespace text.doors.Detection
             item.fwy2 = double.Parse(f_wy2);
             item.fwy3 = double.Parse(f_wy3);
 
-            BindData(true);
+            BindData_A(true);
+        }
+
+        private void dgv_WindPressure_B_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //获得当前选中的行   
+            int rowindex = e.RowIndex;
+            var name = dgv_WindPressure_B.Rows[rowindex].Cells[0].Value.ToString();
+
+            var z_wy1 = dgv_WindPressure_B.Rows[rowindex].Cells[1].Value.ToString();
+            var z_wy2 = dgv_WindPressure_B.Rows[rowindex].Cells[2].Value.ToString();
+            var z_wy3 = dgv_WindPressure_B.Rows[rowindex].Cells[3].Value.ToString();
+
+            var f_wy1 = dgv_WindPressure_B.Rows[rowindex].Cells[6].Value.ToString();
+            var f_wy2 = dgv_WindPressure_B.Rows[rowindex].Cells[7].Value.ToString();
+            var f_wy3 = dgv_WindPressure_B.Rows[rowindex].Cells[8].Value.ToString();
+
+
+            var item = windPressureDGV_B.Find(t => t.Pa == name);
+            item.zwy1 = double.Parse(z_wy1);
+            item.zwy2 = double.Parse(z_wy2);
+            item.zwy3 = double.Parse(z_wy3);
+            item.fwy1 = double.Parse(f_wy1);
+            item.fwy2 = double.Parse(f_wy2);
+            item.fwy3 = double.Parse(f_wy3);
+
+            BindData_A(true);
+        }
+
+        private void dgv_WindPressure_C_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //获得当前选中的行   
+            int rowindex = e.RowIndex;
+            var name = dgv_WindPressure_C.Rows[rowindex].Cells[0].Value.ToString();
+
+            var z_wy1 = dgv_WindPressure_C.Rows[rowindex].Cells[1].Value.ToString();
+            var z_wy2 = dgv_WindPressure_C.Rows[rowindex].Cells[2].Value.ToString();
+            var z_wy3 = dgv_WindPressure_C.Rows[rowindex].Cells[3].Value.ToString();
+
+            var f_wy1 = dgv_WindPressure_C.Rows[rowindex].Cells[6].Value.ToString();
+            var f_wy2 = dgv_WindPressure_C.Rows[rowindex].Cells[7].Value.ToString();
+            var f_wy3 = dgv_WindPressure_C.Rows[rowindex].Cells[8].Value.ToString();
+
+
+            var item = windPressureDGV_C.Find(t => t.Pa == name);
+            item.zwy1 = double.Parse(z_wy1);
+            item.zwy2 = double.Parse(z_wy2);
+            item.zwy3 = double.Parse(z_wy3);
+            item.fwy1 = double.Parse(f_wy1);
+            item.fwy2 = double.Parse(f_wy2);
+            item.fwy3 = double.Parse(f_wy3);
+
+            BindData_A(true);
         }
 
         private void btn_stop_Click(object sender, EventArgs e)
@@ -1492,16 +2902,8 @@ namespace text.doors.Detection
 
         private void button11_Click(object sender, EventArgs e)
         {
-            //if (DefaultBase.LockPoint)
-            //{
-            //    if (!rdb_DWDD1.Checked && !rdb_DWDD3.Checked)
-            //    {
-            //        MessageBox.Show("请选择位移！", "请选择位移！", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //        return;
-            //    }
-            //}
             var jc = int.Parse(txt_gbjc.Text);
-            if (AddKfyInfo(jc))
+            if (Add(jc))
             {
                 MessageBox.Show("处理成功！", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -1517,64 +2919,199 @@ namespace text.doors.Detection
                 MessageBox.Show("改变级差异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            defKFYPa = new List<DefKFYPa>();
-            for (int i = 1; i < 9; i++)
-            {
-                defKFYPa.Add(new DefKFYPa() { Value = value * i });
-            }
-            windPressureDGV = new List<WindPressureDGV>();
 
-            #region 添加默认
-            foreach (var paValue in defKFYPa)
+            if (tbc_group.SelectedTab.Text == "A组")
             {
-                windPressureDGV.Add(new WindPressureDGV()
+                #region A
+                defKFYPa_A = new List<DefKFYPa>();
+                for (int i = 1; i < 9; i++)
                 {
-                    Pa = paValue.Value + "Pa",
-                    PaValue = paValue.Value,
-                    zwy1 = 0,
-                    zwy2 = 0,
-                    zwy3 = 0,
-                    fwy1 = 0,
-                    fwy2 = 0,
-                    fwy3 = 0,
-                });
+                    defKFYPa_A.Add(new DefKFYPa() { Value = value * i });
+                }
+                windPressureDGV_A = new List<WindPressureDGV>();
+
+                #region 添加默认
+                foreach (var paValue in defKFYPa_A)
+                {
+                    windPressureDGV_A.Add(new WindPressureDGV()
+                    {
+                        Pa = paValue.Value + "Pa",
+                        PaValue = paValue.Value,
+                        zwy1 = 0,
+                        zwy2 = 0,
+                        zwy3 = 0,
+                        fwy1 = 0,
+                        fwy2 = 0,
+                        fwy3 = 0,
+                    });
+                }
+                //极差
+                for (int i = 0; i < 3; i++)
+                {
+                    var name = "";
+                    var paValue = 0;
+                    if (i == 0)
+                    {
+                        name = "P3阶段";
+                        paValue = -1;
+                    }
+                    else if (i == 1)
+                    {
+                        name = "P3残余变形";
+                        paValue = -2;
+                    }
+
+                    else if (i == 2)
+                    {
+                        name = "PMax/残余变形";
+                        paValue = -3;
+                    }
+                    windPressureDGV_A.Add(new WindPressureDGV()
+                    {
+                        Pa = name,
+                        PaValue = paValue,
+                        zwy1 = 0,
+                        zwy2 = 0,
+                        zwy3 = 0,
+                        fwy1 = 0,
+                        fwy2 = 0,
+                        fwy3 = 0,
+                    });
+                }
+                #endregion
+
+                BindData_A(true);
+                #endregion
             }
-            //极差
-            for (int i = 0; i < 3; i++)
+            else if (tbc_group.SelectedTab.Text == "B组")
             {
-                var name = "";
-                var paValue = 0;
-                if (i == 0)
+                #region B
+                defKFYPa_B = new List<DefKFYPa>();
+                for (int i = 1; i < 9; i++)
                 {
-                    name = "P3阶段";
-                    paValue = -1;
+                    defKFYPa_B.Add(new DefKFYPa() { Value = value * i });
                 }
-                else if (i == 1)
-                {
-                    name = "P3残余变形";
-                    paValue = -2;
-                }
+                windPressureDGV_B = new List<WindPressureDGV>();
 
-                else if (i == 2)
+                #region 添加默认
+                foreach (var paValue in defKFYPa_B)
                 {
-                    name = "PMax/残余变形";
-                    paValue = -3;
+                    windPressureDGV_B.Add(new WindPressureDGV()
+                    {
+                        Pa = paValue.Value + "Pa",
+                        PaValue = paValue.Value,
+                        zwy1 = 0,
+                        zwy2 = 0,
+                        zwy3 = 0,
+                        fwy1 = 0,
+                        fwy2 = 0,
+                        fwy3 = 0,
+                    });
                 }
-                windPressureDGV.Add(new WindPressureDGV()
+                //极差
+                for (int i = 0; i < 3; i++)
                 {
-                    Pa = name,
-                    PaValue = paValue,
-                    zwy1 = 0,
-                    zwy2 = 0,
-                    zwy3 = 0,
-                    fwy1 = 0,
-                    fwy2 = 0,
-                    fwy3 = 0,
-                });
+                    var name = "";
+                    var paValue = 0;
+                    if (i == 0)
+                    {
+                        name = "P3阶段";
+                        paValue = -1;
+                    }
+                    else if (i == 1)
+                    {
+                        name = "P3残余变形";
+                        paValue = -2;
+                    }
+
+                    else if (i == 2)
+                    {
+                        name = "PMax/残余变形";
+                        paValue = -3;
+                    }
+                    windPressureDGV_B.Add(new WindPressureDGV()
+                    {
+                        Pa = name,
+                        PaValue = paValue,
+                        zwy1 = 0,
+                        zwy2 = 0,
+                        zwy3 = 0,
+                        fwy1 = 0,
+                        fwy2 = 0,
+                        fwy3 = 0,
+                    });
+                }
+                #endregion
+
+                BindData_B(true);
+                #endregion
             }
-            #endregion
+            else if (tbc_group.SelectedTab.Text == "C组")
+            {
+                #region C
+                defKFYPa_C = new List<DefKFYPa>();
+                for (int i = 1; i < 9; i++)
+                {
+                    defKFYPa_C.Add(new DefKFYPa() { Value = value * i });
+                }
+                windPressureDGV_C = new List<WindPressureDGV>();
 
-            BindData(true);
+                #region 添加默认
+                foreach (var paValue in defKFYPa_C)
+                {
+                    windPressureDGV_C.Add(new WindPressureDGV()
+                    {
+                        Pa = paValue.Value + "Pa",
+                        PaValue = paValue.Value,
+                        zwy1 = 0,
+                        zwy2 = 0,
+                        zwy3 = 0,
+                        fwy1 = 0,
+                        fwy2 = 0,
+                        fwy3 = 0,
+                    });
+                }
+                //极差
+                for (int i = 0; i < 3; i++)
+                {
+                    var name = "";
+                    var paValue = 0;
+                    if (i == 0)
+                    {
+                        name = "P3阶段";
+                        paValue = -1;
+                    }
+                    else if (i == 1)
+                    {
+                        name = "P3残余变形";
+                        paValue = -2;
+                    }
+
+                    else if (i == 2)
+                    {
+                        name = "PMax/残余变形";
+                        paValue = -3;
+                    }
+                    windPressureDGV_C.Add(new WindPressureDGV()
+                    {
+                        Pa = name,
+                        PaValue = paValue,
+                        zwy1 = 0,
+                        zwy2 = 0,
+                        zwy3 = 0,
+                        fwy1 = 0,
+                        fwy2 = 0,
+                        fwy3 = 0,
+                    });
+                }
+                #endregion
+
+                BindData_C(true);
+                #endregion
+            }
+
+
+
         }
 
         private void btn_zpmax_Click(object sender, EventArgs e)
@@ -1614,50 +3151,157 @@ namespace text.doors.Detection
 
         private void btn_zp3cybx_Click(object sender, EventArgs e)
         {
-            var info = windPressureDGV.Find(t => t.PaValue == -2);
-            if (info != null)
+
+            if (tbc_group.SelectedTab.Text == "A组")
             {
-                info.zwy1 = _serialPortClient.GetDisplace1();
-                info.zwy2 = _serialPortClient.GetDisplace2();
-                info.zwy3 = _serialPortClient.GetDisplace3();
+                var info = windPressureDGV_A.Find(t => t.PaValue == -2);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("A");
+                    info.zwy2 = _serialPortClient.GetDisplace2("A");
+                    info.zwy3 = _serialPortClient.GetDisplace3("A");
+                }
+                BindData_A(true);
             }
-            BindData(true);
+            else if (tbc_group.SelectedTab.Text == "B组")
+            {
+                var info = windPressureDGV_B.Find(t => t.PaValue == -2);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("B");
+                    info.zwy2 = _serialPortClient.GetDisplace2("B");
+                    info.zwy3 = _serialPortClient.GetDisplace3("B");
+                }
+                BindData_B(true);
+            }
+            else if (tbc_group.SelectedTab.Text == "C组")
+            {
+                var info = windPressureDGV_C.Find(t => t.PaValue == -2);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("C");
+                    info.zwy2 = _serialPortClient.GetDisplace2("C");
+                    info.zwy3 = _serialPortClient.GetDisplace3("C");
+                }
+                BindData_C(true);
+            }
+
+
+
         }
 
         private void btn_fp3cybx_Click(object sender, EventArgs e)
         {
-            var info = windPressureDGV.Find(t => t.PaValue == -2);
-            if (info != null)
+            if (tbc_group.SelectedTab.Text == "A组")
             {
-                info.fwy1 = _serialPortClient.GetDisplace1();
-                info.fwy2 = _serialPortClient.GetDisplace2();
-                info.fwy3 = _serialPortClient.GetDisplace3();
+                var info = windPressureDGV_A.Find(t => t.PaValue == -2);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("A");
+                    info.zwy2 = _serialPortClient.GetDisplace2("A");
+                    info.zwy3 = _serialPortClient.GetDisplace3("A");
+                }
+                BindData_A(true);
             }
-            BindData(true);
+            else if (tbc_group.SelectedTab.Text == "B组")
+            {
+                var info = windPressureDGV_B.Find(t => t.PaValue == -2);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("B");
+                    info.zwy2 = _serialPortClient.GetDisplace2("B");
+                    info.zwy3 = _serialPortClient.GetDisplace3("B");
+                }
+                BindData_B(true);
+            }
+            else if (tbc_group.SelectedTab.Text == "C组")
+            {
+                var info = windPressureDGV_C.Find(t => t.PaValue == -2);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("C");
+                    info.zwy2 = _serialPortClient.GetDisplace2("C");
+                    info.zwy3 = _serialPortClient.GetDisplace3("C");
+                }
+                BindData_C(true);
+            }
+
         }
 
         private void btn_zpmax_cybx_Click(object sender, EventArgs e)
         {
-            var info = windPressureDGV.Find(t => t.PaValue == -3);
-            if (info != null)
+            if (tbc_group.SelectedTab.Text == "A组")
             {
-                info.zwy1 = _serialPortClient.GetDisplace1();
-                info.zwy2 = _serialPortClient.GetDisplace2();
-                info.zwy3 = _serialPortClient.GetDisplace3();
+                var info = windPressureDGV_A.Find(t => t.PaValue == -3);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("A");
+                    info.zwy2 = _serialPortClient.GetDisplace2("A");
+                    info.zwy3 = _serialPortClient.GetDisplace3("A");
+                }
+                BindData_A(true);
             }
-            BindData(true);
+            else if (tbc_group.SelectedTab.Text == "B组")
+            {
+                var info = windPressureDGV_B.Find(t => t.PaValue == -3);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("B");
+                    info.zwy2 = _serialPortClient.GetDisplace2("B");
+                    info.zwy3 = _serialPortClient.GetDisplace3("B");
+                }
+                BindData_B(true);
+            }
+            else if (tbc_group.SelectedTab.Text == "C组")
+            {
+                var info = windPressureDGV_C.Find(t => t.PaValue == -3);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("C");
+                    info.zwy2 = _serialPortClient.GetDisplace2("C");
+                    info.zwy3 = _serialPortClient.GetDisplace3("C");
+                }
+                BindData_C(true);
+            }
+
         }
 
         private void btn_fpmax_cybx_Click(object sender, EventArgs e)
         {
-            var info = windPressureDGV.Find(t => t.PaValue == -3);
-            if (info != null)
+            if (tbc_group.SelectedTab.Text == "A组")
             {
-                info.fwy1 = _serialPortClient.GetDisplace1();
-                info.fwy2 = _serialPortClient.GetDisplace2();
-                info.fwy3 = _serialPortClient.GetDisplace3();
+                var info = windPressureDGV_A.Find(t => t.PaValue == -3);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("A");
+                    info.zwy2 = _serialPortClient.GetDisplace2("A");
+                    info.zwy3 = _serialPortClient.GetDisplace3("A");
+                }
+                BindData_A(true);
             }
-            BindData(true);
+            else if (tbc_group.SelectedTab.Text == "B组")
+            {
+                var info = windPressureDGV_B.Find(t => t.PaValue == -3);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("B");
+                    info.zwy2 = _serialPortClient.GetDisplace2("B");
+                    info.zwy3 = _serialPortClient.GetDisplace3("B");
+                }
+                BindData_B(true);
+            }
+            else if (tbc_group.SelectedTab.Text == "C组")
+            {
+                var info = windPressureDGV_C.Find(t => t.PaValue == -3);
+                if (info != null)
+                {
+                    info.zwy1 = _serialPortClient.GetDisplace1("C");
+                    info.zwy2 = _serialPortClient.GetDisplace2("C");
+                    info.zwy3 = _serialPortClient.GetDisplace3("C");
+                }
+                BindData_C(true);
+            }
+
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -1679,6 +3323,15 @@ namespace text.doors.Detection
             {
                 btn_gcjc.BackColor = Color.Transparent;
             }
+        }
+
+        private void tbc_group_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            complete = new List<int>();
+            currentkPa = 0;
+            staticIndex = 0;
+            IsOk = true;
+            average = new List<Tuple<double, double, double>>();
         }
     }
 }

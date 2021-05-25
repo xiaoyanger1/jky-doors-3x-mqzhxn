@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlaneDeformation));
             this.tc_RealTimeSurveillance = new System.Windows.Forms.TabControl();
             this.page_airtight = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -60,7 +59,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.lbl_title = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.txt_ganjianABC = new System.Windows.Forms.ComboBox();
+            this.txt_reslevel = new System.Windows.Forms.ComboBox();
             this.tim_PainPic = new System.Windows.Forms.Timer(this.components);
             this.tc_RealTimeSurveillance.SuspendLayout();
             this.page_airtight.SuspendLayout();
@@ -130,6 +129,7 @@
             this.btn_datadispose.TabIndex = 14;
             this.btn_datadispose.Text = "数据处理";
             this.btn_datadispose.UseVisualStyleBackColor = true;
+            this.btn_datadispose.Click += new System.EventHandler(this.btn_datadispose_Click);
             // 
             // groupBox6
             // 
@@ -227,7 +227,8 @@
             this.btn_hl.TabIndex = 5;
             this.btn_hl.Text = "后拉";
             this.btn_hl.UseVisualStyleBackColor = true;
-            this.btn_hl.Click += new System.EventHandler(this.btn_hl_Click);
+            this.btn_hl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_hl_MouseDown);
+            this.btn_hl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_hl_MouseUp);
             // 
             // btn_qt
             // 
@@ -237,7 +238,8 @@
             this.btn_qt.TabIndex = 6;
             this.btn_qt.Text = "前推";
             this.btn_qt.UseVisualStyleBackColor = true;
-            this.btn_qt.Click += new System.EventHandler(this.btn_qt_Click);
+            this.btn_qt.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_qt_MouseDown);
+            this.btn_qt.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_qt_MouseUp);
             // 
             // groupBox4
             // 
@@ -440,7 +442,7 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.txt_ganjianABC);
+            this.groupBox3.Controls.Add(this.txt_reslevel);
             this.groupBox3.Location = new System.Drawing.Point(826, 459);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(256, 52);
@@ -448,17 +450,19 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "检测结果";
             // 
-            // txt_ganjianABC
+            // txt_reslevel
             // 
-            this.txt_ganjianABC.FormattingEnabled = true;
-            this.txt_ganjianABC.Items.AddRange(new object[] {
-            "A",
-            "A\\B",
-            "A\\B\\C"});
-            this.txt_ganjianABC.Location = new System.Drawing.Point(25, 20);
-            this.txt_ganjianABC.Name = "txt_ganjianABC";
-            this.txt_ganjianABC.Size = new System.Drawing.Size(225, 20);
-            this.txt_ganjianABC.TabIndex = 185;
+            this.txt_reslevel.FormattingEnabled = true;
+            this.txt_reslevel.Items.AddRange(new object[] {
+            "第一级",
+            "第二级",
+            "第三级",
+            "第四级",
+            "第五级"});
+            this.txt_reslevel.Location = new System.Drawing.Point(25, 20);
+            this.txt_reslevel.Name = "txt_reslevel";
+            this.txt_reslevel.Size = new System.Drawing.Size(225, 20);
+            this.txt_reslevel.TabIndex = 185;
             // 
             // tim_PainPic
             // 
@@ -524,7 +528,7 @@
         private System.Windows.Forms.Button btn_level1;
         private System.Windows.Forms.TextBox txt_biaojilingdian;
         private System.Windows.Forms.GroupBox groupBox7;
-        public System.Windows.Forms.ComboBox txt_ganjianABC;
+        public System.Windows.Forms.ComboBox txt_reslevel;
         private System.Windows.Forms.TextBox txt_desc;
         private System.Windows.Forms.Timer tim_PainPic;
     }

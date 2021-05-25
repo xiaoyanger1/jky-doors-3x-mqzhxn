@@ -174,11 +174,6 @@ E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Properties.Reso
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.UpdatePassWord.resources
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.csproj.GenerateResource.cache
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.csproj.CoreCompileInputs.cache
-E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\建筑外门窗物理性能检测系统.exe
-E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\建筑外门窗物理性能检测系统.pdb
-E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\建筑外门窗物理性能检测系统.exe.config
-E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\建筑外门窗物理性能检测系统.exe
-E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\建筑外门窗物理性能检测系统.pdb
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\AForge.Controls.dll
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\AForge.dll
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\AForge.Imaging.dll
@@ -205,3 +200,8 @@ E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\log4net.xml
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\NPOI.xml
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.csproj.CopyComplete
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Detection.PlaneDeformation.resources
+E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\建筑幕墙综合性能检测系统.exe.config
+E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\建筑幕墙综合性能检测系统.exe
+E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\建筑幕墙综合性能检测系统.pdb
+E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\建筑幕墙综合性能检测系统.exe
+E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\建筑幕墙综合性能检测系统.pdb

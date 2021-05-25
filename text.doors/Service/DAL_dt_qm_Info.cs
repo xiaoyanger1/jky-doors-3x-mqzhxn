@@ -110,35 +110,35 @@ namespace text.doors.dal
         }
 
 
-        public void UpdateResult(Model_dt_Settings settings)
-        {
-            //if (settings.dt_sm_Info != null && settings.dt_sm_Info.Count > 0)
-            //{
-            //    var sql = "";
-            //    foreach (var item in settings.dt_sm_Info)
-            //    {
-            //        sql += $"update  dt_sm_Info set sm_PaDesc = '{item.sm_PaDesc}', sm_Pa='{item.sm_Pa}', sm_Remark='{item.sm_Remark}' where dt_Code ='{item.dt_Code}' and info_DangH='{item.info_DangH}';";
-            //    }
-            //    SQLiteHelper.ExecuteNonQuery(sql);
-            //}
-            //if (settings.dt_qm_Info != null && settings.dt_qm_Info.Count > 0)
-            //{
-            //    string sql = "";
-            //    foreach (var item in settings.dt_qm_Info)
-            //    {
-            //        sql += $"update dt_qm_Info  set qm_Z_FC	='{item.qm_Z_FC}',qm_F_FC ='{item.qm_F_FC}',qm_Z_MJ	='{item.qm_Z_MJ}',qm_F_MJ	='{item.qm_F_MJ}' where dt_Code = '{item.dt_Code}' and info_DangH='{item.info_DangH}' ;   ";
-            //    }
-            //    SQLiteHelper.ExecuteNonQuery(sql);
-            //}
-            //if (settings.dt_kfy_Info != null && settings.dt_kfy_Info.Count > 0)
-            //{
-            //    string sql = "";
-            //    foreach (var item in settings.dt_kfy_Info)
-            //    {
-            //        sql += $"update dt_kfy_Info  set p1	='{item.p1}',p2 ='{item.p2}',p3='{item.p3}',_p1='{item._p1}' ,_p2='{item._p2}',_p3='{item._p3}' where dt_Code = '{item.dt_Code}' and info_DangH='{item.info_DangH}' ;   ";
-            //    }
-            //    SQLiteHelper.ExecuteNonQuery(sql);
-            //}
-        }
+        //public void UpdateResult(Model_dt_Settings settings)
+        //{
+        //if (settings.dt_sm_Info != null && settings.dt_sm_Info.Count > 0)
+        //{
+        //    var sql = "";
+        //    foreach (var item in settings.dt_sm_Info)
+        //    {
+        //        sql += $"update  dt_sm_Info set sm_PaDesc = '{item.sm_PaDesc}', sm_Pa='{item.sm_Pa}', sm_Remark='{item.sm_Remark}' where dt_Code ='{item.dt_Code}' and info_DangH='{item.info_DangH}';";
+        //    }
+        //    SQLiteHelper.ExecuteNonQuery(sql);
+        //}
+        //if (settings.dt_qm_Info != null && settings.dt_qm_Info.Count > 0)
+        //{
+        //    string sql = "";
+        //    foreach (var item in settings.dt_qm_Info)
+        //    {
+        //        sql += $"update dt_qm_Info  set qm_Z_FC	='{item.qm_Z_FC}',qm_F_FC ='{item.qm_F_FC}',qm_Z_MJ	='{item.qm_Z_MJ}',qm_F_MJ	='{item.qm_F_MJ}' where dt_Code = '{item.dt_Code}' and info_DangH='{item.info_DangH}' ;   ";
+        //    }
+        //    SQLiteHelper.ExecuteNonQuery(sql);
+        //}
+        //if (settings.dt_kfy_Info != null && settings.dt_kfy_Info.Count > 0)
+        //{
+        //    string sql = "";
+        //    foreach (var item in settings.dt_kfy_Info)
+        //    {
+        //        sql += $"update dt_kfy_Info  set p1	='{item.p1}',p2 ='{item.p2}',p3='{item.p3}',_p1='{item._p1}' ,_p2='{item._p2}',_p3='{item._p3}' where dt_Code = '{item.dt_Code}' and info_DangH='{item.info_DangH}' ;   ";
+        //    }
+        //    SQLiteHelper.ExecuteNonQuery(sql);
+        //}
+        //}
     }
 }

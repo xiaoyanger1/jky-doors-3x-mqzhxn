@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>text.doors</RootNamespace>
-    <AssemblyName>建筑外门窗物理性能检测系统</AssemblyName>
+    <AssemblyName>建筑幕墙综合性能检测系统</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -171,15 +171,19 @@
     <Compile Include="Model\AirtightCalculation.cs" />
     <Compile Include="Model\Calibrating_Dict.cs" />
     <Compile Include="Model\DataBase\Model_dt_kfy_Info.cs" />
+    <Compile Include="Model\DataBase\Model_dt_kfy_res_Info.cs" />
+    <Compile Include="Model\DataBase\Model_dt_pd_Info.cs" />
     <Compile Include="Model\DataBase\Model_dt_qm_zb_Info.cs" />
+    <Compile Include="Model\PlaneDeformationInfo.cs" />
     <Compile Include="Model\WindSpeedInfo.cs" />
     <Compile Include="Default\BFMCommand.cs" />
     <Compile Include="Default\PublicEnum.cs" />
     <Compile Include="Model\WindPressureDGV.cs" />
     <Compile Include="Service\DAL_Demarcate_Dict.cs" />
-    <Compile Include="Service\DAL_dt_BaseSet.cs" />
     <Compile Include="Service\DAL_dt_Info.cs" />
+    <Compile Include="Service\DAL_dt_kfy_res_Info.cs" />
     <Compile Include="Service\DAL_dt_kfy_Info.cs" />
+    <Compile Include="Service\DAL_dt_pm_Info.cs" />
     <Compile Include="Service\DAL_dt_qm_Info.cs" />
     <Compile Include="Service\DAL_dt_Settings.cs" />
     <Compile Include="Detection\DetectionSet.cs">

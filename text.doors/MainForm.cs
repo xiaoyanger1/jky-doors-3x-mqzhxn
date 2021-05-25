@@ -295,7 +295,7 @@ namespace text.doors
             }
             this.pl_showItem.Controls.Clear();
 
-            WindPressureDetection rts = new WindPressureDetection(_serialPortClient, _tempCode, _tempTong);
+            WindPressureDetection rts = new WindPressureDetection(_serialPortClient, _tempCode);
             this.pl_showItem.Controls.Clear();
             rts.TopLevel = false;
             rts.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -665,93 +665,131 @@ namespace text.doors
         }
 
 
-        private bool _FengJiQiDongStat = false;
+        // private bool _FengJiQiDongStat = false;
 
         private void btn_fjqd_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SendFengJiQiDong(ref _FengJiQiDongStat);
+            var res = _serialPortClient.SendFengJiQiDong(1);
             if (!res)
             {
                 MessageBox.Show("风机启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            btn_fjqd.BackColor = _FengJiQiDongStat ? Color.Green : Color.Transparent;
+            //btn_fjqd.BackColor = _FengJiQiDongStat ? Color.Green : Color.Transparent;
+            btn_fjqd.BackColor = Color.Green;
+            btn_fjtz.BackColor = Color.Transparent;
         }
 
         private void btn_fjtz_Click(object sender, EventArgs e)
         {
+            var res = _serialPortClient.SendFengJiQiDong(0);
+            if (!res)
+            {
+                MessageBox.Show("风机启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+          
+            btn_fjtz.BackColor = Color.Green;
+            btn_fjqd.BackColor = Color.Transparent;
         }
 
-        private bool _ShuiBengQiDong = false;
+        //private bool _ShuiBengQiDong = false;
         private void btn_sbqd_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SendShuiBengQiDong(ref _ShuiBengQiDong);
+            var res = _serialPortClient.SendShuiBengQiDong(1);
             if (!res)
             {
                 MessageBox.Show("水泵启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            btn_sbqd.BackColor = _ShuiBengQiDong ? Color.Green : Color.Transparent;
+            btn_sbqd.BackColor = Color.Green;
+            btn_sbtz.BackColor = Color.Transparent;
         }
 
         private void btn_sbtz_Click(object sender, EventArgs e)
         {
-
+            var res = _serialPortClient.SendShuiBengQiDong(0);
+            if (!res)
+            {
+                MessageBox.Show("水泵启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_sbtz.BackColor = Color.Green;
+            btn_sbqd.BackColor = Color.Transparent;
         }
 
-
-        private bool _BaoHuFaTong = false;
-        private void btn_bhft_Click(object sender, EventArgs e)
+        private void btn_bhfk_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SendBaoHuFaTong(ref _BaoHuFaTong);
+            var res = _serialPortClient.SendBaoHuFaTong(1);
             if (!res)
             {
                 MessageBox.Show("保护阀通启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            btn_bhfk.BackColor = _BaoHuFaTong ? Color.Green : Color.Transparent;
+            btn_bhfk.BackColor = Color.Green;
+            btn_bhfg.BackColor = Color.Transparent;
         }
 
         private void btn_bhfg_Click(object sender, EventArgs e)
         {
-
+            var res = _serialPortClient.SendBaoHuFaTong(0);
+            if (!res)
+            {
+                MessageBox.Show("保护阀通启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_bhfk.BackColor = Color.Transparent;
+            btn_bhfg.BackColor = Color.Green;
         }
         private void btn_qmfk_Click(object sender, EventArgs e)
         {
-
+            var res = _serialPortClient.SendQiMiFaKai(1);
+            if (!res)
+            {
+                MessageBox.Show("气密阀启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_qmfg.BackColor = Color.Transparent;
+            btn_qmfk.BackColor = Color.Green;
         }
         private void btn_qmfg_Click(object sender, EventArgs e)
         {
-
+            var res = _serialPortClient.SendQiMiFaKai(0);
+            if (!res)
+            {
+                MessageBox.Show("气密阀启动异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_qmfk.BackColor = Color.Transparent;
+            btn_qmfg.BackColor = Color.Green;
         }
-        private bool _SiTongFaKai = false;
+        // private bool _SiTongFaKai = false;
         private void btn_stfk_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SendSiTongFaKai(ref _SiTongFaKai);
+            var res = _serialPortClient.SendSiTongFaKai(1);
             if (!res)
             {
                 MessageBox.Show("四通阀开异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            btn_stfk.BackColor = _SiTongFaKai ? Color.Green : Color.Transparent;
+            btn_stfk.BackColor = Color.Green;
+            btn_stfg.BackColor = Color.Transparent;
         }
         private void btn_stfg_Click(object sender, EventArgs e)
         {
-
+            var res = _serialPortClient.SendSiTongFaKai(0);
+            if (!res)
+            {
+                MessageBox.Show("四通阀开异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_stfk.BackColor = Color.Transparent;
+            btn_stfg.BackColor = Color.Green;
         }
 
-        private void btn_tgqt_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btn_tghl_Click(object sender, EventArgs e)
-        {
-
-        }
-
+      
         private void hsb_lqfControl_Scroll(object sender, ScrollEventArgs e)
         {
             if (hsb_lqfControl.Value == 0)
@@ -783,6 +821,50 @@ namespace text.doors
                 ShowPlaneDeformation();
             else
                 MessageBox.Show("请先检测设定", "检测", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void btn_tgqt_MouseDown(object sender, MouseEventArgs e)
+        {
+            var res = _serialPortClient.SendDianDongKai(true);
+            if (!res)
+            {
+                MessageBox.Show("推杆前推异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_tgqt.BackColor = Color.Green;
+        }
+
+        private void btn_tgqt_MouseUp(object sender, MouseEventArgs e)
+        {
+            var res = _serialPortClient.SendDianDongKai(false);
+            if (!res)
+            {
+                MessageBox.Show("推杆前推异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_tgqt.BackColor = Color.Transparent;
+        }
+
+        private void btn_tghl_MouseDown(object sender, MouseEventArgs e)
+        {
+            var res = _serialPortClient.SendDianDongGuan(true);
+            if (!res)
+            {
+                MessageBox.Show("推杆后拉异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_tghl.BackColor = Color.Green;
+        }
+
+        private void btn_tghl_MouseUp(object sender, MouseEventArgs e)
+        {
+            var res = _serialPortClient.SendDianDongGuan(false);
+            if (!res)
+            {
+                MessageBox.Show("推杆后拉异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            btn_tghl.BackColor = Color.Transparent;
         }
     }
 }

@@ -9,10 +9,10 @@ namespace text.doors.Model.DataBase
     public class Model_dt_kfy_Info
     {
         public string dt_Code { get; set; }
-        public string info_DangH { get; set; }
-        public int defJC { get; set; }
+        //public int info_Level { get; set; }
+        //public int defJC { get; set; }
 
-        public int CheckLock { get; set; }
+        //public int CheckLock { get; set; }
         public string z_one_250 { get; set; }
         public string z_one_500 { get; set; }
         public string z_one_750 { get; set; }
@@ -103,16 +103,16 @@ namespace text.doors.Model.DataBase
         public string f_ix_1500 { get; set; }
         public string f_ix_1750 { get; set; }
         public string f_ix_2000 { get; set; }
-        public string desc { get; set; }
+        //public string desc { get; set; }
 
-        public string p1 { get; set; }
-        public string p2 { get; set; }
-        public string p3 { get; set; }
-        public string pMax { get; set; }
-        public string _p1 { get; set; }
-        public string _p2 { get; set; }
-        public string _p3 { get; set; }
-        public string _pMax { get; set; }
+        //public string p1 { get; set; }
+        //public string p2 { get; set; }
+        //public string p3 { get; set; }
+        //public string pMax { get; set; }
+        //public string _p1 { get; set; }
+        //public string _p2 { get; set; }
+        //public string _p3 { get; set; }
+        //public string _pMax { get; set; }
 
 
 
@@ -141,7 +141,6 @@ namespace text.doors.Model.DataBase
         public string f_one_p3jieduan { get; set; }
         public string f_one_p3canyubianxing { get; set; }
         public string f_one_pMaxcanyubianxing { get; set; }
-
         public string f_two_p3jieduan { get; set; }
         public string f_two_p3canyubianxing { get; set; }
         public string f_two_pMaxcanyubianxing { get; set; }
@@ -158,9 +157,11 @@ namespace text.doors.Model.DataBase
         public string f_ix_p3canyubianxing { get; set; }
         public string f_ix_pMaxcanyubianxing { get; set; }
 
-        public int lx { get; set; }
+        public string level{ get; set; }
 
-        public int? testtype { get; set; }
+        //public int lx { get; set; }
+
+        //public int? testtype { get; set; }
 
 
     }

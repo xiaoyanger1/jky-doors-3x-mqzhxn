@@ -16,18 +16,14 @@ namespace text.doors.Default
 
         public const string 高压标0_交替型按钮 = "M66";
         public const string 低压标0_交替型按钮 = "M65";
-
         public const string 开关量控制 = "M92";
-
         public const string 风机启动 = "M190";
         public const string 水泵启动 = "M191";
         public const string 保护阀通 = "M192";
         public const string 四通阀开 = "M193";
-
-
+        public const string 气密阀 = "M196";
         public const string 点动开 = "M194";
         public const string 点动关 = "M195";
-
 
         public const string 正压阀 = "M62";
         public const string 负压阀 = "M63";
@@ -70,8 +66,8 @@ namespace text.doors.Default
         public const string 正安全结束 = "T33";
         public const string 负安全结束 = "T35";
 
-        public const string 漏气阀控制 = "";
-        public const string 漏气阀设定值 = "";
+        public const string 漏气阀控制 = "D94";
+        public const string 漏气阀设定值 = "D94";
 
 
         public const string 风机控制 = "D40";
@@ -83,33 +79,18 @@ namespace text.doors.Default
 
         public const string 正压依次加压 = "T0";
 
-        //public const string 正压10TimeStart = "T41";
-        //public const string 正压30TimeStart = "T42";
         public const string 正压50TimeStart = "T43";
-        // public const string 正压70TimeStart = "T44";
-        public const string 正压100TimeStart = "T45";
+        public const string 正压100TimeStart = "T44";
         public const string 正压150TimeStart = "T46";
         public const string 正压_100TimeStart = "T47";
-        //  public const string 正压_70TimeStart = "T48";
-        public const string 正压_50TimeStart = "T49";
-        //public const string 正压_30TimeStart = "T50";
-        //public const string 正压_10TimeStart = "T51";
+        public const string 正压_50TimeStart = "T51";
 
 
-        //public const string 负压依次加压 = "T2";
-        //public const string 负压10TimeStart = "T61";
-        //public const string 负压30TimeStart = "T62";
         public const string 负压50TimeStart = "T63";
-        //public const string 负压70TimeStart = "T64";
-
         public const string 负压100TimeStart = "T65";
         public const string 负压150TimeStart = "T66";
         public const string 负压_100TimeStart = "T67";
-
-        //public const string 负压_70TimeStart = "T68";
-        public const string 负压_50TimeStart = "T69";
-        //public const string 负压_30TimeStart = "T70";
-        //public const string 负压_10TimeStart = "T71";
+        public const string 负压_50TimeStart = "T71";
 
 
         public const string 水密预备结束 = "D32";
@@ -136,6 +117,16 @@ namespace text.doors.Default
         public const string 负依次加压值 = "D280";
 
 
+
+        //平面水平
+        public const string 第一级 = "M93";
+        public const string 第二级 = "M94";
+        public const string 第三级 = "M95";
+        public const string 第四级 = "M96";
+        public const string 第五级 = "M97";
+
+
+        public const string 水平停止 = "M99";
 
         #region  波动加压
 
@@ -172,13 +163,18 @@ namespace text.doors.Default
 
         #region 风压
 
-        //public const string 位移1 = "D410";
-        //public const string 位移2 = "D420";
-        //public const string 位移3 = "D430";
+        
+        public const string 位移1 = "D870";
+        public const string 位移2 = "D872";
+        public const string 位移3 = "D874";
 
-        public const string 位移1 = "D440";
-        public const string 位移2 = "D442";
-        public const string 位移3 = "D444";
+        public const string 位移4 = "D876";
+        public const string 位移5 = "D878";
+        public const string 位移6 = "D880";
+
+        public const string 位移7 = "D882";
+        public const string 位移8 = "D884";
+        public const string 位移9 = "D886";
 
 
         public const string 风压正压预备 = "M55";
@@ -194,12 +190,6 @@ namespace text.doors.Default
 
         public const string 风压安全_正压是否计时 = "T32";
         public const string 风压安全_负压是否计时 = "T34";
-
-        //public const string 风压_正压是否计时 = "T23";
-        //public const string 风压_负压是否计时 = "T26";
-
-        //public const string 风压_正压是否计时 = "T23";
-        //public const string 风压_负压是否计时 = "T26";
 
 
         public const string 风压_正压预备_设定值 = "D2200";
