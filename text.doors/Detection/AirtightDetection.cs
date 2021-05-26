@@ -78,7 +78,7 @@ namespace text.doors.Detection
             GetWindSpeed();
             BindFlowBase();
 
-            GetDatabaseLevelIndex();
+            //GetDatabaseLevelIndex();
             BindLevelIndex();
 
         }
@@ -148,6 +148,10 @@ namespace text.doors.Detection
                 return;
             }
 
+            zFc = double.Parse(qm_zb_info.Z_FC);
+            fFc = double.Parse(qm_zb_info.F_FC);
+            zMj = double.Parse(qm_zb_info.Z_MJ);
+            fMj = double.Parse(qm_zb_info.F_MJ);
             gv_list.Enabled = false;
 
             #region 排序插入
@@ -713,14 +717,6 @@ namespace text.doors.Detection
             if (!_serialPortClient.sp.IsOpen)
                 return;
 
-            //double yl = _serialPortClient.GetZYYBYLZ(ref IsSeccess, "ZYYB");
-            //if (!IsSeccess)
-            //{
-            //    MessageBox.Show("读取设定值异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
-            //lbl_setYL.Text = yl.ToString();
-
             var res = _serialPortClient.SetZYYB();
             if (!res)
             {
@@ -776,13 +772,6 @@ namespace text.doors.Detection
 
         private void btn_loseready_Click(object sender, EventArgs e)
         {
-            //double yl = _serialPortClient.GetZYYBYLZ(ref IsSeccess, "FYYB");
-            //if (!IsSeccess)
-            //{
-            //    MessageBox.Show("读取设定值异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
-            //lbl_setYL.Text = "-" + yl.ToString();
 
             var res = _serialPortClient.SendFYYB();
             if (!res)
@@ -850,29 +839,6 @@ namespace text.doors.Detection
             _readT.Add(new ReadT() { Key = BFMCommand.负压_100TimeStart, Order = 4, IsRead = false });
             _readT.Add(new ReadT() { Key = BFMCommand.负压_50TimeStart, Order = 5, IsRead = false });
 
-
-            //if (rdb_fjstl.Checked)
-            //{
-            //    foreach (var item in windSpeedInfoList)
-            //    {
-            //        item.FJST = 0;
-            //    }
-            //}
-            //else
-            //if (rdb_gfzh.Checked)
-            //{
-            //    foreach (var item in windSpeedInfoList)
-            //    {
-            //        item.GFZH = 0;
-            //    }
-            //}
-            //else if (rdb_zdstl.Checked)
-            //{
-            //    foreach (var item in windSpeedInfoList)
-            //    {
-            //        item.ZDST = 0;
-            //    }
-            //}
             BindFlowBase();
 
             btn_losestart.BackColor = Color.Green;
@@ -961,6 +927,51 @@ namespace text.doors.Detection
             return model;
         }
 
+
+        /// <summary>
+        /// 获取分级指标
+        /// </summary>
+        /// <param name = "zFc" > 正压缝长 </ param >
+        /// < param name="fFc">负压缝长</param>
+        /// <param name = "zMj" > 正压面积 </ param >
+        /// < param name="fMj">负压面积</param>
+        private void GetDatabaseLevelIndex()
+        {
+            double kekaifengchang = 0d;
+            double shijianmianji = 0d;
+            double daqiyali = 0d;
+            double dangqianwendu = 0d;
+
+            if (tab_settings != null && tab_settings.Rows.Count > 0)
+            {
+                kekaifengchang = double.Parse(tab_settings.Rows[0]["kekaifengchang"].ToString());
+                shijianmianji = double.Parse(tab_settings.Rows[0]["shijianmianji"].ToString());
+                daqiyali = double.Parse(tab_settings.Rows[0]["DaQiYaLi"].ToString());
+                dangqianwendu = double.Parse(tab_settings.Rows[0]["DangQianWenDu"].ToString());
+            }
+
+            zFc = Formula.GetIndexStichLength(
+                double.Parse(this.dgv_ll.Rows[1].Cells[6].Value.ToString()),
+                double.Parse(this.dgv_ll.Rows[3].Cells[6].Value.ToString()),
+                daqiyali, kekaifengchang, dangqianwendu);
+
+            fFc = Formula.GetIndexStichLength(
+                double.Parse(this.dgv_ll.Rows[6].Cells[6].Value.ToString()),
+                double.Parse(this.dgv_ll.Rows[8].Cells[6].Value.ToString()),
+                 daqiyali, kekaifengchang, dangqianwendu);
+
+            zMj = Formula.GetIndexStitchArea(
+                double.Parse(this.dgv_ll.Rows[1].Cells[5].Value.ToString()),
+                double.Parse(this.dgv_ll.Rows[3].Cells[5].Value.ToString()),
+                daqiyali, shijianmianji, dangqianwendu);
+
+            fMj = Formula.GetIndexStitchArea(
+                double.Parse(this.dgv_ll.Rows[6].Cells[5].Value.ToString()),
+                double.Parse(this.dgv_ll.Rows[8].Cells[5].Value.ToString()),
+                daqiyali, shijianmianji, dangqianwendu);
+        }
+
+
         /// <summary>
         /// 获取分级指标
         /// </summary>
@@ -968,55 +979,55 @@ namespace text.doors.Detection
         /// <param name="fFc">负压缝长</param>
         /// <param name="zMj">正压面积</param>
         /// <param name="fMj">负压面积</param>
-        private void GetDatabaseLevelIndex()
-        {
-            // double kPa = 0;
-            // double tempTemperature = 0;
-            // double stitchLength = 0;
-            // double sumArea = 0;
+        //private void GetDatabaseLevelIndex()
+        //{
+        // double kPa = 0;
+        // double tempTemperature = 0;
+        // double stitchLength = 0;
+        // double sumArea = 0;
 
-            // if (tab_settings != null && tab_settings.Rows.Count > 0)
-            // {
-            //     kPa = double.Parse(tab_settings.Rows[0]["DaQiYaLi"].ToString());
-            //     tempTemperature = double.Parse(tab_settings.Rows[0]["DangQianWenDu"].ToString());
-            //     stitchLength = double.Parse(tab_settings.Rows[0]["KaiQiFengChang"].ToString());
-            //     sumArea = double.Parse(tab_settings.Rows[0]["shijianmianji"].ToString());
-            // }
-            //// List<AirtightCalculation> airtightCalculation = new List<AirtightCalculation>();
-
-
-            // zFc = Formula.GetIndexStitchLengthAndArea(
-            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
-            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z"].Value.ToString()),
-            //     true, kPa, tempTemperature, stitchLength, sumArea);
-
-            // fFc = Formula.GetIndexStitchLengthAndArea(
-            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
-            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F"].Value.ToString()),
-            //      true, kPa, tempTemperature, stitchLength, sumArea);
-
-            // zMj = Formula.GetIndexStitchLengthAndArea(
-            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
-            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z"].Value.ToString()),
-            //     false, kPa, tempTemperature, stitchLength, sumArea);
-
-            // fMj = Formula.GetIndexStitchLengthAndArea(
-            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
-            //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F"].Value.ToString()),
-            //     false, kPa, tempTemperature, stitchLength, sumArea);
+        // if (tab_settings != null && tab_settings.Rows.Count > 0)
+        // {
+        //     kPa = double.Parse(tab_settings.Rows[0]["DaQiYaLi"].ToString());
+        //     tempTemperature = double.Parse(tab_settings.Rows[0]["DangQianWenDu"].ToString());
+        //     stitchLength = double.Parse(tab_settings.Rows[0]["KaiQiFengChang"].ToString());
+        //     sumArea = double.Parse(tab_settings.Rows[0]["shijianmianji"].ToString());
+        // }
+        //// List<AirtightCalculation> airtightCalculation = new List<AirtightCalculation>();
 
 
-            //获取分级指标
-            //var indexStitchLengthAndArea = Formula.GetJK_IndexStitchLengthAndArea(airtightCalculation, stitchLength, sumArea);
-            //if (indexStitchLengthAndArea != null)
-            //{
-            //    zFc = indexStitchLengthAndArea.ZY_FC;
-            //    fFc = indexStitchLengthAndArea.FY_FC;
-            //    zMj = indexStitchLengthAndArea.ZY_MJ;
-            //    fMj = indexStitchLengthAndArea.FY_MJ;
-            //}
-            // }
-        }
+        // zFc = Formula.GetIndexStitchLengthAndArea(
+        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
+        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z"].Value.ToString()),
+        //     true, kPa, tempTemperature, stitchLength, sumArea);
+
+        // fFc = Formula.GetIndexStitchLengthAndArea(
+        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
+        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F"].Value.ToString()),
+        //      true, kPa, tempTemperature, stitchLength, sumArea);
+
+        // zMj = Formula.GetIndexStitchLengthAndArea(
+        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
+        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z"].Value.ToString()),
+        //     false, kPa, tempTemperature, stitchLength, sumArea);
+
+        // fMj = Formula.GetIndexStitchLengthAndArea(
+        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
+        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F"].Value.ToString()),
+        //     false, kPa, tempTemperature, stitchLength, sumArea);
+
+
+        //获取分级指标
+        //var indexStitchLengthAndArea = Formula.GetJK_IndexStitchLengthAndArea(airtightCalculation, stitchLength, sumArea);
+        //if (indexStitchLengthAndArea != null)
+        //{
+        //    zFc = indexStitchLengthAndArea.ZY_FC;
+        //    fFc = indexStitchLengthAndArea.FY_FC;
+        //    zMj = indexStitchLengthAndArea.ZY_MJ;
+        //    fMj = indexStitchLengthAndArea.FY_MJ;
+        //}
+        //}
+        // }
 
         private void btn_stop_Click(object sender, EventArgs e)
         {
