@@ -154,13 +154,50 @@ namespace text.doors.Detection
         {
             List<PlaneDeformationInfo> list = new List<PlaneDeformationInfo>();
 
-            for (int i = 1; i < 6; i++)
+            var pdInfoModel = dal_dt_pd_Info.GetPDListByCode(_tempCode);
+            if (pdInfoModel != null)
             {
-                PlaneDeformationInfo model = new PlaneDeformationInfo();
-                model.Level = $"第{i}级";
-                model.ZhenFu = 0d;
-                model.XiuZheng = 0d;
-                list.Add(model);
+                for (int i = 1; i < 6; i++)
+                {
+                    PlaneDeformationInfo model = new PlaneDeformationInfo();
+                    model.Level = $"第{i}级";
+                    if (i == 1)
+                    {
+                        model.ZhenFu = double.Parse(pdInfoModel.zf1);
+                        model.XiuZheng = double.Parse(pdInfoModel.xz1);
+                    }
+                    else if (i == 2)
+                    {
+                        model.ZhenFu = double.Parse(pdInfoModel.zf2);
+                        model.XiuZheng = double.Parse(pdInfoModel.xz2);
+                    }
+                    else if (i == 3)
+                    {
+                        model.ZhenFu = double.Parse(pdInfoModel.zf3);
+                        model.XiuZheng = double.Parse(pdInfoModel.xz3);
+                    }
+                    else if (i == 4)
+                    {
+                        model.ZhenFu = double.Parse(pdInfoModel.zf4);
+                        model.XiuZheng = double.Parse(pdInfoModel.xz4);
+                    }
+                    else if (i == 5)
+                    {
+                        model.ZhenFu = double.Parse(pdInfoModel.zf5);
+                        model.XiuZheng = double.Parse(pdInfoModel.xz5);
+                    }
+                    list.Add(model);
+                }
+            }
+            else {
+                for (int i = 1; i < 6; i++)
+                {
+                    PlaneDeformationInfo model = new PlaneDeformationInfo();
+                    model.Level = $"第{i}级";
+                    model.XiuZheng = 0d;
+                    model.ZhenFu= 0d;
+                    list.Add(model);
+                }
             }
             return list;
         }
@@ -332,13 +369,28 @@ namespace text.doors.Detection
         {
             if (txt_reslevel.Text == "")
             {
-                MessageBox.Show("清选择检测结果", "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("请选择检测结果", "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             Model_dt_pd_Info model = new Model_dt_pd_Info();
             model.dt_Code = _tempCode;
             model.test_result = txt_reslevel.Text;
             model.test_desc = txt_desc.Text;
+
+
+            model.zf1 = this.dgv_level.Rows[0].Cells[1].Value.ToString();
+            model.zf2 = this.dgv_level.Rows[1].Cells[1].Value.ToString();
+            model.zf3 = this.dgv_level.Rows[2].Cells[1].Value.ToString();
+            model.zf4 = this.dgv_level.Rows[3].Cells[1].Value.ToString();
+            model.zf5 = this.dgv_level.Rows[4].Cells[1].Value.ToString();
+
+            model.xz1 = this.dgv_level.Rows[0].Cells[2].Value.ToString();
+            model.xz2 = this.dgv_level.Rows[1].Cells[2].Value.ToString();
+            model.xz3 = this.dgv_level.Rows[2].Cells[2].Value.ToString();
+            model.xz4 = this.dgv_level.Rows[3].Cells[2].Value.ToString();
+            model.xz5 = this.dgv_level.Rows[4].Cells[2].Value.ToString();
+
+
             if (dal_dt_pd_Info.AddPD(model))
             {
                 MessageBox.Show("处理完成！", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -347,8 +399,6 @@ namespace text.doors.Detection
             {
                 MessageBox.Show("处理失败！", "失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
         }
 
         private void btn_qt_MouseDown(object sender, MouseEventArgs e)
