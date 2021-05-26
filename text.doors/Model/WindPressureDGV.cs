@@ -24,6 +24,14 @@ namespace text.doors.Model
                 return (double)Math.Round(decimal.Parse((this.zwy2 - (this.zwy1 + this.zwy3) / 2).ToString()), 2, MidpointRounding.AwayFromZero);
             }
         }
+        public int zlx
+        {
+            get
+            {
+                //return this.zzd == 0 ? 0 : Convert.ToInt32(DefaultBase.BarLength / this.zzd);
+                return 0;
+            }
+        }
 
         public double fwy1 { get; set; }
         public double fwy2 { get; set; }
@@ -38,6 +46,14 @@ namespace text.doors.Model
             }
         }
 
+        public int flx
+        {
+            get
+            {
+                //  return this.fzd == 0 ? 0 : Convert.ToInt32(DefaultBase.BarLength / this.fzd);
+                return 0;
+            }
+        }
         public int PaValue { get; set; }
 
 

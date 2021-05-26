@@ -1527,7 +1527,6 @@ namespace text.doors.Detection
             Model_dt_kfy_res_Info model = new Model_dt_kfy_res_Info();
             model.dt_Code = _tempCode;
             model.defJC = defJC;
-            model.lx = int.Parse(txt_lx.Text);
             model.p1 = txt_p1.Text;
             model.p2 = txt_p2.Text;
             model.p3 = txt_p3.Text;
@@ -1538,7 +1537,6 @@ namespace text.doors.Detection
             model.pMax = txt_zpmax.Text;
             model._pMax = txt_fpmax.Text;
             model.desc = txt_desc.Text;
-            model.CheckLock = rdb_DWDD1.Checked ? 1 : rdb_DWDD3.Checked ? 3 : 0;
             return dal_dt_kfy_Info.Add_kfy_res_Info(model);
         }
 
@@ -1821,32 +1819,32 @@ namespace text.doors.Detection
                     //清空初始化
                     BindData_A(true);
 
-                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
-                    {
-                        var def_LX = 0;
-                        int.TryParse(txt_lx.Text, out def_LX);
+                    //if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
+                    //{
+                    //    var def_LX = 0;
+                    //    int.TryParse(txt_lx.Text, out def_LX);
 
-                        var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
-                        if (lx < def_LX)
-                        {
-                            Stop();
-                            OpenBtnType();
+                    //    var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
+                    //    if (lx < def_LX)
+                    //    {
+                    //        Stop();
+                    //        OpenBtnType();
 
-                            double lx2 = 0;
-                            double.TryParse(txt_lx.Text, out lx2);
-                            double zy = 0;
-                            double fy = 0;
+                    //        double lx2 = 0;
+                    //        double.TryParse(txt_lx.Text, out lx2);
+                    //        double zy = 0;
+                    //        double fy = 0;
 
-                            if (zy != -100)
-                            {
-                                txt_p1.Text = Math.Round(zy, 0).ToString();
-                            }
-                            if (fy != -100)
-                            {
-                                txt_f_p1.Text = Math.Round(fy, 0).ToString();
-                            }
-                        }
-                    }
+                    //        if (zy != -100)
+                    //        {
+                    //            txt_p1.Text = Math.Round(zy, 0).ToString();
+                    //        }
+                    //        if (fy != -100)
+                    //        {
+                    //            txt_f_p1.Text = Math.Round(fy, 0).ToString();
+                    //        }
+                    //    }
+                    //}
 
                     tim_static1.Enabled = false;
                     average = new List<Tuple<double, double, double>>();
@@ -1892,32 +1890,32 @@ namespace text.doors.Detection
                     //清空初始化
                     BindData_B(true);
 
-                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
-                    {
-                        var def_LX = 0;
-                        int.TryParse(txt_lx.Text, out def_LX);
+                    //if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
+                    //{
+                    //    var def_LX = 0;
+                    //    int.TryParse(txt_lx.Text, out def_LX);
 
-                        var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
-                        if (lx < def_LX)
-                        {
-                            Stop();
-                            OpenBtnType();
+                    //    var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
+                    //    if (lx < def_LX)
+                    //    {
+                    //        Stop();
+                    //        OpenBtnType();
 
-                            double lx2 = 0;
-                            double.TryParse(txt_lx.Text, out lx2);
-                            double zy = 0;
-                            double fy = 0;
+                    //        double lx2 = 0;
+                    //        double.TryParse(txt_lx.Text, out lx2);
+                    //        double zy = 0;
+                    //        double fy = 0;
 
-                            if (zy != -100)
-                            {
-                                txt_p1.Text = Math.Round(zy, 0).ToString();
-                            }
-                            if (fy != -100)
-                            {
-                                txt_f_p1.Text = Math.Round(fy, 0).ToString();
-                            }
-                        }
-                    }
+                    //        if (zy != -100)
+                    //        {
+                    //            txt_p1.Text = Math.Round(zy, 0).ToString();
+                    //        }
+                    //        if (fy != -100)
+                    //        {
+                    //            txt_f_p1.Text = Math.Round(fy, 0).ToString();
+                    //        }
+                    //    }
+                    //}
 
                     tim_static1.Enabled = false;
                     average = new List<Tuple<double, double, double>>();
@@ -1962,32 +1960,32 @@ namespace text.doors.Detection
                     //清空初始化
                     BindData_C(true);
 
-                    if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
-                    {
-                        var def_LX = 0;
-                        int.TryParse(txt_lx.Text, out def_LX);
+                    //if (windPressureTest == PublicEnum.WindPressureTest.ZStart || windPressureTest == PublicEnum.WindPressureTest.FStart)
+                    //{
+                    //    var def_LX = 0;
+                    //    int.TryParse(txt_lx.Text, out def_LX);
 
-                        var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
-                        if (lx < def_LX)
-                        {
-                            Stop();
-                            OpenBtnType();
+                    //    var lx = windPressureTest == PublicEnum.WindPressureTest.ZStart ? pa.zlx : pa.flx;
+                    //    if (lx < def_LX)
+                    //    {
+                    //        Stop();
+                    //        OpenBtnType();
 
-                            double lx2 = 0;
-                            double.TryParse(txt_lx.Text, out lx2);
-                            double zy = 0;
-                            double fy = 0;
+                    //        double lx2 = 0;
+                    //        double.TryParse(txt_lx.Text, out lx2);
+                    //        double zy = 0;
+                    //        double fy = 0;
 
-                            if (zy != -100)
-                            {
-                                txt_p1.Text = Math.Round(zy, 0).ToString();
-                            }
-                            if (fy != -100)
-                            {
-                                txt_f_p1.Text = Math.Round(fy, 0).ToString();
-                            }
-                        }
-                    }
+                    //        if (zy != -100)
+                    //        {
+                    //            txt_p1.Text = Math.Round(zy, 0).ToString();
+                    //        }
+                    //        if (fy != -100)
+                    //        {
+                    //            txt_f_p1.Text = Math.Round(fy, 0).ToString();
+                    //        }
+                    //    }
+                    //}
 
                     tim_static1.Enabled = false;
                     average = new List<Tuple<double, double, double>>();

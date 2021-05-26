@@ -283,9 +283,9 @@ values(
                               @"insert into dt_kfy_res_Info (dt_Code ,info_Level,defJC,CheckLock,
                             p1,p2,p3,pMax,_p1,_p2,_p3,_pMax,lx,testtype,desc) 
                             values(
-                            '{0}',{1},{2},{3},'{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}',{12},{13},'{14}')",
-                              model.dt_Code, model.info_Level, model.defJC, model.CheckLock, model.p1, model.p2, model.p3, model.pMax, model._p1, model._p2,
-                              model._p3, model._pMax, model.lx, model.testtype, model.desc);
+                            '{0}',{1},{2},{3},'{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},'{12}')",
+                              model.dt_Code, model.info_Level, model.defJC, model.p1, model.p2, model.p3, model.pMax, model._p1, model._p2,
+                              model._p3, model._pMax, model.testtype, model.desc);
             #endregion
             var res = SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
             if (res)
@@ -428,7 +428,6 @@ values(
                 Model_dt_kfy_res_Info modelRes = new Model_dt_kfy_res_Info();
 
                 modelRes.dt_Code = item.Rows[0]["dt_Code"].ToString();
-                modelRes.lx = int.Parse(item.Rows[0]["lx"].ToString());
                 modelRes.testtype = int.Parse(item.Rows[0]["testtype"].ToString());
                 modelRes.desc = item.Rows[0]["desc"].ToString();
                 modelRes.p1 = item.Rows[0]["p1"].ToString();
@@ -441,7 +440,6 @@ values(
                 modelRes._pMax = item.Rows[0]["_pMax"].ToString();
                 modelRes.info_Level = int.Parse(item.Rows[0]["info_Level"].ToString());
                 modelRes.defJC = int.Parse(item.Rows[0]["defJC"].ToString());
-                modelRes.CheckLock = int.Parse(item.Rows[0]["CheckLock"].ToString());
             }
             return model;
         }
