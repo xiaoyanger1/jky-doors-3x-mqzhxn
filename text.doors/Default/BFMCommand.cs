@@ -119,8 +119,6 @@ namespace text.doors.Default
 
 
         //平面水平
-
-
         public const string 第一级振幅 = "D234";
         public const string 第一级修正 = "D244";
         public const string 第二级振幅 = "D236";
@@ -132,9 +130,14 @@ namespace text.doors.Default
         public const string 第五级振幅 = "D242";
         public const string 第五级修正 = "D252";
 
+        public const string 第一级 = "M93";
+        public const string 第二级 = "M94";
+        public const string 第三级 = "M95";
+        public const string 第四级 = "M96";
+        public const string 第五级 = "M97";
+
 
         public const string 水平停止 = "M99";
-
         public const string 推杆启动 = "M85";
 
         #region  波动加压

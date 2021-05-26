@@ -29,7 +29,6 @@ namespace text.doors.Service
                             dt_Code ,
                             info_Level,
                             defJC,
-                            CheckLock,
                             p1,
                             p2,
                             p3,
@@ -38,16 +37,14 @@ namespace text.doors.Service
                             _p2,
                             _p3,
                             _pMax,
-                            lx,
                             testtype,
                             desc
                             ) 
                             values(
-                            '{0}',{1},{2},{3},'{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}',{12},{13},'{14}')",
+                            '{0}',{1},{2},'{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},'{12}')",
                               model.dt_Code,
                               model.info_Level,
                               model.defJC,
-                              model.CheckLock,
                               model.p1,
                               model.p2,
                               model.p3,
@@ -56,7 +53,6 @@ namespace text.doors.Service
                               model._p2,
                               model._p3,
                               model._pMax,
-                              model.lx,
                               model.testtype,
                               model.desc);
             #endregion

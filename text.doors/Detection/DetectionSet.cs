@@ -256,58 +256,9 @@ namespace text.doors.Detection
             txt_DaQiYaLi.Text = _serialPortClient.GetDQYLXS().ToString();
 
             txt_DangQianWenDu.Text = _serialPortClient.GetWDXS().ToString();
-            //BindDangQianDangHao();
         }
 
-
-        //private void BindDangQianDangHao()
-        //{
-        //    try
-        //    {
-        //        txt_ganjianABC.Items.Clear();
-        //        int count = int.Parse(txt_jianceshuliang.Text);
-        //        for (int i = 1; i <= count; i++)
-        //        {
-        //            txt_ganjianABC.Items.Add("第" + i + "樘");
-        //        }
-
-        //        if (_tempTong != "")
-        //        {
-        //            txt_ganjianABC.Text = _tempTong;
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.Error(ex);
-        //        MessageBox.Show("规格数量请输入数字", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //    }
-        //}
-        private void btn_GuiGeShuLiang_KeyUp(object sender, KeyEventArgs e)
-        {
-
-            //try
-            //{
-            //    if (int.Parse(txt_jianceshuliang.Text) > 3)
-            //    {
-            //        MessageBox.Show("最大只能输入三樘", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //        txt_jianceshuliang.Text = "";
-            //        return;
-            //    }
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("最大只能输入三樘", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
-
-            //if (string.IsNullOrWhiteSpace(txt_jianceshuliang.Text))
-            //{
-            //    MessageBox.Show("请填写规格数量", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
-            //BindDangQianDangHao();
-        }
+        
 
         #region 底部状态栏赋值
 

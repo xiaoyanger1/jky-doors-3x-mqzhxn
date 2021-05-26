@@ -189,13 +189,14 @@ namespace text.doors.Detection
                     list.Add(model);
                 }
             }
-            else {
+            else
+            {
                 for (int i = 1; i < 6; i++)
                 {
                     PlaneDeformationInfo model = new PlaneDeformationInfo();
                     model.Level = $"第{i}级";
                     model.XiuZheng = 0d;
-                    model.ZhenFu= 0d;
+                    model.ZhenFu = 0d;
                     list.Add(model);
                 }
             }
@@ -216,10 +217,17 @@ namespace text.doors.Detection
             double v2 = 0d;
             GetDGVValue(1, ref v1, ref v2);
 
-            var res = _serialPortClient.SendLevelBtn(1, v1, v2);
+            var res = _serialPortClient.SendLevelValueBtn(1, v1, v2);
             if (!res)
             {
-                MessageBox.Show("第一级异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("第一级赋值异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var res1 = _serialPortClient.SendLevelBtn(1);
+            if (!res1)
+            {
+                MessageBox.Show("第一级开始异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -236,10 +244,16 @@ namespace text.doors.Detection
             double v1 = 0d;
             double v2 = 0d;
             GetDGVValue(2, ref v1, ref v2);
-            var res = _serialPortClient.SendLevelBtn(2, v1, v2);
+            var res = _serialPortClient.SendLevelValueBtn(2, v1, v2);
             if (!res)
             {
-                MessageBox.Show("第二级异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("第二级赋值异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var res1 = _serialPortClient.SendLevelBtn(2);
+            if (!res1)
+            {
+                MessageBox.Show("第二级开始异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -255,10 +269,16 @@ namespace text.doors.Detection
             double v1 = 0d;
             double v2 = 0d;
             GetDGVValue(3, ref v1, ref v2);
-            var res = _serialPortClient.SendLevelBtn(3, v1, v2);
+            var res = _serialPortClient.SendLevelValueBtn(3, v1, v2);
             if (!res)
             {
-                MessageBox.Show("第三级异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("第三级赋值异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var res1 = _serialPortClient.SendLevelBtn(3);
+            if (!res1)
+            {
+                MessageBox.Show("第三级开始异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -274,10 +294,16 @@ namespace text.doors.Detection
             double v1 = 0d;
             double v2 = 0d;
             GetDGVValue(4, ref v1, ref v2);
-            var res = _serialPortClient.SendLevelBtn(4, v1, v2);
+            var res = _serialPortClient.SendLevelValueBtn(4, v1, v2);
             if (!res)
             {
-                MessageBox.Show("第四级异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("第四级赋值异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var res1 = _serialPortClient.SendLevelBtn(4);
+            if (!res1)
+            {
+                MessageBox.Show("第四级开始异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -293,10 +319,16 @@ namespace text.doors.Detection
             double v1 = 0d;
             double v2 = 0d;
             GetDGVValue(5, ref v1, ref v2);
-            var res = _serialPortClient.SendLevelBtn(5, v1, v2);
+            var res = _serialPortClient.SendLevelValueBtn(5, v1, v2);
             if (!res)
             {
-                MessageBox.Show("第五级异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("第五级赋值异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var res1 = _serialPortClient.SendLevelBtn(5);
+            if (!res1)
+            {
+                MessageBox.Show("第五级开始异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

@@ -454,40 +454,40 @@ namespace text.doors.Detection
                         windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.drop50);
                 }
             }
-            else if (rdb_gfzh.Checked)
+            else if (rdb_gfzh.Checked) //固附之和
             {
                 if (kpa_Level == PublicEnum.Kpa_Level.liter50)
                 {
                     if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter50);
+                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
                     else
                         windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
                 {
                     if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter100);
+                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter100);
                     else
                         windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter100);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
                 {
                     if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter50);
+                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
                     else
                         windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
                 {
                     if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.drop100);
+                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop100);
                     else
                         windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop100);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
                 {
                     if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.drop50);
+                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
                     else
                         windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
                 }

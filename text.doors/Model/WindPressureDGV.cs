@@ -24,15 +24,6 @@ namespace text.doors.Model
                 return (double)Math.Round(decimal.Parse((this.zwy2 - (this.zwy1 + this.zwy3) / 2).ToString()), 2, MidpointRounding.AwayFromZero);
             }
         }
-        public int zlx
-        {
-            get
-            {
-                //todo:
-                //return this.zzd == 0 ? 0 : Convert.ToInt32(DefaultBase.BarLength / this.zzd);
-                return 0;
-            }
-        }
 
         public double fwy1 { get; set; }
         public double fwy2 { get; set; }
@@ -44,15 +35,6 @@ namespace text.doors.Model
             get
             {
                 return System.Math.Abs(Math.Round(this.fwy2 - (this.fwy1 + this.fwy3) / 2, 2));
-            }
-        }
-        public int flx
-        {
-            get
-            {
-                //todo:
-                // return this.fzd == 0 ? 0 : Convert.ToInt32(DefaultBase.BarLength / this.fzd);
-                return 0;
             }
         }
 

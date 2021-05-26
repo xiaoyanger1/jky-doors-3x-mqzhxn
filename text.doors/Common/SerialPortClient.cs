@@ -2198,7 +2198,7 @@ namespace text.doors.Common
         /// <summary>
         /// 级别按钮
         /// </summary>
-        public bool SendLevelBtn(int commonNum, double v1, double v2)
+        public bool SendLevelValueBtn(int commonNum, double v1, double v2)
         {
             try
             {
@@ -2240,6 +2240,52 @@ namespace text.doors.Common
 
                         _StartAddress = BFMCommand.GetCommandDict(btn_XZ_Num);
                         _MASTER.WriteSingleRegister(_SlaveID, _StartAddress, (ushort)(v2));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 级别按钮
+        /// </summary>
+        public bool SendLevelBtn(int commonNum)
+        {
+            try
+            {
+                if (sp.IsOpen)
+                {
+                    lock (syncLock)
+                    {
+                        string btn_Num = "";
+                        if (commonNum == 1)
+                        {
+                            btn_Num = BFMCommand.第一级;
+                        }
+                        else if (commonNum == 2)
+                        {
+                            btn_Num = BFMCommand.第二级;
+                        }
+                        else if (commonNum == 3)
+                        {
+                            btn_Num = BFMCommand.第三级;
+                        }
+                        else if (commonNum == 4)
+                        {
+                            btn_Num = BFMCommand.第四级;
+                        }
+                        else if (commonNum == 5)
+                        {
+                            btn_Num = BFMCommand.第五级;
+                        }
+
+                        _StartAddress = BFMCommand.GetCommandDict(btn_Num);
+                        _MASTER.WriteSingleCoil(_SlaveID, _StartAddress, false);
+                        _MASTER.WriteSingleCoil(_SlaveID, _StartAddress, true);
                     }
                 }
             }

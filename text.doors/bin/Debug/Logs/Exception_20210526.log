@@ -46,3 +46,9 @@
    дк System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
    дк System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
    дк System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
+------------------------------------------------------------
