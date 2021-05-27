@@ -469,13 +469,10 @@ namespace text.doors.Detection
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
                 {
-                    //todo:设计值计算
-                    fsvalue = _serialPortClient.GetFSXS();
-                    fsvalue = Formula.MathFlow(fsvalue);
                     if (cyvalue > 0)
-                        pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.YCJY);
                     else
-                        pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.YCJY);
                 }
             }
             else if (rdb_gfzh.Checked) //固附之和
