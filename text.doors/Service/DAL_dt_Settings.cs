@@ -219,7 +219,7 @@ model.dt_Code);
                 settings.dt_kfy_Info = dt_kfy_InfoList;
 
             //抗风压结果
-            var dt_kfy_res_InfoList = new DAL_dt_kfy_Info().GetKFYResList(code);
+            var dt_kfy_res_InfoList = new DAL_dt_kfy_Info().GetKFYResInfo(code);
             if (dt_kfy_res_InfoList != null )
                 settings.dt_kfy_res_Info = dt_kfy_res_InfoList;
 

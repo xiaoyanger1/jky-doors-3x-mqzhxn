@@ -18,32 +18,8 @@ namespace text.doors.Default
             liter150,//升150
             drop100,//降100
             drop50,//降50
+            YCJY
         }
-
-
-        /// <summary>
-        /// 压力级别枚举
-        /// </summary>
-        public enum FY_Kpa_Static_Level
-        {
-            S250,
-            S500,
-            S750,
-            S1000,
-            S1250,
-            S1500,
-            S1750,
-            S2000,
-            J250,
-            J500,
-            J750,
-            J1000,
-            J1250,
-            J1500,
-            J1750,
-            J2000,
-        }
-
 
         /// <summary>
         /// 系统项
@@ -62,7 +38,9 @@ namespace text.doors.Default
             /// 风压
             /// </summary>
             AirPressure,
-            //平面水平
+            /// <summary>
+            /// 平面水平
+            /// </summary>
             PlaneDeformation
 
         }
@@ -72,12 +50,33 @@ namespace text.doors.Default
         /// </summary>
         public enum AirtightPropertyTest
         {
-            ZReady,//正压预备
-            ZStart,//正压开始
-            FReady,//负压预备
-            FStart,//负压开始
-            Stop,//停止
+            /// <summary>
+            /// 正压预备
+            /// </summary>
+            ZReady,
+            /// <summary>
+            /// 正压开始
+            /// </summary>
+            ZStart,
+            /// <summary>
+            /// 负压预备
+            /// </summary>
+            FReady,
+            /// <summary>
+            /// 负压开始
+            /// </summary>
+            FStart,
+            /// <summary>
+            /// 停止
+            /// </summary>
+            Stop,
+            /// <summary>
+            /// 正依次加压
+            /// </summary>
             ZYCJY,
+            /// <summary>
+            /// 负依次加压
+            /// </summary>
             FYCJY
         }
 
@@ -188,11 +187,34 @@ namespace text.doors.Default
             水密性能及抗风压性能检测
         }
 
+        /// <summary>
+        /// 位移
+        /// </summary>
+        public enum DisplaceEnum
+        {
+            位移A1,
+            位移A2,
+            位移A3,
+            位移B1,
+            位移B2,
+            位移B3,
+            位移C1,
+            位移C2,
+            位移C3
+        }
+
         public enum QM_TestCount
         {
             第一次 = 1,
             第二次 = 2
         }
 
+
+        public enum KFY_DGVENUM
+        {
+            DGV_A = 1,
+            DGV_B = 2,
+            DGV_C = 3
+        }
     }
 }

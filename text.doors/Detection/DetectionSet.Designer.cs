@@ -256,10 +256,10 @@
             this.检验参数设置.Controls.Add(this.label2);
             this.检验参数设置.Controls.Add(this.txt_JianYanBianHao);
             this.检验参数设置.Controls.Add(this.label1);
-            this.检验参数设置.Location = new System.Drawing.Point(4, 22);
+            this.检验参数设置.Location = new System.Drawing.Point(4, 28);
             this.检验参数设置.Name = "检验参数设置";
             this.检验参数设置.Padding = new System.Windows.Forms.Padding(3);
-            this.检验参数设置.Size = new System.Drawing.Size(1088, 648);
+            this.检验参数设置.Size = new System.Drawing.Size(1088, 642);
             this.检验参数设置.TabIndex = 0;
             this.检验参数设置.Text = "检验参数设置";
             // 
@@ -267,7 +267,7 @@
             // 
             this.txt_weituodianhua.Location = new System.Drawing.Point(419, 98);
             this.txt_weituodianhua.Name = "txt_weituodianhua";
-            this.txt_weituodianhua.Size = new System.Drawing.Size(282, 21);
+            this.txt_weituodianhua.Size = new System.Drawing.Size(282, 28);
             this.txt_weituodianhua.TabIndex = 318;
             // 
             // label97
@@ -276,7 +276,7 @@
             this.label97.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label97.Location = new System.Drawing.Point(351, 102);
             this.label97.Name = "label97";
-            this.label97.Size = new System.Drawing.Size(70, 12);
+            this.label97.Size = new System.Drawing.Size(103, 18);
             this.label97.TabIndex = 317;
             this.label97.Text = "委托电话：";
             // 
@@ -284,7 +284,7 @@
             // 
             this.txt_songyangriqi.Location = new System.Drawing.Point(82, 97);
             this.txt_songyangriqi.Name = "txt_songyangriqi";
-            this.txt_songyangriqi.Size = new System.Drawing.Size(258, 21);
+            this.txt_songyangriqi.Size = new System.Drawing.Size(258, 28);
             this.txt_songyangriqi.TabIndex = 316;
             // 
             // label96
@@ -293,7 +293,7 @@
             this.label96.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label96.Location = new System.Drawing.Point(10, 101);
             this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(70, 12);
+            this.label96.Size = new System.Drawing.Size(103, 18);
             this.label96.TabIndex = 315;
             this.label96.Text = "送样日期：";
             // 
@@ -304,7 +304,7 @@
             "道康宁"});
             this.txt_naihoujiao.Location = new System.Drawing.Point(781, 487);
             this.txt_naihoujiao.Name = "txt_naihoujiao";
-            this.txt_naihoujiao.Size = new System.Drawing.Size(276, 20);
+            this.txt_naihoujiao.Size = new System.Drawing.Size(276, 26);
             this.txt_naihoujiao.TabIndex = 314;
             // 
             // label95
@@ -313,7 +313,7 @@
             this.label95.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label95.Location = new System.Drawing.Point(724, 492);
             this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(57, 12);
+            this.label95.Size = new System.Drawing.Size(84, 18);
             this.label95.TabIndex = 313;
             this.label95.Text = "耐侯胶：";
             // 
@@ -323,7 +323,7 @@
             this.label94.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label94.Location = new System.Drawing.Point(711, 428);
             this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(70, 12);
+            this.label94.Size = new System.Drawing.Size(103, 18);
             this.label94.TabIndex = 311;
             this.label94.Text = "立挺系列：";
             // 
@@ -331,7 +331,7 @@
             // 
             this.txt_litingxilie.Location = new System.Drawing.Point(781, 423);
             this.txt_litingxilie.Name = "txt_litingxilie";
-            this.txt_litingxilie.Size = new System.Drawing.Size(276, 21);
+            this.txt_litingxilie.Size = new System.Drawing.Size(276, 28);
             this.txt_litingxilie.TabIndex = 312;
             // 
             // label93
@@ -340,7 +340,7 @@
             this.label93.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label93.Location = new System.Drawing.Point(711, 458);
             this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(70, 12);
+            this.label93.Size = new System.Drawing.Size(103, 18);
             this.label93.TabIndex = 309;
             this.label93.Text = "样品编号：";
             // 
@@ -348,7 +348,7 @@
             // 
             this.txt_yangpinbianhao.Location = new System.Drawing.Point(781, 453);
             this.txt_yangpinbianhao.Name = "txt_yangpinbianhao";
-            this.txt_yangpinbianhao.Size = new System.Drawing.Size(276, 21);
+            this.txt_yangpinbianhao.Size = new System.Drawing.Size(276, 28);
             this.txt_yangpinbianhao.TabIndex = 310;
             // 
             // txt_mianbancaizhi
@@ -360,7 +360,7 @@
             "石材"});
             this.txt_mianbancaizhi.Location = new System.Drawing.Point(781, 359);
             this.txt_mianbancaizhi.Name = "txt_mianbancaizhi";
-            this.txt_mianbancaizhi.Size = new System.Drawing.Size(276, 20);
+            this.txt_mianbancaizhi.Size = new System.Drawing.Size(276, 26);
             this.txt_mianbancaizhi.TabIndex = 308;
             // 
             // label92
@@ -369,7 +369,7 @@
             this.label92.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label92.Location = new System.Drawing.Point(712, 362);
             this.label92.Name = "label92";
-            this.label92.Size = new System.Drawing.Size(70, 12);
+            this.label92.Size = new System.Drawing.Size(103, 18);
             this.label92.TabIndex = 307;
             this.label92.Text = "面板材质：";
             // 
@@ -382,7 +382,7 @@
             "干法+湿法"});
             this.txt_mianbanxiangqianfangshi.Location = new System.Drawing.Point(827, 326);
             this.txt_mianbanxiangqianfangshi.Name = "txt_mianbanxiangqianfangshi";
-            this.txt_mianbanxiangqianfangshi.Size = new System.Drawing.Size(230, 20);
+            this.txt_mianbanxiangqianfangshi.Size = new System.Drawing.Size(230, 26);
             this.txt_mianbanxiangqianfangshi.TabIndex = 306;
             // 
             // label91
@@ -391,7 +391,7 @@
             this.label91.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label91.Location = new System.Drawing.Point(726, 330);
             this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(96, 12);
+            this.label91.Size = new System.Drawing.Size(141, 18);
             this.label91.TabIndex = 305;
             this.label91.Text = "面板镶嵌方式：";
             // 
@@ -408,7 +408,7 @@
             "其他胶"});
             this.txt_mianbanxiangqiancailiao.Location = new System.Drawing.Point(827, 298);
             this.txt_mianbanxiangqiancailiao.Name = "txt_mianbanxiangqiancailiao";
-            this.txt_mianbanxiangqiancailiao.Size = new System.Drawing.Size(230, 20);
+            this.txt_mianbanxiangqiancailiao.Size = new System.Drawing.Size(230, 26);
             this.txt_mianbanxiangqiancailiao.TabIndex = 304;
             // 
             // label90
@@ -417,7 +417,7 @@
             this.label90.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label90.Location = new System.Drawing.Point(725, 302);
             this.label90.Name = "label90";
-            this.label90.Size = new System.Drawing.Size(96, 12);
+            this.label90.Size = new System.Drawing.Size(141, 18);
             this.label90.TabIndex = 303;
             this.label90.Text = "面板镶嵌材料：";
             // 
@@ -434,7 +434,7 @@
             "无密封材料"});
             this.txt_kuangshanmifengcailiao.Location = new System.Drawing.Point(827, 266);
             this.txt_kuangshanmifengcailiao.Name = "txt_kuangshanmifengcailiao";
-            this.txt_kuangshanmifengcailiao.Size = new System.Drawing.Size(228, 20);
+            this.txt_kuangshanmifengcailiao.Size = new System.Drawing.Size(228, 26);
             this.txt_kuangshanmifengcailiao.TabIndex = 302;
             // 
             // label89
@@ -443,7 +443,7 @@
             this.label89.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label89.Location = new System.Drawing.Point(725, 270);
             this.label89.Name = "label89";
-            this.label89.Size = new System.Drawing.Size(96, 12);
+            this.label89.Size = new System.Drawing.Size(141, 18);
             this.label89.TabIndex = 301;
             this.label89.Text = "框扇密封材料：";
             // 
@@ -453,7 +453,7 @@
             this.label87.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label87.Location = new System.Drawing.Point(712, 238);
             this.label87.Name = "label87";
-            this.label87.Size = new System.Drawing.Size(109, 12);
+            this.label87.Size = new System.Drawing.Size(160, 18);
             this.label87.TabIndex = 300;
             this.label87.Text = "可开比试件面积：";
             // 
@@ -461,7 +461,7 @@
             // 
             this.txt_kekaibishijianmianji.Location = new System.Drawing.Point(827, 232);
             this.txt_kekaibishijianmianji.Name = "txt_kekaibishijianmianji";
-            this.txt_kekaibishijianmianji.Size = new System.Drawing.Size(207, 21);
+            this.txt_kekaibishijianmianji.Size = new System.Drawing.Size(207, 28);
             this.txt_kekaibishijianmianji.TabIndex = 298;
             // 
             // label88
@@ -470,7 +470,7 @@
             this.label88.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label88.Location = new System.Drawing.Point(1033, 238);
             this.label88.Name = "label88";
-            this.label88.Size = new System.Drawing.Size(24, 16);
+            this.label88.Size = new System.Drawing.Size(34, 24);
             this.label88.TabIndex = 299;
             this.label88.Text = "㎡";
             // 
@@ -483,7 +483,7 @@
             "监督抽查"});
             this.txt_caiyangfangshi.Location = new System.Drawing.Point(781, 200);
             this.txt_caiyangfangshi.Name = "txt_caiyangfangshi";
-            this.txt_caiyangfangshi.Size = new System.Drawing.Size(276, 20);
+            this.txt_caiyangfangshi.Size = new System.Drawing.Size(276, 26);
             this.txt_caiyangfangshi.TabIndex = 296;
             // 
             // label86
@@ -492,7 +492,7 @@
             this.label86.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label86.Location = new System.Drawing.Point(710, 205);
             this.label86.Name = "label86";
-            this.label86.Size = new System.Drawing.Size(70, 12);
+            this.label86.Size = new System.Drawing.Size(103, 18);
             this.label86.TabIndex = 295;
             this.label86.Text = "采样方式：";
             // 
@@ -500,7 +500,7 @@
             // 
             this.txt_weituoren.Location = new System.Drawing.Point(82, 58);
             this.txt_weituoren.Name = "txt_weituoren";
-            this.txt_weituoren.Size = new System.Drawing.Size(258, 21);
+            this.txt_weituoren.Size = new System.Drawing.Size(258, 28);
             this.txt_weituoren.TabIndex = 294;
             // 
             // label85
@@ -509,7 +509,7 @@
             this.label85.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label85.Location = new System.Drawing.Point(10, 62);
             this.label85.Name = "label85";
-            this.label85.Size = new System.Drawing.Size(57, 12);
+            this.label85.Size = new System.Drawing.Size(84, 18);
             this.label85.TabIndex = 293;
             this.label85.Text = "委托人：";
             // 
@@ -519,7 +519,7 @@
             this.label27.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label27.Location = new System.Drawing.Point(712, 399);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(70, 12);
+            this.label27.Size = new System.Drawing.Size(103, 18);
             this.label27.TabIndex = 141;
             this.label27.Text = "最大面板：";
             // 
@@ -527,14 +527,14 @@
             // 
             this.txt_zuidamianban.Location = new System.Drawing.Point(782, 394);
             this.txt_zuidamianban.Name = "txt_zuidamianban";
-            this.txt_zuidamianban.Size = new System.Drawing.Size(253, 21);
+            this.txt_zuidamianban.Size = new System.Drawing.Size(253, 28);
             this.txt_zuidamianban.TabIndex = 142;
             // 
             // txt_jianlidanwei
             // 
             this.txt_jianlidanwei.Location = new System.Drawing.Point(781, 168);
             this.txt_jianlidanwei.Name = "txt_jianlidanwei";
-            this.txt_jianlidanwei.Size = new System.Drawing.Size(276, 21);
+            this.txt_jianlidanwei.Size = new System.Drawing.Size(276, 28);
             this.txt_jianlidanwei.TabIndex = 292;
             // 
             // label84
@@ -543,7 +543,7 @@
             this.label84.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label84.Location = new System.Drawing.Point(709, 171);
             this.label84.Name = "label84";
-            this.label84.Size = new System.Drawing.Size(70, 12);
+            this.label84.Size = new System.Drawing.Size(103, 18);
             this.label84.TabIndex = 291;
             this.label84.Text = "监理单位：";
             // 
@@ -551,7 +551,7 @@
             // 
             this.txt_jianshedanwei.Location = new System.Drawing.Point(781, 136);
             this.txt_jianshedanwei.Name = "txt_jianshedanwei";
-            this.txt_jianshedanwei.Size = new System.Drawing.Size(276, 21);
+            this.txt_jianshedanwei.Size = new System.Drawing.Size(276, 28);
             this.txt_jianshedanwei.TabIndex = 290;
             // 
             // label83
@@ -560,7 +560,7 @@
             this.label83.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label83.Location = new System.Drawing.Point(709, 139);
             this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(70, 12);
+            this.label83.Size = new System.Drawing.Size(103, 18);
             this.label83.TabIndex = 289;
             this.label83.Text = "建设单位：";
             // 
@@ -568,7 +568,7 @@
             // 
             this.txt_shejidanwei.Location = new System.Drawing.Point(781, 98);
             this.txt_shejidanwei.Name = "txt_shejidanwei";
-            this.txt_shejidanwei.Size = new System.Drawing.Size(276, 21);
+            this.txt_shejidanwei.Size = new System.Drawing.Size(276, 28);
             this.txt_shejidanwei.TabIndex = 288;
             // 
             // label82
@@ -577,7 +577,7 @@
             this.label82.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label82.Location = new System.Drawing.Point(709, 101);
             this.label82.Name = "label82";
-            this.label82.Size = new System.Drawing.Size(70, 12);
+            this.label82.Size = new System.Drawing.Size(103, 18);
             this.label82.TabIndex = 287;
             this.label82.Text = "设计单位：";
             // 
@@ -587,7 +587,7 @@
             this.label55.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label55.Location = new System.Drawing.Point(1035, 395);
             this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(24, 16);
+            this.label55.Size = new System.Drawing.Size(34, 24);
             this.label55.TabIndex = 201;
             this.label55.Text = "mm";
             // 
@@ -597,7 +597,7 @@
             this.label80.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label80.Location = new System.Drawing.Point(12, 490);
             this.label80.Name = "label80";
-            this.label80.Size = new System.Drawing.Size(51, 12);
+            this.label80.Size = new System.Drawing.Size(75, 18);
             this.label80.TabIndex = 284;
             this.label80.Text = "杆C长：";
             // 
@@ -605,7 +605,7 @@
             // 
             this.txt_ganCchang.Location = new System.Drawing.Point(82, 485);
             this.txt_ganCchang.Name = "txt_ganCchang";
-            this.txt_ganCchang.Size = new System.Drawing.Size(234, 21);
+            this.txt_ganCchang.Size = new System.Drawing.Size(234, 28);
             this.txt_ganCchang.TabIndex = 285;
             // 
             // label81
@@ -614,7 +614,7 @@
             this.label81.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label81.Location = new System.Drawing.Point(316, 490);
             this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(24, 16);
+            this.label81.Size = new System.Drawing.Size(34, 24);
             this.label81.TabIndex = 286;
             this.label81.Text = "mm";
             // 
@@ -624,7 +624,7 @@
             this.label78.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label78.Location = new System.Drawing.Point(12, 459);
             this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(51, 12);
+            this.label78.Size = new System.Drawing.Size(75, 18);
             this.label78.TabIndex = 281;
             this.label78.Text = "杆B长：";
             // 
@@ -632,7 +632,7 @@
             // 
             this.txt_ganBchang.Location = new System.Drawing.Point(82, 454);
             this.txt_ganBchang.Name = "txt_ganBchang";
-            this.txt_ganBchang.Size = new System.Drawing.Size(234, 21);
+            this.txt_ganBchang.Size = new System.Drawing.Size(234, 28);
             this.txt_ganBchang.TabIndex = 282;
             // 
             // label79
@@ -641,7 +641,7 @@
             this.label79.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label79.Location = new System.Drawing.Point(316, 459);
             this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(24, 16);
+            this.label79.Size = new System.Drawing.Size(34, 24);
             this.label79.TabIndex = 283;
             this.label79.Text = "mm";
             // 
@@ -651,7 +651,7 @@
             this.label13.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label13.Location = new System.Drawing.Point(12, 430);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(51, 12);
+            this.label13.Size = new System.Drawing.Size(75, 18);
             this.label13.TabIndex = 278;
             this.label13.Text = "杆A长：";
             // 
@@ -659,7 +659,7 @@
             // 
             this.txt_ganAchang.Location = new System.Drawing.Point(82, 425);
             this.txt_ganAchang.Name = "txt_ganAchang";
-            this.txt_ganAchang.Size = new System.Drawing.Size(234, 21);
+            this.txt_ganAchang.Size = new System.Drawing.Size(234, 28);
             this.txt_ganAchang.TabIndex = 279;
             // 
             // label77
@@ -668,7 +668,7 @@
             this.label77.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label77.Location = new System.Drawing.Point(316, 430);
             this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(24, 16);
+            this.label77.Size = new System.Drawing.Size(34, 24);
             this.label77.TabIndex = 280;
             this.label77.Text = "mm";
             // 
@@ -678,7 +678,7 @@
             this.label73.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label73.Location = new System.Drawing.Point(9, 328);
             this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(70, 12);
+            this.label73.Size = new System.Drawing.Size(103, 18);
             this.label73.TabIndex = 275;
             this.label73.Text = "可开面积：";
             // 
@@ -688,7 +688,7 @@
             this.label30.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label30.Location = new System.Drawing.Point(10, 401);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(57, 12);
+            this.label30.Size = new System.Drawing.Size(84, 18);
             this.label30.TabIndex = 137;
             this.label30.Text = "开启扇：";
             // 
@@ -696,7 +696,7 @@
             // 
             this.txt_kekaimianji.Location = new System.Drawing.Point(82, 325);
             this.txt_kekaimianji.Name = "txt_kekaimianji";
-            this.txt_kekaimianji.Size = new System.Drawing.Size(234, 21);
+            this.txt_kekaimianji.Size = new System.Drawing.Size(234, 28);
             this.txt_kekaimianji.TabIndex = 276;
             // 
             // cb_KaiQiFangShi
@@ -707,7 +707,7 @@
             "无"});
             this.cb_KaiQiFangShi.Location = new System.Drawing.Point(82, 396);
             this.cb_KaiQiFangShi.Name = "cb_KaiQiFangShi";
-            this.cb_KaiQiFangShi.Size = new System.Drawing.Size(258, 20);
+            this.cb_KaiQiFangShi.Size = new System.Drawing.Size(258, 26);
             this.cb_KaiQiFangShi.TabIndex = 185;
             // 
             // label74
@@ -716,7 +716,7 @@
             this.label74.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label74.Location = new System.Drawing.Point(322, 362);
             this.label74.Name = "label74";
-            this.label74.Size = new System.Drawing.Size(16, 16);
+            this.label74.Size = new System.Drawing.Size(22, 24);
             this.label74.TabIndex = 277;
             this.label74.Text = "m";
             // 
@@ -726,7 +726,7 @@
             this.label75.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label75.Location = new System.Drawing.Point(9, 361);
             this.label75.Name = "label75";
-            this.label75.Size = new System.Drawing.Size(70, 12);
+            this.label75.Size = new System.Drawing.Size(103, 18);
             this.label75.TabIndex = 272;
             this.label75.Text = "可开逢长：";
             // 
@@ -734,7 +734,7 @@
             // 
             this.txt_kekaifengchang.Location = new System.Drawing.Point(82, 358);
             this.txt_kekaifengchang.Name = "txt_kekaifengchang";
-            this.txt_kekaifengchang.Size = new System.Drawing.Size(234, 21);
+            this.txt_kekaifengchang.Size = new System.Drawing.Size(234, 28);
             this.txt_kekaifengchang.TabIndex = 273;
             // 
             // label76
@@ -743,7 +743,7 @@
             this.label76.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label76.Location = new System.Drawing.Point(322, 327);
             this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(24, 16);
+            this.label76.Size = new System.Drawing.Size(34, 24);
             this.label76.TabIndex = 274;
             this.label76.Text = "㎡";
             // 
@@ -754,7 +754,7 @@
             "道康宁"});
             this.txt_jiegoujiao.Location = new System.Drawing.Point(422, 487);
             this.txt_jiegoujiao.Name = "txt_jiegoujiao";
-            this.txt_jiegoujiao.Size = new System.Drawing.Size(282, 20);
+            this.txt_jiegoujiao.Size = new System.Drawing.Size(282, 26);
             this.txt_jiegoujiao.TabIndex = 271;
             // 
             // label72
@@ -763,7 +763,7 @@
             this.label72.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label72.Location = new System.Drawing.Point(352, 492);
             this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(57, 12);
+            this.label72.Size = new System.Drawing.Size(84, 18);
             this.label72.TabIndex = 270;
             this.label72.Text = "结构胶：";
             // 
@@ -773,7 +773,7 @@
             this.label70.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label70.Location = new System.Drawing.Point(353, 460);
             this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(70, 12);
+            this.label70.Size = new System.Drawing.Size(103, 18);
             this.label70.TabIndex = 267;
             this.label70.Text = "试件层高：";
             // 
@@ -781,7 +781,7 @@
             // 
             this.txt_shijiancenggao.Location = new System.Drawing.Point(423, 455);
             this.txt_shijiancenggao.Name = "txt_shijiancenggao";
-            this.txt_shijiancenggao.Size = new System.Drawing.Size(252, 21);
+            this.txt_shijiancenggao.Size = new System.Drawing.Size(252, 28);
             this.txt_shijiancenggao.TabIndex = 268;
             // 
             // label71
@@ -790,7 +790,7 @@
             this.label71.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label71.Location = new System.Drawing.Point(685, 456);
             this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(16, 16);
+            this.label71.Size = new System.Drawing.Size(22, 24);
             this.label71.TabIndex = 269;
             this.label71.Text = "m";
             // 
@@ -800,7 +800,7 @@
             this.label68.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label68.Location = new System.Drawing.Point(353, 430);
             this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(70, 12);
+            this.label68.Size = new System.Drawing.Size(103, 18);
             this.label68.TabIndex = 264;
             this.label68.Text = "固定面积：";
             // 
@@ -808,7 +808,7 @@
             // 
             this.txt_gudingmianji.Location = new System.Drawing.Point(423, 425);
             this.txt_gudingmianji.Name = "txt_gudingmianji";
-            this.txt_gudingmianji.Size = new System.Drawing.Size(252, 21);
+            this.txt_gudingmianji.Size = new System.Drawing.Size(252, 28);
             this.txt_gudingmianji.TabIndex = 265;
             // 
             // label69
@@ -817,7 +817,7 @@
             this.label69.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label69.Location = new System.Drawing.Point(684, 427);
             this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(24, 16);
+            this.label69.Size = new System.Drawing.Size(34, 24);
             this.label69.TabIndex = 266;
             this.label69.Text = "㎡";
             // 
@@ -827,7 +827,7 @@
             this.label66.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label66.Location = new System.Drawing.Point(353, 399);
             this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(70, 12);
+            this.label66.Size = new System.Drawing.Size(103, 18);
             this.label66.TabIndex = 261;
             this.label66.Text = "固定逢长：";
             // 
@@ -835,7 +835,7 @@
             // 
             this.txt_gudingfengchang.Location = new System.Drawing.Point(423, 394);
             this.txt_gudingfengchang.Name = "txt_gudingfengchang";
-            this.txt_gudingfengchang.Size = new System.Drawing.Size(252, 21);
+            this.txt_gudingfengchang.Size = new System.Drawing.Size(252, 28);
             this.txt_gudingfengchang.TabIndex = 262;
             // 
             // label67
@@ -844,7 +844,7 @@
             this.label67.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label67.Location = new System.Drawing.Point(685, 395);
             this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(16, 16);
+            this.label67.Size = new System.Drawing.Size(22, 24);
             this.label67.TabIndex = 263;
             this.label67.Text = "m";
             // 
@@ -854,7 +854,7 @@
             this.label64.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label64.Location = new System.Drawing.Point(353, 302);
             this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(70, 12);
+            this.label64.Size = new System.Drawing.Size(103, 18);
             this.label64.TabIndex = 258;
             this.label64.Text = "试件高度：";
             // 
@@ -862,14 +862,14 @@
             // 
             this.txt_shijiangaodu.Location = new System.Drawing.Point(423, 297);
             this.txt_shijiangaodu.Name = "txt_shijiangaodu";
-            this.txt_shijiangaodu.Size = new System.Drawing.Size(252, 21);
+            this.txt_shijiangaodu.Size = new System.Drawing.Size(252, 28);
             this.txt_shijiangaodu.TabIndex = 259;
             // 
             // txt_gongchengmingcheng
             // 
             this.txt_gongchengmingcheng.Location = new System.Drawing.Point(781, 22);
             this.txt_gongchengmingcheng.Name = "txt_gongchengmingcheng";
-            this.txt_gongchengmingcheng.Size = new System.Drawing.Size(276, 21);
+            this.txt_gongchengmingcheng.Size = new System.Drawing.Size(276, 28);
             this.txt_gongchengmingcheng.TabIndex = 233;
             // 
             // label65
@@ -878,7 +878,7 @@
             this.label65.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label65.Location = new System.Drawing.Point(685, 298);
             this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(24, 16);
+            this.label65.Size = new System.Drawing.Size(34, 24);
             this.label65.TabIndex = 260;
             this.label65.Text = "mm";
             // 
@@ -888,7 +888,7 @@
             this.label34.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label34.Location = new System.Drawing.Point(353, 333);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(70, 12);
+            this.label34.Size = new System.Drawing.Size(103, 18);
             this.label34.TabIndex = 255;
             this.label34.Text = "试件宽度：";
             // 
@@ -896,7 +896,7 @@
             // 
             this.txt_shijiankuandu.Location = new System.Drawing.Point(423, 328);
             this.txt_shijiankuandu.Name = "txt_shijiankuandu";
-            this.txt_shijiankuandu.Size = new System.Drawing.Size(252, 21);
+            this.txt_shijiankuandu.Size = new System.Drawing.Size(252, 28);
             this.txt_shijiankuandu.TabIndex = 256;
             // 
             // label63
@@ -905,7 +905,7 @@
             this.label63.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label63.Location = new System.Drawing.Point(685, 329);
             this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(24, 16);
+            this.label63.Size = new System.Drawing.Size(34, 24);
             this.label63.TabIndex = 257;
             this.label63.Text = "mm";
             // 
@@ -913,7 +913,7 @@
             // 
             this.txt_GuiGeXingHao.Location = new System.Drawing.Point(423, 265);
             this.txt_GuiGeXingHao.Name = "txt_GuiGeXingHao";
-            this.txt_GuiGeXingHao.Size = new System.Drawing.Size(282, 21);
+            this.txt_GuiGeXingHao.Size = new System.Drawing.Size(282, 28);
             this.txt_GuiGeXingHao.TabIndex = 109;
             // 
             // label5
@@ -922,7 +922,7 @@
             this.label5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label5.Location = new System.Drawing.Point(352, 271);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(70, 12);
+            this.label5.Size = new System.Drawing.Size(103, 18);
             this.label5.TabIndex = 108;
             this.label5.Text = "规格型号：";
             // 
@@ -932,7 +932,7 @@
             this.label3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label3.Location = new System.Drawing.Point(10, 140);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 12);
+            this.label3.Size = new System.Drawing.Size(103, 18);
             this.label3.TabIndex = 105;
             this.label3.Text = "样品名称：";
             // 
@@ -940,14 +940,14 @@
             // 
             this.txt_YangPinMingCheng.Location = new System.Drawing.Point(83, 134);
             this.txt_YangPinMingCheng.Name = "txt_YangPinMingCheng";
-            this.txt_YangPinMingCheng.Size = new System.Drawing.Size(618, 21);
+            this.txt_YangPinMingCheng.Size = new System.Drawing.Size(618, 28);
             this.txt_YangPinMingCheng.TabIndex = 106;
             // 
             // cb_jianceyiju
             // 
             this.cb_jianceyiju.Location = new System.Drawing.Point(82, 199);
             this.cb_jianceyiju.Name = "cb_jianceyiju";
-            this.cb_jianceyiju.Size = new System.Drawing.Size(619, 21);
+            this.cb_jianceyiju.Size = new System.Drawing.Size(619, 28);
             this.cb_jianceyiju.TabIndex = 248;
             this.cb_jianceyiju.Text = "GB/T 15227-2019，GB/T 18250-2015";
             // 
@@ -957,7 +957,7 @@
             this.label9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label9.Location = new System.Drawing.Point(353, 365);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(70, 12);
+            this.label9.Size = new System.Drawing.Size(103, 18);
             this.label9.TabIndex = 116;
             this.label9.Text = "试件面积：";
             // 
@@ -965,7 +965,7 @@
             // 
             this.txt_shijianmianji.Location = new System.Drawing.Point(423, 359);
             this.txt_shijianmianji.Name = "txt_shijianmianji";
-            this.txt_shijianmianji.Size = new System.Drawing.Size(252, 21);
+            this.txt_shijianmianji.Size = new System.Drawing.Size(252, 28);
             this.txt_shijianmianji.TabIndex = 117;
             // 
             // label7
@@ -974,7 +974,7 @@
             this.label7.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label7.Location = new System.Drawing.Point(10, 265);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(70, 12);
+            this.label7.Size = new System.Drawing.Size(103, 18);
             this.label7.TabIndex = 112;
             this.label7.Text = "大气压力：";
             // 
@@ -984,7 +984,7 @@
             this.label36.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label36.Location = new System.Drawing.Point(685, 362);
             this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(24, 16);
+            this.label36.Size = new System.Drawing.Size(34, 24);
             this.label36.TabIndex = 195;
             this.label36.Text = "㎡";
             // 
@@ -992,7 +992,7 @@
             // 
             this.txt_DaQiYaLi.Location = new System.Drawing.Point(83, 261);
             this.txt_DaQiYaLi.Name = "txt_DaQiYaLi";
-            this.txt_DaQiYaLi.Size = new System.Drawing.Size(235, 21);
+            this.txt_DaQiYaLi.Size = new System.Drawing.Size(235, 28);
             this.txt_DaQiYaLi.TabIndex = 113;
             // 
             // label8
@@ -1001,7 +1001,7 @@
             this.label8.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label8.Location = new System.Drawing.Point(9, 296);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(70, 12);
+            this.label8.Size = new System.Drawing.Size(103, 18);
             this.label8.TabIndex = 114;
             this.label8.Text = "当前温度：";
             // 
@@ -1009,14 +1009,14 @@
             // 
             this.txt_DangQianWenDu.Location = new System.Drawing.Point(82, 293);
             this.txt_DangQianWenDu.Name = "txt_DangQianWenDu";
-            this.txt_DangQianWenDu.Size = new System.Drawing.Size(235, 21);
+            this.txt_DangQianWenDu.Size = new System.Drawing.Size(235, 28);
             this.txt_DangQianWenDu.TabIndex = 115;
             // 
             // txt_shengchandanwei
             // 
             this.txt_shengchandanwei.Location = new System.Drawing.Point(781, 58);
             this.txt_shengchandanwei.Name = "txt_shengchandanwei";
-            this.txt_shengchandanwei.Size = new System.Drawing.Size(276, 21);
+            this.txt_shengchandanwei.Size = new System.Drawing.Size(276, 28);
             this.txt_shengchandanwei.TabIndex = 235;
             // 
             // label19
@@ -1025,7 +1025,7 @@
             this.label19.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label19.Location = new System.Drawing.Point(709, 61);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(70, 12);
+            this.label19.Size = new System.Drawing.Size(103, 18);
             this.label19.TabIndex = 234;
             this.label19.Text = "生产单位：";
             // 
@@ -1035,7 +1035,7 @@
             this.label16.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label16.Location = new System.Drawing.Point(707, 25);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(70, 12);
+            this.label16.Size = new System.Drawing.Size(103, 18);
             this.label16.TabIndex = 232;
             this.label16.Text = "工程名称：";
             // 
@@ -1044,7 +1044,7 @@
             this.label37.AutoSize = true;
             this.label37.Location = new System.Drawing.Point(323, 301);
             this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(17, 12);
+            this.label37.Size = new System.Drawing.Size(26, 18);
             this.label37.TabIndex = 196;
             this.label37.Text = "℃";
             // 
@@ -1053,7 +1053,7 @@
             this.label38.AutoSize = true;
             this.label38.Location = new System.Drawing.Point(323, 270);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(23, 12);
+            this.label38.Size = new System.Drawing.Size(35, 18);
             this.label38.TabIndex = 197;
             this.label38.Text = "KPa";
             // 
@@ -1063,7 +1063,7 @@
             this.label35.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label35.Location = new System.Drawing.Point(348, 25);
             this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(70, 12);
+            this.label35.Size = new System.Drawing.Size(103, 18);
             this.label35.TabIndex = 130;
             this.label35.Text = "委托编号：";
             // 
@@ -1071,14 +1071,14 @@
             // 
             this.txt_WeiTuoBianHao.Location = new System.Drawing.Point(419, 22);
             this.txt_WeiTuoBianHao.Name = "txt_WeiTuoBianHao";
-            this.txt_WeiTuoBianHao.Size = new System.Drawing.Size(282, 21);
+            this.txt_WeiTuoBianHao.Size = new System.Drawing.Size(282, 28);
             this.txt_WeiTuoBianHao.TabIndex = 131;
             // 
             // txt_baogaoriqi
             // 
             this.txt_baogaoriqi.Location = new System.Drawing.Point(422, 233);
             this.txt_baogaoriqi.Name = "txt_baogaoriqi";
-            this.txt_baogaoriqi.Size = new System.Drawing.Size(282, 21);
+            this.txt_baogaoriqi.Size = new System.Drawing.Size(282, 28);
             this.txt_baogaoriqi.TabIndex = 225;
             // 
             // btn_Ok
@@ -1097,7 +1097,7 @@
             this.label42.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label42.Location = new System.Drawing.Point(351, 238);
             this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(70, 12);
+            this.label42.Size = new System.Drawing.Size(103, 18);
             this.label42.TabIndex = 224;
             this.label42.Text = "报告日期：";
             // 
@@ -1139,7 +1139,7 @@
             "气密、水密、抗风压、平面内变形"});
             this.cb_JianCeXiangMu.Location = new System.Drawing.Point(83, 168);
             this.cb_JianCeXiangMu.Name = "cb_JianCeXiangMu";
-            this.cb_JianCeXiangMu.Size = new System.Drawing.Size(618, 20);
+            this.cb_JianCeXiangMu.Size = new System.Drawing.Size(618, 26);
             this.cb_JianCeXiangMu.TabIndex = 186;
             // 
             // txt_ganjianABC
@@ -1147,11 +1147,12 @@
             this.txt_ganjianABC.FormattingEnabled = true;
             this.txt_ganjianABC.Items.AddRange(new object[] {
             "A",
-            "A\\B",
-            "A\\B\\C"});
+            "A、B",
+            "A、C",
+            "A、B、C"});
             this.txt_ganjianABC.Location = new System.Drawing.Point(81, 520);
             this.txt_ganjianABC.Name = "txt_ganjianABC";
-            this.txt_ganjianABC.Size = new System.Drawing.Size(258, 20);
+            this.txt_ganjianABC.Size = new System.Drawing.Size(258, 26);
             this.txt_ganjianABC.TabIndex = 184;
             // 
             // label32
@@ -1160,7 +1161,7 @@
             this.label32.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label32.Location = new System.Drawing.Point(10, 171);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(70, 12);
+            this.label32.Size = new System.Drawing.Size(103, 18);
             this.label32.TabIndex = 134;
             this.label32.Text = "检测项目：";
             // 
@@ -1170,7 +1171,7 @@
             this.label18.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label18.Location = new System.Drawing.Point(9, 204);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(70, 12);
+            this.label18.Size = new System.Drawing.Size(103, 18);
             this.label18.TabIndex = 129;
             this.label18.Text = "检测依据：";
             // 
@@ -1180,7 +1181,7 @@
             this.label12.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label12.Location = new System.Drawing.Point(9, 523);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(65, 12);
+            this.label12.Size = new System.Drawing.Size(95, 18);
             this.label12.TabIndex = 120;
             this.label12.Text = "杆件ABC：";
             // 
@@ -1188,7 +1189,7 @@
             // 
             this.txt_JianCeRiQi.Location = new System.Drawing.Point(83, 233);
             this.txt_JianCeRiQi.Name = "txt_JianCeRiQi";
-            this.txt_JianCeRiQi.Size = new System.Drawing.Size(257, 21);
+            this.txt_JianCeRiQi.Size = new System.Drawing.Size(257, 28);
             this.txt_JianCeRiQi.TabIndex = 111;
             // 
             // label6
@@ -1197,7 +1198,7 @@
             this.label6.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label6.Location = new System.Drawing.Point(10, 236);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(70, 12);
+            this.label6.Size = new System.Drawing.Size(103, 18);
             this.label6.TabIndex = 110;
             this.label6.Text = "检测日期：";
             // 
@@ -1205,7 +1206,7 @@
             // 
             this.txt_WeiTuoDanWei.Location = new System.Drawing.Point(419, 58);
             this.txt_WeiTuoDanWei.Name = "txt_WeiTuoDanWei";
-            this.txt_WeiTuoDanWei.Size = new System.Drawing.Size(282, 21);
+            this.txt_WeiTuoDanWei.Size = new System.Drawing.Size(282, 28);
             this.txt_WeiTuoDanWei.TabIndex = 104;
             // 
             // label2
@@ -1214,7 +1215,7 @@
             this.label2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(347, 62);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 12);
+            this.label2.Size = new System.Drawing.Size(103, 18);
             this.label2.TabIndex = 100;
             this.label2.Text = "委托单位：";
             // 
@@ -1223,7 +1224,7 @@
             this.txt_JianYanBianHao.BackColor = System.Drawing.SystemColors.ControlLight;
             this.txt_JianYanBianHao.Location = new System.Drawing.Point(82, 22);
             this.txt_JianYanBianHao.Name = "txt_JianYanBianHao";
-            this.txt_JianYanBianHao.Size = new System.Drawing.Size(258, 21);
+            this.txt_JianYanBianHao.Size = new System.Drawing.Size(258, 28);
             this.txt_JianYanBianHao.TabIndex = 98;
             this.txt_JianYanBianHao.Text = "0";
             // 
@@ -1233,7 +1234,7 @@
             this.label1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.Location = new System.Drawing.Point(10, 25);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(70, 12);
+            this.label1.Size = new System.Drawing.Size(103, 18);
             this.label1.TabIndex = 97;
             this.label1.Text = "检验编号：";
             // 

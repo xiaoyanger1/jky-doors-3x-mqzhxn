@@ -27,7 +27,9 @@ namespace text.doors.Model.DataBase
         /// </summary>
         public string F_MJ { get; set; }
 
-        public int sjz_value { get; set; }
+
+        public int z_sjz_value { get; set; }
+        public int f_sjz_value { get; set; }
         /// <summary>
         /// 设计值正附加
         /// </summary>

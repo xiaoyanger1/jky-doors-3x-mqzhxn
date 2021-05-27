@@ -89,71 +89,31 @@ namespace text.doors.Default
         /// 导入图片名称
         /// </summary>
         public static string ImagesName = "";
-
-        #region  IP相关
-        /* /// <summary>
-         /// IP端口
-         /// </summary>
-         public static int TCPPort
-         {
-             get
-             {
-                 var res = 502;
-                 var dt = new DAL_dt_BaseSet().GetSystemBaseSet();
-                 if (dt != null)
-                     res = int.Parse(dt.Rows[0]["PROT"].ToString());
-                 return res;
-             }
-         }
-         /// <summary>
-         /// IP地址
-         /// </summary>
-         public static string IPAddress
-         {
-             get
-             {
-                 var res = "192.168.2.5";
-
-                 var dt = new DAL_dt_BaseSet().GetSystemBaseSet();
-                 if (dt != null)
-                     res = dt.Rows[0]["IP"].ToString();
-                 return res;
-             }
-         }
-
-         /// <summary>
-         /// IP地址
-         /// </summary>
-         public static double _D
-         {
-             get
-             {
-                 var res = 0.08;
-                 var dt = new DAL_dt_BaseSet().GetSystemBaseSet();
-                 if (dt != null)
-                     res = Convert.ToDouble(dt.Rows[0]["D"].ToString());
-                 return res;
-             }
-         }*/
-
-        #endregion
     }
 
 
-    //public static class RegisterData
-    //{
-    //    public static double Displace1 = 0;
-    //    public static double Displace2 = 0;
-    //    public static double Displace3 = 0;
-    //    //差压高
-    //    public static int CY_High_Value = 0;
-    //    //差压低        
-    //    public static int CY_Low_Value = 0;
-    //    //风速
-    //    public static double WindSpeed_Value = 0;
-    //    //大气压力
-    //    public static double AtmospherePa_Value = 0;
-    //    //温度
-    //    public static double Temperature_Value = 0;
-    //}
+    public static class RegisterData
+    {
+        public static double DisplaceA1 = 0;
+        public static double DisplaceA2 = 0;
+        public static double DisplaceA3 = 0;
+
+        public static double DisplaceB1 = 0;
+        public static double DisplaceB2 = 0;
+        public static double DisplaceB3 = 0;
+
+        public static double DisplaceC1 = 0;
+        public static double DisplaceC2 = 0;
+        public static double DisplaceC3 = 0;
+        //差压高
+        public static int CY_High_Value = 0;
+        //差压低        
+        public static int CY_Low_Value = 0;
+        //风速
+        public static double WindSpeed_Value = 0;
+        //大气压力
+        public static double AtmospherePa_Value = 0;
+        //温度
+        public static double Temperature_Value = 0;
+    }
 }

@@ -759,6 +759,84 @@ namespace text.doors.Common
 
         #region 位移
 
+
+
+        /// <summary>
+        /// 获取位移传感器
+        /// </summary>
+        public double GetDisplace(int displaceNum)
+        {
+            double res = 0;
+            if (sp.IsOpen)
+            {
+                try
+                {
+
+                    var displaceCommand = "";
+                    PublicEnum.DemarcateType demarcateType = PublicEnum.DemarcateType.位移传感器A1;
+                    if (displaceNum == 1)
+                    {
+                        displaceCommand = BFMCommand.位移1;
+                        demarcateType = PublicEnum.DemarcateType.位移传感器A1;
+                    }
+                    else if (displaceNum == 2)
+                    {
+                        displaceCommand = BFMCommand.位移2;
+                        demarcateType = PublicEnum.DemarcateType.位移传感器A2;
+                    }
+                    else if (displaceNum == 3)
+                    {
+                        displaceCommand = BFMCommand.位移3;
+                        demarcateType = PublicEnum.DemarcateType.位移传感器A3;
+                    }
+                    else if (displaceNum == 4)
+                    {
+                        displaceCommand = BFMCommand.位移4;
+                        demarcateType = PublicEnum.DemarcateType.位移传感器B1;
+                    }
+                    else if (displaceNum == 5)
+                    {
+                        displaceCommand = BFMCommand.位移5;
+                        demarcateType = PublicEnum.DemarcateType.位移传感器B2;
+                    }
+                    else if (displaceNum == 6)
+                    {
+                        displaceCommand = BFMCommand.位移6;
+                        demarcateType = PublicEnum.DemarcateType.位移传感器B3;
+                    }
+                    else if (displaceNum == 7)
+                    {
+                        displaceCommand = BFMCommand.位移7;
+                        demarcateType = PublicEnum.DemarcateType.位移传感器C1;
+                    }
+                    else if (displaceNum == 8)
+                    {
+                        displaceCommand = BFMCommand.位移8;
+                        demarcateType = PublicEnum.DemarcateType.位移传感器C2;
+                    }
+                    else if (displaceNum == 9)
+                    {
+                        displaceCommand = BFMCommand.位移9;
+                        demarcateType = PublicEnum.DemarcateType.位移传感器C3;
+                    }
+
+
+                    _StartAddress = BFMCommand.GetCommandDict(displaceCommand);
+                    ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
+                    if (holding_register.Length > 0)
+                    {
+                        res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
+                        res = Formula.GetValues(demarcateType, float.Parse(res.ToString()));
+                    }
+                }
+                catch (Exception)
+                { }
+            }
+
+            return res;
+        }
+
+
         /// <summary>
         /// 获取位移传感器1
         /// </summary>
@@ -853,6 +931,53 @@ namespace text.doors.Common
             return res;
         }
 
+
+        /// <summary>
+        /// 获取位移传感器2
+        /// </summary>
+        public double GetDisplace3(string level)
+        {
+            double res = 0;
+            if (sp.IsOpen)
+            {
+                try
+                {
+                    if (level == "A")
+                    {
+                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移3);
+                        ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
+                        if (holding_register.Length > 0)
+                        {
+                            res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器A2, float.Parse(res.ToString()));
+                        }
+                    }
+                    else if (level == "B")
+                    {
+                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移6);
+                        ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
+                        if (holding_register.Length > 0)
+                        {
+                            res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器B2, float.Parse(res.ToString()));
+                        }
+                    }
+                    else if (level == "C")
+                    {
+                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移9);
+                        ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
+                        if (holding_register.Length > 0)
+                        {
+                            res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
+                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器B3, float.Parse(res.ToString()));
+                        }
+                    }
+                }
+                catch (Exception)
+                { }
+            }
+            return res;
+        }
         /// <summary>
         /// 获取位移传感器10
         /// </summary>
@@ -892,52 +1017,7 @@ namespace text.doors.Common
         }
 
 
-        /// <summary>
-        /// 获取位移传感器3
-        /// </summary>
-        public double GetDisplace3(string level)
-        {
-            double res = 0;
-            if (sp.IsOpen)
-            {
-                try
-                {
-                    if (level == "A")
-                    {
-                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移3);
-                        ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
-                        if (holding_register.Length > 0)
-                        {
-                            res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器A3, float.Parse(res.ToString()));
-                        }
-                    }
-                    else if (level == "B")
-                    {
-                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移6);
-                        ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
-                        if (holding_register.Length > 0)
-                        {
-                            res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器B3, float.Parse(res.ToString()));
-                        }
-                    }
-                    else if (level == "C")
-                    {
-                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移9);
-                        ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
-                        if (holding_register.Length > 0)
-                        {
-                            res = double.Parse((double.Parse(holding_register[0].ToString()) / 100).ToString());
-                            res = Formula.GetValues(PublicEnum.DemarcateType.位移传感器C3, float.Parse(res.ToString()));
-                        }
-                    }
-                }
-                catch (Exception) { }
-            }
-            return res;
-        }
-
+    
         /// <summary>
         /// 设置位移归零
         /// </summary>

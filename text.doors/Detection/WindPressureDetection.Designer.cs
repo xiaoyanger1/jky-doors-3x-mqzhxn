@@ -209,7 +209,6 @@
             this.tbc_group.SelectedIndex = 0;
             this.tbc_group.Size = new System.Drawing.Size(856, 337);
             this.tbc_group.TabIndex = 60;
-            this.tbc_group.SelectedIndexChanged += new System.EventHandler(this.tbc_group_SelectedIndexChanged);
             // 
             // A组
             // 

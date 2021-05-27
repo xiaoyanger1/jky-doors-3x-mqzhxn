@@ -300,17 +300,13 @@ values(
         /// <summary>
         /// 获取单当数据
         /// </summary>
-        /// <param name="code"></param>
-        /// <param name="tong"></param>
+        /// <param name = "code" ></ param >
+        /// < param name="tong"></param>
         /// <returns></returns>
-        public DataTable GetkfyByCodeToLevel(string code, string level = null)
+        public DataTable GetkfyListByCode(string code)
         {
             string sql = "select * from  dt_kfy_Info  where dt_Code='" + code + "'";
 
-            if (!string.IsNullOrWhiteSpace(level))
-            {
-                sql += " and level  = '" + level + "'";
-            }
             var res = SQLiteHelper.ExecuteDataRow(sql);
             if (res == null)
             {
@@ -418,14 +414,13 @@ values(
             return list;
         }
 
-        public Model_dt_kfy_res_Info GetKFYResList(string code)
+        public Model_dt_kfy_res_Info GetKFYResInfo(string code)
         {
-            Model_dt_kfy_res_Info model = new Model_dt_kfy_res_Info();
+            Model_dt_kfy_res_Info modelRes = null;
             var item = SQLiteHelper.ExecuteDataRow("select * from dt_kfy_res_Info where dt_Code='" + code + "'")?.Table;
             if (item != null)
             {
-
-                Model_dt_kfy_res_Info modelRes = new Model_dt_kfy_res_Info();
+                modelRes = new Model_dt_kfy_res_Info();
 
                 modelRes.dt_Code = item.Rows[0]["dt_Code"].ToString();
                 modelRes.testtype = int.Parse(item.Rows[0]["testtype"].ToString());
@@ -441,7 +436,7 @@ values(
                 modelRes.info_Level = int.Parse(item.Rows[0]["info_Level"].ToString());
                 modelRes.defJC = int.Parse(item.Rows[0]["defJC"].ToString());
             }
-            return model;
+            return modelRes;
         }
     }
 }

@@ -221,9 +221,6 @@ namespace text.doors.Common
 
         #region 获取分级指标缝长和面积
 
-
-
-
         /// <summary>
         /// 获取分级指标[面积]
         /// </summary>

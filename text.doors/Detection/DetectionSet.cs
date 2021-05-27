@@ -41,7 +41,6 @@ namespace text.doors.Detection
         {
             string code = txt_JianYanBianHao.Text;
 
-
             if (string.IsNullOrWhiteSpace(code))
             {
                 MessageBox.Show("请设置当前编号！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);

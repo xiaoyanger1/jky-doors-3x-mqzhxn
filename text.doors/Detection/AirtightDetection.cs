@@ -39,6 +39,10 @@ namespace text.doors.Detection
         /// 气密数据位置
         /// </summary>
         private PublicEnum.AirtightPropertyTest? airtightPropertyTest = null;
+        /// <summary>
+        /// 确定当前读取的压力状态
+        /// </summary>
+        private PublicEnum.Kpa_Level? kpa_Level = null;
 
         /// <summary>
         /// 分级指标
@@ -49,9 +53,7 @@ namespace text.doors.Detection
 
         public List<ReadT> _readT = new List<ReadT>();
 
-
         private static List<WindSpeedInfo> windSpeedInfoList = new List<WindSpeedInfo>();
-
 
         /// <summary>
         /// 检测设定
@@ -62,12 +64,6 @@ namespace text.doors.Detection
         /// 图标定时
         /// </summary>
         public DateTime dtnow { get; set; }
-
-        public AirtightDetection()
-        {
-            tc_RealTimeSurveillance.Anchor = AnchorStyles.Top;
-        }
-
         public AirtightDetection(SerialPortClient tcpClient, string tempCode, string tempTong)
         {
             InitializeComponent();
@@ -77,8 +73,6 @@ namespace text.doors.Detection
             Init();
             GetWindSpeed();
             BindFlowBase();
-
-            //GetDatabaseLevelIndex();
             BindLevelIndex();
 
         }
@@ -87,7 +81,6 @@ namespace text.doors.Detection
         private void Init()
         {
             tab_settings = new DAL_dt_Settings().Getdt_SettingsByCode(_tempCode);
-
             InitControl();
             QMchartInit();
             BindSetTitle();
@@ -103,7 +96,6 @@ namespace text.doors.Detection
             this.lbl_sjmj.Text = tab_settings.Rows[0]["shijianmianji"].ToString();
             this.lbl_kkfc.Text = tab_settings.Rows[0]["kekaifengchang"].ToString();
         }
-
 
         private string GetConfigSetting(string value)
         {
@@ -139,13 +131,11 @@ namespace text.doors.Detection
 
             if (qm_Info == null || qm_Info.Count == 0)
             {
-                windSpeedInfoList = new WindSpeedInfo().GetWindSpeed();
-                return;
+                windSpeedInfoList = new WindSpeedInfo().GetWindSpeed(); return;
             }
             if (qm_zb_info == null)
             {
-                windSpeedInfoList = new WindSpeedInfo().GetWindSpeed();
-                return;
+                windSpeedInfoList = new WindSpeedInfo().GetWindSpeed(); return;
             }
 
             zFc = double.Parse(qm_zb_info.Z_FC);
@@ -156,132 +146,156 @@ namespace text.doors.Detection
 
             #region 排序插入
 
-            //if (qm_Info.First().testtype == "1")
-            //{
-
-            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "50" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+            if (qm_Info.First().testtype == "1")
             {
-                Pa = t.Pa,
-                PaType = t.PaType,
-                FJST = double.Parse(t.FJST),
-                GFZH = double.Parse(t.GFZH),
-                ZDST = double.Parse(t.ZDST)
-            }).ToList());
+                btn_ycjy_z.Enabled = false;
+                btn_ycjyf.Enabled = false;
 
-            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "100" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "50" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = double.Parse(t.FJST),
+                    GFZH = double.Parse(t.GFZH),
+                    ZDST = double.Parse(t.ZDST)
+                }).ToList());
+
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "100" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = double.Parse(t.FJST),
+                    GFZH = double.Parse(t.GFZH),
+                    ZDST = double.Parse(t.ZDST)
+                }).ToList());
+
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "150" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = double.Parse(t.FJST),
+                    GFZH = double.Parse(t.GFZH),
+                    ZDST = double.Parse(t.ZDST)
+                }).ToList());
+
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "100" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = double.Parse(t.FJST),
+                    GFZH = double.Parse(t.GFZH),
+                    ZDST = double.Parse(t.ZDST)
+                }).ToList());
+
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "50" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = double.Parse(t.FJST),
+                    GFZH = double.Parse(t.GFZH),
+                    ZDST = double.Parse(t.ZDST)
+                }).ToList());
+
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-50" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = double.Parse(t.FJST),
+                    GFZH = double.Parse(t.GFZH),
+                    ZDST = double.Parse(t.ZDST)
+                }).ToList());
+
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-100" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = double.Parse(t.FJST),
+                    GFZH = double.Parse(t.GFZH),
+                    ZDST = double.Parse(t.ZDST)
+                }).ToList());
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-150" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = double.Parse(t.FJST),
+                    GFZH = double.Parse(t.GFZH),
+                    ZDST = double.Parse(t.ZDST)
+                }).ToList());
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-100" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = double.Parse(t.FJST),
+                    GFZH = double.Parse(t.GFZH),
+                    ZDST = double.Parse(t.ZDST)
+                }).ToList());
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-50" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = double.Parse(t.FJST),
+                    GFZH = double.Parse(t.GFZH),
+                    ZDST = double.Parse(t.ZDST)
+                }).ToList());
+
+                //正设计值
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "正设计值" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = 0d,
+                    GFZH = 0d,
+                    ZDST = 0d
+                }).ToList());
+
+                //负设计值
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "负设计值" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
+                {
+                    Pa = t.Pa,
+                    PaType = t.PaType,
+                    FJST = 0d,
+                    GFZH = 0d,
+                    ZDST = 0d
+                }).ToList());
+            }
+            else if (qm_Info.First().testtype == "2")//工程检测  不存在监控数据
             {
-                Pa = t.Pa,
-                PaType = t.PaType,
-                FJST = double.Parse(t.FJST),
-                GFZH = double.Parse(t.GFZH),
-                ZDST = double.Parse(t.ZDST)
-            }).ToList());
+                this.btn_justready.Enabled = false;
+                this.btn_loseready.Enabled = false;
+                this.btn_losestart.Enabled = false;
+                this.btn_juststart.Enabled = false;
 
-            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "150" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
-            {
-                Pa = t.Pa,
-                PaType = t.PaType,
-                FJST = double.Parse(t.FJST),
-                GFZH = double.Parse(t.GFZH),
-                ZDST = double.Parse(t.ZDST)
-            }).ToList());
-
-            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "100" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
-            {
-                Pa = t.Pa,
-                PaType = t.PaType,
-                FJST = double.Parse(t.FJST),
-                GFZH = double.Parse(t.GFZH),
-                ZDST = double.Parse(t.ZDST)
-            }).ToList());
-
-            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "50" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
-            {
-                Pa = t.Pa,
-                PaType = t.PaType,
-                FJST = double.Parse(t.FJST),
-                GFZH = double.Parse(t.GFZH),
-                ZDST = double.Parse(t.ZDST)
-            }).ToList());
-
-            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-50" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
-            {
-                Pa = t.Pa,
-                PaType = t.PaType,
-                FJST = double.Parse(t.FJST),
-                GFZH = double.Parse(t.GFZH),
-                ZDST = double.Parse(t.ZDST)
-            }).ToList());
-
-            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-100" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
-            {
-                Pa = t.Pa,
-                PaType = t.PaType,
-                FJST = double.Parse(t.FJST),
-                GFZH = double.Parse(t.GFZH),
-                ZDST = double.Parse(t.ZDST)
-            }).ToList());
-            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-150" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
-            {
-                Pa = t.Pa,
-                PaType = t.PaType,
-                FJST = double.Parse(t.FJST),
-                GFZH = double.Parse(t.GFZH),
-                ZDST = double.Parse(t.ZDST)
-            }).ToList());
-            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-100" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
-            {
-                Pa = t.Pa,
-                PaType = t.PaType,
-                FJST = double.Parse(t.FJST),
-                GFZH = double.Parse(t.GFZH),
-                ZDST = double.Parse(t.ZDST)
-            }).ToList());
-            windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "-50" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
-            {
-                Pa = t.Pa,
-                PaType = t.PaType,
-                FJST = double.Parse(t.FJST),
-                GFZH = double.Parse(t.GFZH),
-                ZDST = double.Parse(t.ZDST)
-            }).ToList());
-
-            //设计值
-            //windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "设计值" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
-            //{
-            //    Pa = t.Pa,
-            //    PaType = t.PaType,
-            //    FJST = 0d,
-            //    GFZH = 0d,
-            //    ZDST = 0d
-            //}).ToList());
-            //}
-            //else if (qm_Info.First().testtype == "2")//工程检测  不存在监控数据
-            //{
-            //    this.btn_justready.Enabled = false;
-            //    this.btn_loseready.Enabled = false;
-            //    this.btn_losestart.Enabled = false;
-            //    this.btn_juststart.Enabled = false;
-
-            //    txt_ycjy_z.Text = qm_zb_info.sjz_value.ToString();
-            //    txt_ycjy_f.Text = qm_zb_info.sjz_value.ToString();
-
-            //    //绑定空监测数据
-
-            //    windSpeedInfoList = new WindSpeedInfo().GetWindSpeed();
-
-            //    //绑定设计值
-            //    var sjz = windSpeedInfoList.Find(t => t.Pa == "设计值");
-            //    if (sjz != null)
-            //    {
-            //        sjz.Pressure_F = double.Parse(qm_zb_info.sjz_f_fj);
-            //        sjz.Pressure_F_Z = double.Parse(qm_zb_info.sjz_f_zd);
-            //        sjz.Pressure_Z = double.Parse(qm_zb_info.sjz_z_fj);
-            //        sjz.Pressure_Z_Z = double.Parse(qm_zb_info.sjz_z_zd);
-            //    }
-            #endregion
+                txt_ycjy_z.Text = qm_zb_info.z_sjz_value.ToString();
+                txt_ycjy_f.Text = qm_zb_info.f_sjz_value.ToString();
+                //绑定空监测数据
+                windSpeedInfoList = new WindSpeedInfo().GetWindSpeed();
+                //绑定正设计值
+                var z_sjz = windSpeedInfoList.Find(t => t.Pa == "正设计值");
+                if (z_sjz != null)
+                {
+                    var info = qm_Info.Find(t => t.Pa == "正设计值");
+                    if (info != null)
+                    {
+                        z_sjz.ZDST = double.Parse(info.ZDST);
+                        z_sjz.FJST = double.Parse(info.FJST);
+                        z_sjz.GFZH = double.Parse(info.GFZH);
+                    }
+                }
+                //绑定负设计值
+                var f_sjz = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                if (f_sjz != null)
+                {
+                    var info = qm_Info.Find(t => t.Pa == "负设计值");
+                    if (info != null)
+                    {
+                        f_sjz.ZDST = double.Parse(info.ZDST);
+                        f_sjz.FJST = double.Parse(info.FJST);
+                        f_sjz.GFZH = double.Parse(info.GFZH);
+                    }
+                }
+                #endregion
+            }
         }
-
         /// <summary>
         /// 绑定风速
         /// </summary>
@@ -303,7 +317,6 @@ namespace text.doors.Detection
             dgv_ll.Columns[1].ReadOnly = true;
             dgv_ll.Columns[1].Visible = false;
             dgv_ll.Columns[1].DataPropertyName = "PaType";
-
 
             dgv_ll.Columns[2].HeaderText = "附加渗透";
             dgv_ll.Columns[2].Width = 54;
@@ -327,7 +340,6 @@ namespace text.doors.Detection
             dgv_ll.Columns[6].ReadOnly = true;
             dgv_ll.Columns[6].DataPropertyName = "KKST";
 
-
             dgv_ll.Columns[2].DefaultCellStyle.Format = "N2";
             dgv_ll.Columns[3].DefaultCellStyle.Format = "N2";
             dgv_ll.Columns[4].DefaultCellStyle.Format = "N2";
@@ -345,7 +357,6 @@ namespace text.doors.Detection
             this.lbl_z_fc.Text = zFc.ToString();
             this.lbl_f_fc.Text = fFc.ToString();
         }
-
         #endregion
 
         #region 图表控制
@@ -363,11 +374,6 @@ namespace text.doors.Detection
             this.qm_Line.Add(DateTime.Now, yl);
             this.tChart_qm.Axes.Bottom.SetMinMax(dtnow, DateTime.Now.AddSeconds(40));
         }
-
-        /// <summary>
-        /// 确定当前读取的压力状态
-        /// </summary>
-        private PublicEnum.Kpa_Level? kpa_Level = null;
 
         /// <summary>
         /// 差压读取
@@ -389,8 +395,6 @@ namespace text.doors.Detection
                 return;
 
             int c = _serialPortClient.GetCY_Low();
-
-
             lbl_dqyl.Text = c.ToString();
 
             AnimateSeries(this.tChart_qm, c);
@@ -400,25 +404,31 @@ namespace text.doors.Detection
         private void tim_Top10_Tick(object sender, EventArgs e)
         {
             index++;
-
             if (index < 4)
-            {
                 return;
-            }
 
             if (index > 8)
             {
-                index = 0;
                 this.tim_Top10.Enabled = false;
-                this.gv_list.Enabled = false;
+
+                if (airtightPropertyTest != PublicEnum.AirtightPropertyTest.ZYCJY && airtightPropertyTest != PublicEnum.AirtightPropertyTest.FYCJY)
+                {
+                    index = 0;
+                }
+                else
+                {
+                    btn_ycjy_z.Enabled = true;
+                    btn_ycjyf.Enabled = true;
+                    btn_ycjy_z.BackColor = Color.Transparent;
+                    btn_ycjyf.BackColor = Color.Transparent;
+                }
+                gv_list.Enabled = false;
                 return;
             }
             gv_list.Enabled = true;
 
             var cyvalue = _serialPortClient.GetCY_Low();
-
-            //获取风速
-            var fsvalue = _serialPortClient.GetFSXS();
+            var fsvalue = _serialPortClient.GetFSXS();//获取风速
 
             if (rdb_fjstl.Checked)
             {
@@ -457,6 +467,16 @@ namespace text.doors.Detection
                     else
                         windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.drop50);
                 }
+                else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
+                {
+                    //todo:设计值计算
+                    fsvalue = _serialPortClient.GetFSXS();
+                    fsvalue = Formula.MathFlow(fsvalue);
+                    if (cyvalue > 0)
+                        pressure_One.AddZYFJ(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                    else
+                        pressure_One.AddFYFJ(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                }
             }
             else if (rdb_gfzh.Checked) //固附之和
             {
@@ -494,6 +514,14 @@ namespace text.doors.Detection
                         windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
                     else
                         windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
+                {
+
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                    else
+                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.YCJY);
                 }
             }
             else if (rdb_zdstl.Checked)
@@ -536,6 +564,13 @@ namespace text.doors.Detection
                         else
                             windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
                     }
+                    else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
+                    {
+                        if (cyvalue > 0)
+                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                        else
+                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                    }
                 }
                 if (kpa_Level == PublicEnum.Kpa_Level.liter50)
                 {
@@ -572,9 +607,15 @@ namespace text.doors.Detection
                     else
                         windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.drop50);
                 }
+                else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                    else
+                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                }
             }
         }
-
 
         /// <summary>
         /// 设置添加数据状态
@@ -585,11 +626,9 @@ namespace text.doors.Detection
             bool start = false;
             var notReadList = _readT.FindAll(t => t.IsRead == false);
             if (notReadList == null || notReadList.Count == 0)
-            {
                 return;
-            }
-            var notRead = notReadList?.OrderBy(t => t.Order)?.First();
 
+            var notRead = notReadList?.OrderBy(t => t.Order)?.First();
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.ZStart)
             {
                 if (notRead?.Key == BFMCommand.正压50TimeStart)
@@ -633,7 +672,6 @@ namespace text.doors.Detection
                         notRead.IsRead = true;
                     }
                 }
-
                 else if (notRead?.Key == BFMCommand.正压_50TimeStart)
                 {
                     start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
@@ -644,7 +682,6 @@ namespace text.doors.Detection
                         notRead.IsRead = true;
                     }
                 }
-
             }
 
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.FStart)
@@ -701,16 +738,10 @@ namespace text.doors.Detection
                 }
             }
         }
-
         #endregion
 
 
         #region 气密性能检测按钮事件
-
-        /// <summary>
-        /// 判断是否开启正压开始或负压开始
-        /// </summary>
-        //private bool IsStart = false;
 
         private void btn_justready_Click(object sender, EventArgs e)
         {
@@ -719,13 +750,18 @@ namespace text.doors.Detection
 
             var res = _serialPortClient.SetZYYB();
             if (!res)
-            {
                 return;
-            }
+
             DisableBtnType();
             airtightPropertyTest = PublicEnum.AirtightPropertyTest.ZReady;
-
             btn_justready.BackColor = Color.Green;
+
+            //关闭依次加压
+            btn_ycjy_z.Enabled = false;
+            btn_ycjyf.Enabled = false;
+
+            btn_ycjy_z.BackColor = Color.Transparent;
+            btn_ycjyf.BackColor = Color.Transparent;
         }
 
         /// <summary>
@@ -754,13 +790,11 @@ namespace text.doors.Detection
             DisableBtnType();
 
             _readT = new List<ReadT>();
-
             _readT.Add(new ReadT() { Key = BFMCommand.正压50TimeStart, Order = 1, IsRead = false });
             _readT.Add(new ReadT() { Key = BFMCommand.正压100TimeStart, Order = 2, IsRead = false });
             _readT.Add(new ReadT() { Key = BFMCommand.正压150TimeStart, Order = 3, IsRead = false });
             _readT.Add(new ReadT() { Key = BFMCommand.正压_100TimeStart, Order = 4, IsRead = false });
             _readT.Add(new ReadT() { Key = BFMCommand.正压_50TimeStart, Order = 5, IsRead = false });
-
 
             BindFlowBase();
 
@@ -768,11 +802,16 @@ namespace text.doors.Detection
 
             airtightPropertyTest = PublicEnum.AirtightPropertyTest.ZStart;
 
+            //关闭依次加压
+            btn_ycjy_z.Enabled = false;
+            btn_ycjyf.Enabled = false;
+
+            btn_ycjy_z.BackColor = Color.Transparent;
+            btn_ycjyf.BackColor = Color.Transparent;
         }
 
         private void btn_loseready_Click(object sender, EventArgs e)
         {
-
             var res = _serialPortClient.SendFYYB();
             if (!res)
                 return;
@@ -780,6 +819,12 @@ namespace text.doors.Detection
             DisableBtnType();
             btn_loseready.BackColor = Color.Green;
             airtightPropertyTest = PublicEnum.AirtightPropertyTest.FReady;
+            //关闭依次加压
+            btn_ycjy_z.Enabled = false;
+            btn_ycjyf.Enabled = false;
+
+            btn_ycjy_z.BackColor = Color.Transparent;
+            btn_ycjyf.BackColor = Color.Transparent;
         }
         /// <summary>
         /// 禁用按钮
@@ -791,12 +836,15 @@ namespace text.doors.Detection
             this.btn_losestart.Enabled = false;
             this.btn_juststart.Enabled = false;
 
-
+            btn_ycjy_z.Enabled = false;
+            btn_ycjyf.Enabled = false;
 
             btn_justready.BackColor = Color.Transparent;
             btn_loseready.BackColor = Color.Transparent;
             btn_losestart.BackColor = Color.Transparent;
             btn_juststart.BackColor = Color.Transparent;
+            btn_ycjy_z.BackColor = Color.Transparent;
+            btn_ycjyf.BackColor = Color.Transparent;
         }
 
         /// <summary>
@@ -809,13 +857,17 @@ namespace text.doors.Detection
             this.btn_losestart.Enabled = true;
             this.btn_datadispose.Enabled = true;
             this.btn_juststart.Enabled = true;
+            //btn_ycjy_z.Enabled = true;
+            //btn_ycjyf.Enabled = true;
+
 
             btn_justready.BackColor = Color.Transparent;
             btn_loseready.BackColor = Color.Transparent;
             btn_losestart.BackColor = Color.Transparent;
             btn_juststart.BackColor = Color.Transparent;
+            btn_ycjy_z.BackColor = Color.Transparent;
+            btn_ycjyf.BackColor = Color.Transparent;
         }
-
 
         /// <summary>
         /// 负压开始
@@ -832,7 +884,6 @@ namespace text.doors.Detection
             DisableBtnType();
 
             _readT = new List<ReadT>();
-
             _readT.Add(new ReadT() { Key = BFMCommand.负压50TimeStart, Order = 1, IsRead = false });
             _readT.Add(new ReadT() { Key = BFMCommand.负压100TimeStart, Order = 2, IsRead = false });
             _readT.Add(new ReadT() { Key = BFMCommand.负压150TimeStart, Order = 3, IsRead = false });
@@ -843,8 +894,14 @@ namespace text.doors.Detection
 
             btn_losestart.BackColor = Color.Green;
             airtightPropertyTest = PublicEnum.AirtightPropertyTest.FStart;
-        }
 
+            //关闭依次加压
+            btn_ycjy_z.Enabled = false;
+            btn_ycjyf.Enabled = false;
+
+            btn_ycjy_z.BackColor = Color.Transparent;
+            btn_ycjyf.BackColor = Color.Transparent;
+        }
 
         #endregion
 
@@ -860,7 +917,6 @@ namespace text.doors.Detection
         {
             this.tChart_qm.Export.ShowExportDialog();
         }
-
 
         private void btn_datadispose_Click(object sender, EventArgs e)
         {
@@ -884,7 +940,6 @@ namespace text.doors.Detection
             {
                 MessageBox.Show("暂无数据处理！", "完成", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
         }
 
         /// <summary>
@@ -895,7 +950,7 @@ namespace text.doors.Detection
         {
             List<Model_dt_qm_Info> list = new List<Model_dt_qm_Info>();
             var sjzValue = txt_ycjy_z.Text;
-            for (int i = 0; i <= 9; i++)
+            for (int i = 0; i <= 11; i++)
             {
                 Model_dt_qm_Info model = new Model_dt_qm_Info();
                 model.dt_Code = _tempCode;
@@ -926,7 +981,6 @@ namespace text.doors.Detection
             model.F_FC = this.lbl_f_fc.Text;
             return model;
         }
-
 
         /// <summary>
         /// 获取分级指标
@@ -970,64 +1024,6 @@ namespace text.doors.Detection
                 double.Parse(this.dgv_ll.Rows[8].Cells[5].Value.ToString()),
                 daqiyali, shijianmianji, dangqianwendu);
         }
-
-
-        /// <summary>
-        /// 获取分级指标
-        /// </summary>
-        /// <param name="zFc">正压缝长</param>
-        /// <param name="fFc">负压缝长</param>
-        /// <param name="zMj">正压面积</param>
-        /// <param name="fMj">负压面积</param>
-        //private void GetDatabaseLevelIndex()
-        //{
-        // double kPa = 0;
-        // double tempTemperature = 0;
-        // double stitchLength = 0;
-        // double sumArea = 0;
-
-        // if (tab_settings != null && tab_settings.Rows.Count > 0)
-        // {
-        //     kPa = double.Parse(tab_settings.Rows[0]["DaQiYaLi"].ToString());
-        //     tempTemperature = double.Parse(tab_settings.Rows[0]["DangQianWenDu"].ToString());
-        //     stitchLength = double.Parse(tab_settings.Rows[0]["KaiQiFengChang"].ToString());
-        //     sumArea = double.Parse(tab_settings.Rows[0]["shijianmianji"].ToString());
-        // }
-        //// List<AirtightCalculation> airtightCalculation = new List<AirtightCalculation>();
-
-
-        // zFc = Formula.GetIndexStitchLengthAndArea(
-        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
-        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z"].Value.ToString()),
-        //     true, kPa, tempTemperature, stitchLength, sumArea);
-
-        // fFc = Formula.GetIndexStitchLengthAndArea(
-        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
-        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F"].Value.ToString()),
-        //      true, kPa, tempTemperature, stitchLength, sumArea);
-
-        // zMj = Formula.GetIndexStitchLengthAndArea(
-        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z_Z"].Value.ToString()),
-        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_Z"].Value.ToString()),
-        //     false, kPa, tempTemperature, stitchLength, sumArea);
-
-        // fMj = Formula.GetIndexStitchLengthAndArea(
-        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F_Z"].Value.ToString()),
-        //     double.Parse(this.dgv_ll.Rows[11].Cells["Pressure_F"].Value.ToString()),
-        //     false, kPa, tempTemperature, stitchLength, sumArea);
-
-
-        //获取分级指标
-        //var indexStitchLengthAndArea = Formula.GetJK_IndexStitchLengthAndArea(airtightCalculation, stitchLength, sumArea);
-        //if (indexStitchLengthAndArea != null)
-        //{
-        //    zFc = indexStitchLengthAndArea.ZY_FC;
-        //    fFc = indexStitchLengthAndArea.FY_FC;
-        //    zMj = indexStitchLengthAndArea.ZY_MJ;
-        //    fMj = indexStitchLengthAndArea.FY_MJ;
-        //}
-        //}
-        // }
 
         private void btn_stop_Click(object sender, EventArgs e)
         {
@@ -1096,7 +1092,6 @@ namespace text.doors.Detection
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.FStart)
             {
                 double value = _serialPortClient.GetFYKSJS();
-
                 if (value >= 15)
                 {
                     airtightPropertyTest = PublicEnum.AirtightPropertyTest.Stop;
@@ -1110,23 +1105,15 @@ namespace text.doors.Detection
             try
             {
                 var windSpeed = windSpeedInfo.GetWindSpeed();
-
                 for (int i = 0; i < windSpeed.Count; i++)
                 {
                     if (windSpeed[i].GFZH > 0)
-                    {
                         windSpeedInfoList[i].GFZH = windSpeed[i].GFZH;
-                    }
                     if (windSpeed[i].FJST > 0)
-                    {
                         windSpeedInfoList[i].FJST = windSpeed[i].FJST;
-                    }
                     if (windSpeed[i].ZDST > 0)
-                    {
                         windSpeedInfoList[i].ZDST = windSpeed[i].ZDST;
-                    }
                 }
-
                 BindFlowBase();
             }
             catch (Exception ex)
@@ -1137,116 +1124,117 @@ namespace text.doors.Detection
 
         private void groupBox3_Enter(object sender, EventArgs e)
         {
-
         }
 
         private void btn_ycjy_z_Click(object sender, EventArgs e)
         {
-            //index = 0;
-            //this.btn_ycjy_z.Enabled = false;
-            //int value = 0;
-            //int.TryParse(txt_ycjy_z.Text, out value);
+            index = 0;
+            this.btn_ycjy_z.Enabled = false;
+            int value = 0;
+            int.TryParse(txt_ycjy_z.Text, out value);
 
-            //if (value == 0)
-            //{
-            //    this.btn_ycjy_z.Enabled = true;
-            //    return;
-            //}
-            //var res = _serialPortClient.Set_FY_Value(BFMCommand.正依次加压值, BFMCommand.正依次加压, value);
-            //if (!res)
-            //{
-            //    MessageBox.Show("正依次加压！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
-            ////重复做
-            //if (rdb_fjstl.Checked)
-            //{
-            //    foreach (var item in windSpeedInfoList)
-            //    {
-            //        item.Pressure_Z = 0;
-            //    }
-            //}
-            //else if (rdb_zdstl.Checked)
-            //{
-            //    foreach (var item in windSpeedInfoList)
-            //    {
-            //        item.Pressure_Z_Z = 0;
-            //    }
+            if (value == 0)
+            {
+                this.btn_ycjy_z.Enabled = true;
+                return;
+            }
+            var res = _serialPortClient.Set_FY_Value(BFMCommand.正依次加压值, BFMCommand.正依次加压, value);
+            if (!res)
+            {
+                MessageBox.Show("正依次加压！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            //重复做
+            if (rdb_fjstl.Checked)
+            {
+                var data = windSpeedInfoList.Find(t => t.Pa == "正设计值");
+                data.FJST = 0;
+            }
+            else if (rdb_gfzh.Checked)
+            {
+                var data = windSpeedInfoList.Find(t => t.Pa == "正设计值");
+                data.GFZH = 0;
 
-            //}
-            //BindFlowBase();
+            }
+            else if (rdb_zdstl.Checked)
+            {
+                var data = windSpeedInfoList.Find(t => t.Pa == "正设计值");
+                data.ZDST = 0;
+            }
 
+            BindFlowBase();
 
-            ////本程序控制
-            //btn_ycjy_z.BackColor = Color.Green;
+            //本程序控制
+            btn_ycjy_z.BackColor = Color.Green;
 
-            //airtightPropertyTest = PublicEnum.AirtightPropertyTest.ZYCJY;
-
-
-            ////关闭监控按钮
-            //this.btn_justready.Enabled = false;
-            //this.btn_loseready.Enabled = false;
-            //this.btn_losestart.Enabled = false;
-            //this.btn_juststart.Enabled = false;
+            airtightPropertyTest = PublicEnum.AirtightPropertyTest.ZYCJY;
 
 
-            //btn_justready.BackColor = Color.Transparent;
-            //btn_loseready.BackColor = Color.Transparent;
-            //btn_losestart.BackColor = Color.Transparent;
-            //btn_juststart.BackColor = Color.Transparent;
+            //关闭监控按钮
+            this.btn_justready.Enabled = false;
+            this.btn_loseready.Enabled = false;
+            this.btn_losestart.Enabled = false;
+            this.btn_juststart.Enabled = false;
+
+
+            btn_justready.BackColor = Color.Transparent;
+            btn_loseready.BackColor = Color.Transparent;
+            btn_losestart.BackColor = Color.Transparent;
+            btn_juststart.BackColor = Color.Transparent;
         }
 
         private void btn_ycjyf_Click(object sender, EventArgs e)
         {
-            //index = 0;
-            //this.btn_ycjyf.Enabled = false;
-            //int value = 0;
+            index = 0;
+            this.btn_ycjyf.Enabled = false;
+            int value = 0;
 
-            //int.TryParse(txt_ycjy_f.Text, out value);
+            int.TryParse(txt_ycjy_f.Text, out value);
 
-            //if (value == 0)
-            //{
-            //    this.btn_ycjyf.Enabled = true;
-            //    return;
-            //}
+            if (value == 0)
+            {
+                this.btn_ycjyf.Enabled = true;
+                return;
+            }
 
-            //var res = _serialPortClient.Set_FY_Value(BFMCommand.负依次加压值, BFMCommand.负依次加压, value);
-            //if (!res)
-            //{
-            //    MessageBox.Show("负依次加压异常！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
+            var res = _serialPortClient.Set_FY_Value(BFMCommand.负依次加压值, BFMCommand.负依次加压, value);
+            if (!res)
+            {
+                MessageBox.Show("负依次加压异常！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            //if (rdb_fjstl.Checked)
-            //{
-            //    foreach (var item in windSpeedInfoList)
-            //    {
-            //        item.Pressure_F = 0;
-            //    }
-            //}
-            //else if (rdb_zdstl.Checked)
-            //{
-            //    foreach (var item in windSpeedInfoList)
-            //    {
-            //        item.Pressure_F_Z = 0;
-            //    }
-            //}
-            //BindFlowBase();
+            if (rdb_fjstl.Checked)
+            {
+                var data = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                data.FJST = 0;
+            }
+            else if (rdb_gfzh.Checked)
+            {
+                var data = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                data.GFZH = 0;
+            }
+            else if (rdb_zdstl.Checked)
+            {
+                var data = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                data.ZDST = 0;
+            }
+            BindFlowBase();
 
-            ////本程序控制
-            //btn_ycjyf.BackColor = Color.Green;
-            //airtightPropertyTest = PublicEnum.AirtightPropertyTest.FYCJY;
+            //本程序控制
+            btn_ycjyf.BackColor = Color.Green;
+            airtightPropertyTest = PublicEnum.AirtightPropertyTest.FYCJY;
 
-            ////关闭监控按钮
-            //this.btn_justready.Enabled = false;
-            //this.btn_loseready.Enabled = false;
-            //this.btn_losestart.Enabled = false;
-            //this.btn_juststart.Enabled = false;
+            //关闭监控按钮
+            this.btn_justready.Enabled = false;
+            this.btn_loseready.Enabled = false;
+            this.btn_losestart.Enabled = false;
+            this.btn_juststart.Enabled = false;
 
-            //btn_justready.BackColor = Color.Transparent;
-            //btn_loseready.BackColor = Color.Transparent;
-            //btn_losestart.BackColor = Color.Transparent;
-            //btn_juststart.BackColor = Color.Transparent;
+            btn_justready.BackColor = Color.Transparent;
+            btn_loseready.BackColor = Color.Transparent;
+            btn_losestart.BackColor = Color.Transparent;
+            btn_juststart.BackColor = Color.Transparent;
         }
 
         private void tChart_sm_MouseDown(object sender, MouseEventArgs e)
@@ -1256,13 +1244,10 @@ namespace text.doors.Detection
                 this.chart_cms_qm_click.Show(MousePosition.X, MousePosition.Y);
             }
         }
-
-
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.tChart_qm.Export.ShowExportDialog();
         }
-
 
         private void btn_exit_Click(object sender, EventArgs e)
         {
@@ -1271,7 +1256,6 @@ namespace text.doors.Detection
             this.Close();
         }
     }
-
 
     public class ReadT
     {
