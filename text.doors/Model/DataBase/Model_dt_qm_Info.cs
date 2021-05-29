@@ -9,10 +9,7 @@ namespace text.doors.Model.DataBase
     public class Model_dt_qm_Info
     {
         public string dt_Code { get; set; }
-        /// <summary>
-        /// 1.监控 2.工程检测
-        /// </summary>
-        public string testtype { get; set; }
+   
         public string Pa { get; set; }
 
         /// <summary>

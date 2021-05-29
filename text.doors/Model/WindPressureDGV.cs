@@ -28,10 +28,11 @@ namespace text.doors.Model
         {
             get
             {
-                //return this.zzd == 0 ? 0 : Convert.ToInt32(DefaultBase.BarLength / this.zzd);
-                return 0;
+                return this.zzd == 0 ? 0 : Convert.ToInt32(GanJianChangDu / this.zzd);
             }
         }
+
+        public int GanJianChangDu { get; set; }
 
         public double fwy1 { get; set; }
         public double fwy2 { get; set; }
@@ -50,8 +51,7 @@ namespace text.doors.Model
         {
             get
             {
-                //  return this.fzd == 0 ? 0 : Convert.ToInt32(DefaultBase.BarLength / this.fzd);
-                return 0;
+                return this.fzd == 0 ? 0 : Convert.ToInt32(GanJianChangDu / this.fzd);
             }
         }
         public int PaValue { get; set; }

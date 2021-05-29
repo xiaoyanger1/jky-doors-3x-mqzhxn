@@ -77,7 +77,12 @@ namespace text.doors.Default
         public const string 负压预备_设定值 = "D2002";
         public const string 负压开始_设定值 = "D2005";
 
-        public const string 正压依次加压 = "T0";
+        public const string 正压依次加压 = "";
+
+        public const string 负压依次加压 = "";
+
+
+
 
         public const string 正压50TimeStart = "T43";
         public const string 正压100TimeStart = "T44";

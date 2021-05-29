@@ -19,13 +19,14 @@ namespace text.doors.Model
             FJST_Z_S_150 = new List<double>();
             FJST_Z_J_100 = new List<double>();
             FJST_Z_J_50 = new List<double>();
+            FJST_Z_YCJY = new List<double>();
 
             FJST_F_S_50 = new List<double>();
             FJST_F_S_100 = new List<double>();
             FJST_F_S_150 = new List<double>();
             FJST_F_J_100 = new List<double>();
             FJST_F_J_50 = new List<double>();
-
+            FJST_F_YCJY = new List<double>();
 
 
             GFZH_Z_S_50 = new List<double>();
@@ -33,13 +34,14 @@ namespace text.doors.Model
             GFZH_Z_S_150 = new List<double>();
             GFZH_Z_J_100 = new List<double>();
             GFZH_Z_J_50 = new List<double>();
+            GFZH_Z_YCJY = new List<double>();
 
             GFZH_F_S_50 = new List<double>();
             GFZH_F_S_100 = new List<double>();
             GFZH_F_S_150 = new List<double>();
             GFZH_F_J_100 = new List<double>();
             GFZH_F_J_50 = new List<double>();
-
+            GFZH_F_YCJY = new List<double>();
 
 
             ZDST_Z_S_50 = new List<double>();
@@ -47,12 +49,14 @@ namespace text.doors.Model
             ZDST_Z_S_150 = new List<double>();
             ZDST_Z_J_100 = new List<double>();
             ZDST_Z_J_50 = new List<double>();
+            ZDST_Z_YCJY = new List<double>();
 
             ZDST_F_S_50 = new List<double>();
             ZDST_F_S_100 = new List<double>();
             ZDST_F_S_150 = new List<double>();
             ZDST_F_J_100 = new List<double>();
             ZDST_F_J_50 = new List<double>();
+            ZDST_F_YCJY = new List<double>();
 
 
 
@@ -78,7 +82,7 @@ namespace text.doors.Model
         {
             get
             {
-                if (ZDST == 0 && FJST == 0)
+                if (ZDST == 0 || FJST == 0)
                     return 0.00;
                 return ZDST - FJST;
             }
@@ -88,7 +92,7 @@ namespace text.doors.Model
         {
             get
             {
-                if (ZDST == 0 && GFZH == 0)
+                if (ZDST == 0 || GFZH == 0)
                     return 0.00;
                 return ZDST - GFZH;
             }
@@ -103,12 +107,14 @@ namespace text.doors.Model
         private List<double> FJST_Z_S_150 = new List<double>();
         private List<double> FJST_Z_J_100 = new List<double>();
         private List<double> FJST_Z_J_50 = new List<double>();
+        private List<double> FJST_Z_YCJY = new List<double>();
 
         private List<double> FJST_F_S_50 = new List<double>();
         private List<double> FJST_F_S_100 = new List<double>();
         private List<double> FJST_F_S_150 = new List<double>();
         private List<double> FJST_F_J_100 = new List<double>();
         private List<double> FJST_F_J_50 = new List<double>();
+        private List<double> FJST_F_YCJY = new List<double>();
 
 
         /// <summary>
@@ -120,13 +126,14 @@ namespace text.doors.Model
         private List<double> GFZH_Z_S_150 = new List<double>();
         private List<double> GFZH_Z_J_100 = new List<double>();
         private List<double> GFZH_Z_J_50 = new List<double>();
+        private List<double> GFZH_Z_YCJY = new List<double>();
 
         private List<double> GFZH_F_S_50 = new List<double>();
         private List<double> GFZH_F_S_100 = new List<double>();
         private List<double> GFZH_F_S_150 = new List<double>();
         private List<double> GFZH_F_J_100 = new List<double>();
         private List<double> GFZH_F_J_50 = new List<double>();
-
+        private List<double> GFZH_F_YCJY = new List<double>();
 
         /// <summary>
         /// 总的渗透
@@ -137,13 +144,15 @@ namespace text.doors.Model
         private List<double> ZDST_Z_S_150 = new List<double>();
         private List<double> ZDST_Z_J_100 = new List<double>();
         private List<double> ZDST_Z_J_50 = new List<double>();
+        private List<double> ZDST_Z_YCJY = new List<double>();
+
 
         private List<double> ZDST_F_S_50 = new List<double>();
         private List<double> ZDST_F_S_100 = new List<double>();
         private List<double> ZDST_F_S_150 = new List<double>();
         private List<double> ZDST_F_J_100 = new List<double>();
         private List<double> ZDST_F_J_50 = new List<double>();
-
+        private List<double> ZDST_F_YCJY = new List<double>();
 
         /// <summary>
         /// 获取风速数据
@@ -165,6 +174,9 @@ namespace text.doors.Model
             AddYL_S_150(list);
             AddYL_J_100(list);
             AddYL_J_50(list);
+
+            AddYL_Z_YCJA(list);
+            AddYL_F_YCJA(list);
 
             return list;
         }
@@ -188,6 +200,10 @@ namespace text.doors.Model
                 FJST_Z_J_100.Add(data);
             if (fs == PublicEnum.Kpa_Level.drop50)
                 FJST_Z_J_50.Add(data);
+            if (fs == PublicEnum.Kpa_Level.Z_YCJY)
+                GFZH_Z_YCJY.Add(data);
+            if (fs == PublicEnum.Kpa_Level.F_YCJY)
+                GFZH_F_YCJY.Add(data);
         }
 
         /// <summary>
@@ -207,6 +223,10 @@ namespace text.doors.Model
                 FJST_F_J_100.Add(data);
             if (fs == PublicEnum.Kpa_Level.drop50)
                 FJST_F_J_50.Add(data);
+            if (fs == PublicEnum.Kpa_Level.Z_YCJY)
+                GFZH_Z_YCJY.Add(data);
+            if (fs == PublicEnum.Kpa_Level.F_YCJY)
+                GFZH_F_YCJY.Add(data);
         }
 
 
@@ -229,6 +249,10 @@ namespace text.doors.Model
                 GFZH_Z_J_100.Add(data);
             if (fs == PublicEnum.Kpa_Level.drop50)
                 GFZH_Z_J_50.Add(data);
+            if (fs == PublicEnum.Kpa_Level.Z_YCJY)
+                GFZH_Z_YCJY.Add(data);
+            if (fs == PublicEnum.Kpa_Level.F_YCJY)
+                GFZH_F_YCJY.Add(data);
         }
 
         /// <summary>
@@ -250,6 +274,10 @@ namespace text.doors.Model
                 GFZH_F_J_100.Add(data);
             if (fs == PublicEnum.Kpa_Level.drop50)
                 GFZH_F_J_50.Add(data);
+            if (fs == PublicEnum.Kpa_Level.Z_YCJY)
+                GFZH_Z_YCJY.Add(data);
+            if (fs == PublicEnum.Kpa_Level.F_YCJY)
+                GFZH_F_YCJY.Add(data);
         }
 
         /// <summary>
@@ -271,6 +299,10 @@ namespace text.doors.Model
                 ZDST_Z_J_100.Add(data);
             if (fs == PublicEnum.Kpa_Level.drop50)
                 ZDST_Z_J_50.Add(data);
+            if (fs == PublicEnum.Kpa_Level.Z_YCJY)
+                GFZH_Z_YCJY.Add(data);
+            if (fs == PublicEnum.Kpa_Level.F_YCJY)
+                GFZH_F_YCJY.Add(data);
         }
 
         /// <summary>
@@ -292,6 +324,10 @@ namespace text.doors.Model
                 ZDST_F_J_100.Add(data);
             if (fs == PublicEnum.Kpa_Level.drop50)
                 ZDST_F_J_50.Add(data);
+            if (fs == PublicEnum.Kpa_Level.Z_YCJY)
+                GFZH_Z_YCJY.Add(data);
+            if (fs == PublicEnum.Kpa_Level.F_YCJY)
+                GFZH_F_YCJY.Add(data);
         }
 
 
@@ -440,6 +476,36 @@ namespace text.doors.Model
             model.FJST = FJST_F_J_50.Count() == 0 ? 0d : Math.Round(FJST_F_J_50.Sum(t => t) / FJST_F_J_50.Count(), 2);
             model.GFZH = GFZH_F_J_50.Count() == 0 ? 0d : Math.Round(GFZH_F_J_50.Sum(t => t) / GFZH_F_J_50.Count(), 2);
             model.ZDST = ZDST_F_J_50.Count() == 0 ? 0d : Math.Round(ZDST_F_J_50.Sum(t => t) / ZDST_F_J_50.Count(), 2);
+            list.Add(model);
+        }
+
+        /// <summary>
+        /// 依次加压正
+        /// </summary>
+        /// <param name="list"></param>
+        public void AddYL_Z_YCJA(List<WindSpeedInfo> list)
+        {
+            WindSpeedInfo model = new WindSpeedInfo();
+            model.Pa = "正设计值";
+            model.PaType = 1;
+            model.FJST = FJST_Z_YCJY.Count() == 0 ? 0d : Math.Round(FJST_F_J_50.Sum(t => t) / FJST_F_J_50.Count(), 2);
+            model.GFZH = GFZH_Z_YCJY.Count() == 0 ? 0d : Math.Round(GFZH_F_J_50.Sum(t => t) / GFZH_F_J_50.Count(), 2);
+            model.ZDST = ZDST_Z_YCJY.Count() == 0 ? 0d : Math.Round(ZDST_F_J_50.Sum(t => t) / ZDST_F_J_50.Count(), 2);
+            list.Add(model);
+        }
+
+        /// <summary>
+        /// 依次加压负
+        /// </summary>
+        /// <param name="list"></param>
+        public void AddYL_F_YCJA(List<WindSpeedInfo> list)
+        {
+            WindSpeedInfo model = new WindSpeedInfo();
+            model.Pa = "负设计值";
+            model.PaType = 2;
+            model.FJST = FJST_F_YCJY.Count() == 0 ? 0d : Math.Round(FJST_F_J_50.Sum(t => t) / FJST_F_J_50.Count(), 2);
+            model.GFZH = GFZH_F_YCJY.Count() == 0 ? 0d : Math.Round(GFZH_F_J_50.Sum(t => t) / GFZH_F_J_50.Count(), 2);
+            model.ZDST = ZDST_F_YCJY.Count() == 0 ? 0d : Math.Round(ZDST_F_J_50.Sum(t => t) / ZDST_F_J_50.Count(), 2);
             list.Add(model);
         }
 

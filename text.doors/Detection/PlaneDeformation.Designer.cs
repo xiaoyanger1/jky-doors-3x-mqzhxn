@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             this.tc_RealTimeSurveillance = new System.Windows.Forms.TabControl();
             this.page_airtight = new System.Windows.Forms.TabPage();
+            this.btn_stop = new System.Windows.Forms.Button();
+            this.btn_tgstart = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.txt_desc = new System.Windows.Forms.TextBox();
             this.btn_datadispose = new System.Windows.Forms.Button();
@@ -60,8 +62,7 @@
             this.txt_reslevel = new System.Windows.Forms.ComboBox();
             this.tim_PainPic = new System.Windows.Forms.Timer(this.components);
             this.tim_WY = new System.Windows.Forms.Timer(this.components);
-            this.btn_tgstart = new System.Windows.Forms.Button();
-            this.btn_stop = new System.Windows.Forms.Button();
+            this.tim_getType = new System.Windows.Forms.Timer(this.components);
             this.tc_RealTimeSurveillance.SuspendLayout();
             this.page_airtight.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -105,6 +106,26 @@
             this.page_airtight.Size = new System.Drawing.Size(1088, 641);
             this.page_airtight.TabIndex = 0;
             this.page_airtight.Text = "平面内变形性能检测";
+            // 
+            // btn_stop
+            // 
+            this.btn_stop.Location = new System.Drawing.Point(974, 10);
+            this.btn_stop.Name = "btn_stop";
+            this.btn_stop.Size = new System.Drawing.Size(100, 28);
+            this.btn_stop.TabIndex = 25;
+            this.btn_stop.Text = "推杆停止";
+            this.btn_stop.UseVisualStyleBackColor = true;
+            this.btn_stop.Click += new System.EventHandler(this.btn_stop_Click);
+            // 
+            // btn_tgstart
+            // 
+            this.btn_tgstart.Location = new System.Drawing.Point(867, 10);
+            this.btn_tgstart.Name = "btn_tgstart";
+            this.btn_tgstart.Size = new System.Drawing.Size(101, 28);
+            this.btn_tgstart.TabIndex = 24;
+            this.btn_tgstart.Text = "推杆启动";
+            this.btn_tgstart.UseVisualStyleBackColor = true;
+            this.btn_tgstart.Click += new System.EventHandler(this.btn_tgstart_Click);
             // 
             // groupBox7
             // 
@@ -455,25 +476,11 @@
             this.tim_WY.Interval = 1000;
             this.tim_WY.Tick += new System.EventHandler(this.tim_WY_Tick);
             // 
-            // btn_tgstart
+            // tim_getType
             // 
-            this.btn_tgstart.Location = new System.Drawing.Point(867, 10);
-            this.btn_tgstart.Name = "btn_tgstart";
-            this.btn_tgstart.Size = new System.Drawing.Size(101, 28);
-            this.btn_tgstart.TabIndex = 24;
-            this.btn_tgstart.Text = "推杆启动";
-            this.btn_tgstart.UseVisualStyleBackColor = true;
-            this.btn_tgstart.Click += new System.EventHandler(this.btn_tgstart_Click);
-            // 
-            // btn_stop
-            // 
-            this.btn_stop.Location = new System.Drawing.Point(974, 10);
-            this.btn_stop.Name = "btn_stop";
-            this.btn_stop.Size = new System.Drawing.Size(100, 28);
-            this.btn_stop.TabIndex = 25;
-            this.btn_stop.Text = "推杆停止";
-            this.btn_stop.UseVisualStyleBackColor = true;
-            this.btn_stop.Click += new System.EventHandler(this.btn_stop_Click);
+            this.tim_getType.Enabled = true;
+            this.tim_getType.Interval = 500;
+            this.tim_getType.Tick += new System.EventHandler(this.tim_getType_Tick);
             // 
             // PlaneDeformation
             // 
@@ -537,5 +544,6 @@
         private System.Windows.Forms.Timer tim_WY;
         private System.Windows.Forms.Button btn_tgstart;
         private System.Windows.Forms.Button btn_stop;
+        private System.Windows.Forms.Timer tim_getType;
     }
 }

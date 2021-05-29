@@ -270,34 +270,6 @@ values(
 
 
         /// <summary>
-        /// 添加抗风压结果
-        /// </summary>
-        /// <param name="mode"></param>
-        public bool Add_kfy_res_Info(Model_dt_kfy_res_Info model)
-        {
-            SQLiteHelper.ExecuteNonQuery("delete from dt_kfy_res_Info where dt_Code = '" + model.dt_Code + "'");
-
-            #region 拼接
-
-            var sql = string.Format(
-                              @"insert into dt_kfy_res_Info (dt_Code ,info_Level,defJC,CheckLock,
-                            p1,p2,p3,pMax,_p1,_p2,_p3,_pMax,lx,testtype,desc) 
-                            values(
-                            '{0}',{1},{2},{3},'{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},'{12}')",
-                              model.dt_Code, model.info_Level, model.defJC, model.p1, model.p2, model.p3, model.pMax, model._p1, model._p2,
-                              model._p3, model._pMax, model.testtype, model.desc);
-            #endregion
-            var res = SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
-            if (res)
-            {
-                return new DAL_dt_Info().UpdateTestType(model.dt_Code, PublicEnum.SystemItem.AirPressure, 1);
-            }
-            return true;
-        }
-
-
-
-        /// <summary>
         /// 获取单当数据
         /// </summary>
         /// <param name = "code" ></ param >
@@ -435,6 +407,7 @@ values(
                 modelRes._pMax = item.Rows[0]["_pMax"].ToString();
                 modelRes.info_Level = int.Parse(item.Rows[0]["info_Level"].ToString());
                 modelRes.defJC = int.Parse(item.Rows[0]["defJC"].ToString());
+                modelRes.lx = item.Rows[0]["lx"].ToString();
             }
             return modelRes;
         }

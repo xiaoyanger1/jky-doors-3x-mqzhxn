@@ -18,7 +18,7 @@ namespace text.doors.Service
         /// 添加抗风压信息
         /// </summary>
         /// <param name="mode"></param>
-        public bool Add_kfy_Info(Model_dt_kfy_res_Info model)
+        public bool Add_kfy_res_Info(Model_dt_kfy_res_Info model)
         {
             SQLiteHelper.ExecuteNonQuery("delete from dt_kfy_res_Info where dt_Code = '" + model.dt_Code + "'");
 
@@ -38,10 +38,10 @@ namespace text.doors.Service
                             _p3,
                             _pMax,
                             testtype,
-                            desc
+                            desc,lx
                             ) 
                             values(
-                            '{0}',{1},{2},'{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},'{12}')",
+                            '{0}',{1},{2},'{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},'{12}','13')",
                               model.dt_Code,
                               model.info_Level,
                               model.defJC,
@@ -54,7 +54,7 @@ namespace text.doors.Service
                               model._p3,
                               model._pMax,
                               model.testtype,
-                              model.desc);
+                              model.desc,model.lx);
             #endregion
             var res = SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
             if (res)

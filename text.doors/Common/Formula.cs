@@ -181,6 +181,104 @@ namespace text.doors.Common
         }
 
 
+        /// <summary>
+        /// 抗风压获取正负压  线性回归到10的q'
+        /// </summary>
+        /// <param name="airtightCalculation"></param>
+        /// <param name="zy_q10"></param>
+        /// <param name="fy_q10"></param>
+        /// <returns></returns>
+        public static void GetKFY_P1(List<WindPressureDGV> windPressureDGV, int gjcd, double lx, ref double zy, ref double fy)
+        {
+            windPressureDGV = windPressureDGV.FindAll(t => t.Pa != "P3阶段" && t.Pa != "P3残余变形" && t.Pa != "PMax/残余变形").ToList();
+
+            string errorMsg = "";
+
+            //正压
+            double _z_a = 0;
+            double _z_b = 0;
+            var z_point = windPressureDGV.FindAll(t => t.zzd > 0).Select(t => new text.doors.Model.Point() { X = t.PaValue, Y = t.zzd }).ToList();
+            var z_isSuccess = Formula.LinearRegression(z_point, ref _z_a, ref _z_b, ref errorMsg);
+            if (z_isSuccess)
+            {
+                var y = gjcd / lx;
+                zy = Math.Round((y - _z_b) / _z_a, 2, MidpointRounding.AwayFromZero);
+            }
+            else
+            {
+                zy = -100;
+            }
+
+            //负压
+            double _f_a = 0;
+            double _f_b = 0;
+
+            var f_point = windPressureDGV.FindAll(t => t.fzd > 0).Select(t => new text.doors.Model.Point() { X = t.PaValue, Y = t.fzd }).ToList();
+            var f_isSuccess = Formula.LinearRegression(f_point, ref _f_a, ref _f_b, ref errorMsg);
+            if (f_isSuccess)
+            {
+                var y = Math.Round(gjcd / lx, 2, MidpointRounding.AwayFromZero);
+                fy = Math.Round((y - _f_b) / _f_a, 2, MidpointRounding.AwayFromZero);
+            }
+            else
+            {
+                fy = -100;
+            }
+        }
+
+
+        /// <summary>
+        /// 对一组点通过最小二乘法进行线性回归
+        /// </summary>
+        /// <param name="parray"></param>
+        public static bool LinearRegression(List<text.doors.Model.Point> parray, ref double a, ref double b, ref string errorMsg)
+        {
+            //点数不能小于2
+            if (parray.Count < 2)
+            {
+                errorMsg = "点的数量小于2，无法进行线性回归";
+                return false;
+            }
+
+            //求出横纵坐标的平均值
+            double averagex = 0, averagey = 0;
+            foreach (text.doors.Model.Point p in parray)
+            {
+                if (double.IsNaN(p.Y))
+                {
+                    return false;
+                }
+                averagex += p.X;
+                averagey += p.Y;
+            }
+            averagex /= parray.Count;
+            averagey /= parray.Count;
+
+            //经验回归系数的分子与分母
+            double numerator = 0;
+            double denominator = 0;
+
+            foreach (text.doors.Model.Point p in parray)
+            {
+                numerator += (p.X - averagex) * (p.Y - averagey);
+                denominator += (p.X - averagex) * (p.X - averagex);
+            }
+
+            //回归系数b（Regression Coefficient）
+            double RCB = numerator / denominator;
+
+            //回归系数a
+            double RCA = averagey - RCB * averagex;
+
+            //b = Math.Round(RCB, 4, MidpointRounding.AwayFromZero);
+            //a = Math.Round(RCA, 4, MidpointRounding.AwayFromZero);
+            a = RCB;
+            b = RCA;
+            return true;
+        }
+
+
+
         #endregion
 
         #region  计算流量
@@ -210,10 +308,28 @@ namespace text.doors.Common
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static double MathJieArea()
+        public static decimal MathJieArea()
         {
             double _D = double.Parse(System.Configuration.ConfigurationSettings.AppSettings["PipeDiameter"].ToString());
-            return (_D / 2) * (_D / 2) * 3.1415;
+            var res = Math.Pow((_D / 2), 2) * 3.1415;
+
+            if (res.ToString().Contains("E"))
+            {
+                Decimal dData = 0.0M;
+                dData = Decimal.Parse(res.ToString(), System.Globalization.NumberStyles.Float);
+                return dData;
+            }
+            return decimal.Parse(res.ToString());
+        }
+
+        private static decimal ChangeDataToD(string strData)
+        {
+            Decimal dData = 0.0M;
+            if (strData.Contains("E"))
+            {
+                dData = Decimal.Parse(strData, System.Globalization.NumberStyles.Float);
+            }
+            return dData;
         }
         #endregion
 
@@ -231,9 +347,10 @@ namespace text.doors.Common
         ///  <param name="shijianmianji">试件面级</param>
         public static double GetIndexStitchArea(double p1, double p2, double daqiyali, double shijianmianji, double wendu)
         {
+            var area = MathJieArea();
             //风速
-            var windSpeed = (p1 + p2) / 2;
-            var qt = windSpeed * MathJieArea();
+            double windSpeed = (p1 + p2) / 2;
+            double qt = windSpeed * double.Parse(area.ToString());
 
             var q1 = (293 * qt * daqiyali) / (101.3 * (wendu + 273)) * 3600;
 
@@ -253,7 +370,7 @@ namespace text.doors.Common
         {
             //风速
             var windSpeed = (p1 + p2) / 2;
-            var qk = windSpeed * MathJieArea();
+            var qk = 0;//windSpeed * MathJieArea();
 
             var q2 = (293 * qk * daqiyali) / (101.3 * (wendu + 273)) * 3600;
             if (q2 == 0)

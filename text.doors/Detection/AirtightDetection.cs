@@ -146,7 +146,7 @@ namespace text.doors.Detection
 
             #region 排序插入
 
-            if (qm_Info.First().testtype == "1")
+            if (qm_zb_info.testtype == "1")
             {
                 btn_ycjy_z.Enabled = false;
                 btn_ycjyf.Enabled = false;
@@ -258,7 +258,7 @@ namespace text.doors.Detection
                     ZDST = 0d
                 }).ToList());
             }
-            else if (qm_Info.First().testtype == "2")//工程检测  不存在监控数据
+            else if (qm_zb_info.testtype == "2")//工程检测  不存在监控数据
             {
                 this.btn_justready.Enabled = false;
                 this.btn_loseready.Enabled = false;
@@ -308,7 +308,7 @@ namespace text.doors.Detection
             dgv_ll.AllowUserToResizeColumns = false;
             dgv_ll.AllowUserToResizeRows = false;
             dgv_ll.Columns[0].HeaderText = "压力Pa";
-            dgv_ll.Columns[0].Width = 53;
+            dgv_ll.Columns[0].Width = 65;
             dgv_ll.Columns[0].ReadOnly = true;
             dgv_ll.Columns[0].DataPropertyName = "Pa";
 
@@ -327,7 +327,7 @@ namespace text.doors.Detection
             dgv_ll.Columns[3].DataPropertyName = "GFZH";
 
             dgv_ll.Columns[4].HeaderText = "总的渗透量";
-            dgv_ll.Columns[4].Width = 58;
+            dgv_ll.Columns[4].Width = 60;
             dgv_ll.Columns[4].DataPropertyName = "ZDST";
 
             dgv_ll.Columns[5].HeaderText = "幕墙整体";
@@ -467,12 +467,19 @@ namespace text.doors.Detection
                     else
                         windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.drop50);
                 }
-                else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
+                else if (kpa_Level == PublicEnum.Kpa_Level.Z_YCJY)
                 {
                     if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
                     else
-                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.F_YCJY)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                    else
+                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
                 }
             }
             else if (rdb_gfzh.Checked) //固附之和
@@ -512,13 +519,19 @@ namespace text.doors.Detection
                     else
                         windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
                 }
-                else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
+                else if (kpa_Level == PublicEnum.Kpa_Level.Z_YCJY)
                 {
-
                     if (cyvalue > 0)
-                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
                     else
-                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.F_YCJY)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                    else
+                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
                 }
             }
             else if (rdb_zdstl.Checked)
@@ -561,12 +574,19 @@ namespace text.doors.Detection
                         else
                             windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
                     }
-                    else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
+                    else if (kpa_Level == PublicEnum.Kpa_Level.Z_YCJY)
                     {
                         if (cyvalue > 0)
-                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
                         else
-                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                    }
+                    else if (kpa_Level == PublicEnum.Kpa_Level.F_YCJY)
+                    {
+                        if (cyvalue > 0)
+                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                        else
+                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
                     }
                 }
                 if (kpa_Level == PublicEnum.Kpa_Level.liter50)
@@ -604,12 +624,19 @@ namespace text.doors.Detection
                     else
                         windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.drop50);
                 }
-                else if (kpa_Level == PublicEnum.Kpa_Level.YCJY)
+                else if (kpa_Level == PublicEnum.Kpa_Level.Z_YCJY)
                 {
                     if (cyvalue > 0)
-                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
                     else
-                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.YCJY);
+                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                }
+                else if (kpa_Level == PublicEnum.Kpa_Level.F_YCJY)
+                {
+                    if (cyvalue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                    else
+                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
                 }
             }
         }
@@ -719,6 +746,16 @@ namespace text.doors.Detection
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.drop100;
+                        tim_Top10.Enabled = true;
+                        notRead.IsRead = true;
+                    }
+                }
+                else if (notRead?.Key == BFMCommand.负压_50TimeStart)
+                {
+                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    if (start)
+                    {
+                        kpa_Level = PublicEnum.Kpa_Level.drop50;
                         tim_Top10.Enabled = true;
                         notRead.IsRead = true;
                     }
@@ -854,8 +891,8 @@ namespace text.doors.Detection
             this.btn_losestart.Enabled = true;
             this.btn_datadispose.Enabled = true;
             this.btn_juststart.Enabled = true;
-            //btn_ycjy_z.Enabled = true;
-            //btn_ycjyf.Enabled = true;
+            btn_ycjy_z.Enabled = true;
+            btn_ycjyf.Enabled = true;
 
 
             btn_justready.BackColor = Color.Transparent;
@@ -919,6 +956,7 @@ namespace text.doors.Detection
         {
             GetDatabaseLevelIndex();
             BindLevelIndex();
+            BindFlowBase();
 
             //获取分级指标
             var qmZBInfo = GetQMZBInfo();
@@ -959,7 +997,7 @@ namespace text.doors.Detection
                 model.ZDST = double.Parse(this.dgv_ll.Rows[i].Cells[4].Value.ToString()).ToString("f2");
                 model.MQZT = double.Parse(this.dgv_ll.Rows[i].Cells[5].Value.ToString()).ToString("f2");
                 model.KKST = double.Parse(this.dgv_ll.Rows[i].Cells[6].Value.ToString()).ToString("f2");
-                model.testtype = int.Parse(sjzValue) > 0 ? "2" : "1";
+                //model.testtype = int.Parse(sjzValue) > 0 ? "2" : "1";
                 list.Add(model);
             }
             return list;
@@ -970,12 +1008,16 @@ namespace text.doors.Detection
         /// <returns></returns>
         private Model_dt_qm_zb_Info GetQMZBInfo()
         {
+            var sjzValue = txt_ycjy_z.Text;
             Model_dt_qm_zb_Info model = new Model_dt_qm_zb_Info();
             model.dt_Code = _tempCode;
             model.Z_MJ = this.lbl_z_mj.Text;
             model.F_MJ = this.lbl_f_mj.Text;
             model.Z_FC = this.lbl_z_fc.Text;
             model.F_FC = this.lbl_f_fc.Text;
+            model.testtype = int.Parse(sjzValue) > 0 ? "2" : "1";
+            model.z_sjz_value = int.Parse(this.txt_ycjy_z.Text);
+            model.f_sjz_value = int.Parse(this.txt_ycjy_f.Text);
             return model;
         }
 
@@ -1001,25 +1043,50 @@ namespace text.doors.Detection
                 dangqianwendu = double.Parse(tab_settings.Rows[0]["DangQianWenDu"].ToString());
             }
 
-            zFc = Formula.GetIndexStichLength(
+            if (txt_ycjy_z.Text == "0" && txt_ycjy_f.Text == "0")
+            {
+                zFc = Formula.GetIndexStichLength(
                 double.Parse(this.dgv_ll.Rows[1].Cells[6].Value.ToString()),
                 double.Parse(this.dgv_ll.Rows[3].Cells[6].Value.ToString()),
                 daqiyali, kekaifengchang, dangqianwendu);
 
-            fFc = Formula.GetIndexStichLength(
-                double.Parse(this.dgv_ll.Rows[6].Cells[6].Value.ToString()),
-                double.Parse(this.dgv_ll.Rows[8].Cells[6].Value.ToString()),
-                 daqiyali, kekaifengchang, dangqianwendu);
+                fFc = Formula.GetIndexStichLength(
+                    double.Parse(this.dgv_ll.Rows[6].Cells[6].Value.ToString()),
+                    double.Parse(this.dgv_ll.Rows[8].Cells[6].Value.ToString()),
+                     daqiyali, kekaifengchang, dangqianwendu);
 
-            zMj = Formula.GetIndexStitchArea(
-                double.Parse(this.dgv_ll.Rows[1].Cells[5].Value.ToString()),
-                double.Parse(this.dgv_ll.Rows[3].Cells[5].Value.ToString()),
-                daqiyali, shijianmianji, dangqianwendu);
+                zMj = Formula.GetIndexStitchArea(
+                    double.Parse(this.dgv_ll.Rows[1].Cells[5].Value.ToString()),
+                    double.Parse(this.dgv_ll.Rows[3].Cells[5].Value.ToString()),
+                    daqiyali, shijianmianji, dangqianwendu);
 
-            fMj = Formula.GetIndexStitchArea(
-                double.Parse(this.dgv_ll.Rows[6].Cells[5].Value.ToString()),
-                double.Parse(this.dgv_ll.Rows[8].Cells[5].Value.ToString()),
-                daqiyali, shijianmianji, dangqianwendu);
+                fMj = Formula.GetIndexStitchArea(
+                    double.Parse(this.dgv_ll.Rows[6].Cells[5].Value.ToString()),
+                    double.Parse(this.dgv_ll.Rows[8].Cells[5].Value.ToString()),
+                    daqiyali, shijianmianji, dangqianwendu);
+            }
+            else
+            {
+                zFc = Formula.GetIndexStichLength(
+                double.Parse(this.dgv_ll.Rows[10].Cells[6].Value.ToString()),
+                double.Parse(this.dgv_ll.Rows[10].Cells[6].Value.ToString()),
+                daqiyali, kekaifengchang, dangqianwendu);
+
+                fFc = Formula.GetIndexStichLength(
+                    double.Parse(this.dgv_ll.Rows[11].Cells[6].Value.ToString()),
+                    double.Parse(this.dgv_ll.Rows[11].Cells[6].Value.ToString()),
+                     daqiyali, kekaifengchang, dangqianwendu);
+
+                zMj = Formula.GetIndexStitchArea(
+                    double.Parse(this.dgv_ll.Rows[10].Cells[5].Value.ToString()),
+                    double.Parse(this.dgv_ll.Rows[10].Cells[5].Value.ToString()),
+                    daqiyali, shijianmianji, dangqianwendu);
+
+                fMj = Formula.GetIndexStitchArea(
+                    double.Parse(this.dgv_ll.Rows[11].Cells[5].Value.ToString()),
+                    double.Parse(this.dgv_ll.Rows[11].Cells[5].Value.ToString()),
+                    daqiyali, shijianmianji, dangqianwendu);
+            }
         }
 
         private void btn_stop_Click(object sender, EventArgs e)
@@ -1119,10 +1186,6 @@ namespace text.doors.Detection
             }
         }
 
-        private void groupBox3_Enter(object sender, EventArgs e)
-        {
-        }
-
         private void btn_ycjy_z_Click(object sender, EventArgs e)
         {
             index = 0;
@@ -1163,6 +1226,7 @@ namespace text.doors.Detection
 
             //本程序控制
             btn_ycjy_z.BackColor = Color.Green;
+            btn_ycjyf.BackColor = Color.Transparent;
 
             airtightPropertyTest = PublicEnum.AirtightPropertyTest.ZYCJY;
 
@@ -1220,6 +1284,7 @@ namespace text.doors.Detection
 
             //本程序控制
             btn_ycjyf.BackColor = Color.Green;
+            btn_ycjy_z.BackColor = Color.Transparent;
             airtightPropertyTest = PublicEnum.AirtightPropertyTest.FYCJY;
 
             //关闭监控按钮

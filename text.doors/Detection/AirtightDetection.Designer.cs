@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AirtightDetection));
             this.tc_RealTimeSurveillance = new System.Windows.Forms.TabControl();
             this.page_airtight = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -107,7 +106,7 @@
             this.tc_RealTimeSurveillance.Location = new System.Drawing.Point(0, 0);
             this.tc_RealTimeSurveillance.Name = "tc_RealTimeSurveillance";
             this.tc_RealTimeSurveillance.SelectedIndex = 0;
-            this.tc_RealTimeSurveillance.Size = new System.Drawing.Size(1099, 675);
+            this.tc_RealTimeSurveillance.Size = new System.Drawing.Size(1161, 715);
             this.tc_RealTimeSurveillance.TabIndex = 0;
             // 
             // page_airtight
@@ -124,7 +123,7 @@
             this.page_airtight.Location = new System.Drawing.Point(4, 30);
             this.page_airtight.Name = "page_airtight";
             this.page_airtight.Padding = new System.Windows.Forms.Padding(3);
-            this.page_airtight.Size = new System.Drawing.Size(1091, 641);
+            this.page_airtight.Size = new System.Drawing.Size(1153, 681);
             this.page_airtight.TabIndex = 0;
             this.page_airtight.Text = "气密监控";
             // 
@@ -136,11 +135,11 @@
             this.groupBox5.Controls.Add(this.label3);
             this.groupBox5.Controls.Add(this.btn_ycjyf);
             this.groupBox5.Controls.Add(this.txt_ycjy_f);
-            this.groupBox5.Location = new System.Drawing.Point(761, 430);
+            this.groupBox5.Location = new System.Drawing.Point(761, 468);
             this.groupBox5.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox5.Size = new System.Drawing.Size(326, 72);
+            this.groupBox5.Size = new System.Drawing.Size(357, 75);
             this.groupBox5.TabIndex = 30;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "工程检测";
@@ -148,7 +147,7 @@
             // btn_ycjy_z
             // 
             this.btn_ycjy_z.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_ycjy_z.Location = new System.Drawing.Point(158, 9);
+            this.btn_ycjy_z.Location = new System.Drawing.Point(158, 11);
             this.btn_ycjy_z.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ycjy_z.Name = "btn_ycjy_z";
             this.btn_ycjy_z.Size = new System.Drawing.Size(142, 28);
@@ -159,7 +158,7 @@
             // 
             // txt_ycjy_z
             // 
-            this.txt_ycjy_z.Location = new System.Drawing.Point(49, 13);
+            this.txt_ycjy_z.Location = new System.Drawing.Point(49, 15);
             this.txt_ycjy_z.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ycjy_z.Name = "txt_ycjy_z";
             this.txt_ycjy_z.Size = new System.Drawing.Size(76, 21);
@@ -169,7 +168,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(133, 47);
+            this.label2.Location = new System.Drawing.Point(133, 49);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(17, 12);
@@ -179,7 +178,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(133, 19);
+            this.label3.Location = new System.Drawing.Point(133, 21);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(17, 12);
@@ -189,7 +188,7 @@
             // btn_ycjyf
             // 
             this.btn_ycjyf.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_ycjyf.Location = new System.Drawing.Point(158, 38);
+            this.btn_ycjyf.Location = new System.Drawing.Point(158, 40);
             this.btn_ycjyf.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ycjyf.Name = "btn_ycjyf";
             this.btn_ycjyf.Size = new System.Drawing.Size(142, 28);
@@ -200,8 +199,7 @@
             // 
             // txt_ycjy_f
             // 
-            this.txt_ycjy_f.Enabled = false;
-            this.txt_ycjy_f.Location = new System.Drawing.Point(49, 41);
+            this.txt_ycjy_f.Location = new System.Drawing.Point(49, 43);
             this.txt_ycjy_f.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ycjy_f.Name = "txt_ycjy_f";
             this.txt_ycjy_f.Size = new System.Drawing.Size(76, 21);
@@ -210,9 +208,9 @@
             // 
             // btn_datadispose
             // 
-            this.btn_datadispose.Location = new System.Drawing.Point(755, 509);
+            this.btn_datadispose.Location = new System.Drawing.Point(755, 547);
             this.btn_datadispose.Name = "btn_datadispose";
-            this.btn_datadispose.Size = new System.Drawing.Size(326, 28);
+            this.btn_datadispose.Size = new System.Drawing.Size(363, 28);
             this.btn_datadispose.TabIndex = 14;
             this.btn_datadispose.Text = "数据处理";
             this.btn_datadispose.UseVisualStyleBackColor = true;
@@ -241,7 +239,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label9.Location = new System.Drawing.Point(639, 17);
+            this.label9.Location = new System.Drawing.Point(620, 17);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(17, 12);
             this.label9.TabIndex = 8;
@@ -270,7 +268,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(373, 17);
+            this.label5.Location = new System.Drawing.Point(362, 17);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(17, 12);
             this.label5.TabIndex = 5;
@@ -280,7 +278,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.Location = new System.Drawing.Point(138, 17);
+            this.label8.Location = new System.Drawing.Point(136, 17);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(29, 12);
             this.label8.TabIndex = 4;
@@ -334,10 +332,10 @@
             this.groupBox2.Controls.Add(this.label15);
             this.groupBox2.Controls.Add(this.lbl_z_mj);
             this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox2.Location = new System.Drawing.Point(759, 341);
+            this.groupBox2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBox2.Location = new System.Drawing.Point(759, 375);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(327, 82);
+            this.groupBox2.Size = new System.Drawing.Size(359, 87);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "分级指标";
@@ -347,7 +345,7 @@
             this.lbl_f_fc.AutoSize = true;
             this.lbl_f_fc.Location = new System.Drawing.Point(235, 65);
             this.lbl_f_fc.Name = "lbl_f_fc";
-            this.lbl_f_fc.Size = new System.Drawing.Size(33, 12);
+            this.lbl_f_fc.Size = new System.Drawing.Size(29, 12);
             this.lbl_f_fc.TabIndex = 9;
             this.lbl_f_fc.Text = "----";
             // 
@@ -366,7 +364,7 @@
             this.lbl_z_fc.AutoSize = true;
             this.lbl_z_fc.Location = new System.Drawing.Point(235, 48);
             this.lbl_z_fc.Name = "lbl_z_fc";
-            this.lbl_z_fc.Size = new System.Drawing.Size(33, 12);
+            this.lbl_z_fc.Size = new System.Drawing.Size(29, 12);
             this.lbl_z_fc.TabIndex = 7;
             this.lbl_z_fc.Text = "----";
             // 
@@ -385,7 +383,7 @@
             this.lbl_f_mj.AutoSize = true;
             this.lbl_f_mj.Location = new System.Drawing.Point(235, 32);
             this.lbl_f_mj.Name = "lbl_f_mj";
-            this.lbl_f_mj.Size = new System.Drawing.Size(33, 12);
+            this.lbl_f_mj.Size = new System.Drawing.Size(29, 12);
             this.lbl_f_mj.TabIndex = 5;
             this.lbl_f_mj.Text = "----";
             // 
@@ -404,7 +402,7 @@
             this.lbl_z_mj.AutoSize = true;
             this.lbl_z_mj.Location = new System.Drawing.Point(235, 16);
             this.lbl_z_mj.Name = "lbl_z_mj";
-            this.lbl_z_mj.Size = new System.Drawing.Size(33, 12);
+            this.lbl_z_mj.Size = new System.Drawing.Size(29, 12);
             this.lbl_z_mj.TabIndex = 3;
             this.lbl_z_mj.Text = "----";
             // 
@@ -423,7 +421,7 @@
             this.groupBox9.Controls.Add(this.tChart_qm);
             this.groupBox9.Location = new System.Drawing.Point(8, 127);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(745, 510);
+            this.groupBox9.Size = new System.Drawing.Size(745, 548);
             this.groupBox9.TabIndex = 20;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "检测";
@@ -459,7 +457,7 @@
             this.tChart_qm.Panel.MarginRight = 2D;
             this.tChart_qm.Panel.MarginTop = 0D;
             this.tChart_qm.Series.Add(this.qm_Line);
-            this.tChart_qm.Size = new System.Drawing.Size(724, 480);
+            this.tChart_qm.Size = new System.Drawing.Size(724, 508);
             this.tChart_qm.TabIndex = 18;
             this.tChart_qm.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tChart1_MouseDown);
             // 
@@ -565,7 +563,7 @@
             this.tabControl1.Location = new System.Drawing.Point(757, 10);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(331, 329);
+            this.tabControl1.Size = new System.Drawing.Size(365, 354);
             this.tabControl1.TabIndex = 16;
             // 
             // 流量原始数据
@@ -574,7 +572,7 @@
             this.流量原始数据.Location = new System.Drawing.Point(4, 22);
             this.流量原始数据.Name = "流量原始数据";
             this.流量原始数据.Padding = new System.Windows.Forms.Padding(3);
-            this.流量原始数据.Size = new System.Drawing.Size(323, 303);
+            this.流量原始数据.Size = new System.Drawing.Size(357, 328);
             this.流量原始数据.TabIndex = 1;
             this.流量原始数据.Text = "风速：米/秒";
             this.流量原始数据.UseVisualStyleBackColor = true;
@@ -586,7 +584,7 @@
             this.dgv_ll.Name = "dgv_ll";
             this.dgv_ll.RowHeadersWidth = 62;
             this.dgv_ll.RowTemplate.Height = 23;
-            this.dgv_ll.Size = new System.Drawing.Size(310, 290);
+            this.dgv_ll.Size = new System.Drawing.Size(345, 320);
             this.dgv_ll.TabIndex = 0;
             // 
             // groupBox3
@@ -600,18 +598,17 @@
             this.groupBox3.Controls.Add(this.btn_justready);
             this.groupBox3.Controls.Add(this.rdb_fjstl);
             this.groupBox3.Controls.Add(this.btn_stop);
-            this.groupBox3.Location = new System.Drawing.Point(755, 539);
+            this.groupBox3.Location = new System.Drawing.Point(755, 577);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(326, 98);
+            this.groupBox3.Size = new System.Drawing.Size(367, 98);
             this.groupBox3.TabIndex = 11;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "国标检测";
-            this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
             // 
             // rdb_gfzh
             // 
             this.rdb_gfzh.AutoSize = true;
-            this.rdb_gfzh.Location = new System.Drawing.Point(127, 14);
+            this.rdb_gfzh.Location = new System.Drawing.Point(138, 14);
             this.rdb_gfzh.Name = "rdb_gfzh";
             this.rdb_gfzh.Size = new System.Drawing.Size(71, 16);
             this.rdb_gfzh.TabIndex = 20;
@@ -622,7 +619,7 @@
             // rdb_zdstl
             // 
             this.rdb_zdstl.AutoSize = true;
-            this.rdb_zdstl.Location = new System.Drawing.Point(205, 13);
+            this.rdb_zdstl.Location = new System.Drawing.Point(229, 13);
             this.rdb_zdstl.Name = "rdb_zdstl";
             this.rdb_zdstl.Size = new System.Drawing.Size(71, 16);
             this.rdb_zdstl.TabIndex = 0;
@@ -632,9 +629,9 @@
             // 
             // btn_losestart
             // 
-            this.btn_losestart.Location = new System.Drawing.Point(135, 64);
+            this.btn_losestart.Location = new System.Drawing.Point(146, 64);
             this.btn_losestart.Name = "btn_losestart";
-            this.btn_losestart.Size = new System.Drawing.Size(62, 28);
+            this.btn_losestart.Size = new System.Drawing.Size(78, 28);
             this.btn_losestart.TabIndex = 4;
             this.btn_losestart.Text = "负压开始";
             this.btn_losestart.UseVisualStyleBackColor = true;
@@ -642,9 +639,9 @@
             // 
             // btn_exit
             // 
-            this.btn_exit.Location = new System.Drawing.Point(216, 64);
+            this.btn_exit.Location = new System.Drawing.Point(240, 64);
             this.btn_exit.Name = "btn_exit";
-            this.btn_exit.Size = new System.Drawing.Size(67, 28);
+            this.btn_exit.Size = new System.Drawing.Size(80, 28);
             this.btn_exit.TabIndex = 19;
             this.btn_exit.Text = "退出";
             this.btn_exit.UseVisualStyleBackColor = true;
@@ -654,7 +651,7 @@
             // 
             this.btn_juststart.Location = new System.Drawing.Point(51, 64);
             this.btn_juststart.Name = "btn_juststart";
-            this.btn_juststart.Size = new System.Drawing.Size(66, 28);
+            this.btn_juststart.Size = new System.Drawing.Size(80, 28);
             this.btn_juststart.TabIndex = 4;
             this.btn_juststart.Text = "正压开始";
             this.btn_juststart.UseVisualStyleBackColor = true;
@@ -662,9 +659,9 @@
             // 
             // btn_loseready
             // 
-            this.btn_loseready.Location = new System.Drawing.Point(135, 33);
+            this.btn_loseready.Location = new System.Drawing.Point(146, 33);
             this.btn_loseready.Name = "btn_loseready";
-            this.btn_loseready.Size = new System.Drawing.Size(62, 28);
+            this.btn_loseready.Size = new System.Drawing.Size(78, 28);
             this.btn_loseready.TabIndex = 4;
             this.btn_loseready.Text = "负压预备";
             this.btn_loseready.UseVisualStyleBackColor = true;
@@ -674,7 +671,7 @@
             // 
             this.btn_justready.Location = new System.Drawing.Point(51, 34);
             this.btn_justready.Name = "btn_justready";
-            this.btn_justready.Size = new System.Drawing.Size(66, 28);
+            this.btn_justready.Size = new System.Drawing.Size(80, 28);
             this.btn_justready.TabIndex = 4;
             this.btn_justready.Text = "正压预备";
             this.btn_justready.UseVisualStyleBackColor = true;
@@ -695,9 +692,9 @@
             // 
             // btn_stop
             // 
-            this.btn_stop.Location = new System.Drawing.Point(216, 34);
+            this.btn_stop.Location = new System.Drawing.Point(240, 34);
             this.btn_stop.Name = "btn_stop";
-            this.btn_stop.Size = new System.Drawing.Size(67, 28);
+            this.btn_stop.Size = new System.Drawing.Size(80, 28);
             this.btn_stop.TabIndex = 12;
             this.btn_stop.Text = "停止加压";
             this.btn_stop.UseVisualStyleBackColor = true;
@@ -735,7 +732,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1100, 678);
+            this.ClientSize = new System.Drawing.Size(1173, 719);
             this.Controls.Add(this.tc_RealTimeSurveillance);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AirtightDetection";

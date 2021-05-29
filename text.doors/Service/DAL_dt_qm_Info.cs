@@ -29,9 +29,9 @@ namespace text.doors.dal
             var sql = "";
             foreach (var model in list)
             {
-                sql += string.Format(@"insert into dt_qm_Info (dt_Code,Pa,PaType,FJST,GFZH,ZDST,MQZT,KKST,testtype) 
-                values('{0}','{1}',{2},'{3}','{4}','{5}','{6}','{7}','{8}');",
-             model.dt_Code, model.Pa, model.PaType, model.FJST, model.GFZH, model.ZDST, model.MQZT, model.KKST, model.testtype);
+                sql += string.Format(@"insert into dt_qm_Info (dt_Code,Pa,PaType,FJST,GFZH,ZDST,MQZT,KKST) 
+                values('{0}','{1}',{2},'{3}','{4}','{5}','{6}','{7}');",
+             model.dt_Code, model.Pa, model.PaType, model.FJST, model.GFZH, model.ZDST, model.MQZT, model.KKST);
             }
             var res = SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
             if (!res)
@@ -52,9 +52,9 @@ namespace text.doors.dal
             //删除结果
             SQLiteHelper.ExecuteNonQuery("delete from dt_qm_zb_info where  dt_Code='" + zb.dt_Code + "' ");
 
-            var sql = string.Format(@"insert into dt_qm_zb_info (dt_Code,Z_MJ,F_MJ,Z_FC,F_FC,z_sjz_value,f_sjz_value) 
-                values('{0}','{1}',{2},'{3}','{4}','{5}','')",
-                 zb.dt_Code, zb.Z_MJ, zb.F_MJ, zb.Z_FC, zb.F_FC, zb.z_sjz_value, zb.f_sjz_value);
+            var sql = string.Format(@"insert into dt_qm_zb_info (dt_Code,Z_MJ,F_MJ,Z_FC,F_FC,z_sjz_value,f_sjz_value,testtype) 
+                values('{0}','{1}',{2},'{3}','{4}','{5}','{6}',{7})",
+                 zb.dt_Code, zb.Z_MJ, zb.F_MJ, zb.Z_FC, zb.F_FC, zb.z_sjz_value, zb.f_sjz_value,zb.testtype);
             return SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
         }
 
@@ -78,7 +78,6 @@ namespace text.doors.dal
                     model.ZDST = item["ZDST"].ToString();
                     model.MQZT = item["MQZT"].ToString();
                     model.KKST = item["KKST"].ToString();
-                    model.testtype = item["KKST"].ToString();
                     list.Add(model);
                     #endregion
                 }
@@ -105,9 +104,11 @@ namespace text.doors.dal
                 dt_qm_zb_Info.F_FC = dt_qm_zb_info.Rows[0]["F_FC"].ToString();
                 dt_qm_zb_Info.Z_MJ = dt_qm_zb_info.Rows[0]["Z_MJ"].ToString();
                 dt_qm_zb_Info.F_MJ = dt_qm_zb_info.Rows[0]["F_MJ"].ToString();
-
-                dt_qm_zb_Info.z_sjz_value = int.Parse(dt_qm_zb_info.Rows[0]["z_sjz_value"].ToString());
-                dt_qm_zb_Info.f_sjz_value = int.Parse(dt_qm_zb_info.Rows[0]["f_sjz_value"].ToString());
+                dt_qm_zb_Info.testtype = dt_qm_zb_info.Rows[0]["testtype"].ToString();
+                if (!string.IsNullOrWhiteSpace(dt_qm_zb_info.Rows[0]["z_sjz_value"].ToString()))
+                    dt_qm_zb_Info.z_sjz_value = int.Parse(dt_qm_zb_info.Rows[0]["z_sjz_value"].ToString());
+                if (!string.IsNullOrWhiteSpace(dt_qm_zb_info.Rows[0]["f_sjz_value"].ToString()))
+                    dt_qm_zb_Info.f_sjz_value = int.Parse(dt_qm_zb_info.Rows[0]["f_sjz_value"].ToString());
             }
             return dt_qm_zb_Info;
         }

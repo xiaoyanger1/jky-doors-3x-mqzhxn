@@ -27,6 +27,10 @@ namespace text.doors.Model.DataBase
         /// </summary>
         public string F_MJ { get; set; }
 
+        /// <summary>
+        /// 1.监控 2.工程检测
+        /// </summary>
+        public string testtype { get; set; }
 
         public int z_sjz_value { get; set; }
         public int f_sjz_value { get; set; }

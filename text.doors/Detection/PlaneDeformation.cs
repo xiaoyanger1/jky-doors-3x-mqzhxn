@@ -383,6 +383,8 @@ namespace text.doors.Detection
                 v1 = double.Parse(this.dgv_level.Rows[4].Cells[1].Value.ToString());
                 v2 = double.Parse(this.dgv_level.Rows[4].Cells[2].Value.ToString());
             }
+            v1 = v1 * 100;
+            v2 = v2 * 100;
         }
 
         private void tim_PainPic_Tick(object sender, EventArgs e)
@@ -506,6 +508,11 @@ namespace text.doors.Detection
 
             btn_tgstart.BackColor = Color.Transparent;
             btn_stop.BackColor = Color.Green;
+        }
+
+        private void tim_getType_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }

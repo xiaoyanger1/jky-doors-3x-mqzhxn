@@ -988,7 +988,6 @@ namespace text.doors.Common
             {
                 try
                 {
-
                     _StartAddress = BFMCommand.GetCommandDict(BFMCommand.位移10);
                     ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
 
@@ -996,12 +995,10 @@ namespace text.doors.Common
 
                     if (int.Parse(holding_register[0].ToString()) > 35000)
                     {
-                        Logger.Info("位移负数" + double.Parse(holding_register[0].ToString()));
                         f = -(65535 - int.Parse(holding_register[0].ToString()));
                     }
                     else
                     {
-                        Logger.Info("位移正数" + double.Parse(holding_register[0].ToString()));
                         f = int.Parse(holding_register[0].ToString());
                     }
                     f = f / 100;

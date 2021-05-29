@@ -18,7 +18,8 @@ namespace text.doors.Default
             liter150,//升150
             drop100,//降100
             drop50,//降50
-            YCJY
+            Z_YCJY,
+            F_YCJY
         }
 
         /// <summary>
