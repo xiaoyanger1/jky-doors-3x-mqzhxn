@@ -35,7 +35,7 @@ namespace text.doors.Service
         }
         public Model_dt_sm_Info GetSMListByCode(string code)
         {
-            Model_dt_sm_Info model = new Model_dt_sm_Info();
+            Model_dt_sm_Info model = null;
             var dt_sm_Info = SQLiteHelper.ExecuteDataRow("select * from dt_sm_Info where dt_Code='" + code + "'")?.Table;
             if (dt_sm_Info != null)
             {

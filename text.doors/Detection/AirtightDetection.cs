@@ -1280,17 +1280,17 @@ namespace text.doors.Detection
 
             if (rdb_fjstl.Checked)
             {
-                var data = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                var data = windSpeedInfoList.Find(t => t.PaType == 4);
                 data.FJST = 0;
             }
             else if (rdb_gfzh.Checked)
             {
-                var data = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                var data = windSpeedInfoList.Find(t => t.PaType == 4);
                 data.GFZH = 0;
             }
             else if (rdb_zdstl.Checked)
             {
-                var data = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                var data = windSpeedInfoList.Find(t => t.PaType == 4);
                 data.ZDST = 0;
             }
             BindFlowBase();
