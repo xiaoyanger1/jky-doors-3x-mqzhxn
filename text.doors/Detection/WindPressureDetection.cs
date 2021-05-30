@@ -750,6 +750,15 @@ namespace text.doors.Detection
         {
             if (!_serialPortClient.sp.IsOpen)
                 return;
+
+            var jc = int.Parse(txt_gbjc.Text);
+            if (jc == 0)
+            {
+                MessageBox.Show("请选择极差！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
             var res = _serialPortClient.Send_FY_Btn(BFMCommand.风压正压开始);
             if (!res)
                 return;
@@ -803,6 +812,13 @@ namespace text.doors.Detection
         {
             if (!_serialPortClient.sp.IsOpen)
                 return;
+
+            var jc = int.Parse(txt_gbjc.Text);
+            if (jc == 0)
+            {
+                MessageBox.Show("请选择极差！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             var res = _serialPortClient.Send_FY_Btn(BFMCommand.风压负压开始, false);
             if (!res)
@@ -881,8 +897,16 @@ namespace text.doors.Detection
                 zyList.Add(fy);
                 currentPoint_C = 0;
             }
-            var zyV = zyList.FindAll(t => t != -100).Min();
-            var fyV = fyList.FindAll(t => t != -100).Min();
+            var zyV = 0d;
+            var fyV = 0d;
+            if (zyList?.FindAll(t => t != -100) != null && zyList?.FindAll(t => t != -100).Count > 0)
+            {
+                zyV = zyList.FindAll(t => t != -100).Min();
+            }
+            if (fyList?.FindAll(t => t != -100) != null && fyList?.FindAll(t => t != -100).Count > 0)
+            {
+                fyV = fyList.FindAll(t => t != -100).Min();
+            }
 
             txt_p1.Text = zyV > 0 ? Math.Round(zyV, 0).ToString() : "0";
             txt_f_p1.Text = fyV > 0 ? Math.Round(fyV, 0).ToString() : "0";

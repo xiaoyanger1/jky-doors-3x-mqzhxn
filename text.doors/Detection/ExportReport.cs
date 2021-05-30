@@ -185,336 +185,956 @@ namespace text.doors.Detection
         {
             Dictionary<string, string> dc = new Dictionary<string, string>();
 
-            dc.Add("OLE_LINK1", "1");
-            dc.Add("OLE_LINK10", "2");
-            dc.Add("OLE_LINK11", "3");
-            dc.Add("OLE_LINK12", "4");
-            dc.Add("OLE_LINK13", "5");
-            dc.Add("OLE_LINK14", "6");
-            dc.Add("OLE_LINK15", "7");
-            dc.Add("OLE_LINK16", "8");
-            dc.Add("OLE_LINK17", "9");
-            dc.Add("OLE_LINK18", "10");
-            dc.Add("OLE_LINK19", "11");
-            dc.Add("OLE_LINK2", "12");
-            dc.Add("OLE_LINK20", "13");
-            dc.Add("OLE_LINK21", "14");
-            dc.Add("OLE_LINK22", "15");
-            dc.Add("OLE_LINK23", "16");
-            dc.Add("OLE_LINK24", "17");
-            dc.Add("OLE_LINK25", "18");
-            dc.Add("OLE_LINK26", "19");
-            dc.Add("OLE_LINK27", "20");
-            dc.Add("OLE_LINK28", "21");
-            dc.Add("OLE_LINK29", "22");
-            dc.Add("OLE_LINK3", "23");
-            dc.Add("OLE_LINK30", "24");
-            dc.Add("OLE_LINK31", "25");
-            dc.Add("OLE_LINK32", "26");
-            dc.Add("OLE_LINK33", "27");
-            dc.Add("OLE_LINK34", "28");
-            dc.Add("OLE_LINK35", "29");
-            dc.Add("OLE_LINK36", "30");
-            dc.Add("OLE_LINK37", "31");
-            dc.Add("OLE_LINK38", "32");
-            dc.Add("OLE_LINK39", "33");
-            dc.Add("OLE_LINK4", "34");
-            dc.Add("OLE_LINK40", "35");
-            dc.Add("OLE_LINK41", "36");
-            dc.Add("OLE_LINK42", "37");
-            dc.Add("OLE_LINK43", "38");
-            dc.Add("OLE_LINK44", "39");
-            dc.Add("OLE_LINK45", "40");
-            dc.Add("OLE_LINK46", "41");
-            dc.Add("OLE_LINK47", "42");
-            dc.Add("OLE_LINK48", "43");
-            dc.Add("OLE_LINK49", "44");
-            dc.Add("OLE_LINK5", "45");
-            dc.Add("OLE_LINK50", "46");
-            dc.Add("OLE_LINK51", "47");
-            dc.Add("OLE_LINK6", "48");
-            dc.Add("OLE_LINK7", "49");
-            dc.Add("OLE_LINK8", "50");
-            dc.Add("OLE_LINK9", "51");
-            dc.Add("幕墙平面变形平面变形级别", "52");
-            dc.Add("幕墙平面变形平面变形记录", "53");
-            dc.Add("幕墙检测条件变形压力级别1", "54");
-            dc.Add("幕墙检测条件变形压力级别1重复2", "55");
-            dc.Add("幕墙检测条件变形压力级别1重复4", "56");
-            dc.Add("幕墙检测条件变形压力级别2", "57");
-            dc.Add("幕墙检测条件变形压力级别2重复2", "58");
-            dc.Add("幕墙检测条件变形压力级别2重复4", "59");
-            dc.Add("幕墙检测条件变形压力级别3", "60");
-            dc.Add("幕墙检测条件变形压力级别3重复2", "61");
-            dc.Add("幕墙检测条件变形压力级别3重复4", "62");
-            dc.Add("幕墙检测条件变形压力级别4", "63");
-            dc.Add("幕墙检测条件变形压力级别4重复2", "64");
-            dc.Add("幕墙检测条件变形压力级别4重复4", "65");
-            dc.Add("幕墙检测条件变形压力级别5", "66");
-            dc.Add("幕墙检测条件变形压力级别5重复2", "67");
-            dc.Add("幕墙检测条件变形压力级别5重复4", "68");
-            dc.Add("幕墙检测条件变形压力级别6", "69");
-            dc.Add("幕墙检测条件变形压力级别6重复2", "70");
-            dc.Add("幕墙检测条件变形压力级别6重复4", "71");
-            dc.Add("幕墙检测条件变形压力级别7", "72");
-            dc.Add("幕墙检测条件变形压力级别7重复2", "73");
-            dc.Add("幕墙检测条件变形压力级别7重复4", "74");
-            dc.Add("幕墙检测条件变形压力级别8", "75");
-            dc.Add("幕墙检测条件变形压力级别8重复2", "76");
-            dc.Add("幕墙检测条件变形压力级别8重复4", "77");
-            dc.Add("幕墙检测条件可开水密保持风压", "78");
-            dc.Add("幕墙检测条件可开综合单位缝长渗透量", "79");
-            dc.Add("幕墙检测条件可开缝长", "80");
-            dc.Add("幕墙检测条件强度记录", "81");
-            dc.Add("幕墙检测条件强度记录重复1", "82");
-            dc.Add("幕墙检测条件强度记录重复2", "83");
-            dc.Add("幕墙检测条件当前温度", "84");
-            dc.Add("幕墙检测条件整体综合单位面积渗透量", "85");
-            dc.Add("幕墙检测条件样品编号重复1", "86");
-            dc.Add("幕墙检测条件水密检测方法", "87");
-            dc.Add("幕墙检测条件淋水量", "88");
-            dc.Add("幕墙检测条件综合可开气密等级", "89");
-            dc.Add("幕墙检测条件综合面积气密等级", "90");
+
+            dc.Add("样品名称重复1", settings.YangPinMingCheng);
+            dc.Add("样品名称重复2", settings.YangPinMingCheng);
+            dc.Add("样品名称重复3", settings.YangPinMingCheng);
+            dc.Add("样品名称重复4", settings.YangPinMingCheng);
+            dc.Add("样品名称重复5", settings.YangPinMingCheng);
+            dc.Add("样品名称重复6", settings.YangPinMingCheng);
+            dc.Add("检测地址1", "");
+            dc.Add("检测地址2", "");
+            dc.Add("检测地址3", "");
+            dc.Add("检测地址4", "");
+            dc.Add("检测地址5", "");
+            dc.Add("检测地址6", "");
+            dc.Add("检测地址7", "");
+
+            dc.Add("检验编号重复1", settings.dt_Code + "             ");
+            dc.Add("检验编号重复2", settings.dt_Code + "             ");
+            dc.Add("检验编号重复3", settings.dt_Code + "             ");
+            dc.Add("检验编号重复4", settings.dt_Code + "             ");
+            dc.Add("检验编号重复5", settings.dt_Code + "             ");
+            dc.Add("检验编号重复6", settings.dt_Code + "             ");
+            dc.Add("检验编号重复7", settings.dt_Code + "             ");
+            dc.Add("检验设备重复1", "");
+            dc.Add("检验设备重复2", "");
+            dc.Add("检验设备重复3", "");
+            dc.Add("检验设备重复4", "");
+            dc.Add("检验设备重复5", "");
+            dc.Add("检验设备重复6", "");
+            dc.Add("检验设备重复7", "");
+            dc.Add("规格型号重复1", settings.GuiGeXingHao);
+            dc.Add("规格型号重复2", settings.GuiGeXingHao);
+            dc.Add("规格型号重复3", settings.GuiGeXingHao);
+            dc.Add("规格型号重复4", settings.GuiGeXingHao);
+            dc.Add("规格型号重复5", settings.GuiGeXingHao);
+            dc.Add("规格型号重复6", settings.GuiGeXingHao);
+            dc.Add("大气压力", settings.DaQiYaLi);
+            dc.Add("环境温度", settings.DangQianWenDu);
+            dc.Add("试件层高", settings.shijiancenggao);
+            dc.Add("试件面级", settings.shijianmianji + "mm");
+            dc.Add("可开逢长", settings.kekaifengchang);
 
 
-            dc.Add("幕墙气密检测附加正降压100帕风速", "");
-            dc.Add("幕墙气密检测附加负升压100帕风速", "");
-            dc.Add("幕墙气密检测附加负降压100帕风速", "");
-            dc.Add("幕墙气密检测附加负降压50帕风速", "");
-            dc.Add("幕墙水密检测可开1000帕部位", "");
-            dc.Add("幕墙水密检测可开250帕状态", "");
-            dc.Add("幕墙水密检测可开250帕部位", "");
-            dc.Add("幕墙水密检测固定2000帕部位", "");
-            dc.Add("幕墙水密检测水密记录", "");
-            dc.Add("强度检测杆A正1250帕位移A1", "");
-            dc.Add("强度检测杆A正1500帕位移A1", "");
-            dc.Add("强度检测杆A正1750帕位移A1", "");
-            dc.Add("强度检测杆A正1750帕位移A2", "");
-            dc.Add("强度检测杆A正1750帕位移A3", "");
-            dc.Add("强度检测杆A正1750帕挠度", "");
-            dc.Add("强度检测杆A正2000帕位移A1", "");
-            dc.Add("强度检测杆A正2000帕位移A2", "");
-            dc.Add("强度检测杆A正2000帕位移A3", "");
-            dc.Add("强度检测杆A正2000帕挠度", "");
-            dc.Add("强度检测杆A正压P1", "");
-            dc.Add("强度检测杆A负1250帕位移A1", "");
-            dc.Add("强度检测杆A负1500帕位移A1", "");
-            dc.Add("强度检测杆A负1750帕位移A1", "");
-            dc.Add("强度检测杆A负1750帕位移A2", "");
-            dc.Add("强度检测杆A负1750帕位移A3", "");
-            dc.Add("强度检测杆A负1750帕挠度", "");
-            dc.Add("强度检测杆A负2000帕位移A1", "");
-            dc.Add("强度检测杆A负2000帕位移A2", "");
-            dc.Add("强度检测杆A负2000帕位移A3", "");
-            dc.Add("强度检测杆A负2000帕挠度", "");
-            dc.Add("强度检测杆B负1250帕位移B1", "");
-            dc.Add("强度检测杆B负1500帕位移B1", "");
-            dc.Add("强度检测杆B负1750帕位移B1", "");
-            dc.Add("强度检测杆B负1750帕位移B2", "");
-            dc.Add("强度检测杆B负1750帕位移B3", "");
-            dc.Add("强度检测杆B负1750帕挠度", "");
-            dc.Add("强度检测杆B负2000帕位移B1", "");
-            dc.Add("强度检测杆B负2000帕位移B2", "");
-            dc.Add("强度检测杆B负2000帕位移B3", "");
-            dc.Add("强度检测杆B负2000帕挠度", "");
-            dc.Add("强度检测杆C回归系数", "");
-            dc.Add("强度检测杆C正1250帕位移C1", "");
-            dc.Add("强度检测杆C正1500帕位移C1", "");
-            dc.Add("强度检测杆C正1750帕位移C1", "");
-            dc.Add("强度检测杆C正1750帕位移C2", "");
-            dc.Add("强度检测杆C正1750帕位移C3", "");
-            dc.Add("强度检测杆C正1750帕挠度", "");
-            dc.Add("强度检测杆C正2000帕位移C1", "");
-            dc.Add("强度检测杆C正2000帕位移C2", "");
-            dc.Add("强度检测杆C正2000帕位移C3", "");
-            dc.Add("强度检测杆C正2000帕挠度", "");
-            dc.Add("强度检测杆C负1250帕位移C1", "");
-            dc.Add("强度检测杆C负1500帕位移C1", "");
-            dc.Add("强度检测杆C负1750帕位移C1", "");
-            dc.Add("强度检测杆C负1750帕位移C2", "");
-            dc.Add("强度检测杆C负1750帕位移C3", "");
-            dc.Add("强度检测杆C负1750帕挠度", "");
-            dc.Add("强度检测杆C负2000帕位移C1", "");
-            dc.Add("强度检测杆C负2000帕位移C2", "");
-            dc.Add("强度检测杆C负2000帕位移C3", "");
-            dc.Add("强度检测杆C负2000帕挠度 ", "");
+            dc.Add("集流管直径", "");
+            dc.Add("气密性能等级", "");
+            dc.Add("淋水流量", "");
+
+            if (settings.dt_kfy_Info != null && settings.dt_kfy_Info.Count > 0)
+            {
+                var kfyInfo = settings.dt_kfy_Info.OrderBy(t => t.level);
+                foreach (var item in settings.dt_kfy_Info)
+                {
+                    if (item.level == "A")
+                    {
+                        dc.Add("A_Z250A1", item.z_one_250);
+                        dc.Add("A_Z250A2", item.z_two_250);
+                        dc.Add("A_Z250A3", item.z_three_250);
+                        dc.Add("A_Z250ND", item.z_nd_250);
+
+                        dc.Add("A_Z500A1", item.z_one_500);
+                        dc.Add("A_Z500A2", item.z_two_250);
+                        dc.Add("A_Z500A3", item.z_three_250);
+                        dc.Add("A_Z500ND", item.z_nd_500);
+
+                        dc.Add("A_Z750A1", item.z_one_750);
+                        dc.Add("A_Z750A2", item.z_two_750);
+                        dc.Add("A_Z750A3", item.z_three_750);
+                        dc.Add("A_Z750ND", item.z_nd_750);
+
+                        dc.Add("A_Z1000A1", item.z_one_1000);
+                        dc.Add("A_Z1000A2", item.z_two_1000);
+                        dc.Add("A_Z1000A3", item.z_three_1000);
+                        dc.Add("A_Z1000ND", item.z_nd_1000);
+
+                        dc.Add("A_Z1250A1", item.z_one_1250);
+                        dc.Add("A_Z1250A2", item.z_two_1250);
+                        dc.Add("A_Z1250A3", item.z_three_1250);
+                        dc.Add("A_Z1250ND", item.z_nd_1250);
+
+                        dc.Add("A_Z1500A1", item.z_one_1500);
+                        dc.Add("A_Z1500A2", item.z_two_1500);
+                        dc.Add("A_Z1500A3", item.z_three_1500);
+                        dc.Add("A_Z1500ND", item.z_nd_1500);
+
+                        dc.Add("A_Z1750A1", item.z_one_1750);
+                        dc.Add("A_Z1750A2", item.z_two_1750);
+                        dc.Add("A_Z1750A3", item.z_three_1750);
+                        dc.Add("A_Z1750ND", item.z_nd_1750);
+
+                        dc.Add("A_Z2000A1", item.z_one_2000);
+                        dc.Add("A_Z2000A2", item.z_two_2000);
+                        dc.Add("A_Z2000A3", item.z_three_2000);
+                        dc.Add("A_Z2000ND", item.z_nd_2000);
+
+                        dc.Add("A_F250A1", item.f_one_250);
+                        dc.Add("A_F250A2", item.f_two_250);
+                        dc.Add("A_F250A3", item.f_three_250);
+                        dc.Add("A_F250ND", item.f_nd_250);
+
+                        dc.Add("A_F500A1", item.f_one_500);
+                        dc.Add("A_F500A2", item.f_two_500);
+                        dc.Add("A_F500A3", item.f_three_500);
+                        dc.Add("A_F500ND", item.f_nd_500);
+
+                        dc.Add("A_F750A1", item.f_one_750);
+                        dc.Add("A_F750A2", item.f_two_750);
+                        dc.Add("A_F750A3", item.f_three_750);
+                        dc.Add("A_F750ND", item.f_nd_750);
+
+                        dc.Add("A_F1000A1", item.f_one_1000);
+                        dc.Add("A_F1000A2", item.f_two_1000);
+                        dc.Add("A_F1000A3", item.f_three_1000);
+                        dc.Add("A_F1000ND", item.f_nd_1000);
+
+                        dc.Add("A_F1250A1", item.f_one_1250);
+                        dc.Add("A_F1250A2", item.f_two_1250);
+                        dc.Add("A_F1250A3", item.f_three_1250);
+                        dc.Add("A_F1250ND", item.f_nd_1250);
+
+                        dc.Add("A_F1500A1", item.f_one_1500);
+                        dc.Add("A_F1500A2", item.f_two_1500);
+                        dc.Add("A_F1500A3", item.f_three_1500);
+                        dc.Add("A_F1500ND", item.f_nd_1500);
+
+                        dc.Add("A_F1750A1", item.f_one_1750);
+                        dc.Add("A_F1750A2", item.f_two_1750);
+                        dc.Add("A_F1750A3", item.f_three_1750);
+                        dc.Add("A_F1750ND", item.f_nd_1750);
+
+                        dc.Add("A_F2000A1", item.f_one_2000);
+                        dc.Add("A_F2000A2", item.f_two_2000);
+                        dc.Add("A_F2000A3", item.f_three_2000);
+                        dc.Add("A_F2000ND", item.f_nd_2000);
+
+                        dc.Add("Ap3A1", item.z_one_p3);
+                        dc.Add("Ap3A2", item.z_two_p3);
+                        dc.Add("Ap3A3", item.z_three_p3);
+                        dc.Add("Ap3ND", item.z_nd_p3);
+
+                        dc.Add("A_p3A1", item.f_one_p3);
+                        dc.Add("A_p3A2", item.f_two_p3);
+                        dc.Add("A_p3A3", item.f_three_p3);
+                        dc.Add("A_p3ND", item.f_nd_p3);
+                    }
+                    else if (item.level == "B")
+                    {
+                        dc.Add("B_Z250B1", item.z_one_250);
+                        dc.Add("B_Z250B2", item.z_two_250);
+                        dc.Add("B_Z250B3", item.z_three_250);
+                        dc.Add("B_Z250ND", item.z_nd_250);
+
+                        dc.Add("B_Z500B1", item.z_one_500);
+                        dc.Add("B_Z500B2", item.z_two_250);
+                        dc.Add("B_Z500B3", item.z_three_250);
+                        dc.Add("B_Z500ND", item.z_nd_500);
+
+                        dc.Add("B_Z750B1", item.z_one_750);
+                        dc.Add("B_Z750B2", item.z_two_750);
+                        dc.Add("B_Z750B3", item.z_three_750);
+                        dc.Add("B_Z750ND", item.z_nd_750);
+
+                        dc.Add("B_Z1000B1", item.z_one_1000);
+                        dc.Add("B_Z1000B2", item.z_two_1000);
+                        dc.Add("B_Z1000B3", item.z_three_1000);
+                        dc.Add("B_Z1000ND", item.z_nd_1000);
+
+                        dc.Add("B_Z1250B1", item.z_one_1250);
+                        dc.Add("B_Z1250B2", item.z_two_1250);
+                        dc.Add("B_Z1250B3", item.z_three_1250);
+                        dc.Add("B_Z1250ND", item.z_nd_1250);
+
+                        dc.Add("B_Z1500B1", item.z_one_1500);
+                        dc.Add("B_Z1500B2", item.z_two_1500);
+                        dc.Add("B_Z1500B3", item.z_three_1500);
+                        dc.Add("B_Z1500ND", item.z_nd_1500);
+
+                        dc.Add("B_Z1750B1", item.z_one_1750);
+                        dc.Add("B_Z1750B2", item.z_two_1750);
+                        dc.Add("B_Z1750B3", item.z_three_1750);
+                        dc.Add("B_Z1750BND", item.z_nd_1750);
+
+                        dc.Add("B_Z2000B1", item.z_one_2000);
+                        dc.Add("B_Z2000B2", item.z_two_2000);
+                        dc.Add("B_Z2000B3", item.z_three_2000);
+                        dc.Add("B_Z2000ND", item.z_nd_2000);
+
+                        dc.Add("B_F250B1", item.f_one_250);
+                        dc.Add("B_F250B2", item.f_two_250);
+                        dc.Add("B_F250B3", item.f_three_250);
+                        dc.Add("B_F250ND", item.f_nd_250);
+
+                        dc.Add("B_F500B1", item.f_one_500);
+                        dc.Add("B_F500B2", item.f_two_500);
+                        dc.Add("B_F500B3", item.f_three_500);
+                        dc.Add("B_F500ND", item.f_nd_500);
+
+                        dc.Add("B_F750B1", item.f_one_750);
+                        dc.Add("B_F750B2", item.f_two_750);
+                        dc.Add("B_F750B3", item.f_three_750);
+                        dc.Add("B_F750ND", item.f_nd_750);
+
+                        dc.Add("B_F1000B1", item.f_one_1000);
+                        dc.Add("B_F1000B2", item.f_two_1000);
+                        dc.Add("B_F1000B3", item.f_three_1000);
+                        dc.Add("B_F1000ND", item.f_nd_1000);
+
+                        dc.Add("B_F1250B1", item.f_one_1250);
+                        dc.Add("B_F1250B2", item.f_two_1250);
+                        dc.Add("B_F1250B3", item.f_three_1250);
+                        dc.Add("B_F1250ND", item.f_nd_1250);
+
+                        dc.Add("B_F1500B1", item.f_one_1500);
+                        dc.Add("B_F1500B2", item.f_two_1500);
+                        dc.Add("B_F1500B3", item.f_three_1500);
+                        dc.Add("B_F1500ND", item.f_nd_1500);
+
+                        dc.Add("B_F1750B1", item.f_one_1750);
+                        dc.Add("B_F1750B2", item.f_two_1750);
+                        dc.Add("B_F1750B3", item.f_three_1750);
+                        dc.Add("B_F1750ND", item.f_nd_1750);
+
+                        dc.Add("B_F2000B1", item.f_one_2000);
+                        dc.Add("B_F2000B2", item.f_two_2000);
+                        dc.Add("B_F2000B3", item.f_three_2000);
+                        dc.Add("B_F2000ND", item.f_nd_2000);
+
+                        dc.Add("Bp3B1", item.z_one_p3);
+                        dc.Add("Bp3B2", item.z_two_p3);
+                        dc.Add("Bp3B3", item.z_three_p3);
+                        dc.Add("Bp3ND", item.z_nd_p3);
+
+                        dc.Add("B_p3B1", item.f_one_p3);
+                        dc.Add("B_p3B2", item.f_two_p3);
+                        dc.Add("B_p3B3", item.f_three_p3);
+                        dc.Add("B_p3ND", item.f_nd_p3);
+
+                    }
+                    else if (item.level == "C")
+                    {
+                        dc.Add("C_F250B1", item.z_one_250);
+                        dc.Add("C_F250B2", item.z_two_250);
+                        dc.Add("C_F250B3", item.z_three_250);
+                        dc.Add("C_F250ND", item.z_nd_250);
+
+                        dc.Add("C_F500B1", item.z_one_500);
+                        dc.Add("C_F500B2", item.z_two_250);
+                        dc.Add("C_F500B3", item.z_three_250);
+                        dc.Add("C_F500ND", item.z_nd_500);
+
+                        dc.Add("C_F750B1", item.z_one_750);
+                        dc.Add("C_F750B2", item.z_two_750);
+                        dc.Add("C_F750B3", item.z_three_750);
+                        dc.Add("C_F750ND", item.z_nd_750);
+
+                        dc.Add("C_F1000B1", item.z_one_1000);
+                        dc.Add("C_F1000B2", item.z_two_1000);
+                        dc.Add("C_F1000B3", item.z_three_1000);
+                        dc.Add("C_F1000ND", item.z_nd_1000);
+
+                        dc.Add("C_F1250B1", item.z_one_1250);
+                        dc.Add("C_F1250B2", item.z_two_1250);
+                        dc.Add("C_F1250B3", item.z_three_1250);
+                        dc.Add("C_F1250ND", item.z_nd_1250);
+
+                        dc.Add("C_F1500B1", item.z_one_1500);
+                        dc.Add("C_F1500B2", item.z_two_1500);
+                        dc.Add("C_F1500B3", item.z_three_1500);
+                        dc.Add("C_F1500ND", item.z_nd_1500);
+
+                        dc.Add("C_F1750B1", item.z_one_1750);
+                        dc.Add("C_F1750B2", item.z_two_1750);
+                        dc.Add("C_F1750B3", item.z_three_1750);
+                        dc.Add("C_F1750ND", item.z_nd_1750);
+
+                        dc.Add("C_F2000B1", item.z_one_2000);
+                        dc.Add("C_F2000B2", item.z_two_2000);
+                        dc.Add("C_F2000B3", item.z_three_2000);
+                        dc.Add("C_F2000ND", item.z_nd_2000);
+
+                        dc.Add("C_Z250C1", item.f_one_250);
+                        dc.Add("C_Z250C2", item.f_two_250);
+                        dc.Add("C_Z250C3", item.f_three_250);
+                        dc.Add("C_Z250ND", item.f_nd_250);
+
+                        dc.Add("C_Z500C1", item.f_one_500);
+                        dc.Add("C_Z500C2", item.f_two_500);
+                        dc.Add("C_Z500C3", item.f_three_500);
+                        dc.Add("C_Z500ND", item.f_nd_500);
+
+                        dc.Add("C_Z750C1", item.f_one_750);
+                        dc.Add("C_Z750C2", item.f_two_750);
+                        dc.Add("C_Z750C3", item.f_three_750);
+                        dc.Add("C_Z750ND", item.f_nd_750);
+
+                        dc.Add("C_Z1000C1", item.f_one_1000);
+                        dc.Add("C_Z1000C2", item.f_two_1000);
+                        dc.Add("C_Z1000C3", item.f_three_1000);
+                        dc.Add("C_Z1000ND", item.f_nd_1000);
+
+                        dc.Add("C_Z1250C1", item.f_one_1250);
+                        dc.Add("C_Z1250C2", item.f_two_1250);
+                        dc.Add("C_Z1250C3", item.f_three_1250);
+                        dc.Add("C_Z1250ND", item.f_nd_1250);
+
+                        dc.Add("C_Z1500C1", item.f_one_1500);
+                        dc.Add("C_Z1500C2", item.f_two_1500);
+                        dc.Add("C_Z1500C3", item.f_three_1500);
+                        dc.Add("C_Z1500ND", item.f_nd_1500);
+
+                        dc.Add("C_Z1750C1", item.f_one_1750);
+                        dc.Add("C_Z1750C2", item.f_two_1750);
+                        dc.Add("C_Z1750C3", item.f_three_1750);
+                        dc.Add("C_Z1750ND", item.f_nd_1750);
+
+                        dc.Add("C_Z2000C1", item.f_one_2000);
+                        dc.Add("C_Z2000C2", item.f_two_2000);
+                        dc.Add("C_Z2000C3", item.f_three_2000);
+                        dc.Add("C_Z2000ND", item.f_nd_2000);
+
+                        dc.Add("Cp3C1", item.z_one_p3);
+                        dc.Add("Cp3C2", item.z_two_p3);
+                        dc.Add("Cp3C3", item.z_three_p3);
+                        dc.Add("Cp3ND", item.z_nd_p3);
+
+                        dc.Add("C_p3C1", item.f_one_p3);
+                        dc.Add("C_p3C2", item.f_two_p3);
+                        dc.Add("C_p3C3", item.f_three_p3);
+                        dc.Add("C_p3ND", item.f_nd_p3);
+                    }
+                }
+            }
+
+            var dt_kfy_res_Info = settings.dt_kfy_res_Info;
+            if (dt_kfy_res_Info != null)
+            {
+                dc.Add("A_ZP1", dt_kfy_res_Info.p1);
+                dc.Add("A_FP1", dt_kfy_res_Info._p1);
+                dc.Add("B_ZP1", dt_kfy_res_Info.p1);
+                dc.Add("B_FP1", dt_kfy_res_Info._p1);
+                dc.Add("C_ZP1", dt_kfy_res_Info.p1);
+                dc.Add("C_FP1", dt_kfy_res_Info._p1);
 
 
-            dc.Add("挠度曲线杆A300，540，12，12", "92");
-            dc.Add("挠度曲线杆B300，540，12，12", "93");
-            dc.Add("挠度曲线杆C300，540，12，12", "94");
+                dc.Add("A_ZP2", dt_kfy_res_Info.p2);
+                dc.Add("A_FP2", dt_kfy_res_Info._p2);
+                dc.Add("B_ZP2", dt_kfy_res_Info.p2);
+                dc.Add("B_FP2", dt_kfy_res_Info._p2);
+                dc.Add("C_ZP2", dt_kfy_res_Info.p2);
+                dc.Add("C_FP2", dt_kfy_res_Info._p2);
+
+                //计算
+                dc.Add("A_ZP3", dt_kfy_res_Info.p3);
+                dc.Add("A_FP3", dt_kfy_res_Info._p3);
+                dc.Add("B_ZP3", dt_kfy_res_Info.p3);
+                dc.Add("B_FP3", dt_kfy_res_Info._p3);
+                dc.Add("C_ZP3", dt_kfy_res_Info.p3);
+                dc.Add("C_FP3", dt_kfy_res_Info._p3);
+
+
+                dc.Add("A_ZP3重复2", dt_kfy_res_Info.p3);
+                dc.Add("A_ZP3重复3", dt_kfy_res_Info.p3);
+                dc.Add("A_ZP3重复4", dt_kfy_res_Info.p3);
+                dc.Add("A_FP3重复2", dt_kfy_res_Info._p3);
+                dc.Add("A_FP3重复3", dt_kfy_res_Info._p3);
+                dc.Add("A_FP3重复4", dt_kfy_res_Info._p3);
 
 
 
+                dc.Add("A_ZPMAX", dt_kfy_res_Info.pMax);
+                dc.Add("A_FPMAX", dt_kfy_res_Info._pMax);
+                dc.Add("B_ZPMAX", dt_kfy_res_Info.pMax);
+                dc.Add("B_FPMAX", dt_kfy_res_Info._pMax);
+                dc.Add("C_ZPMAX", dt_kfy_res_Info.pMax);
+                dc.Add("C_FPMAX", dt_kfy_res_Info._pMax);
+
+                var jc = dt_kfy_res_Info.defJC;
+                dc.Add("抗风压备注1", dt_kfy_res_Info.desc);
+                dc.Add("抗风压备注2", dt_kfy_res_Info.desc);
+                dc.Add("抗风压备注3", dt_kfy_res_Info.desc);
 
 
+                if (jc > 0)
+                {
+                    for (int i = 1; i <= 8; i++)
+                    {
+                        var pa = jc * 250;
+                        if (i == 1)
+                        {
+                            dc.Add("A250重复1", pa.ToString());
+                            dc.Add("A250重复2", pa.ToString());
+                            dc.Add("A250重复3", pa.ToString());
+                            dc.Add("A250重复4", pa.ToString());
+                            dc.Add("A250重复5", pa.ToString());
+                            dc.Add("A250重复6", pa.ToString());
+                        }
+                        if (i == 2)
+                        {
+                            dc.Add("A500重复1", pa.ToString());
+                            dc.Add("A500重复2", pa.ToString());
+                            dc.Add("A500重复3", pa.ToString());
+                            dc.Add("A500重复4", pa.ToString());
+                            dc.Add("A500重复5", pa.ToString());
+                            dc.Add("A500重复6", pa.ToString());
+                        }
+                        if (i == 3)
+                        {
+                            dc.Add("A750重复1", pa.ToString());
+                            dc.Add("A750重复2", pa.ToString());
+                            dc.Add("A750重复3", pa.ToString());
+                            dc.Add("A750重复4", pa.ToString());
+                            dc.Add("A750重复5", pa.ToString());
+                            dc.Add("A750重复6", pa.ToString());
+                        }
+                        if (i == 4)
+                        {
+                            dc.Add("A1000重复1", pa.ToString());
+                            dc.Add("A1000重复2", pa.ToString());
+                            dc.Add("A1000重复3", pa.ToString());
+                            dc.Add("A1000重复4", pa.ToString());
+                            dc.Add("A1000重复5", pa.ToString());
+                            dc.Add("A1000重复6", pa.ToString());
+                        }
+                        if (i == 5)
+                        {
+                            dc.Add("A1250重复1", pa.ToString());
+                            dc.Add("A1250重复2", pa.ToString());
+                            dc.Add("A1250重复3", pa.ToString());
+                            dc.Add("A1250重复4", pa.ToString());
+                            dc.Add("A1250重复5", pa.ToString());
+                            dc.Add("A1250重复6", pa.ToString());
+                        }
+                        if (i == 6)
+                        {
+                            dc.Add("A1500重复1", pa.ToString());
+                            dc.Add("A1500重复2", pa.ToString());
+                            dc.Add("A1500重复3", pa.ToString());
+                            dc.Add("A1500重复4", pa.ToString());
+                            dc.Add("A1500重复5", pa.ToString());
+                            dc.Add("A1500重复6", pa.ToString());
+                        }
+                        if (i == 7)
+                        {
+                            dc.Add("A1750重复1", pa.ToString());
+                            dc.Add("A1750重复2", pa.ToString());
+                            dc.Add("A1750重复3", pa.ToString());
+                            dc.Add("A1750重复4", pa.ToString());
+                            dc.Add("A1750重复5", pa.ToString());
+                            dc.Add("A1750重复6", pa.ToString());
+                        }
+                        if (i == 8)
+                        {
+                            dc.Add("A2000重复1", pa.ToString());
+                            dc.Add("A2000重复2", pa.ToString());
+                            dc.Add("A2000重复3", pa.ToString());
+                            dc.Add("A2000重复4", pa.ToString());
+                            dc.Add("A2000重复5", pa.ToString());
+                            dc.Add("A2000重复6", pa.ToString());
+                        }
+                    }
+                }
+            }
 
+            List<SortInfo> sortList = GetSort();
 
-            //dc.Add("OLE_LINK1", "1");
-            //dc.Add("OLE_LINK10", "2");
-            //dc.Add("OLE_LINK11", "3");
-            //dc.Add("OLE_LINK12", "4");
-            //dc.Add("OLE_LINK13", "5");
-            //dc.Add("OLE_LINK14", "6");
-            //dc.Add("OLE_LINK15", "7");
-            //dc.Add("OLE_LINK16", "8");
-            //dc.Add("OLE_LINK17", "9");
-            //dc.Add("OLE_LINK18", "10");
-            //dc.Add("OLE_LINK19", "11");
-            //dc.Add("OLE_LINK2", "12");
-            //dc.Add("OLE_LINK20", "13");
-            //dc.Add("OLE_LINK21", "14");
-            //dc.Add("OLE_LINK22", "15");
-            //dc.Add("OLE_LINK23", "16");
-            //dc.Add("OLE_LINK24", "17");
-            //dc.Add("OLE_LINK25", "18");
-            //dc.Add("OLE_LINK26", "19");
-            //dc.Add("OLE_LINK27", "20");
-            //dc.Add("OLE_LINK28", "");
-            //dc.Add("OLE_LINK29", "");
-            //dc.Add("OLE_LINK3", "");
-            //dc.Add("OLE_LINK30", "");
-            //dc.Add("OLE_LINK31", "");
-            //dc.Add("OLE_LINK32", "");
-            //dc.Add("OLE_LINK33", "");
-            //dc.Add("OLE_LINK34", "");
-            //dc.Add("OLE_LINK35", "");
-            //dc.Add("OLE_LINK36", "");
-            //dc.Add("OLE_LINK37", "");
-            //dc.Add("OLE_LINK38", "");
-            //dc.Add("OLE_LINK39", "");
-            //dc.Add("OLE_LINK4", "");
-            //dc.Add("OLE_LINK40", "");
-            //dc.Add("OLE_LINK41", "");
-            //dc.Add("OLE_LINK42", "");
-            //dc.Add("OLE_LINK43", "");
-            //dc.Add("OLE_LINK44", "");
-            //dc.Add("OLE_LINK45", "");
-            //dc.Add("OLE_LINK46", "");
-            //dc.Add("OLE_LINK47", "");
-            //dc.Add("OLE_LINK48", "");
-            //dc.Add("OLE_LINK49", "");
-            //dc.Add("OLE_LINK5", "");
-            //dc.Add("OLE_LINK50", "");
-            //dc.Add("OLE_LINK51", "");
-            //dc.Add("OLE_LINK6", "");
-            //dc.Add("OLE_LINK7", "");
-            //dc.Add("OLE_LINK8", "");
-            //dc.Add("OLE_LINK9", "");
-            //dc.Add("幕墙平面变形平面变形级别", "");
-            //dc.Add("幕墙平面变形平面变形记录", "");
-            //dc.Add("幕墙检测条件变形压力级别1", "222222222");
-            //dc.Add("幕墙检测条件变形压力级别1重复2", "22222222");
-            //dc.Add("幕墙检测条件变形压力级别1重复4", "");
-            //dc.Add("幕墙检测条件变形压力级别2", "");
-            //dc.Add("幕墙检测条件变形压力级别2重复2", "");
-            //dc.Add("幕墙检测条件变形压力级别2重复4", "");
-            //dc.Add("幕墙检测条件变形压力级别3", "");
-            //dc.Add("幕墙检测条件变形压力级别3重复2", "");
-            //dc.Add("幕墙检测条件变形压力级别3重复4", "");
-            //dc.Add("幕墙检测条件变形压力级别4", "");
-            //dc.Add("幕墙检测条件变形压力级别4重复2", "");
-            //dc.Add("幕墙检测条件变形压力级别4重复4", "");
-            //dc.Add("幕墙检测条件变形压力级别5", "");
-            //dc.Add("幕墙检测条件变形压力级别5重复2", "");
-            //dc.Add("幕墙检测条件变形压力级别5重复4", "");
-            //dc.Add("幕墙检测条件变形压力级别6", "");
-            //dc.Add("幕墙检测条件变形压力级别6重复2", "");
-            //dc.Add("幕墙检测条件变形压力级别6重复4", "");
-            //dc.Add("幕墙检测条件变形压力级别7", "");
-            //dc.Add("幕墙检测条件变形压力级别7重复2", "");
-            //dc.Add("幕墙检测条件变形压力级别7重复4", "");
-            //dc.Add("幕墙检测条件变形压力级别8", "");
-            //dc.Add("幕墙检测条件变形压力级别8重复2", "");
-            //dc.Add("幕墙检测条件变形压力级别8重复4", "");
-            //dc.Add("幕墙检测条件可开水密保持风压", "");
-            //dc.Add("幕墙检测条件可开综合单位缝长渗透量", "");
-            //dc.Add("幕墙检测条件可开缝长", "");
-            //dc.Add("幕墙检测条件强度记录", "");
-            //dc.Add("幕墙检测条件强度记录重复1", "");
-            //dc.Add("幕墙检测条件强度记录重复2", "");
-            //dc.Add("幕墙检测条件当前温度", "");
-            //dc.Add("幕墙检测条件整体综合单位面积渗透量", "");
-            //dc.Add("幕墙检测条件样品编号重复1", "");
-            //dc.Add("幕墙检测条件水密检测方法", "");
-            //dc.Add("幕墙检测条件淋水量", "");
-            //dc.Add("幕墙检测条件综合可开气密等级", "");
-            //dc.Add("幕墙检测条件综合面积气密等级", "");
+            if (settings.dt_qm_Info != null && settings.dt_qm_Info.Count > 0)
+            {
+                int zhengtiLevel = 0;
+                int kekaiLevel = 0;
 
+                var qmInfo = settings.dt_qm_Info.OrderBy(t => t.PaType).ToList();
+                if (settings.dt_qm_zb_Info.testtype == "1")
+                {
+                    GetQMLevel(settings, ref zhengtiLevel, ref kekaiLevel);
 
-            //dc.Add("幕墙气密检测附加正降压100帕风速", "");
-            //dc.Add("幕墙气密检测附加负升压100帕风速", "");
-            //dc.Add("幕墙气密检测附加负降压100帕风速", "");
-            //dc.Add("幕墙气密检测附加负降压50帕风速", "");
-            //dc.Add("幕墙水密检测可开1000帕部位", "");
-            //dc.Add("幕墙水密检测可开250帕状态", "");
-            //dc.Add("幕墙水密检测可开250帕部位", "");
-            //dc.Add("幕墙水密检测固定2000帕部位", "");
-            //dc.Add("幕墙水密检测水密记录", "");
-            //dc.Add("强度检测杆A正1250帕位移A1", "");
-            //dc.Add("强度检测杆A正1500帕位移A1", "");
-            //dc.Add("强度检测杆A正1750帕位移A1", "");
-            //dc.Add("强度检测杆A正1750帕位移A2", "");
-            //dc.Add("强度检测杆A正1750帕位移A3", "");
-            //dc.Add("强度检测杆A正1750帕挠度", "");
-            //dc.Add("强度检测杆A正2000帕位移A1", "");
-            //dc.Add("强度检测杆A正2000帕位移A2", "");
-            //dc.Add("强度检测杆A正2000帕位移A3", "");
-            //dc.Add("强度检测杆A正2000帕挠度", "");
-            //dc.Add("强度检测杆A正压P1", "");
-            //dc.Add("强度检测杆A负1250帕位移A1", "");
-            //dc.Add("强度检测杆A负1500帕位移A1", "");
-            //dc.Add("强度检测杆A负1750帕位移A1", "");
-            //dc.Add("强度检测杆A负1750帕位移A2", "");
-            //dc.Add("强度检测杆A负1750帕位移A3", "");
-            //dc.Add("强度检测杆A负1750帕挠度", "");
-            //dc.Add("强度检测杆A负2000帕位移A1", "");
-            //dc.Add("强度检测杆A负2000帕位移A2", "");
-            //dc.Add("强度检测杆A负2000帕位移A3", "");
-            //dc.Add("强度检测杆A负2000帕挠度", "");
-            //dc.Add("强度检测杆B负1250帕位移B1", "");
-            //dc.Add("强度检测杆B负1500帕位移B1", "");
-            //dc.Add("强度检测杆B负1750帕位移B1", "");
-            //dc.Add("强度检测杆B负1750帕位移B2", "");
-            //dc.Add("强度检测杆B负1750帕位移B3", "");
-            //dc.Add("强度检测杆B负1750帕挠度", "");
-            //dc.Add("强度检测杆B负2000帕位移B1", "");
-            //dc.Add("强度检测杆B负2000帕位移B2", "");
-            //dc.Add("强度检测杆B负2000帕位移B3", "");
-            //dc.Add("强度检测杆B负2000帕挠度", "");
-            //dc.Add("强度检测杆C回归系数", "");
-            //dc.Add("强度检测杆C正1250帕位移C1", "");
-            //dc.Add("强度检测杆C正1500帕位移C1", "");
-            //dc.Add("强度检测杆C正1750帕位移C1", "");
-            //dc.Add("强度检测杆C正1750帕位移C2", "");
-            //dc.Add("强度检测杆C正1750帕位移C3", "");
-            //dc.Add("强度检测杆C正1750帕挠度", "");
-            //dc.Add("强度检测杆C正2000帕位移C1", "");
-            //dc.Add("强度检测杆C正2000帕位移C2", "");
-            //dc.Add("强度检测杆C正2000帕位移C3", "");
-            //dc.Add("强度检测杆C正2000帕挠度", "");
-            //dc.Add("强度检测杆C负1250帕位移C1", "");
-            //dc.Add("强度检测杆C负1500帕位移C1", "");
-            //dc.Add("强度检测杆C负1750帕位移C1", "");
-            //dc.Add("强度检测杆C负1750帕位移C2", "");
-            //dc.Add("强度检测杆C负1750帕位移C3", "");
-            //dc.Add("强度检测杆C负1750帕挠度", "");
-            //dc.Add("强度检测杆C负2000帕位移C1", "");
-            //dc.Add("强度检测杆C负2000帕位移C2", "");
-            //dc.Add("强度检测杆C负2000帕位移C3", "");
-            //dc.Add("强度检测杆C负2000帕挠度 ", "");
+                    for (int i = 0; i < sortList.Count(); i++)
+                    {
+                        var qmOne = qmInfo.Find(t => t.Pa == sortList[i].val.ToString() && t.PaType == sortList[i].index);
+                        if (qmOne == null)
+                            continue;
 
+                        if (i == 0)
+                        {
+                            dc.Add("S50FJ", qmOne.FJST);
+                            dc.Add("S50GF", qmOne.GFZH);
+                            dc.Add("S50ZD", qmOne.ZDST);
+                            dc.Add("S50ZT", qmOne.MQZT);
+                            dc.Add("S50KK", qmOne.KKST);
+                        }
+                        if (i == 1)
+                        {
+                            dc.Add("S100FJ", qmOne.FJST);
+                            dc.Add("S100GF", qmOne.GFZH);
+                            dc.Add("S100ZD", qmOne.ZDST);
+                            dc.Add("S100ZT", qmOne.MQZT);
+                            dc.Add("S100KK", qmOne.KKST);
+                        }
+                        if (i == 2)
+                        {
+                            dc.Add("S150FJ", qmOne.FJST);
+                            dc.Add("S150GF", qmOne.GFZH);
+                            dc.Add("S150ZD", qmOne.ZDST);
+                            dc.Add("S150ZT", qmOne.MQZT);
+                            dc.Add("S150KK", qmOne.KKST);
+                        }
+                        if (i == 3)
+                        {
+                            dc.Add("J100FJ", qmOne.FJST);
+                            dc.Add("J100GF", qmOne.GFZH);
+                            dc.Add("J100ZD", qmOne.ZDST);
+                            dc.Add("J100ZT", qmOne.MQZT);
+                            dc.Add("J100KK", qmOne.KKST);
+                        }
+                        if (i == 4)
+                        {
+                            dc.Add("J50FJ", qmOne.FJST);
+                            dc.Add("J50GF", qmOne.GFZH);
+                            dc.Add("J50ZD", qmOne.ZDST);
+                            dc.Add("J50ZT", qmOne.MQZT);
+                            dc.Add("J50KK", qmOne.KKST);
+                        }
+                        if (i == 5)
+                        {
+                            dc.Add("S_50FJ", qmOne.FJST);
+                            dc.Add("S_50GF", qmOne.GFZH);
+                            dc.Add("S_50ZD", qmOne.ZDST);
+                            dc.Add("S_50ZT", qmOne.MQZT);
+                            dc.Add("S_50KK", qmOne.KKST);
+                        }
+                        if (i == 6)
+                        {
+                            dc.Add("S_100FJ", qmOne.FJST);
+                            dc.Add("S_100GF", qmOne.GFZH);
+                            dc.Add("S_100ZD", qmOne.ZDST);
+                            dc.Add("S_100ZT", qmOne.MQZT);
+                            dc.Add("S_100KK", qmOne.KKST);
+                        }
+                        if (i == 7)
+                        {
+                            dc.Add("S_150FJ", qmOne.FJST);
+                            dc.Add("S_150GF", qmOne.GFZH);
+                            dc.Add("S_150ZD", qmOne.ZDST);
+                            dc.Add("S_150ZT", qmOne.MQZT);
+                            dc.Add("S_150KK", qmOne.KKST);
+                        }
+                        if (i == 8)
+                        {
+                            dc.Add("J_100FJ", qmOne.FJST);
+                            dc.Add("J_100GF", qmOne.GFZH);
+                            dc.Add("J_100ZD", qmOne.ZDST);
+                            dc.Add("J_100ZT", qmOne.MQZT);
+                            dc.Add("J_100KK", qmOne.KKST);
+                        }
+                        if (i == 9)
+                        {
+                            dc.Add("J_50FJ", qmOne.FJST);
+                            dc.Add("J_50GF", qmOne.GFZH);
+                            dc.Add("J_50ZD", qmOne.ZDST);
+                            dc.Add("J_50ZT", qmOne.MQZT);
+                            dc.Add("J_50KK", qmOne.KKST);
+                        }
+                    }
+                }
+                else
+                {
+                    #region  默认
+                    dc.Add("S50FJ", "--");
+                    dc.Add("S50GF", "--");
+                    dc.Add("S50ZD", "--");
+                    dc.Add("S50ZT", "--");
+                    dc.Add("S50KK", "--");
 
-            //dc.Add("挠度曲线杆A300，540，12，12", "");
-            //dc.Add("挠度曲线杆B300，540，12，12", "");
-            //dc.Add("挠度曲线杆C300，540，12，12", "");
+                    dc.Add("S100FJ", "--");
+                    dc.Add("S100GF", "--");
+                    dc.Add("S100ZD", "--");
+                    dc.Add("S100ZT", "--");
+                    dc.Add("S100KK", "--");
 
+                    dc.Add("S150FJ", "--");
+                    dc.Add("S150GF", "--");
+                    dc.Add("S150ZD", "--");
+                    dc.Add("S150ZT", "--");
+                    dc.Add("S150KK", "--");
 
+                    dc.Add("J100FJ", "--");
+                    dc.Add("J100GF", "--");
+                    dc.Add("J100ZD", "--");
+                    dc.Add("J100ZT", "--");
+                    dc.Add("J100KK", "--");
 
+                    dc.Add("J50FJ", "--");
+                    dc.Add("J50GF", "--");
+                    dc.Add("J50ZD", "--");
+                    dc.Add("J50ZT", "--");
+                    dc.Add("J50KK", "--");
 
+                    dc.Add("S_50FJ", "--");
+                    dc.Add("S_50GF", "--");
+                    dc.Add("S_50ZD", "--");
+                    dc.Add("S_50ZT", "--");
+                    dc.Add("S_50KK", "--");
+
+                    dc.Add("S_100FJ", "--");
+                    dc.Add("S_100GF", "--");
+                    dc.Add("S_100ZD", "--");
+                    dc.Add("S_100ZT", "--");
+                    dc.Add("S_100KK", "--");
+
+                    dc.Add("S_150FJ", "--");
+                    dc.Add("S_150GF", "--");
+                    dc.Add("S_150ZD", "--");
+                    dc.Add("S_150ZT", "--");
+                    dc.Add("S_150KK", "--");
+
+                    dc.Add("J_100FJ", "--");
+                    dc.Add("J_100GF", "--");
+                    dc.Add("J_100ZD", "--");
+                    dc.Add("J_100ZT", "--");
+                    dc.Add("J_100KK", "--");
+
+                    dc.Add("J_50FJ", "--");
+                    dc.Add("J_50GF", "--");
+                    dc.Add("J_50ZD", "--");
+                    dc.Add("J_50ZT", "--");
+                    dc.Add("J_50KK", "--");
+                    #endregion
+                }
+                if (settings.dt_qm_zb_Info.testtype == "2")
+                {
+                    GetQM_GCLevel(settings, ref zhengtiLevel, ref kekaiLevel);
+                    //工程
+                    var qm = qmInfo.Find(t => t.PaType == 3);
+                    if (qm != null)
+                    {
+                        dc.Add("正压工程值", qm.Pa);
+                        dc.Add("正压附加值", qm.FJST);
+                        dc.Add("正压固附值", qm.GFZH);
+                        dc.Add("正压总的值", qm.ZDST);
+                        dc.Add("正压整体值", qm.MQZT);
+                        dc.Add("正压可开值", qm.KKST);
+                    }
+                    var qm1 = qmInfo.Find(t => t.PaType == 4);
+                    if (qm1 != null)
+                    {
+                        dc.Add("负压工程值", qm1.Pa);
+                        dc.Add("负压附加值", qm1.FJST);
+                        dc.Add("负压固附值", qm1.GFZH);
+                        dc.Add("负压总的值", qm1.ZDST);
+                        dc.Add("负压整体值", qm1.MQZT);
+                        dc.Add("负压可开值", qm1.KKST);
+                    }
+                }
+                else
+                {
+                    dc.Add("正压工程值", "--");
+                    dc.Add("正压附加值", "--");
+                    dc.Add("正压固附值", "--");
+                    dc.Add("正压总的值", "--");
+                    dc.Add("正压整体值", "--");
+                    dc.Add("正压可开值", "--");
+
+                    dc.Add("负压工程值", "--");
+                    dc.Add("负压附加值", "--");
+                    dc.Add("负压固附值", "--");
+                    dc.Add("负压总的值", "--");
+                    dc.Add("负压整体值", "--");
+                    dc.Add("负压可开值", "--");
+                }
+
+                if (kekaiLevel == 0)
+                {
+                    dc.Add("可开气密性能等级", "--");
+                }
+                else
+                {
+                    dc.Add("可开气密性能等级", kekaiLevel.ToString());
+                }
+                if (zhengtiLevel == 0)
+                {
+                    dc.Add("试件整体气密性能等级", "--");
+                }
+                else
+                {
+                    dc.Add("试件整体气密性能等级", zhengtiLevel.ToString());
+                }
+            }
+
+            if (settings.dt_sm_Info != null)
+            {
+                dc.Add("检测方法", settings.dt_sm_Info.Method);
+
+                var sm_Pa = 0;
+                if (settings.dt_sm_Info.sm_Pa != null)
+                {
+                    sm_Pa = settings.dt_sm_Info.sm_Pa.Value;
+                }
+                if (settings.dt_sm_Info.sm_PaDesc.Contains("▲") ||
+                    settings.dt_sm_Info.sm_PaDesc.Contains("●"))
+                {
+                    if (settings.dt_sm_Info.sm_Pa == 250)
+                    {
+                        sm_Pa = 250;
+                    }
+                    if (settings.dt_sm_Info.sm_Pa == 350)
+                    {
+                        sm_Pa = 250;
+                    }
+                    if (settings.dt_sm_Info.sm_Pa == 500)
+                    {
+                        sm_Pa = 350;
+                    }
+                    if (settings.dt_sm_Info.sm_Pa == 700)
+                    {
+                        sm_Pa = 500;
+                    }
+                    if (settings.dt_sm_Info.sm_Pa == 1000)
+                    {
+                        sm_Pa = 1000;
+                    }
+                }
+                var sm_Pa2 = 0;
+
+                if (settings.dt_sm_Info.sm_Pa2 != null)
+                {
+                    sm_Pa2 = settings.dt_sm_Info.sm_Pa2.Value;
+                }
+                if (settings.dt_sm_Info.sm_PaDesc2.Contains("▲") ||
+                    settings.dt_sm_Info.sm_PaDesc2.Contains("●"))
+                {
+                    if (settings.dt_sm_Info.sm_Pa2 == 500)
+                    {
+                        sm_Pa2 = 500;
+                    }
+                    if (settings.dt_sm_Info.sm_Pa2 == 700)
+                    {
+                        sm_Pa2 = 500;
+                    }
+                    if (settings.dt_sm_Info.sm_Pa2 == 1000)
+                    {
+                        sm_Pa2 = 750;
+                    }
+                    if (settings.dt_sm_Info.sm_Pa2 == 1500)
+                    {
+                        sm_Pa2 = 1000;
+                    }
+                    if (settings.dt_sm_Info.sm_Pa2 == 2000)
+                    {
+                        sm_Pa2 = 1500;
+                    }
+                }
+
+                if (settings.dt_sm_Info.sm_Pa == 250)
+                {
+                    dc.Add("可开250", settings.dt_sm_Info.sm_PaDesc);
+                }
+                if (settings.dt_sm_Info.sm_Pa == 350)
+                {
+                    dc.Add("可开350", settings.dt_sm_Info.sm_PaDesc);
+                }
+                if (settings.dt_sm_Info.sm_Pa == 500)
+                {
+                    dc.Add("可开500", settings.dt_sm_Info.sm_PaDesc);
+                }
+                if (settings.dt_sm_Info.sm_Pa == 700)
+                {
+                    dc.Add("可开700", settings.dt_sm_Info.sm_PaDesc);
+                }
+                if (settings.dt_sm_Info.sm_Pa == 1000)
+                {
+                    dc.Add("可开1000", settings.dt_sm_Info.sm_PaDesc);
+                }
+
+                if (settings.dt_sm_Info.sm_Pa2 == 500)
+                {
+                    dc.Add("固定500", settings.dt_sm_Info.sm_PaDesc2);
+                }
+                if (settings.dt_sm_Info.sm_Pa2 == 700)
+                {
+                    dc.Add("固定700", settings.dt_sm_Info.sm_PaDesc2);
+                }
+                if (settings.dt_sm_Info.sm_Pa2 == 1000)
+                {
+                    dc.Add("固定1000", settings.dt_sm_Info.sm_PaDesc2);
+                }
+                if (settings.dt_sm_Info.sm_Pa2 == 1500)
+                {
+                    dc.Add("固定1500", settings.dt_sm_Info.sm_PaDesc2);
+                }
+                if (settings.dt_sm_Info.sm_Pa2 == 2000)
+                {
+                    dc.Add("固定2000", settings.dt_sm_Info.sm_PaDesc2);
+                }
+
+                if (settings.dt_sm_Info.sm_Pa != null)
+                {
+                    dc.Add("可开未渗漏风压", sm_Pa.ToString());
+
+                    var level = Formula.GetWaterTightLevel_KeKaiQi(sm_Pa);
+                    dc.Add("可开水密性能等级", level.ToString());
+                }
+                else
+                {
+                    dc.Add("可开未渗漏风压", "--");
+                    dc.Add("可开水密性能等级", "--");
+
+                }
+                if (settings.dt_sm_Info.sm_Pa2 != null)
+                {
+                    dc.Add("固定未渗漏风压", sm_Pa2.ToString());
+                    var level = Formula.GetWaterTightLevel_GuDing(sm_Pa2);
+
+                    dc.Add("固定水密等级", level.ToString());
+                }
+                else
+                {
+                    dc.Add("固定未渗漏风压", "--");
+                    dc.Add("固定水密等级", "--");
+                }
+            }
+            dc.Add("检测方法2", "");
+
+            dc.Add("水密备注", "");
+            dc.Add("幕墙整体备注", "");
             return dc;
         }
 
+
+        /// <summary>
+        /// 气密正常 等级
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="zhengtiLevel"></param>
+        /// <param name="kekaiLevel"></param>
+        private void GetQMLevel(Model_dt_Settings settings, ref int zhengtiLevel, ref int kekaiLevel)
+        {
+            double kekaifengchang = 0d;
+            double shijianmianji = 0d;
+            double daqiyali = 0d;
+            double dangqianwendu = 0d;
+
+            if (settings != null)
+            {
+                kekaifengchang = double.Parse(settings.kekaifengchang);
+                shijianmianji = double.Parse(settings.shijianmianji);
+                daqiyali = double.Parse(settings.DaQiYaLi);
+                dangqianwendu = double.Parse(settings.DangQianWenDu);
+            }
+            if (settings.dt_qm_Info != null && settings.dt_qm_Info.Count > 0)
+            {
+                var zheng_s = settings.dt_qm_Info.Find(t => t.Pa == "100" && t.PaType == 1);
+                var zheng_j = settings.dt_qm_Info.Find(t => t.Pa == "100" && t.PaType == 2);
+                var fu_s = settings.dt_qm_Info.Find(t => t.Pa == "-100" && t.PaType == 1);
+                var fu_j = settings.dt_qm_Info.Find(t => t.Pa == "-100" && t.PaType == 2);
+
+                //逢长
+                var fcValue_z = (double.Parse(zheng_s.KKST) + double.Parse(zheng_j.KKST)) / 2;
+                var fcValue_f = (double.Parse(fu_s.KKST) + double.Parse(fu_j.KKST)) / 2;
+
+                //面积
+                var mjValue_z = (double.Parse(zheng_s.MQZT) + double.Parse(zheng_j.MQZT)) / 2;
+                var mjValue_f = (double.Parse(fu_s.MQZT) + double.Parse(fu_j.MQZT)) / 2;
+
+                var fcValue = 0d;
+                var mjValue = 0d;
+
+                if (fcValue_z > fcValue_f)
+                    fcValue = Formula.GetIndexStichLength(fcValue_z, fcValue_z, daqiyali, kekaifengchang, dangqianwendu);
+                else
+                    fcValue = Formula.GetIndexStichLength(fcValue_f, fcValue_f, daqiyali, kekaifengchang, dangqianwendu);
+
+                if (mjValue_z > mjValue_f)
+                    mjValue = Formula.GetIndexStitchArea(mjValue_z, mjValue_z, daqiyali, shijianmianji, dangqianwendu);
+                else
+                    mjValue = Formula.GetIndexStitchArea(mjValue_f, mjValue_f, daqiyali, shijianmianji, dangqianwendu);
+
+
+                kekaiLevel = Formula.GetStitchLengthLevel(fcValue);
+
+                zhengtiLevel = Formula.GetAreaLevel(mjValue);
+            }
+        }
+
+        /// <summary>
+        /// 工程
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="zhengtiLevel"></param>
+        /// <param name="kekaiLevel"></param>
+        private void GetQM_GCLevel(Model_dt_Settings settings, ref int zhengtiLevel, ref int kekaiLevel)
+        {
+            double kekaifengchang = 0d;
+            double shijianmianji = 0d;
+            double daqiyali = 0d;
+            double dangqianwendu = 0d;
+
+            if (settings != null)
+            {
+                kekaifengchang = double.Parse(settings.kekaifengchang);
+                shijianmianji = double.Parse(settings.shijianmianji);
+                daqiyali = double.Parse(settings.DaQiYaLi);
+                dangqianwendu = double.Parse(settings.DangQianWenDu);
+            }
+            if (settings.dt_qm_Info != null && settings.dt_qm_Info.Count > 0)
+            {
+                var zhengya = settings.dt_qm_Info.Find(t => t.PaType == 3);
+                var fuya = settings.dt_qm_Info.Find(t => t.PaType == 4);
+
+
+                //逢长
+                var fcValue_z = double.Parse(zhengya.KKST);
+                var fcValue_f = double.Parse(fuya.KKST);
+
+                //面积
+                var mjValue_z = double.Parse(zhengya.MQZT);
+                var mjValue_f = double.Parse(fuya.MQZT);
+
+                var fcValue = 0d;
+                var mjValue = 0d;
+
+                if (fcValue_z > fcValue_f)
+                    fcValue = Formula.GetIndexStichLength(fcValue_z, fcValue_z, daqiyali, kekaifengchang, dangqianwendu);
+                else
+                    fcValue = Formula.GetIndexStichLength(fcValue_f, fcValue_f, daqiyali, kekaifengchang, dangqianwendu);
+
+                if (mjValue_z > mjValue_f)
+                    mjValue = Formula.GetIndexStitchArea(mjValue_z, mjValue_z, daqiyali, shijianmianji, dangqianwendu);
+                else
+                    mjValue = Formula.GetIndexStitchArea(mjValue_f, mjValue_f, daqiyali, shijianmianji, dangqianwendu);
+
+
+                zhengtiLevel = Formula.GetStitchLengthLevel(fcValue);
+
+                kekaiLevel = Formula.GetAreaLevel(mjValue);
+            }
+        }
+        private List<SortInfo> GetSort()
+        {
+            List<SortInfo> sortInfo = new List<SortInfo>();
+            sortInfo.Add(new SortInfo() { index = 1, val = 50 });
+            sortInfo.Add(new SortInfo() { index = 1, val = 100 });
+            sortInfo.Add(new SortInfo() { index = 1, val = 150 });
+            sortInfo.Add(new SortInfo() { index = 2, val = 100 });
+            sortInfo.Add(new SortInfo() { index = 2, val = 50 });
+
+            sortInfo.Add(new SortInfo() { index = 1, val = -50 });
+            sortInfo.Add(new SortInfo() { index = 1, val = -100 });
+            sortInfo.Add(new SortInfo() { index = 1, val = -150 });
+            sortInfo.Add(new SortInfo() { index = 2, val = -100 });
+            sortInfo.Add(new SortInfo() { index = 2, val = -50 });
+
+            return sortInfo;
+        }
 
         private void ImageLine(string file, string name, List<double> zitem, List<double> fitem)
         {
@@ -682,5 +1302,11 @@ namespace text.doors.Detection
         }
         #endregion
 
+    }
+
+    public class SortInfo
+    {
+        public int val { get; set; }
+        public int index { get; set; }
     }
 }

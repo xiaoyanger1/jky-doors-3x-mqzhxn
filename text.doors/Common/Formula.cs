@@ -452,7 +452,7 @@ namespace text.doors.Common
             if (list.Count == 3)
             {
                 List<int> pas = new List<int>();
-                list.ForEach(t => pas.Add(t.sm_Pa));
+                list.ForEach(t => pas.Add(t.sm_Pa.Value));
                 pas.Sort();
 
                 int min = pas[0];
@@ -499,7 +499,7 @@ namespace text.doors.Common
         /// 获取逢长等级【可开】
         /// </summary>
         /// <returns></returns>
-        private static int GetStitchLengthLevel(double value)
+        public static int GetStitchLengthLevel(double value)
         {
             int res = 0;
             if (4 >= value && value > 2.5)
@@ -514,7 +514,7 @@ namespace text.doors.Common
             {
                 res = 3;
             }
-            else if (value <= 0.5)
+            else if (value > 0 && value <= 0.5)
             {
                 res = 4;
             }
@@ -525,7 +525,7 @@ namespace text.doors.Common
         /// 获取面积分级【整体】
         /// </summary>
         /// <returns></returns>
-        private static int GetAreaLevel(double value)
+        public static int GetAreaLevel(double value)
         {
             int res = 0;
             if (4 >= value && value > 2)
@@ -541,7 +541,7 @@ namespace text.doors.Common
                 res = 3;
             }
 
-            else if (value <= 0.5)
+            else if (value > 0 && value <= 0.5)
             {
                 res = 4;
             }
@@ -552,7 +552,7 @@ namespace text.doors.Common
         /// 获取水密分级固定
         /// </summary>
         /// <returns></returns>
-        private static int GetWaterTightLevel_GuDing(int value)
+        public static int GetWaterTightLevel_GuDing(int value)
         {
             int res = 0;
             if (value >= 500 && value < 700)
@@ -583,7 +583,7 @@ namespace text.doors.Common
         /// 获取水密分级可开启
         /// </summary>
         /// <returns></returns>
-        private static int GetWaterTightLevel_KeKaiQi(int value)
+        public static int GetWaterTightLevel_KeKaiQi(int value)
         {
             int res = 0;
             if (value >= 250 && value < 350)

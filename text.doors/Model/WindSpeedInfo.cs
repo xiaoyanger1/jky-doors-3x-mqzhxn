@@ -486,8 +486,8 @@ namespace text.doors.Model
         public void AddYL_Z_YCJA(List<WindSpeedInfo> list)
         {
             WindSpeedInfo model = new WindSpeedInfo();
-            model.Pa = "正设计值";
-            model.PaType = 1;
+            model.Pa = "--";
+            model.PaType = 3;
             model.FJST = FJST_Z_YCJY.Count() == 0 ? 0d : Math.Round(FJST_F_J_50.Sum(t => t) / FJST_F_J_50.Count(), 2);
             model.GFZH = GFZH_Z_YCJY.Count() == 0 ? 0d : Math.Round(GFZH_F_J_50.Sum(t => t) / GFZH_F_J_50.Count(), 2);
             model.ZDST = ZDST_Z_YCJY.Count() == 0 ? 0d : Math.Round(ZDST_F_J_50.Sum(t => t) / ZDST_F_J_50.Count(), 2);
@@ -501,8 +501,8 @@ namespace text.doors.Model
         public void AddYL_F_YCJA(List<WindSpeedInfo> list)
         {
             WindSpeedInfo model = new WindSpeedInfo();
-            model.Pa = "负设计值";
-            model.PaType = 2;
+            model.Pa = "--";
+            model.PaType = 4;
             model.FJST = FJST_F_YCJY.Count() == 0 ? 0d : Math.Round(FJST_F_J_50.Sum(t => t) / FJST_F_J_50.Count(), 2);
             model.GFZH = GFZH_F_YCJY.Count() == 0 ? 0d : Math.Round(GFZH_F_J_50.Sum(t => t) / GFZH_F_J_50.Count(), 2);
             model.ZDST = ZDST_F_YCJY.Count() == 0 ? 0d : Math.Round(ZDST_F_J_50.Sum(t => t) / ZDST_F_J_50.Count(), 2);

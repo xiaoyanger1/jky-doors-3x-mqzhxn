@@ -19,11 +19,11 @@ namespace text.doors.Model.DataBase
         /// <summary>
         /// 结果描述
         /// </summary>
-        public int sm_Pa { get; set; }
+        public int? sm_Pa { get; set; }
         /// <summary>
         /// 结果描述
         /// </summary>
-        public int sm_Pa2 { get; set; }
+        public int? sm_Pa2 { get; set; }
         /// <summary>
         /// 描述
         /// </summary>

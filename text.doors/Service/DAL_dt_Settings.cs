@@ -133,7 +133,7 @@ model.dt_Code);
                 var table = SQLiteHelper.ExecuteDataRow("select * from dt_Info where  dt_Code = '" + model.dt_Code + "'")?.Table;
                 if (table == null || table.Rows.Count == 0)
                 {
-                    sql = string.Format("insert into dt_Info (info_Create,dt_Code,Airtight,Watertight,WindPressure,PlaneDeformation) values('{0}',datetime('now'),0,0,0,0)", model.dt_Code);
+                    sql = string.Format("insert into dt_Info (dt_Code,info_Create,Airtight,Watertight,WindPressure,PlaneDeformation) values('{0}',datetime('now'),0,0,0,0)", model.dt_Code);
                     return SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
                 }
             }
@@ -220,7 +220,7 @@ model.dt_Code);
 
             //抗风压结果
             var dt_kfy_res_InfoList = new DAL_dt_kfy_Info().GetKFYResInfo(code);
-            if (dt_kfy_res_InfoList != null )
+            if (dt_kfy_res_InfoList != null)
                 settings.dt_kfy_res_Info = dt_kfy_res_InfoList;
 
             return settings;

@@ -357,6 +357,28 @@ values(
                     model.f_three_2000 = item["f_three_2000"].ToString();
                     model.f_nd_2000 = item["f_nd_2000"].ToString();
                     model.f_ix_2000 = item["f_ix_2000"].ToString();
+
+                    model.z_one_p3 = item["z_one_p3"].ToString();
+                    model.z_two_p3 = item["z_two_p3"].ToString();
+                    model.z_three_p3 = item["z_three_p3"].ToString();
+                    model.z_nd_p3 = item["z_nd_p3"].ToString();
+
+                    model.f_one_p3 = item["f_one_p3"].ToString();
+                    model.f_two_p3 = item["f_two_p3"].ToString();
+                    model.f_three_p3 = item["f_three_p3"].ToString();
+                    model.f_nd_p3 = item["f_nd_p3"].ToString();
+
+                    model.z_one_p3max = item["z_one_p3max"].ToString();
+                    model.z_two_p3max = item["z_two_p3max"].ToString();
+                    model.z_three_p3max = item["z_three_p3max"].ToString();
+                    model.z_nd_p3max = item["z_nd_p3max"].ToString();
+
+                    model.f_one_p3max = item["f_one_p3max"].ToString();
+                    model.f_two_p3max = item["f_two_p3max"].ToString();
+                    model.f_three_p3max = item["f_three_p3max"].ToString();
+                    model.f_nd_p3max = item["f_nd_p3max"].ToString();
+
+
                     model.level = item["level"].ToString();
                     model.dt_Code = item["dt_Code"].ToString();
                     list.Add(model);

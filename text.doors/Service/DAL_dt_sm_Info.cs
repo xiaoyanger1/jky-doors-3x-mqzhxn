@@ -29,9 +29,9 @@ namespace text.doors.Service
             var res = SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
             if (res)
             {
-                return new DAL_dt_Info().UpdateTestType(model.dt_Code, PublicEnum.SystemItem.Watertight, 1);
+                res = new DAL_dt_Info().UpdateTestType(model.dt_Code, PublicEnum.SystemItem.Watertight, 1);
             }
-            return true;
+            return res;
         }
         public Model_dt_sm_Info GetSMListByCode(string code)
         {

@@ -239,7 +239,7 @@ namespace text.doors.Detection
                 }).ToList());
 
                 //正设计值
-                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "正设计值" && t.PaType.ToString() == "1").Select(t => new WindSpeedInfo()
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "--" && t.PaType == 3).Select(t => new WindSpeedInfo()
                 {
                     Pa = t.Pa,
                     PaType = t.PaType,
@@ -249,7 +249,7 @@ namespace text.doors.Detection
                 }).ToList());
 
                 //负设计值
-                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "负设计值" && t.PaType.ToString() == "2").Select(t => new WindSpeedInfo()
+                windSpeedInfoList.AddRange(qm_Info?.FindAll(t => t.Pa == "--" && t.PaType == 4).Select(t => new WindSpeedInfo()
                 {
                     Pa = t.Pa,
                     PaType = t.PaType,
@@ -270,10 +270,10 @@ namespace text.doors.Detection
                 //绑定空监测数据
                 windSpeedInfoList = new WindSpeedInfo().GetWindSpeed();
                 //绑定正设计值
-                var z_sjz = windSpeedInfoList.Find(t => t.Pa == "正设计值");
+                var z_sjz = windSpeedInfoList.Find(t => t.PaType == 3);
                 if (z_sjz != null)
                 {
-                    var info = qm_Info.Find(t => t.Pa == "正设计值");
+                    var info = qm_Info.Find(t => t.PaType == 3);
                     if (info != null)
                     {
                         z_sjz.ZDST = double.Parse(info.ZDST);
@@ -282,10 +282,10 @@ namespace text.doors.Detection
                     }
                 }
                 //绑定负设计值
-                var f_sjz = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                var f_sjz = windSpeedInfoList.Find(t => t.PaType == 4);
                 if (f_sjz != null)
                 {
-                    var info = qm_Info.Find(t => t.Pa == "负设计值");
+                    var info = qm_Info.Find(t => t.PaType == 4);
                     if (info != null)
                     {
                         f_sjz.ZDST = double.Parse(info.ZDST);
@@ -1199,6 +1199,10 @@ namespace text.doors.Detection
                 return;
             }
 
+            var info = windSpeedInfoList.Find(t => t.PaType == 3);
+            info.Pa = value.ToString();
+
+
             var res = _serialPortClient.Set_FY_Value(BFMCommand.正依次加压值, BFMCommand.正依次加压, value);
             if (!res)
             {
@@ -1208,23 +1212,23 @@ namespace text.doors.Detection
             //重复做
             if (rdb_fjstl.Checked)
             {
-                var data = windSpeedInfoList.Find(t => t.Pa == "正设计值");
+                var data = windSpeedInfoList.Find(t => t.PaType == 3);
                 data.FJST = 0;
-                var data1 = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                var data1 = windSpeedInfoList.Find(t => t.PaType == 4);
                 data1.FJST = 0;
             }
             else if (rdb_gfzh.Checked)
             {
-                var data = windSpeedInfoList.Find(t => t.Pa == "正设计值");
+                var data = windSpeedInfoList.Find(t => t.PaType == 3);
                 data.GFZH = 0;
-                var data1 = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                var data1 = windSpeedInfoList.Find(t => t.PaType == 4);
                 data1.FJST = 0;
             }
             else if (rdb_zdstl.Checked)
             {
-                var data = windSpeedInfoList.Find(t => t.Pa == "正设计值");
+                var data = windSpeedInfoList.Find(t => t.PaType == 3);
                 data.ZDST = 0;
-                var data1 = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                var data1 = windSpeedInfoList.Find(t => t.PaType == 4);
                 data1.FJST = 0;
             }
 
@@ -1263,6 +1267,9 @@ namespace text.doors.Detection
                 this.btn_ycjyf.Enabled = true;
                 return;
             }
+            //添加表格默认
+            var info = windSpeedInfoList.Find(t => t.PaType == 4);
+            info.Pa = "-" + value.ToString();
 
             var res = _serialPortClient.Set_FY_Value(BFMCommand.负依次加压值, BFMCommand.负依次加压, value);
             if (!res)

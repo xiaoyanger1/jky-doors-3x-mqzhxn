@@ -612,7 +612,7 @@
             this.C组.Controls.Add(this.panel9);
             this.C组.Location = new System.Drawing.Point(4, 22);
             this.C组.Name = "C组";
-            this.C组.Size = new System.Drawing.Size(848, 295);
+            this.C组.Size = new System.Drawing.Size(848, 289);
             this.C组.TabIndex = 2;
             this.C组.Text = "C组";
             this.C组.UseVisualStyleBackColor = true;
@@ -1128,7 +1128,7 @@
             // 
             // btn_wygl
             // 
-            this.btn_wygl.Location = new System.Drawing.Point(109, 20);
+            this.btn_wygl.Location = new System.Drawing.Point(11, 95);
             this.btn_wygl.Name = "btn_wygl";
             this.btn_wygl.Size = new System.Drawing.Size(75, 23);
             this.btn_wygl.TabIndex = 5;
@@ -1184,7 +1184,7 @@
             // 
             // btn_fyks
             // 
-            this.btn_fyks.Location = new System.Drawing.Point(12, 91);
+            this.btn_fyks.Location = new System.Drawing.Point(110, 58);
             this.btn_fyks.Name = "btn_fyks";
             this.btn_fyks.Size = new System.Drawing.Size(75, 23);
             this.btn_fyks.TabIndex = 3;
@@ -1194,7 +1194,7 @@
             // 
             // btn_fyyb
             // 
-            this.btn_fyyb.Location = new System.Drawing.Point(110, 57);
+            this.btn_fyyb.Location = new System.Drawing.Point(11, 58);
             this.btn_fyyb.Name = "btn_fyyb";
             this.btn_fyyb.Size = new System.Drawing.Size(75, 23);
             this.btn_fyyb.TabIndex = 2;
@@ -1204,7 +1204,7 @@
             // 
             // btn_zyks
             // 
-            this.btn_zyks.Location = new System.Drawing.Point(12, 57);
+            this.btn_zyks.Location = new System.Drawing.Point(110, 20);
             this.btn_zyks.Name = "btn_zyks";
             this.btn_zyks.Size = new System.Drawing.Size(75, 23);
             this.btn_zyks.TabIndex = 1;
