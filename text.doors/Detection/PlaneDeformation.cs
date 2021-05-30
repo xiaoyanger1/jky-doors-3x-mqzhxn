@@ -236,6 +236,8 @@ namespace text.doors.Detection
             btn_level3.BackColor = Color.Transparent;
             btn_level4.BackColor = Color.Transparent;
             btn_level5.BackColor = Color.Transparent;
+
+            tim_WY.Enabled = true;
         }
 
 
@@ -262,6 +264,7 @@ namespace text.doors.Detection
             btn_level3.BackColor = Color.Transparent;
             btn_level4.BackColor = Color.Transparent;
             btn_level5.BackColor = Color.Transparent;
+            tim_WY.Enabled = true;
         }
 
         private void btn_level3_Click(object sender, EventArgs e)
@@ -287,6 +290,8 @@ namespace text.doors.Detection
             btn_level3.BackColor = Color.Green;
             btn_level4.BackColor = Color.Transparent;
             btn_level5.BackColor = Color.Transparent;
+
+            tim_WY.Enabled = true;
         }
 
         private void btn_level4_Click(object sender, EventArgs e)
@@ -312,6 +317,7 @@ namespace text.doors.Detection
             btn_level3.BackColor = Color.Transparent;
             btn_level4.BackColor = Color.Green;
             btn_level5.BackColor = Color.Transparent;
+            tim_WY.Enabled = true;
         }
 
         private void btn_level5_Click(object sender, EventArgs e)
@@ -337,6 +343,8 @@ namespace text.doors.Detection
             btn_level3.BackColor = Color.Transparent;
             btn_level4.BackColor = Color.Transparent;
             btn_level5.BackColor = Color.Green;
+
+            tim_WY.Enabled = true;
         }
 
         private void btn_stop1_Click(object sender, EventArgs e)
@@ -357,7 +365,6 @@ namespace text.doors.Detection
 
         private void GetDGVValue(int level, ref double v1, ref double v2)
         {
-
             if (level == 1)
             {
                 v1 = double.Parse(this.dgv_level.Rows[0].Cells[1].Value.ToString());
@@ -481,7 +488,20 @@ namespace text.doors.Detection
 
         private void tim_WY_Tick(object sender, EventArgs e)
         {
-
+            var IsSeccess = false;
+            var showValue = _serialPortClient.ReadPMStopShow(ref IsSeccess);
+            if (!IsSeccess)
+            {
+                if (showValue == 0)
+                {
+                    btn_level1.BackColor = Color.Transparent;
+                    btn_level2.BackColor = Color.Transparent;
+                    btn_level3.BackColor = Color.Transparent;
+                    btn_level4.BackColor = Color.Transparent;
+                    btn_level5.BackColor = Color.Transparent;
+                    tim_WY.Enabled = false;
+                }
+            }
         }
 
         private void btn_tgstart_Click(object sender, EventArgs e)

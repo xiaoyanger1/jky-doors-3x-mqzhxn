@@ -1,5 +1,4 @@
-﻿//using Microsoft.Office.Interop.Word;
-//using Microsoft.Office.Interop.Graph;
+﻿using Microsoft.Office.Interop.Word;
 using text.doors.Common;
 using text.doors.dal;
 using text.doors.Model.DataBase;
@@ -51,32 +50,6 @@ namespace text.doors.Detection
 
         private void Eexport(string fileName)
         {
-            FolderBrowserDialog path = new FolderBrowserDialog();
-            path.ShowDialog();
-
-            label3.Visible = true;
-            if (string.IsNullOrWhiteSpace(path.SelectedPath))
-            {
-                return;
-            }
-            btn_ok.Enabled = false;
-            cm_Report.Enabled = false;
-            btn_close.Enabled = false;
-
-            string[] name = fileName.Split('.');
-
-            string _name = name[0] + "_" + _tempCode + "." + name[1];
-
-            var saveExcelUrl = path.SelectedPath + "\\" + _name;
-
-            if (fileName == "建筑外窗（门）气密、水密、抗风压性能检测报告")
-            {
-                ExportExcel exportExcel = new ExportExcel(_tempCode);
-                exportExcel.ExportData(saveExcelUrl);
-            }
-
-            #region ss
-            /*
             try
             {
                 string strResult = string.Empty;
@@ -86,7 +59,7 @@ namespace text.doors.Detection
                 FolderBrowserDialog path = new FolderBrowserDialog();
                 path.ShowDialog();
 
-                label3.Visible = true;
+                lbl_message.Visible = true;
                 if (string.IsNullOrWhiteSpace(path.SelectedPath))
                 {
                     return;
@@ -110,59 +83,17 @@ namespace text.doors.Detection
                 }
 
                 var dc = new Dictionary<string, string>();
-                if (fileName == "门窗检验报告.doc")
+                if (fileName == "建筑幕墙抗风压性能检测记录表.doc")
                 {
                     dc = GetDWDetectionReport(settings);
-                }
-                else if (fileName == "实验室记录.doc")
-                {
-                    dc = GetDetectionReport(settings, saveExcelUrl);
                 }
 
                 WordUtility wu = new WordUtility(strFile, saveExcelUrl);
                 if (wu.GenerateWordByBookmarks(dc))
                 {
-                    if (fileName == "门窗检验报告.doc")
-                    {
-                        if (!string.IsNullOrWhiteSpace(DefaultBase.ImagesName))
-                            InsertPtctureToExcel(saveExcelUrl, "图片", DefaultBase.ImagesName);
-                    }
+                    lbl_message.Visible = false;
 
-                    if (fileName == "实验室记录.doc")
-                    {
-                        var index = 0;
-                        foreach (var item in settings.dt_kfy_Info)
-                        {
-                            index++;
-                            var zitem = new List<double>() { 0 };
-                            var fitem = new List<double>() { 0 };
-                            zitem.Add(double.Parse(item.z_nd_250));
-                            zitem.Add(double.Parse(item.z_nd_500));
-                            zitem.Add(double.Parse(item.z_nd_750));
-                            zitem.Add(double.Parse(item.z_nd_1000));
-                            zitem.Add(double.Parse(item.z_nd_1250));
-                            zitem.Add(double.Parse(item.z_nd_1500));
-                            zitem.Add(double.Parse(item.z_nd_1750));
-                            zitem.Add(double.Parse(item.z_nd_2000));
-
-                            fitem.Add(double.Parse(item.f_nd_250));
-                            fitem.Add(double.Parse(item.f_nd_500));
-                            fitem.Add(double.Parse(item.f_nd_750));
-                            fitem.Add(double.Parse(item.f_nd_1000));
-                            fitem.Add(double.Parse(item.f_nd_1250));
-                            fitem.Add(double.Parse(item.f_nd_1500));
-                            fitem.Add(double.Parse(item.f_nd_1750));
-                            fitem.Add(double.Parse(item.f_nd_2000));
-
-                            var file = System.Windows.Forms.Application.StartupPath + ("\\tempImage\\第" + index + "樘" + DateTime.Now.ToString("hhmmdd") + ".jpg");
-                            ImageLine(file, item.info_DangH, zitem, fitem);
-                            InsertPtctureToExcel(saveExcelUrl, "曲线杆1第" + index + "樘曲线", file);
-                        }
-                    }
-
-                    label3.Visible = false;
-
-                    MessageBox.Show("导出成功", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
+                    MessageBox.Show("导出成功", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.None);
                     this.Hide();
                 }
             }
@@ -172,12 +103,10 @@ namespace text.doors.Detection
                 MessageBox.Show("数据出现问题，导出失败!", "警告", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
-            */
-            #endregion
         }
 
         #region old
-        /*
+
         /// <summary>
         /// 导入图片到word
         /// </summary>
@@ -255,935 +184,336 @@ namespace text.doors.Detection
         private Dictionary<string, string> GetDWDetectionReport(Model_dt_Settings settings)
         {
             Dictionary<string, string> dc = new Dictionary<string, string>();
-            dc.Add("检测条件第0樘型号规格", settings.GuiGeXingHao);
-            dc.Add("检测条件第0樘大气压力", settings.DaQiYaLi);
-            dc.Add("检测条件第0樘委托单位", settings.WeiTuoDanWei);
-            dc.Add("检测条件第0樘委托单位重复1", settings.WeiTuoDanWei);
-            dc.Add("检测条件第0樘工程名称", settings.GongChengMingCheng);
-            dc.Add("检测条件第0樘开启方式", settings.KaiQiFangShi);
-            dc.Add("检测条件第0樘开启缝长", settings.KaiQiFengChang);
-            dc.Add("检测条件第0樘当前温度", settings.DangQianWenDu);
-            dc.Add("检测条件第0樘总面积", settings.ZongMianJi);
-            dc.Add("检测条件第0樘最大玻璃", settings.ZuiDaBoLi);
-            dc.Add("检测条件第0樘来样方式", settings.CaiYangFangShi);
-            dc.Add("检测条件第0樘来样方式重复1", settings.CaiYangFangShi);
-            dc.Add("检测条件第0樘样品名称", settings.YangPinMingCheng);
-            dc.Add("检测条件第0樘样品名称重复1", settings.YangPinMingCheng);
-            dc.Add("检测条件第0樘框扇密封", settings.KuangShanMiFang);
-            dc.Add("检测条件第0樘检验数量", settings.GuiGeShuLiang);
-            dc.Add("检测条件第0樘检验日期", settings.JianYanRiQi);
-            dc.Add("检测条件第0樘检验日期重复1", settings.JianYanRiQi);
-            dc.Add("检测条件第0樘检验日期重复2", settings.JianYanRiQi);
-            dc.Add("检测条件第0樘检验编号", settings.dt_Code);
-            dc.Add("检测条件第0樘检验编号重复1", settings.dt_Code);
-            dc.Add("检测条件第0樘检验编号重复2", settings.dt_Code);
-            dc.Add("检测条件第0樘检验编号重复3", settings.dt_Code);
-            dc.Add("检测条件第0樘检验项目", settings.JianYanXiangMu);
-            dc.Add("检测条件第0樘正压气密等级设计值", settings.ZhengYaQiMiDengJiSheJiZhi);
-            dc.Add("检测条件第0樘负压气密等级设计值", settings.FuYaQiMiDengJiSheJiZhi);
-            dc.Add("检测条件第0樘抗风压设计值", settings.KangFengYaSheJiZhi);
-            dc.Add("检测条件第0樘抗风压等级设计值", settings.KangFengYaDengJiSheJiZhi);
-            if (settings.dt_kfy_Info.Count > 0)
-            {
-                var value = new List<int>();
-                foreach (var item in settings.dt_kfy_Info)
-                {
-                    value.Add(int.Parse(item.p3));
-                    value.Add(int.Parse(item._p3));
-                }
-                var minValue = value.Min(t => t);
-                var level = Formula.GetWindPressureLevel(minValue).ToString();
-                dc.Add("检测条件第0樘抗风压等级", level);
-            }
-            else
-            {
-                dc.Add("检测条件第0樘抗风压等级", "--");
-            }
-            if (settings.dt_qm_Info.Count > 0)
-            {
-                var z_qm_level = formula.Get_Z_AirTightLevel(settings.dt_qm_Info);
-                dc.Add("检测条件第0樘综合气密正压等级", z_qm_level.ToString());
-                var f_qm_level = formula.Get_F_AirTightLevel(settings.dt_qm_Info);
-                dc.Add("检测条件第0樘综合气密负压等级", f_qm_level.ToString());
-            }
-            else
-            {
-                dc.Add("检测条件第0樘综合气密正压等级", "--");
-                dc.Add("检测条件第0樘综合气密负压等级", "--");
-            }
 
-            if (settings.dt_sm_Info.Count > 0)
-            {
-                var sm_level = formula.GetWaterTightLevel(settings.dt_sm_Info);
-                var YL = formula.GetWaterTightPressure(settings.dt_sm_Info);
-
-                dc.Add("检测条件第0樘水密等级", sm_level.ToString());
-                //  dc.Add("检测条件第0樘水密等级设计值", sm_level.ToString());
-                dc.Add("检测条件第0樘水密等级设计值", settings.ShuiMiDengJiSheJiZhi.ToString());
-                dc.Add("检测条件第0樘水密保持风压", YL.ToString());
-            }
-            else
-            {
-                dc.Add("检测条件第0樘水密等级", "--");
-                dc.Add("检测条件第0樘水密等级设计值", "--");
-                dc.Add("检测条件第0樘水密保持风压", "--");
-            }
-
-            if (settings.dt_kfy_Info.Count > 0)
-            {
-                var value = new List<int>();
-                var _value = new List<int>();
-
-                settings.dt_kfy_Info.ForEach(t => value.Add(int.Parse(t.p1)));
-                settings.dt_kfy_Info.ForEach(t => _value.Add(int.Parse(t._p1)));
-
-
-                dc.Add("检测条件第0樘强度正P1", value.Min(t => t).ToString());
-                dc.Add("检测条件第0樘强度负P1", _value.Min(t => t).ToString());
-
-                value = new List<int>();
-                _value = new List<int>();
-                settings.dt_kfy_Info.ForEach(t => value.Add(int.Parse(t.p2)));
-                settings.dt_kfy_Info.ForEach(t => _value.Add(int.Parse(t._p2)));
-
-                dc.Add("检测条件第0樘强度正P2", value.Min(t => t).ToString());
-                dc.Add("检测条件第0樘强度负P2", _value.Min(t => t).ToString());
+            dc.Add("OLE_LINK1", "1");
+            dc.Add("OLE_LINK10", "2");
+            dc.Add("OLE_LINK11", "3");
+            dc.Add("OLE_LINK12", "4");
+            dc.Add("OLE_LINK13", "5");
+            dc.Add("OLE_LINK14", "6");
+            dc.Add("OLE_LINK15", "7");
+            dc.Add("OLE_LINK16", "8");
+            dc.Add("OLE_LINK17", "9");
+            dc.Add("OLE_LINK18", "10");
+            dc.Add("OLE_LINK19", "11");
+            dc.Add("OLE_LINK2", "12");
+            dc.Add("OLE_LINK20", "13");
+            dc.Add("OLE_LINK21", "14");
+            dc.Add("OLE_LINK22", "15");
+            dc.Add("OLE_LINK23", "16");
+            dc.Add("OLE_LINK24", "17");
+            dc.Add("OLE_LINK25", "18");
+            dc.Add("OLE_LINK26", "19");
+            dc.Add("OLE_LINK27", "20");
+            dc.Add("OLE_LINK28", "21");
+            dc.Add("OLE_LINK29", "22");
+            dc.Add("OLE_LINK3", "23");
+            dc.Add("OLE_LINK30", "24");
+            dc.Add("OLE_LINK31", "25");
+            dc.Add("OLE_LINK32", "26");
+            dc.Add("OLE_LINK33", "27");
+            dc.Add("OLE_LINK34", "28");
+            dc.Add("OLE_LINK35", "29");
+            dc.Add("OLE_LINK36", "30");
+            dc.Add("OLE_LINK37", "31");
+            dc.Add("OLE_LINK38", "32");
+            dc.Add("OLE_LINK39", "33");
+            dc.Add("OLE_LINK4", "34");
+            dc.Add("OLE_LINK40", "35");
+            dc.Add("OLE_LINK41", "36");
+            dc.Add("OLE_LINK42", "37");
+            dc.Add("OLE_LINK43", "38");
+            dc.Add("OLE_LINK44", "39");
+            dc.Add("OLE_LINK45", "40");
+            dc.Add("OLE_LINK46", "41");
+            dc.Add("OLE_LINK47", "42");
+            dc.Add("OLE_LINK48", "43");
+            dc.Add("OLE_LINK49", "44");
+            dc.Add("OLE_LINK5", "45");
+            dc.Add("OLE_LINK50", "46");
+            dc.Add("OLE_LINK51", "47");
+            dc.Add("OLE_LINK6", "48");
+            dc.Add("OLE_LINK7", "49");
+            dc.Add("OLE_LINK8", "50");
+            dc.Add("OLE_LINK9", "51");
+            dc.Add("幕墙平面变形平面变形级别", "52");
+            dc.Add("幕墙平面变形平面变形记录", "53");
+            dc.Add("幕墙检测条件变形压力级别1", "54");
+            dc.Add("幕墙检测条件变形压力级别1重复2", "55");
+            dc.Add("幕墙检测条件变形压力级别1重复4", "56");
+            dc.Add("幕墙检测条件变形压力级别2", "57");
+            dc.Add("幕墙检测条件变形压力级别2重复2", "58");
+            dc.Add("幕墙检测条件变形压力级别2重复4", "59");
+            dc.Add("幕墙检测条件变形压力级别3", "60");
+            dc.Add("幕墙检测条件变形压力级别3重复2", "61");
+            dc.Add("幕墙检测条件变形压力级别3重复4", "62");
+            dc.Add("幕墙检测条件变形压力级别4", "63");
+            dc.Add("幕墙检测条件变形压力级别4重复2", "64");
+            dc.Add("幕墙检测条件变形压力级别4重复4", "65");
+            dc.Add("幕墙检测条件变形压力级别5", "66");
+            dc.Add("幕墙检测条件变形压力级别5重复2", "67");
+            dc.Add("幕墙检测条件变形压力级别5重复4", "68");
+            dc.Add("幕墙检测条件变形压力级别6", "69");
+            dc.Add("幕墙检测条件变形压力级别6重复2", "70");
+            dc.Add("幕墙检测条件变形压力级别6重复4", "71");
+            dc.Add("幕墙检测条件变形压力级别7", "72");
+            dc.Add("幕墙检测条件变形压力级别7重复2", "73");
+            dc.Add("幕墙检测条件变形压力级别7重复4", "74");
+            dc.Add("幕墙检测条件变形压力级别8", "75");
+            dc.Add("幕墙检测条件变形压力级别8重复2", "76");
+            dc.Add("幕墙检测条件变形压力级别8重复4", "77");
+            dc.Add("幕墙检测条件可开水密保持风压", "78");
+            dc.Add("幕墙检测条件可开综合单位缝长渗透量", "79");
+            dc.Add("幕墙检测条件可开缝长", "80");
+            dc.Add("幕墙检测条件强度记录", "81");
+            dc.Add("幕墙检测条件强度记录重复1", "82");
+            dc.Add("幕墙检测条件强度记录重复2", "83");
+            dc.Add("幕墙检测条件当前温度", "84");
+            dc.Add("幕墙检测条件整体综合单位面积渗透量", "85");
+            dc.Add("幕墙检测条件样品编号重复1", "86");
+            dc.Add("幕墙检测条件水密检测方法", "87");
+            dc.Add("幕墙检测条件淋水量", "88");
+            dc.Add("幕墙检测条件综合可开气密等级", "89");
+            dc.Add("幕墙检测条件综合面积气密等级", "90");
 
 
-                value = new List<int>();
-                _value = new List<int>();
-                settings.dt_kfy_Info.ForEach(t => value.Add(int.Parse(t.p3)));
-                settings.dt_kfy_Info.ForEach(t => _value.Add(int.Parse(t._p3)));
-                dc.Add("检测条件第0樘强度正P3", value.Min(t => t).ToString());
-                dc.Add("检测条件第0樘强度负P3", _value.Min(t => t).ToString());
-
-                //dc.Add("检测条件第0樘强度正P4", "正P4");
-                //dc.Add("检测条件第0樘强度负P4", "负P4");
-            }
-            else
-            {
-                dc.Add("检测条件第0樘强度正P1", "--");
-                dc.Add("检测条件第0樘强度负P1", "--");
-                dc.Add("检测条件第0樘强度正P2", "--");
-                dc.Add("检测条件第0樘强度负P2", "--");
-                dc.Add("检测条件第0樘强度正P3", "--");
-                dc.Add("检测条件第0樘强度负P3", "--");
-                //dc.Add("检测条件第0樘强度正P4", "--");
-                //dc.Add("检测条件第0樘强度负P4", "--");
-            }
-
-
-            double zFc = 0, fFc = 0, zMj = 0, fMj = 0;
-            if (settings.dt_qm_Info != null && settings.dt_qm_Info.Count > 0)
-            {
-                zFc = Math.Round(settings.dt_qm_Info.Sum(t => double.Parse(t.qm_Z_FC)) / settings.dt_qm_Info.Count, 2);
-                fFc = Math.Round(settings.dt_qm_Info.Sum(t => double.Parse(t.qm_F_FC)) / settings.dt_qm_Info.Count, 2);
-                zMj = Math.Round(settings.dt_qm_Info.Sum(t => double.Parse(t.qm_Z_MJ)) / settings.dt_qm_Info.Count, 2);
-                fMj = Math.Round(settings.dt_qm_Info.Sum(t => double.Parse(t.qm_F_MJ)) / settings.dt_qm_Info.Count, 2);
-            }
-
-            dc.Add("检测条件第0樘正缝长渗透量", zFc.ToString());
-            dc.Add("检测条件第0樘负缝长渗透量", fFc.ToString());
-            dc.Add("检测条件第0樘正面积渗透量", zMj.ToString());
-            dc.Add("检测条件第0樘负面积渗透量", fMj.ToString());
-            dc.Add("检测条件第0樘玻璃品种", settings.BoLiPinZhong);
-            dc.Add("检测条件第0樘玻璃密封", settings.BoLiMiFeng);
-            dc.Add("检测条件第0樘生产单位", settings.ShengChanDanWei);
-            dc.Add("检测条件第0樘负责人", settings.WeiTuoRen);
-            dc.Add("检测条件第0樘镶嵌方式", settings.XiangQianFangShi);
-            return dc;
-        }
-
-
-        #region 获取检测报告文档
-        /// <summary>
-        /// 获取检测报告文档
-        /// </summary>
-        /// <param name="?"></param>
-        /// <returns></returns>
-        private Dictionary<string, string> GetDetectionReport(Model_dt_Settings settings, string file)
-        {
-            Dictionary<string, string> dc = new Dictionary<string, string>();
-
-            #region 基础
-            dc.Add("检测条件第0樘杆件长度", settings.GanJianChangDu);
-            dc.Add("实验室气压", settings.DaQiYaLi);
-            dc.Add("实验室温度", settings.DangQianWenDu);
-            dc.Add("集流管经", (DefaultBase._D * 1000).ToString());
-            dc.Add("检测条件第0樘五金件状况", settings.WuJinJianZhuangKuang);
-            dc.Add("检测条件第0樘型号规格", settings.GuiGeXingHao);
-            dc.Add("检测条件第0樘大气压力", settings.DaQiYaLi);
-            dc.Add("检测条件第0樘委托单位", settings.WeiTuoDanWei);
-            dc.Add("检测条件第0樘委托单位重复1", settings.WeiTuoDanWei);
-            dc.Add("检测条件第0樘委托单位重复2", settings.WeiTuoDanWei);
-            dc.Add("检测条件第0樘委托单位重复3", settings.WeiTuoDanWei);
-            dc.Add("检测条件第0樘工程名称", settings.GongChengMingCheng);
-            dc.Add("检测条件第0樘工程地点", settings.GongChengDiDian);
-            dc.Add("检测条件第0樘开启缝长", settings.KaiQiFengChang);
-            dc.Add("检测条件第0樘开启缝长重复1", settings.KaiQiFengChang);
-            dc.Add("检测条件第0樘当前温度", settings.DangQianWenDu);
-            dc.Add("检测条件第0樘总面积", settings.ZongMianJi);
-            dc.Add("检测条件第0樘总面积重复2", settings.ZongMianJi);
-            dc.Add("检测条件第0樘最大玻璃", settings.ZuiDaBoLi);
-            dc.Add("检测条件第0樘来样方式", settings.CaiYangFangShi);
-            dc.Add("检测条件第0樘样品名称", settings.YangPinMingCheng);
-            dc.Add("检测条件第0樘样品名称重复1", settings.YangPinMingCheng);
-            dc.Add("检测条件第0樘样品名称重复2", settings.YangPinMingCheng);
-            dc.Add("检测条件第0樘样品名称重复3", settings.YangPinMingCheng);
-            dc.Add("检测条件第0樘框扇密封", settings.KuangShanMiFang);
-            dc.Add("检测条件第0樘检验数量", settings.GuiGeShuLiang);
-            dc.Add("检测条件第0樘检验编号", settings.dt_Code);
-            dc.Add("检测条件第0樘检验编号重复1", settings.dt_Code);
-            dc.Add("检测条件第0樘检验编号重复2", settings.dt_Code);
-            dc.Add("检测条件第0樘检验编号重复3", settings.dt_Code);
-            dc.Add("检测条件第0樘检验编号重复4", settings.dt_Code);
-            dc.Add("检测条件第0樘检验编号重复5", settings.dt_Code);
-            dc.Add("检测条件第0樘检验日期重复1", settings.JianYanRiQi);
-            dc.Add("检测条件第0樘检验日期重复2", settings.JianYanRiQi);
-            dc.Add("检测条件第0樘检验日期重复3", settings.JianYanRiQi);
-            dc.Add("检测条件第0樘检验日期重复4", settings.JianYanRiQi);
-            dc.Add("检测条件第0樘检验日期重复5", settings.JianYanRiQi);
-            dc.Add("检测条件第0樘检验日期重复6", settings.JianYanRiQi);
-            dc.Add("检测条件第0樘检验日期重复7", settings.JianYanRiQi);
-            dc.Add("检测条件第0樘检验项目", settings.JianYanXiangMu);
-            dc.Add("检测条件第0樘正压气密等级设计值", settings.ZhengYaQiMiDengJiSheJiZhi);
-            dc.Add("检测条件第0樘负压气密等级设计值", settings.FuYaQiMiDengJiSheJiZhi);
-            dc.Add("检测条件第0樘水密等级设计值", settings.ShuiMiDengJiSheJiZhi);
-            dc.Add("检测条件第0樘玻璃厚度", settings.BoLiHouDu);
-            dc.Add("检测条件第0樘玻璃品种", settings.BoLiPinZhong);
-            dc.Add("检测条件第0樘玻璃密封", settings.BoLiMiFeng);
-            dc.Add("检测条件第0樘抗风压等级设计值", settings.KangFengYaDengJiSheJiZhi);
-            dc.Add("检测条件第0樘镶嵌方式", settings.XiangQianFangShi);
+            dc.Add("幕墙气密检测附加正降压100帕风速", "");
+            dc.Add("幕墙气密检测附加负升压100帕风速", "");
+            dc.Add("幕墙气密检测附加负降压100帕风速", "");
+            dc.Add("幕墙气密检测附加负降压50帕风速", "");
+            dc.Add("幕墙水密检测可开1000帕部位", "");
+            dc.Add("幕墙水密检测可开250帕状态", "");
+            dc.Add("幕墙水密检测可开250帕部位", "");
+            dc.Add("幕墙水密检测固定2000帕部位", "");
+            dc.Add("幕墙水密检测水密记录", "");
+            dc.Add("强度检测杆A正1250帕位移A1", "");
+            dc.Add("强度检测杆A正1500帕位移A1", "");
+            dc.Add("强度检测杆A正1750帕位移A1", "");
+            dc.Add("强度检测杆A正1750帕位移A2", "");
+            dc.Add("强度检测杆A正1750帕位移A3", "");
+            dc.Add("强度检测杆A正1750帕挠度", "");
+            dc.Add("强度检测杆A正2000帕位移A1", "");
+            dc.Add("强度检测杆A正2000帕位移A2", "");
+            dc.Add("强度检测杆A正2000帕位移A3", "");
+            dc.Add("强度检测杆A正2000帕挠度", "");
+            dc.Add("强度检测杆A正压P1", "");
+            dc.Add("强度检测杆A负1250帕位移A1", "");
+            dc.Add("强度检测杆A负1500帕位移A1", "");
+            dc.Add("强度检测杆A负1750帕位移A1", "");
+            dc.Add("强度检测杆A负1750帕位移A2", "");
+            dc.Add("强度检测杆A负1750帕位移A3", "");
+            dc.Add("强度检测杆A负1750帕挠度", "");
+            dc.Add("强度检测杆A负2000帕位移A1", "");
+            dc.Add("强度检测杆A负2000帕位移A2", "");
+            dc.Add("强度检测杆A负2000帕位移A3", "");
+            dc.Add("强度检测杆A负2000帕挠度", "");
+            dc.Add("强度检测杆B负1250帕位移B1", "");
+            dc.Add("强度检测杆B负1500帕位移B1", "");
+            dc.Add("强度检测杆B负1750帕位移B1", "");
+            dc.Add("强度检测杆B负1750帕位移B2", "");
+            dc.Add("强度检测杆B负1750帕位移B3", "");
+            dc.Add("强度检测杆B负1750帕挠度", "");
+            dc.Add("强度检测杆B负2000帕位移B1", "");
+            dc.Add("强度检测杆B负2000帕位移B2", "");
+            dc.Add("强度检测杆B负2000帕位移B3", "");
+            dc.Add("强度检测杆B负2000帕挠度", "");
+            dc.Add("强度检测杆C回归系数", "");
+            dc.Add("强度检测杆C正1250帕位移C1", "");
+            dc.Add("强度检测杆C正1500帕位移C1", "");
+            dc.Add("强度检测杆C正1750帕位移C1", "");
+            dc.Add("强度检测杆C正1750帕位移C2", "");
+            dc.Add("强度检测杆C正1750帕位移C3", "");
+            dc.Add("强度检测杆C正1750帕挠度", "");
+            dc.Add("强度检测杆C正2000帕位移C1", "");
+            dc.Add("强度检测杆C正2000帕位移C2", "");
+            dc.Add("强度检测杆C正2000帕位移C3", "");
+            dc.Add("强度检测杆C正2000帕挠度", "");
+            dc.Add("强度检测杆C负1250帕位移C1", "");
+            dc.Add("强度检测杆C负1500帕位移C1", "");
+            dc.Add("强度检测杆C负1750帕位移C1", "");
+            dc.Add("强度检测杆C负1750帕位移C2", "");
+            dc.Add("强度检测杆C负1750帕位移C3", "");
+            dc.Add("强度检测杆C负1750帕挠度", "");
+            dc.Add("强度检测杆C负2000帕位移C1", "");
+            dc.Add("强度检测杆C负2000帕位移C2", "");
+            dc.Add("强度检测杆C负2000帕位移C3", "");
+            dc.Add("强度检测杆C负2000帕挠度 ", "");
 
 
-            dc.Add("检测条件第0樘单扇单锁点", settings.DanShanDanSuoDian);
-
-            #endregion
-
-            if (settings.dt_qm_Info.Count > 0)
-            {
-                #region 气密
-                //检测条件第0樘综合气密等级
-                var z_qm_level = formula.Get_Z_AirTightLevel(settings.dt_qm_Info);
-                dc.Add("检测条件第0樘正压气密等级", z_qm_level.ToString());
-                var f_qm_level = formula.Get_F_AirTightLevel(settings.dt_qm_Info);
-                dc.Add("检测条件第0樘负压气密等级", f_qm_level.ToString());
-
-                if (settings.dt_qm_Info != null && settings.dt_qm_Info.Count > 0)
-                {
-                    for (int i = 0; i < settings.dt_qm_Info.Count; i++)
-                    {
-                        if (i == 0)
-                        {
-                            dc.Add("气密检测第1樘总的渗透正升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第1樘总的渗透正降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_z_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第1樘总的渗透负升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第1樘总的渗透负降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_f_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第1樘附加渗透负升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_fj150).ToString("#0.00"));
-                            dc.Add("气密检测第1樘总的渗透负升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_zd150).ToString("#0.00"));
-                            dc.Add("气密检测第1樘总的渗透正升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_zd150).ToString("#0.00"));
-                            dc.Add("气密检测第1樘附加渗透正升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_fj150).ToString("#0.00"));
-                            dc.Add("气密检测第1樘附加渗透正升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_fj100).ToString("#0.00"));
-                            dc.Add("气密检测第1樘附加渗透正降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_z_fj100).ToString("#0.00"));
-                            dc.Add("气密检测第1樘附加渗透负升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_fj100).ToString("#0.00"));
-                            dc.Add("气密检测第1樘附加渗透负降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_f_fj100).ToString("#0.00"));
-                            dc.Add("流量第一樘升100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_fj100)).ToString("#0.00"));
-                            dc.Add("流量第一樘升150附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_fj150)).ToString("#0.00"));
-                            dc.Add("流量第一樘负升150附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_fj150)).ToString("#0.00"));
-                            dc.Add("流量第一樘负升100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_fj100)).ToString("#0.00"));
-                            dc.Add("流量第一樘负升100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_zd100)).ToString("#0.00"));
-                            dc.Add("流量第一樘升100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_zd100)).ToString("#0.00"));
-                            dc.Add("流量第一樘升150总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_zd150)).ToString("#0.00"));
-                            dc.Add("流量第一樘负升150总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_zd150)).ToString("#0.00"));
-                            dc.Add("流量第一樘降100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_z_zd100)).ToString("#0.00"));
-                            dc.Add("流量第一樘降100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_z_fj100)).ToString("#0.00"));
-                            dc.Add("流量第一樘负降100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_f_zd100)).ToString("#0.00"));
-                            dc.Add("流量第一樘负降100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_f_fj100)).ToString("#0.00"));
-                        }
-                        if (i == 1)
-                        {
-                            dc.Add("气密检测第2樘总的渗透正升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第2樘总的渗透正升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_zd150).ToString("#0.00"));
-                            dc.Add("气密检测第2樘总的渗透负升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_zd150).ToString("#0.00"));
-                            dc.Add("气密检测第2樘附加渗透负升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_fj150).ToString("#0.00"));
-                            dc.Add("气密检测第2樘附加渗透正升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_fj150).ToString("#0.00"));
-                            dc.Add("气密检测第2樘总的渗透正降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_z_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第2樘总的渗透负升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第2樘总的渗透负降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_f_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第2樘附加渗透正升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_fj100).ToString("#0.00"));
-                            dc.Add("气密检测第2樘附加渗透正降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_z_fj100).ToString("#0.00"));
-                            dc.Add("气密检测第2樘附加渗透负升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_fj100).ToString("#0.00"));
-                            dc.Add("气密检测第2樘附加渗透负降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_f_fj100).ToString("#0.00"));
-
-                            //第二樘
-                            dc.Add("流量第二樘升100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_fj100)).ToString("#0.00"));
-                            dc.Add("流量第二樘升150附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_fj150)).ToString("#0.00"));
-                            dc.Add("流量第二樘负升150附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_fj150)).ToString("#0.00"));
-                            dc.Add("流量第二樘负升100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_fj100)).ToString("#0.00"));
-                            dc.Add("流量第二樘负升100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_zd100)).ToString("#0.00"));
-                            dc.Add("流量第二樘升100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_zd100)).ToString("#0.00"));
-                            dc.Add("流量第二樘升150总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_zd150)).ToString("#0.00"));
-                            dc.Add("流量第二樘负升150总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_zd150)).ToString("#0.00"));
-                            dc.Add("流量第二樘降100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_z_zd100)).ToString("#0.00"));
-                            dc.Add("流量第二樘降100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_z_fj100)).ToString("#0.00"));
-                            dc.Add("流量第二樘负降100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_f_zd100)).ToString("#0.00"));
-                            dc.Add("流量第二樘负降100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_f_fj100)).ToString("#0.00"));
-                        }
-                        if (i == 2)
-                        {
-                            dc.Add("气密检测第3樘总的渗透正升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第3樘总的渗透正升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_zd150).ToString("#0.00"));
-                            dc.Add("气密检测第3樘总的渗透负升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_zd150).ToString("#0.00"));
-                            dc.Add("气密检测第3樘附加渗透负升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_fj150).ToString("#0.00"));
-                            dc.Add("气密检测第3樘附加渗透正升压150帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_fj150).ToString("#0.00"));
-                            dc.Add("气密检测第3樘总的渗透正降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_z_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第3樘总的渗透负升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第3樘总的渗透负降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_f_zd100).ToString("#0.00"));
-                            dc.Add("气密检测第3樘附加渗透正升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_z_fj100).ToString("#0.00"));
-                            dc.Add("气密检测第3樘附加渗透正降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_z_fj100).ToString("#0.00"));
-                            dc.Add("气密检测第3樘附加渗透负升压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_s_f_fj100).ToString("#0.00"));
-                            dc.Add("气密检测第3樘附加渗透负降压100帕时风速", double.Parse(settings.dt_qm_Info[i].qm_j_f_fj100).ToString("#0.00"));
-                            //流量
-                            dc.Add("流量第三樘负升100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_zd100)).ToString("#0.00"));
-                            dc.Add("流量第三樘升100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_zd100)).ToString("#0.00"));
-                            dc.Add("流量第三樘负升100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_fj100)).ToString("#0.00"));
-                            dc.Add("流量第三樘升100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_fj100)).ToString("#0.00"));
-                            dc.Add("流量第三樘升150总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_zd150)).ToString("#0.00"));
-                            dc.Add("流量第三樘负升150总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_zd150)).ToString("#0.00"));
-                            dc.Add("流量第三樘升150附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_z_fj150)).ToString("#0.00"));
-                            dc.Add("流量第三樘负升150附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_s_f_fj150)).ToString("#0.00"));
-                            dc.Add("流量第三樘负降100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_f_zd100)).ToString("#0.00"));
-                            dc.Add("流量第三樘降100总的", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_z_zd100)).ToString("#0.00"));
-                            dc.Add("流量第三樘降100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_z_fj100)).ToString("#0.00"));
-                            dc.Add("流量第三樘负降100附加", formula.MathFlow(double.Parse(settings.dt_qm_Info[i].qm_j_f_fj100)).ToString("#0.00"));
-                        }
-                    }
-                }
-                #endregion
-            }
-            else
-            {
-                dc.Add("检测条件第0樘综合气密等级", "--");
-            }
-            if (settings.dt_sm_Info.Count > 0)
-            {
-                #region 水密
-                var sm_level = formula.GetWaterTightLevel(settings.dt_sm_Info);
-                dc.Add("检测条件第0樘水密等级", sm_level.ToString());
-
-                for (int i = 0; i < settings.dt_sm_Info.Count; i++)
-                {
-                    if (i == 0)
-                        dc.Add("检测条件第0樘水密检测方法", settings.dt_sm_Info[i].Method);
-
-
-                    string[] arr = settings.dt_sm_Info[i].sm_PaDesc.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    var one = "";
-                    var two = "";
-                    if (arr.Length == 0)
-                        continue;
-
-                    else if (arr.Length == 1)
-                        one = arr[0];
-
-                    else if (arr.Length == 2)
-                    {
-                        one = arr[0];
-                        two = arr[1];
-                    }
-
-                    if (two.Contains("▲") || two.Contains("●"))
-                    {
-                        if (i == 0)
-                        {
-                            //if (settings.dt_sm_Info[i].sm_Pa == "0")
-                            //{
-                            //    dc.Add("水密检测第1樘压力0帕状态", one);
-                            //    dc.Add("水密检测第1樘压力0帕部位", two);
-                            //}
-                            if (settings.dt_sm_Info[i].sm_Pa == "0")
-                            {
-                                dc.Add("水密检测第1樘压力100帕状态", one);
-                                dc.Add("水密检测第1樘压力100帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "100")
-                            {
-                                dc.Add("水密检测第1樘压力150帕状态", one);
-                                dc.Add("水密检测第1樘压力150帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "150")
-                            {
-                                dc.Add("水密检测第1樘压力200帕状态", one);
-                                dc.Add("水密检测第1樘压力200帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "200")
-                            {
-                                dc.Add("水密检测第1樘压力250帕状态", one);
-                                dc.Add("水密检测第1樘压力250帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "250")
-                            {
-                                dc.Add("水密检测第1樘压力300帕状态", one);
-                                dc.Add("水密检测第1樘压力300帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "300")
-                            {
-                                dc.Add("水密检测第1樘压力350帕状态", one);
-                                dc.Add("水密检测第1樘压力350帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "350")
-                            {
-                                dc.Add("水密检测第1樘压力400帕状态", one);
-                                dc.Add("水密检测第1樘压力400帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "400")
-                            {
-                                dc.Add("水密检测第1樘压力500帕状态", one);
-                                dc.Add("水密检测第1樘压力500帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "500")
-                            {
-                                dc.Add("水密检测第1樘压力600帕状态", one);
-                                dc.Add("水密检测第1樘压力600帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "600")
-                            {
-                                dc.Add("水密检测第1樘压力700帕状态", one);
-                                dc.Add("水密检测第1樘压力700帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "700")
-                            {
-                                dc.Add("水密检测第1樘压力700帕状态", one);
-                                dc.Add("水密检测第1樘压力700帕部位", two);
-                            }
-                            dc.Add("水密检测第1樘水密实验备注", settings.dt_sm_Info[i].sm_Remark);
-
-                        }
-                        if (i == 1)
-                        {
-                            //if (settings.dt_sm_Info[i].sm_Pa == "0")
-                            //{
-                            //    dc.Add("水密检测第2樘压力0帕状态", one);
-                            //    dc.Add("水密检测第2樘压力0帕部位", two);
-                            //}
-                            if (settings.dt_sm_Info[i].sm_Pa == "0")
-                            {
-                                dc.Add("水密检测第2樘压力100帕状态", one);
-                                dc.Add("水密检测第2樘压力100帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "100")
-                            {
-                                dc.Add("水密检测第2樘压力150帕状态", one);
-                                dc.Add("水密检测第2樘压力150帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "150")
-                            {
-                                dc.Add("水密检测第2樘压力200帕状态", one);
-                                dc.Add("水密检测第2樘压力200帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "200")
-                            {
-                                dc.Add("水密检测第2樘压力250帕状态", one);
-                                dc.Add("水密检测第2樘压力250帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "250")
-                            {
-                                dc.Add("水密检测第2樘压力300帕状态", one);
-                                dc.Add("水密检测第2樘压力300帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "300")
-                            {
-                                dc.Add("水密检测第2樘压力350帕状态", one);
-                                dc.Add("水密检测第2樘压力350帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "350")
-                            {
-                                dc.Add("水密检测第2樘压力400帕状态", one);
-                                dc.Add("水密检测第2樘压力400帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "400")
-                            {
-                                dc.Add("水密检测第2樘压力500帕状态", one);
-                                dc.Add("水密检测第2樘压力500帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "500")
-                            {
-                                dc.Add("水密检测第2樘压力600帕状态", one);
-                                dc.Add("水密检测第2樘压力600帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "600")
-                            {
-                                dc.Add("水密检测第2樘压力700帕状态", one);
-                                dc.Add("水密检测第2樘压力700帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "700")
-                            {
-                                dc.Add("水密检测第2樘压力700帕状态", one);
-                                dc.Add("水密检测第2樘压力700帕部位", two);
-                            }
-                            dc.Add("水密检测第2樘水密实验备注", settings.dt_sm_Info[i].sm_Remark);
-                        }
-                        if (i == 2)
-                        {
-                            //if (settings.dt_sm_Info[i].sm_Pa == "0")
-                            //{
-                            //    dc.Add("水密检测第3樘压力0帕状态", one);
-                            //    dc.Add("水密检测第3樘压力0帕部位", two);
-                            //}
-                            if (settings.dt_sm_Info[i].sm_Pa == "0")
-                            {
-                                dc.Add("水密检测第3樘压力100帕状态", one);
-                                dc.Add("水密检测第3樘压力100帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "100")
-                            {
-                                dc.Add("水密检测第3樘压力150帕状态", one);
-                                dc.Add("水密检测第3樘压力150帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "150")
-                            {
-                                dc.Add("水密检测第3樘压力200帕状态", one);
-                                dc.Add("水密检测第3樘压力200帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "200")
-                            {
-                                dc.Add("水密检测第3樘压力250帕状态", one);
-                                dc.Add("水密检测第3樘压力250帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "250")
-                            {
-                                dc.Add("水密检测第3樘压力300帕状态", one);
-                                dc.Add("水密检测第3樘压力300帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "300")
-                            {
-                                dc.Add("水密检测第3樘压力350帕状态", one);
-                                dc.Add("水密检测第3樘压力350帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "350")
-                            {
-                                dc.Add("水密检测第3樘压力400帕状态", one);
-                                dc.Add("水密检测第3樘压力400帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "400")
-                            {
-                                dc.Add("水密检测第3樘压力500帕状态", one);
-                                dc.Add("水密检测第3樘压力500帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "500")
-                            {
-                                dc.Add("水密检测第3樘压力600帕状态", one);
-                                dc.Add("水密检测第3樘压力600帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "600")
-                            {
-                                dc.Add("水密检测第3樘压力700帕状态", one);
-                                dc.Add("水密检测第3樘压力700帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "700")
-                            {
-                                dc.Add("水密检测第2樘压力700帕状态", one);
-                                dc.Add("水密检测第2樘压力700帕部位", two);
-                            }
-                            dc.Add("水密检测第3樘水密实验备注", settings.dt_sm_Info[i].sm_Remark);
-                        }
-                    }
-                    else
-                    {
-                        if (i == 0)
-                        {
-                            if (settings.dt_sm_Info[i].sm_Pa == "0")
-                            {
-                                dc.Add("水密检测第1樘压力0帕状态", one);
-                                dc.Add("水密检测第1樘压力0帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "100")
-                            {
-                                dc.Add("水密检测第1樘压力100帕状态", one);
-                                dc.Add("水密检测第1樘压力100帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "150")
-                            {
-                                dc.Add("水密检测第1樘压力150帕状态", one);
-                                dc.Add("水密检测第1樘压力150帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "200")
-                            {
-                                dc.Add("水密检测第1樘压力200帕状态", one);
-                                dc.Add("水密检测第1樘压力200帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "250")
-                            {
-                                dc.Add("水密检测第1樘压力250帕状态", one);
-                                dc.Add("水密检测第1樘压力250帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "300")
-                            {
-                                dc.Add("水密检测第1樘压力300帕状态", one);
-                                dc.Add("水密检测第1樘压力300帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "350")
-                            {
-                                dc.Add("水密检测第1樘压力350帕状态", one);
-                                dc.Add("水密检测第1樘压力350帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "400")
-                            {
-                                dc.Add("水密检测第1樘压力400帕状态", one);
-                                dc.Add("水密检测第1樘压力400帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "500")
-                            {
-                                dc.Add("水密检测第1樘压力500帕状态", one);
-                                dc.Add("水密检测第1樘压力500帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "600")
-                            {
-                                dc.Add("水密检测第1樘压力600帕状态", one);
-                                dc.Add("水密检测第1樘压力600帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "700")
-                            {
-                                dc.Add("水密检测第1樘压力700帕状态", one);
-                                dc.Add("水密检测第1樘压力700帕部位", two);
-                            }
-                            dc.Add("水密检测第1樘水密实验备注", settings.dt_sm_Info[i].sm_Remark);
-
-                        }
-                        if (i == 1)
-                        {
-                            if (settings.dt_sm_Info[i].sm_Pa == "0")
-                            {
-                                dc.Add("水密检测第2樘压力0帕状态", one);
-                                dc.Add("水密检测第2樘压力0帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "100")
-                            {
-                                dc.Add("水密检测第2樘压力100帕状态", one);
-                                dc.Add("水密检测第2樘压力100帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "150")
-                            {
-                                dc.Add("水密检测第2樘压力150帕状态", one);
-                                dc.Add("水密检测第2樘压力150帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "200")
-                            {
-                                dc.Add("水密检测第2樘压力200帕状态", one);
-                                dc.Add("水密检测第2樘压力200帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "250")
-                            {
-                                dc.Add("水密检测第2樘压力250帕状态", one);
-                                dc.Add("水密检测第2樘压力250帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "300")
-                            {
-                                dc.Add("水密检测第2樘压力300帕状态", one);
-                                dc.Add("水密检测第2樘压力300帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "350")
-                            {
-                                dc.Add("水密检测第2樘压力350帕状态", one);
-                                dc.Add("水密检测第2樘压力350帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "400")
-                            {
-                                dc.Add("水密检测第2樘压力400帕状态", one);
-                                dc.Add("水密检测第2樘压力400帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "500")
-                            {
-                                dc.Add("水密检测第2樘压力500帕状态", "36");
-                                dc.Add("水密检测第2樘压力500帕部位", "36");
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "600")
-                            {
-                                dc.Add("水密检测第2樘压力600帕状态", one);
-                                dc.Add("水密检测第2樘压力600帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "700")
-                            {
-                                dc.Add("水密检测第2樘压力700帕状态", one);
-                                dc.Add("水密检测第2樘压力700帕部位", two);
-                            }
-                            dc.Add("水密检测第2樘水密实验备注", settings.dt_sm_Info[i].sm_Remark);
-                        }
-                        if (i == 2)
-                        {
-                            if (settings.dt_sm_Info[i].sm_Pa == "0")
-                            {
-                                dc.Add("水密检测第3樘压力0帕状态", one);
-                                dc.Add("水密检测第3樘压力0帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "100")
-                            {
-                                dc.Add("水密检测第3樘压力100帕状态", one);
-                                dc.Add("水密检测第3樘压力100帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "150")
-                            {
-                                dc.Add("水密检测第3樘压力150帕状态", one);
-                                dc.Add("水密检测第3樘压力150帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "200")
-                            {
-                                dc.Add("水密检测第3樘压力200帕状态", one);
-                                dc.Add("水密检测第3樘压力200帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "250")
-                            {
-                                dc.Add("水密检测第3樘压力250帕状态", one);
-                                dc.Add("水密检测第3樘压力250帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "300")
-                            {
-                                dc.Add("水密检测第3樘压力300帕状态", one);
-                                dc.Add("水密检测第3樘压力300帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "350")
-                            {
-                                dc.Add("水密检测第3樘压力350帕状态", one);
-                                dc.Add("水密检测第3樘压力350帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "400")
-                            {
-                                dc.Add("水密检测第3樘压力400帕状态", one);
-                                dc.Add("水密检测第3樘压力400帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "500")
-                            {
-                                dc.Add("水密检测第3樘压力500帕状态", "36");
-                                dc.Add("水密检测第3樘压力500帕部位", "36");
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "600")
-                            {
-                                dc.Add("水密检测第3樘压力600帕状态", one);
-                                dc.Add("水密检测第3樘压力600帕部位", two);
-                            }
-                            if (settings.dt_sm_Info[i].sm_Pa == "700")
-                            {
-                                dc.Add("水密检测第3樘压力700帕状态", one);
-                                dc.Add("水密检测第3樘压力700帕部位", two);
-                            }
-                            dc.Add("水密检测第3樘水密实验备注", settings.dt_sm_Info[i].sm_Remark);
-                        }
-                    }
-                }
-                #endregion
-            }
-            else
-            {
-                dc.Add("检测条件第0樘水密等级", "--");
-            }
-
-            #region  缝长计算
-            double zFc = 0, fFc = 0, zMj = 0, fMj = 0;
-            if (settings.dt_qm_Info != null && settings.dt_qm_Info.Count > 0)
-            {
-                zFc = Math.Round(settings.dt_qm_Info.Sum(t => double.Parse(t.qm_Z_FC)) / settings.dt_qm_Info.Count, 2);
-                fFc = Math.Round(settings.dt_qm_Info.Sum(t => double.Parse(t.qm_F_FC)) / settings.dt_qm_Info.Count, 2);
-                zMj = Math.Round(settings.dt_qm_Info.Sum(t => double.Parse(t.qm_Z_MJ)) / settings.dt_qm_Info.Count, 2);
-                fMj = Math.Round(settings.dt_qm_Info.Sum(t => double.Parse(t.qm_F_MJ)) / settings.dt_qm_Info.Count, 2);
-            }
-
-            dc.Add("检测条件第0樘正缝长渗透量", zFc.ToString());
-            dc.Add("检测条件第0樘负缝长渗透量", fFc.ToString());
-            dc.Add("检测条件第0樘正面积渗透量", zMj.ToString());
-            dc.Add("检测条件第0樘负面积渗透量", fMj.ToString());
-
-
-            #endregion
+            dc.Add("挠度曲线杆A300，540，12，12", "92");
+            dc.Add("挠度曲线杆B300，540，12，12", "93");
+            dc.Add("挠度曲线杆C300，540，12，12", "94");
 
 
 
-            #region 抗风压
-            if (settings.dt_kfy_Info.Count > 0)
-            {
-                var value = new List<int>();
-
-                foreach (var item in settings.dt_kfy_Info)
-                {
-                    value.Add(int.Parse(item.p3));
-                    value.Add(int.Parse(item._p3));
-                }
-                var minValue = value.Min(t => t);
-
-                dc.Add("检测条件第0樘抗风压等级", Formula.GetWindPressureLevel(minValue).ToString());
 
 
-                dc.Add("检测条件第0樘单扇单锁点位移选择", settings.dt_kfy_Info[0].CheckLock == 0 ? "--" : settings.dt_kfy_Info[0].CheckLock.ToString());
 
-                for (int i = 0; i < settings.dt_kfy_Info.Count; i++)
-                {
-                    var kfy = settings.dt_kfy_Info[i];
-                    #region 第一樘
-                    var index = i + 1;
-                    dc.Add($"强度检测第{index}樘正压250帕位移1", double.Parse(kfy.z_one_250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压250帕位移2", double.Parse(kfy.z_two_250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压250帕位移3", double.Parse(kfy.z_three_250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压250帕第一组挠度", double.Parse(kfy.z_nd_250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压500帕位移1", double.Parse(kfy.z_one_500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压500帕位移2", double.Parse(kfy.z_two_500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压500帕位移3", double.Parse(kfy.z_three_500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压500帕第一组挠度", double.Parse(kfy.z_nd_500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压750帕位移1", double.Parse(kfy.z_one_750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压750帕位移2", double.Parse(kfy.z_two_750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压750帕位移3", double.Parse(kfy.z_three_750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压750帕第一组挠度", double.Parse(kfy.z_nd_750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1000帕位移1", double.Parse(kfy.z_one_1000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1000帕位移2", double.Parse(kfy.z_two_1000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1000帕位移3", double.Parse(kfy.z_three_1000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1000帕第一组挠度", double.Parse(kfy.z_nd_1000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1250帕位移1", double.Parse(kfy.z_one_1250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1250帕位移2", double.Parse(kfy.z_two_1250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1250帕位移3", double.Parse(kfy.z_three_1250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1250帕第一组挠度", double.Parse(kfy.z_nd_1250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1500帕位移1", double.Parse(kfy.z_one_1500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1500帕位移2", double.Parse(kfy.z_two_1500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1500帕位移3", double.Parse(kfy.z_three_1500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1500帕第一组挠度", double.Parse(kfy.z_nd_1500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1750帕位移1", double.Parse(kfy.z_one_1750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1750帕位移2", double.Parse(kfy.z_two_1750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1750帕位移3", double.Parse(kfy.z_three_1750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压1750帕第一组挠度", double.Parse(kfy.z_nd_1750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压2000帕位移1", double.Parse(kfy.z_one_2000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压2000帕位移2", double.Parse(kfy.z_two_2000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压2000帕位移3", double.Parse(kfy.z_three_2000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘正压2000帕第一组挠度", double.Parse(kfy.z_nd_2000).ToString("#0.00"));
 
-                    dc.Add($"强度检测第{index}樘负压250帕位移1", double.Parse(kfy.f_one_250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压250帕位移2", double.Parse(kfy.f_two_250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压250帕位移3", double.Parse(kfy.f_three_250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压250帕第一组挠度", double.Parse(kfy.f_nd_250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压500帕位移1", double.Parse(kfy.f_one_500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压500帕位移2", double.Parse(kfy.f_two_500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压500帕位移3", double.Parse(kfy.f_three_500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压500帕第一组挠度", double.Parse(kfy.f_nd_500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压750帕位移1", double.Parse(kfy.f_one_750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压750帕位移2", double.Parse(kfy.f_two_750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压750帕位移3", double.Parse(kfy.f_three_750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压750帕第一组挠度", double.Parse(kfy.f_nd_750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1000帕位移1", double.Parse(kfy.f_one_1000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1000帕位移2", double.Parse(kfy.f_two_1000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1000帕位移3", double.Parse(kfy.f_three_1000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1000帕第一组挠度", double.Parse(kfy.f_nd_1000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1250帕位移1", double.Parse(kfy.f_one_1250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1250帕位移2", double.Parse(kfy.f_two_1250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1250帕位移3", double.Parse(kfy.f_three_1250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1250帕第一组挠度", double.Parse(kfy.f_nd_1250).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1500帕位移1", double.Parse(kfy.f_one_1500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1500帕位移2", double.Parse(kfy.f_two_1500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1500帕位移3", double.Parse(kfy.f_three_1500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1500帕第一组挠度", double.Parse(kfy.f_nd_1500).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1750帕位移1", double.Parse(kfy.f_one_1750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1750帕位移2", double.Parse(kfy.f_two_1750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1750帕位移3", double.Parse(kfy.f_three_1750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压1750帕第一组挠度", double.Parse(kfy.f_nd_1750).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压2000帕位移1", double.Parse(kfy.f_one_2000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压2000帕位移2", double.Parse(kfy.f_two_2000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压2000帕位移3", double.Parse(kfy.f_three_2000).ToString("#0.00"));
-                    dc.Add($"强度检测第{index}樘负压2000帕第一组挠度", double.Parse(kfy.f_nd_2000).ToString("#0.00"));
+            //dc.Add("OLE_LINK1", "1");
+            //dc.Add("OLE_LINK10", "2");
+            //dc.Add("OLE_LINK11", "3");
+            //dc.Add("OLE_LINK12", "4");
+            //dc.Add("OLE_LINK13", "5");
+            //dc.Add("OLE_LINK14", "6");
+            //dc.Add("OLE_LINK15", "7");
+            //dc.Add("OLE_LINK16", "8");
+            //dc.Add("OLE_LINK17", "9");
+            //dc.Add("OLE_LINK18", "10");
+            //dc.Add("OLE_LINK19", "11");
+            //dc.Add("OLE_LINK2", "12");
+            //dc.Add("OLE_LINK20", "13");
+            //dc.Add("OLE_LINK21", "14");
+            //dc.Add("OLE_LINK22", "15");
+            //dc.Add("OLE_LINK23", "16");
+            //dc.Add("OLE_LINK24", "17");
+            //dc.Add("OLE_LINK25", "18");
+            //dc.Add("OLE_LINK26", "19");
+            //dc.Add("OLE_LINK27", "20");
+            //dc.Add("OLE_LINK28", "");
+            //dc.Add("OLE_LINK29", "");
+            //dc.Add("OLE_LINK3", "");
+            //dc.Add("OLE_LINK30", "");
+            //dc.Add("OLE_LINK31", "");
+            //dc.Add("OLE_LINK32", "");
+            //dc.Add("OLE_LINK33", "");
+            //dc.Add("OLE_LINK34", "");
+            //dc.Add("OLE_LINK35", "");
+            //dc.Add("OLE_LINK36", "");
+            //dc.Add("OLE_LINK37", "");
+            //dc.Add("OLE_LINK38", "");
+            //dc.Add("OLE_LINK39", "");
+            //dc.Add("OLE_LINK4", "");
+            //dc.Add("OLE_LINK40", "");
+            //dc.Add("OLE_LINK41", "");
+            //dc.Add("OLE_LINK42", "");
+            //dc.Add("OLE_LINK43", "");
+            //dc.Add("OLE_LINK44", "");
+            //dc.Add("OLE_LINK45", "");
+            //dc.Add("OLE_LINK46", "");
+            //dc.Add("OLE_LINK47", "");
+            //dc.Add("OLE_LINK48", "");
+            //dc.Add("OLE_LINK49", "");
+            //dc.Add("OLE_LINK5", "");
+            //dc.Add("OLE_LINK50", "");
+            //dc.Add("OLE_LINK51", "");
+            //dc.Add("OLE_LINK6", "");
+            //dc.Add("OLE_LINK7", "");
+            //dc.Add("OLE_LINK8", "");
+            //dc.Add("OLE_LINK9", "");
+            //dc.Add("幕墙平面变形平面变形级别", "");
+            //dc.Add("幕墙平面变形平面变形记录", "");
+            //dc.Add("幕墙检测条件变形压力级别1", "222222222");
+            //dc.Add("幕墙检测条件变形压力级别1重复2", "22222222");
+            //dc.Add("幕墙检测条件变形压力级别1重复4", "");
+            //dc.Add("幕墙检测条件变形压力级别2", "");
+            //dc.Add("幕墙检测条件变形压力级别2重复2", "");
+            //dc.Add("幕墙检测条件变形压力级别2重复4", "");
+            //dc.Add("幕墙检测条件变形压力级别3", "");
+            //dc.Add("幕墙检测条件变形压力级别3重复2", "");
+            //dc.Add("幕墙检测条件变形压力级别3重复4", "");
+            //dc.Add("幕墙检测条件变形压力级别4", "");
+            //dc.Add("幕墙检测条件变形压力级别4重复2", "");
+            //dc.Add("幕墙检测条件变形压力级别4重复4", "");
+            //dc.Add("幕墙检测条件变形压力级别5", "");
+            //dc.Add("幕墙检测条件变形压力级别5重复2", "");
+            //dc.Add("幕墙检测条件变形压力级别5重复4", "");
+            //dc.Add("幕墙检测条件变形压力级别6", "");
+            //dc.Add("幕墙检测条件变形压力级别6重复2", "");
+            //dc.Add("幕墙检测条件变形压力级别6重复4", "");
+            //dc.Add("幕墙检测条件变形压力级别7", "");
+            //dc.Add("幕墙检测条件变形压力级别7重复2", "");
+            //dc.Add("幕墙检测条件变形压力级别7重复4", "");
+            //dc.Add("幕墙检测条件变形压力级别8", "");
+            //dc.Add("幕墙检测条件变形压力级别8重复2", "");
+            //dc.Add("幕墙检测条件变形压力级别8重复4", "");
+            //dc.Add("幕墙检测条件可开水密保持风压", "");
+            //dc.Add("幕墙检测条件可开综合单位缝长渗透量", "");
+            //dc.Add("幕墙检测条件可开缝长", "");
+            //dc.Add("幕墙检测条件强度记录", "");
+            //dc.Add("幕墙检测条件强度记录重复1", "");
+            //dc.Add("幕墙检测条件强度记录重复2", "");
+            //dc.Add("幕墙检测条件当前温度", "");
+            //dc.Add("幕墙检测条件整体综合单位面积渗透量", "");
+            //dc.Add("幕墙检测条件样品编号重复1", "");
+            //dc.Add("幕墙检测条件水密检测方法", "");
+            //dc.Add("幕墙检测条件淋水量", "");
+            //dc.Add("幕墙检测条件综合可开气密等级", "");
+            //dc.Add("幕墙检测条件综合面积气密等级", "");
 
-                    dc.Add($"强度检测第{index}樘正压P1", kfy.p1);
-                    dc.Add($"强度检测第{index}樘正压P2", kfy.p2);
-                    dc.Add($"强度检测第{index}樘正压P3", kfy.p3);
 
-                    dc.Add($"强度检测第{index}樘负压P1", kfy._p1);
-                    dc.Add($"强度检测第{index}樘负压P2", kfy._p2);
-                    dc.Add($"强度检测第{index}樘负压P3", kfy._p3);
-                    #endregion
-                }
-            }
-            else
-            {
-                dc.Add("检测条件第0樘抗风压等级", "--");
-                //dc.Add("检测条件第0樘单扇单锁点", "--");
-                dc.Add("检测条件第0樘单扇单锁点位移选择", "--");
+            //dc.Add("幕墙气密检测附加正降压100帕风速", "");
+            //dc.Add("幕墙气密检测附加负升压100帕风速", "");
+            //dc.Add("幕墙气密检测附加负降压100帕风速", "");
+            //dc.Add("幕墙气密检测附加负降压50帕风速", "");
+            //dc.Add("幕墙水密检测可开1000帕部位", "");
+            //dc.Add("幕墙水密检测可开250帕状态", "");
+            //dc.Add("幕墙水密检测可开250帕部位", "");
+            //dc.Add("幕墙水密检测固定2000帕部位", "");
+            //dc.Add("幕墙水密检测水密记录", "");
+            //dc.Add("强度检测杆A正1250帕位移A1", "");
+            //dc.Add("强度检测杆A正1500帕位移A1", "");
+            //dc.Add("强度检测杆A正1750帕位移A1", "");
+            //dc.Add("强度检测杆A正1750帕位移A2", "");
+            //dc.Add("强度检测杆A正1750帕位移A3", "");
+            //dc.Add("强度检测杆A正1750帕挠度", "");
+            //dc.Add("强度检测杆A正2000帕位移A1", "");
+            //dc.Add("强度检测杆A正2000帕位移A2", "");
+            //dc.Add("强度检测杆A正2000帕位移A3", "");
+            //dc.Add("强度检测杆A正2000帕挠度", "");
+            //dc.Add("强度检测杆A正压P1", "");
+            //dc.Add("强度检测杆A负1250帕位移A1", "");
+            //dc.Add("强度检测杆A负1500帕位移A1", "");
+            //dc.Add("强度检测杆A负1750帕位移A1", "");
+            //dc.Add("强度检测杆A负1750帕位移A2", "");
+            //dc.Add("强度检测杆A负1750帕位移A3", "");
+            //dc.Add("强度检测杆A负1750帕挠度", "");
+            //dc.Add("强度检测杆A负2000帕位移A1", "");
+            //dc.Add("强度检测杆A负2000帕位移A2", "");
+            //dc.Add("强度检测杆A负2000帕位移A3", "");
+            //dc.Add("强度检测杆A负2000帕挠度", "");
+            //dc.Add("强度检测杆B负1250帕位移B1", "");
+            //dc.Add("强度检测杆B负1500帕位移B1", "");
+            //dc.Add("强度检测杆B负1750帕位移B1", "");
+            //dc.Add("强度检测杆B负1750帕位移B2", "");
+            //dc.Add("强度检测杆B负1750帕位移B3", "");
+            //dc.Add("强度检测杆B负1750帕挠度", "");
+            //dc.Add("强度检测杆B负2000帕位移B1", "");
+            //dc.Add("强度检测杆B负2000帕位移B2", "");
+            //dc.Add("强度检测杆B负2000帕位移B3", "");
+            //dc.Add("强度检测杆B负2000帕挠度", "");
+            //dc.Add("强度检测杆C回归系数", "");
+            //dc.Add("强度检测杆C正1250帕位移C1", "");
+            //dc.Add("强度检测杆C正1500帕位移C1", "");
+            //dc.Add("强度检测杆C正1750帕位移C1", "");
+            //dc.Add("强度检测杆C正1750帕位移C2", "");
+            //dc.Add("强度检测杆C正1750帕位移C3", "");
+            //dc.Add("强度检测杆C正1750帕挠度", "");
+            //dc.Add("强度检测杆C正2000帕位移C1", "");
+            //dc.Add("强度检测杆C正2000帕位移C2", "");
+            //dc.Add("强度检测杆C正2000帕位移C3", "");
+            //dc.Add("强度检测杆C正2000帕挠度", "");
+            //dc.Add("强度检测杆C负1250帕位移C1", "");
+            //dc.Add("强度检测杆C负1500帕位移C1", "");
+            //dc.Add("强度检测杆C负1750帕位移C1", "");
+            //dc.Add("强度检测杆C负1750帕位移C2", "");
+            //dc.Add("强度检测杆C负1750帕位移C3", "");
+            //dc.Add("强度检测杆C负1750帕挠度", "");
+            //dc.Add("强度检测杆C负2000帕位移C1", "");
+            //dc.Add("强度检测杆C负2000帕位移C2", "");
+            //dc.Add("强度检测杆C负2000帕位移C3", "");
+            //dc.Add("强度检测杆C负2000帕挠度 ", "");
 
-                for (int i = 1; i < 4; i++)
-                {
-                    dc.Add("强度检测第" + i + "樘正压250帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘正压250帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘正压250帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘正压250帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘正压500帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘正压500帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘正压500帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘正压500帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘正压750帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘正压750帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘正压750帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘正压750帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘正压1000帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘正压1000帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘正压1000帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘正压1000帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘正压1250帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘正压1250帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘正压1250帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘正压1250帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘正压1500帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘正压1500帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘正压1500帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘正压1500帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘正压1750帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘正压1750帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘正压1750帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘正压1750帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘正压2000帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘正压2000帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘正压2000帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘正压2000帕第一组挠度", "--");
 
-                    dc.Add("强度检测第" + i + "樘负压250帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘负压250帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘负压250帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘负压250帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘负压500帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘负压500帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘负压500帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘负压500帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘负压750帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘负压750帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘负压750帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘负压750帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘负压1000帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘负压1000帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘负压1000帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘负压1000帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘负压1250帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘负压1250帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘负压1250帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘负压1250帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘负压1500帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘负压1500帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘负压1500帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘负压1500帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘负压1750帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘负压1750帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘负压1750帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘负压1750帕第一组挠度", "--");
-                    dc.Add("强度检测第" + i + "樘负压2000帕位移1", "--");
-                    dc.Add("强度检测第" + i + "樘负压2000帕位移2", "--");
-                    dc.Add("强度检测第" + i + "樘负压2000帕位移3", "--");
-                    dc.Add("强度检测第" + i + "樘负压2000帕第一组挠度", "--");
+            //dc.Add("挠度曲线杆A300，540，12，12", "");
+            //dc.Add("挠度曲线杆B300，540，12，12", "");
+            //dc.Add("挠度曲线杆C300，540，12，12", "");
 
-                    dc.Add("强度检测第" + i + "樘正压P1", "--");
-                    dc.Add("强度检测第" + i + "樘正压P2", "--");
-                    dc.Add("强度检测第" + i + "樘正压P3", "--");
 
-                    dc.Add("强度检测第" + i + "樘负压P1", "--");
-                    dc.Add("强度检测第" + i + "樘负压P2", "--");
-                    dc.Add("强度检测第" + i + "樘负压P3", "--");
-                }
-                //dc.Add ( "强度检测第1樘试验情况记录", "--" );
-            }
-            #endregion
+
 
             return dc;
         }
-        #endregion
 
 
         private void ImageLine(string file, string name, List<double> zitem, List<double> fitem)
@@ -1337,7 +667,6 @@ namespace text.doors.Detection
                     g.DrawString("-" + fitem[i].ToString(), font3, Brushes.Red, 15, 205 + 15 * i);
                 }
 
-                // System.Windows.Forms.Application.StartupPath + ("\\tempImage\\asd.jpg");
                 image.Save(file, System.Drawing.Imaging.ImageFormat.Jpeg);
 
             }
@@ -1351,7 +680,7 @@ namespace text.doors.Detection
                 image.Dispose();
             }
         }
-        */
         #endregion
+
     }
 }

@@ -472,8 +472,7 @@
             // 
             // tim_WY
             // 
-            this.tim_WY.Enabled = true;
-            this.tim_WY.Interval = 1000;
+            this.tim_WY.Interval = 500;
             this.tim_WY.Tick += new System.EventHandler(this.tim_WY_Tick);
             // 
             // tim_getType

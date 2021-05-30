@@ -108,4 +108,3 @@ E:\08-GitHub\jky-doors-3x-mqzhxn\Young.Core\obj\Debug\Young.Core.csproj.CoreComp
 E:\08-GitHub\jky-doors-3x-mqzhxn\Young.Core\obj\Debug\Young.Core.csproj.CopyComplete
 E:\08-GitHub\jky-doors-3x-mqzhxn\Young.Core\obj\Debug\Young.Core.dll
 E:\08-GitHub\jky-doors-3x-mqzhxn\Young.Core\obj\Debug\Young.Core.pdb
-E:\08-GitHub\jky-doors-3x-mqzhxn\Young.Core\obj\Debug\Young.Core.csprojAssemblyReference.cache

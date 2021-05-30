@@ -1198,6 +1198,7 @@ namespace text.doors.Detection
                 this.btn_ycjy_z.Enabled = true;
                 return;
             }
+
             var res = _serialPortClient.Set_FY_Value(BFMCommand.正依次加压值, BFMCommand.正依次加压, value);
             if (!res)
             {
@@ -1209,17 +1210,22 @@ namespace text.doors.Detection
             {
                 var data = windSpeedInfoList.Find(t => t.Pa == "正设计值");
                 data.FJST = 0;
+                var data1 = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                data1.FJST = 0;
             }
             else if (rdb_gfzh.Checked)
             {
                 var data = windSpeedInfoList.Find(t => t.Pa == "正设计值");
                 data.GFZH = 0;
-
+                var data1 = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                data1.FJST = 0;
             }
             else if (rdb_zdstl.Checked)
             {
                 var data = windSpeedInfoList.Find(t => t.Pa == "正设计值");
                 data.ZDST = 0;
+                var data1 = windSpeedInfoList.Find(t => t.Pa == "负设计值");
+                data1.FJST = 0;
             }
 
             BindFlowBase();

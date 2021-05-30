@@ -64,6 +64,10 @@
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <HintPath>..\packages\Microsoft.Office.Interop.Word.12.0.0\lib\net11\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="nmodbuspc">
       <HintPath>..\dll\nmodbuspc.dll</HintPath>
     </Reference>
@@ -123,6 +127,12 @@
     </Compile>
     <Compile Include="Detection\CorrectionFactor.Designer.cs">
       <DependentUpon>CorrectionFactor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Detection\ExportReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Detection\ExportReport.Designer.cs">
+      <DependentUpon>ExportReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Detection\PlaneDeformation.cs">
       <SubType>Form</SubType>
@@ -235,6 +245,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Detection\CorrectionFactor.resx">
       <DependentUpon>CorrectionFactor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Detection\ExportReport.resx">
+      <DependentUpon>ExportReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Detection\PlaneDeformation.resx">
       <DependentUpon>PlaneDeformation.cs</DependentUpon>

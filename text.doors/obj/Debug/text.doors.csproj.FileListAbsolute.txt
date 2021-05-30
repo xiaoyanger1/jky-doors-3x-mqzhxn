@@ -205,3 +205,4 @@ E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\建筑幕墙综合性能�
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\建筑幕墙综合性能检测系统.pdb
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\建筑幕墙综合性能检测系统.exe
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\建筑幕墙综合性能检测系统.pdb
+E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.Detection.ExportReport.resources

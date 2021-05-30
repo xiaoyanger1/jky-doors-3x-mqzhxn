@@ -24,15 +24,15 @@ namespace text.doors.Model
                 return (double)Math.Round(decimal.Parse((this.zwy2 - (this.zwy1 + this.zwy3) / 2).ToString()), 2, MidpointRounding.AwayFromZero);
             }
         }
-        public int zlx
+        public double zlx
         {
             get
             {
-                return this.zzd == 0 ? 0 : Convert.ToInt32(GanJianChangDu / this.zzd);
+                return this.zzd == 0 ? 0d : Convert.ToInt32(GanJianChangDu / this.zzd);
             }
         }
 
-        public int GanJianChangDu { get; set; }
+      
 
         public double fwy1 { get; set; }
         public double fwy2 { get; set; }
@@ -47,15 +47,14 @@ namespace text.doors.Model
             }
         }
 
-        public int flx
+        public double flx
         {
             get
             {
-                return this.fzd == 0 ? 0 : Convert.ToInt32(GanJianChangDu / this.fzd);
+                return this.fzd == 0 ? 0d : Convert.ToInt32(GanJianChangDu / this.fzd);
             }
         }
         public int PaValue { get; set; }
-
-
+        public int GanJianChangDu { get; set; }
     }
 }

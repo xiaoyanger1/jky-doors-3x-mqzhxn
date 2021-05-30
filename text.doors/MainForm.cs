@@ -399,29 +399,8 @@ namespace text.doors
         {
             if (DefaultBase.IsSetTong)
             {
-                try
-                {
-                    FolderBrowserDialog path = new FolderBrowserDialog();
-                    path.ShowDialog();
-
-                    if (string.IsNullOrWhiteSpace(path.SelectedPath))
-                    {
-                        return;
-                    }
-                    string _name = "建筑外窗（门）气密、水密、抗风压性能检测报告" + "_" + _tempCode + ".xls";
-
-                    var saveExcelUrl = path.SelectedPath + "\\" + _name;
-                    ExportExcel exportExcel = new ExportExcel(_tempCode);
-                    var res = exportExcel.ExportData(saveExcelUrl);
-                    if (res)
-                    {
-                        MessageBox.Show("导出成功", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.None);
-                    }
-                }
-                catch (Exception ex)
-                {
-
-                }
+                ExportReport exportReport = new ExportReport(_tempCode);
+                exportReport.Show();
             }
             else
             {
@@ -677,7 +656,7 @@ namespace text.doors
                 return;
             }
 
-          
+
             btn_fjtz.BackColor = Color.Green;
             btn_fjqd.BackColor = Color.Transparent;
         }
@@ -774,7 +753,7 @@ namespace text.doors
             btn_stfg.BackColor = Color.Green;
         }
 
-      
+
         private void hsb_lqfControl_Scroll(object sender, ScrollEventArgs e)
         {
             if (hsb_lqfControl.Value == 0)

@@ -1760,7 +1760,6 @@ namespace text.doors.Common
             catch (Exception ex)
             {
                 IsSuccess = false;
-
             }
             return res;
         }
@@ -1843,7 +1842,32 @@ namespace text.doors.Common
             }
             return true;
         }
+        /// <summary>
+        /// 获取漏气阀显示
+        /// </summary>
+        public double ReadPMStopShow(ref bool IsSuccess)
+        {
+            double res = 0;
+            try
+            {
+                if (sp.IsOpen)
+                {
+                    lock (syncLock)
+                    {
+                        _StartAddress = BFMCommand.GetCommandDict(BFMCommand.平面停止);
+                        ushort[] holding_register = _MASTER.ReadHoldingRegisters(_SlaveID, _StartAddress, _NumOfPoints);
+                        res = int.Parse(holding_register[0].ToString());
+                        IsSuccess = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                IsSuccess = false;
 
+            }
+            return res;
+        }
 
 
         /// <summary>
