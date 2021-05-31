@@ -39,6 +39,7 @@ namespace text.doors.Service
             var dt_sm_Info = SQLiteHelper.ExecuteDataRow("select * from dt_sm_Info where dt_Code='" + code + "'")?.Table;
             if (dt_sm_Info != null)
             {
+                model = new Model_dt_sm_Info();
                 model.dt_Code = dt_sm_Info.Rows[0]["dt_Code"].ToString();
                 model.sm_PaDesc = dt_sm_Info.Rows[0]["sm_PaDesc"].ToString();
                 model.sm_PaDesc2 = dt_sm_Info.Rows[0]["sm_PaDesc2"].ToString();

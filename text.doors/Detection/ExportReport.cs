@@ -1113,9 +1113,9 @@ namespace text.doors.Detection
                     mjValue = Formula.GetIndexStitchArea(mjValue_f, mjValue_f, daqiyali, shijianmianji, dangqianwendu);
 
 
-                zhengtiLevel = Formula.GetStitchLengthLevel(fcValue);
+                zhengtiLevel = Formula.GetAreaLevel(mjValue); 
 
-                kekaiLevel = Formula.GetAreaLevel(mjValue);
+                kekaiLevel = Formula.GetStitchLengthLevel(fcValue);
             }
         }
         private List<SortInfo> GetSort()
