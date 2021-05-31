@@ -227,9 +227,6 @@ namespace text.doors.Detection
             dc.Add("可开逢长", settings.kekaifengchang);
 
 
-            dc.Add("集流管直径", "");
-            dc.Add("气密性能等级", "");
-            dc.Add("淋水流量", "");
 
             if (settings.dt_kfy_Info != null && settings.dt_kfy_Info.Count > 0)
             {
@@ -868,6 +865,15 @@ namespace text.doors.Detection
                 {
                     dc.Add("试件整体气密性能等级", zhengtiLevel.ToString());
                 }
+
+                if (settings?.dt_qm_zb_Info?.jlgzj != null)
+                {
+                    dc.Add("集流管直径", settings?.dt_qm_zb_Info?.jlgzj);
+                }
+                else
+                {
+                    dc.Add("集流管直径", "--");
+                }
             }
 
             if (settings.dt_sm_Info != null)
@@ -1001,11 +1007,61 @@ namespace text.doors.Detection
                     dc.Add("固定未渗漏风压", "--");
                     dc.Add("固定水密等级", "--");
                 }
-            }
-            dc.Add("检测方法2", "");
 
-            dc.Add("水密备注", "");
-            dc.Add("幕墙整体备注", "");
+                if (!string.IsNullOrWhiteSpace(settings.dt_sm_Info.sm_Remark))
+                {
+                    dc.Add("水密备注", settings.dt_sm_Info.sm_Remark);
+                }
+                else
+                {
+                    dc.Add("水密备注", "--");
+                }
+            }
+            if (settings.dt_pd_Info != null)
+            {
+                if (settings.dt_pd_Info.test_result == "第一级")
+                {
+                    dc.Add("平面等级1", "试件完好");
+                }
+                if (settings.dt_pd_Info.test_result == "第二级")
+                {
+                    dc.Add("平面等级2", "试件完好");
+                }
+                if (settings.dt_pd_Info.test_result == "第三级")
+                {
+                    dc.Add("平面等级3", "试件完好");
+                }
+                if (settings.dt_pd_Info.test_result == "第四级")
+                {
+                    dc.Add("平面等级4", "试件完好");
+                }
+                if (settings.dt_pd_Info.test_result == "第五级")
+                {
+                    dc.Add("平面等级5", "试件完好");
+                }
+
+                if (!string.IsNullOrWhiteSpace(settings.dt_pd_Info.test_desc))
+                {
+                    dc.Add("幕墙整体备注", settings.dt_pd_Info.test_desc);
+                }
+                else
+                {
+                    dc.Add("幕墙整体备注", "--");
+                }
+            }
+            else
+            {
+                dc.Add("平面等级1", "--");
+                dc.Add("平面等级2", "--");
+                dc.Add("平面等级3", "--");
+                dc.Add("平面等级4", "--");
+                dc.Add("平面等级5", "--");
+            }
+            dc.Add("检测方法2", "平行四边形法");
+
+            //dc.Add("截留管直径", "");
+            //dc.Add("气密性能等级", "");
+            //dc.Add("淋水流量", "");
             return dc;
         }
 
@@ -1113,7 +1169,7 @@ namespace text.doors.Detection
                     mjValue = Formula.GetIndexStitchArea(mjValue_f, mjValue_f, daqiyali, shijianmianji, dangqianwendu);
 
 
-                zhengtiLevel = Formula.GetAreaLevel(mjValue); 
+                zhengtiLevel = Formula.GetAreaLevel(mjValue);
 
                 kekaiLevel = Formula.GetStitchLengthLevel(fcValue);
             }

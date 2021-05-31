@@ -1015,6 +1015,7 @@ namespace text.doors.Detection
             model.F_MJ = this.lbl_f_mj.Text;
             model.Z_FC = this.lbl_z_fc.Text;
             model.F_FC = this.lbl_f_fc.Text;
+            model.jlgzj = GetConfigSetting("PipeDiameter");
             model.testtype = int.Parse(sjzValue) > 0 ? "2" : "1";
             model.z_sjz_value = int.Parse(this.txt_ycjy_z.Text);
             model.f_sjz_value = int.Parse(this.txt_ycjy_f.Text);

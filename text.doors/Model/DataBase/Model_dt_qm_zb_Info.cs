@@ -51,5 +51,7 @@ namespace text.doors.Model.DataBase
         /// </summary>
         public string sjz_f_zd { get; set; }
 
+        public string jlgzj { get; set; }
+
     }
 }
