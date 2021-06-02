@@ -409,7 +409,10 @@ values(
                 modelRes._pMax = item.Rows[0]["_pMax"].ToString();
                 modelRes.info_Level = int.Parse(item.Rows[0]["info_Level"].ToString());
                 modelRes.defJC = int.Parse(item.Rows[0]["defJC"].ToString());
-                modelRes.lx = item.Rows[0]["lx"].ToString();
+                modelRes.lx_a = item.Rows[0]["lx_a"].ToString();
+                modelRes.lx_b = item.Rows[0]["lx_b"].ToString();
+                modelRes.lx_c = item.Rows[0]["lx_c"].ToString();
+
             }
             return modelRes;
         }

@@ -31,7 +31,11 @@
             this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.txt_lx = new System.Windows.Forms.TextBox();
+            this.txt_lx_c = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.txt_lx_b = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txt_lx_a = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.lbl_wy9 = new System.Windows.Forms.Label();
@@ -177,7 +181,11 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.White;
-            this.tabPage1.Controls.Add(this.txt_lx);
+            this.tabPage1.Controls.Add(this.txt_lx_c);
+            this.tabPage1.Controls.Add(this.label35);
+            this.tabPage1.Controls.Add(this.txt_lx_b);
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Controls.Add(this.txt_lx_a);
             this.tabPage1.Controls.Add(this.label26);
             this.tabPage1.Controls.Add(this.groupBox7);
             this.tabPage1.Controls.Add(this.groupBox2);
@@ -197,19 +205,57 @@
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPage1.Size = new System.Drawing.Size(1109, 761);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "抗风压检测";
             // 
-            // txt_lx
+            // txt_lx_c
             // 
-            this.txt_lx.Location = new System.Drawing.Point(995, 100);
-            this.txt_lx.Margin = new System.Windows.Forms.Padding(4);
-            this.txt_lx.Name = "txt_lx";
-            this.txt_lx.Size = new System.Drawing.Size(65, 21);
-            this.txt_lx.TabIndex = 30;
-            this.txt_lx.Text = "375";
+            this.txt_lx_c.Location = new System.Drawing.Point(995, 146);
+            this.txt_lx_c.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txt_lx_c.Name = "txt_lx_c";
+            this.txt_lx_c.Size = new System.Drawing.Size(65, 21);
+            this.txt_lx_c.TabIndex = 65;
+            this.txt_lx_c.Text = "375";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(913, 149);
+            this.label35.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(53, 12);
+            this.label35.TabIndex = 64;
+            this.label35.Text = "杆C l/X:";
+            // 
+            // txt_lx_b
+            // 
+            this.txt_lx_b.Location = new System.Drawing.Point(996, 123);
+            this.txt_lx_b.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txt_lx_b.Name = "txt_lx_b";
+            this.txt_lx_b.Size = new System.Drawing.Size(65, 21);
+            this.txt_lx_b.TabIndex = 63;
+            this.txt_lx_b.Text = "375";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(913, 126);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 12);
+            this.label2.TabIndex = 62;
+            this.label2.Text = "杆B l/X:";
+            // 
+            // txt_lx_a
+            // 
+            this.txt_lx_a.Location = new System.Drawing.Point(995, 100);
+            this.txt_lx_a.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txt_lx_a.Name = "txt_lx_a";
+            this.txt_lx_a.Size = new System.Drawing.Size(65, 21);
+            this.txt_lx_a.TabIndex = 30;
+            this.txt_lx_a.Text = "375";
             // 
             // label26
             // 
@@ -217,9 +263,9 @@
             this.label26.Location = new System.Drawing.Point(912, 103);
             this.label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(29, 12);
+            this.label26.Size = new System.Drawing.Size(53, 12);
             this.label26.TabIndex = 29;
-            this.label26.Text = "l/X:";
+            this.label26.Text = "杆A l/X:";
             // 
             // groupBox7
             // 
@@ -449,7 +495,7 @@
             this.A组.Controls.Add(this.panel3);
             this.A组.Location = new System.Drawing.Point(4, 22);
             this.A组.Name = "A组";
-            this.A组.Padding = new System.Windows.Forms.Padding(3);
+            this.A组.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.A组.Size = new System.Drawing.Size(848, 289);
             this.A组.TabIndex = 0;
             this.A组.Text = "A组";
@@ -531,7 +577,7 @@
             this.B组.Controls.Add(this.panel6);
             this.B组.Location = new System.Drawing.Point(4, 22);
             this.B组.Name = "B组";
-            this.B组.Padding = new System.Windows.Forms.Padding(3);
+            this.B组.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.B组.Size = new System.Drawing.Size(848, 289);
             this.B组.TabIndex = 1;
             this.B组.Text = "B组";
@@ -686,7 +732,7 @@
             // 
             // btn_gbjc
             // 
-            this.btn_gbjc.Location = new System.Drawing.Point(887, 130);
+            this.btn_gbjc.Location = new System.Drawing.Point(887, 166);
             this.btn_gbjc.Name = "btn_gbjc";
             this.btn_gbjc.Size = new System.Drawing.Size(75, 23);
             this.btn_gbjc.TabIndex = 58;
@@ -696,7 +742,7 @@
             // 
             // txt_gbjc
             // 
-            this.txt_gbjc.Location = new System.Drawing.Point(997, 131);
+            this.txt_gbjc.Location = new System.Drawing.Point(997, 169);
             this.txt_gbjc.Name = "txt_gbjc";
             this.txt_gbjc.Size = new System.Drawing.Size(61, 21);
             this.txt_gbjc.TabIndex = 57;
@@ -705,7 +751,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(1068, 136);
+            this.label29.Location = new System.Drawing.Point(1068, 174);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(17, 12);
             this.label29.TabIndex = 56;
@@ -849,7 +895,7 @@
             this.groupBox5.Controls.Add(this.label17);
             this.groupBox5.Controls.Add(this.label15);
             this.groupBox5.Controls.Add(this.label16);
-            this.groupBox5.Location = new System.Drawing.Point(876, 425);
+            this.groupBox5.Location = new System.Drawing.Point(876, 445);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(227, 142);
             this.groupBox5.TabIndex = 24;
@@ -1010,7 +1056,7 @@
             this.groupBox4.Controls.Add(this.label10);
             this.groupBox4.Controls.Add(this.txt_f_p2);
             this.groupBox4.Controls.Add(this.txt_p2);
-            this.groupBox4.Location = new System.Drawing.Point(875, 337);
+            this.groupBox4.Location = new System.Drawing.Point(875, 357);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(227, 82);
             this.groupBox4.TabIndex = 23;
@@ -1103,7 +1149,7 @@
             this.groupBox3.Controls.Add(this.btn_fyyb);
             this.groupBox3.Controls.Add(this.btn_zyks);
             this.groupBox3.Controls.Add(this.btn_zyyb);
-            this.groupBox3.Location = new System.Drawing.Point(876, 159);
+            this.groupBox3.Location = new System.Drawing.Point(876, 195);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(227, 160);
             this.groupBox3.TabIndex = 22;
@@ -1304,7 +1350,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1118, 790);
+            this.ClientSize = new System.Drawing.Size(1122, 766);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "WindPressureDetection";
@@ -1463,7 +1509,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lbl_wy4;
         private System.Windows.Forms.Label lbl_wy5;
-        private System.Windows.Forms.TextBox txt_lx;
+        private System.Windows.Forms.TextBox txt_lx_a;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TextBox txt_lx_c;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.TextBox txt_lx_b;
+        private System.Windows.Forms.Label label2;
     }
 }

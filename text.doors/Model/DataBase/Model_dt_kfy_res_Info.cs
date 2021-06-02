@@ -13,7 +13,9 @@ namespace text.doors.Model.DataBase
         public int? testtype { get; set; }
         public string desc { get; set; }
 
-        public string lx { get; set; }
+        public string lx_a { get; set; }
+        public string lx_b { get; set; }
+        public string lx_c { get; set; }
         public string p1 { get; set; }
         public string p2 { get; set; }
         public string p3 { get; set; }

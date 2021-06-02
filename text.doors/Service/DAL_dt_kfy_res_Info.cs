@@ -38,10 +38,10 @@ namespace text.doors.Service
                             _p3,
                             _pMax,
                             testtype,
-                            desc,lx
+                            desc,lx_a,lx_b,lx_c
                             ) 
                             values(
-                            '{0}',{1},{2},'{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},'{12}','13')",
+                            '{0}',{1},{2},'{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},'{12}','{13}','{14}','{15}')",
                               model.dt_Code,
                               model.info_Level,
                               model.defJC,
@@ -54,7 +54,7 @@ namespace text.doors.Service
                               model._p3,
                               model._pMax,
                               model.testtype,
-                              model.desc,model.lx);
+                              model.desc, model.lx_a, model.lx_b, model.lx_c);
             #endregion
             var res = SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
             if (res)

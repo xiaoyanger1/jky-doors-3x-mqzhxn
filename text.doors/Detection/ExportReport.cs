@@ -12,6 +12,8 @@ using System.Drawing;
 using System.Data;
 using System.Drawing.Drawing2D;
 using System.IO;
+using text.doors.Service;
+using text.doors.Model;
 
 namespace text.doors.Detection
 {
@@ -38,11 +40,6 @@ namespace text.doors.Detection
 
         private void btn_ok_Click(object sender, EventArgs e)
         {
-            if (cm_Report.SelectedIndex == 0)
-            {
-                MessageBox.Show("请选择模板！", "请选择模板！", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
 
             Eexport(cm_Report.SelectedItem.ToString());
         }
@@ -226,6 +223,9 @@ namespace text.doors.Detection
             dc.Add("试件面级", settings.shijianmianji + "mm");
             dc.Add("可开逢长", settings.kekaifengchang);
 
+            dc.Add("杆件长度A", settings.ganAchang);
+            dc.Add("杆件长度B", settings.ganBchang);
+            dc.Add("杆件长度C", settings.ganCchang);
 
 
             if (settings.dt_kfy_Info != null && settings.dt_kfy_Info.Count > 0)
@@ -516,6 +516,19 @@ namespace text.doors.Detection
             var dt_kfy_res_Info = settings.dt_kfy_res_Info;
             if (dt_kfy_res_Info != null)
             {
+                if (dt_kfy_res_Info.lx_a != "")
+                    dc.Add("LXA", dt_kfy_res_Info.lx_a);
+                else
+                    dc.Add("LXA", "--");
+                if (dt_kfy_res_Info.lx_a != "")
+                    dc.Add("LXB", dt_kfy_res_Info.lx_b);
+                else
+                    dc.Add("LXB", "--");
+                if (dt_kfy_res_Info.lx_a != "")
+                    dc.Add("LXC", dt_kfy_res_Info.lx_c);
+                else
+                    dc.Add("LXC", "--");
+
                 dc.Add("A_ZP1", dt_kfy_res_Info.p1);
                 dc.Add("A_FP1", dt_kfy_res_Info._p1);
                 dc.Add("B_ZP1", dt_kfy_res_Info.p1);
@@ -653,7 +666,12 @@ namespace text.doors.Detection
                 var qmInfo = settings.dt_qm_Info.OrderBy(t => t.PaType).ToList();
                 if (settings.dt_qm_zb_Info.testtype == "1")
                 {
-                    GetQMLevel(settings, ref zhengtiLevel, ref kekaiLevel);
+                    double zZTFS = 0d; double fZTFS = 0d;
+                    double zKKFS = 0d; double fKKFS = 0d;
+                    double resKK = 0d; double resZT = 0d;
+
+                    GetQMLevel(settings, ref zhengtiLevel, ref kekaiLevel,
+                          ref zZTFS, ref fZTFS, ref zKKFS, ref fKKFS, ref resKK, ref resZT);
 
                     for (int i = 0; i < sortList.Count(); i++)
                     {
@@ -742,6 +760,55 @@ namespace text.doors.Detection
                             dc.Add("J_50KK", qmOne.KKST);
                         }
                     }
+
+                    if (resZT > 0)
+                    {
+                        dc.Add("整体正压pa", "100");
+                        dc.Add("整体负压pa", "100");
+                        dc.Add("整体使用pa", "100");
+                        dc.Add("水密整体正压风速", zZTFS.ToString());
+                        dc.Add("水密整体负压风速", fZTFS.ToString());
+                        if (zZTFS > fZTFS)
+                            dc.Add("整体平均风速", zZTFS.ToString());
+                        else
+                            dc.Add("整体平均风速", fZTFS.ToString());
+                        dc.Add("整体QA", resZT.ToString());
+                    }
+                    else
+                    {
+                        dc.Add("整体正压pa", "--");
+                        dc.Add("整体负压pa", "--");
+                        dc.Add("整体使用pa", "--");
+                        dc.Add("水密整体正压风速", "--");
+                        dc.Add("水密整体负压风速", "--");
+                        dc.Add("整体平均风速", "--");
+                        dc.Add("整体QA", "--");
+                    }
+
+
+                    if (resKK > 0)
+                    {
+                        dc.Add("可开正压pa", "100");
+                        dc.Add("可开负压pa", "100");
+                        dc.Add("可开使用pa", "100");
+                        dc.Add("可开正压风速", zKKFS.ToString());
+                        dc.Add("可开负压风速", fKKFS.ToString());
+                        if (zKKFS > fKKFS)
+                            dc.Add("可开平均风速", zKKFS.ToString());
+                        else
+                            dc.Add("可开平均风速", fKKFS.ToString());
+                        dc.Add("可开QL", resKK.ToString());
+                    }
+                    else
+                    {
+                        dc.Add("可开正压pa", "--");
+                        dc.Add("可开负压pa", "--");
+                        dc.Add("可开使用pa", "--");
+                        dc.Add("可开正压风速", "--");
+                        dc.Add("可开负压风速", "--");
+                        dc.Add("可开平均风速", "--");
+                        dc.Add("可开QL", "--");
+                    }
                 }
                 else
                 {
@@ -807,9 +874,17 @@ namespace text.doors.Detection
                     dc.Add("J_50KK", "--");
                     #endregion
                 }
+
+
                 if (settings.dt_qm_zb_Info.testtype == "2")
                 {
-                    GetQM_GCLevel(settings, ref zhengtiLevel, ref kekaiLevel);
+                    double zZTFS = 0d; double fZTFS = 0d;
+                    double zKKFS = 0d; double fKKFS = 0d;
+                    double resFC = 0d; double resMJ = 0d;
+
+                    GetQMLevel(settings, ref zhengtiLevel, ref kekaiLevel,
+                          ref zZTFS, ref fZTFS, ref zKKFS, ref fKKFS, ref resFC, ref resMJ);
+
                     //工程
                     var qm = qmInfo.Find(t => t.PaType == 3);
                     if (qm != null)
@@ -831,6 +906,57 @@ namespace text.doors.Detection
                         dc.Add("负压整体值", qm1.MQZT);
                         dc.Add("负压可开值", qm1.KKST);
                     }
+
+
+                    if (resMJ > 0)
+                    {
+                        dc.Add("整体正压pa", "100");
+                        dc.Add("整体负压pa", "100");
+                        dc.Add("整体使用pa", "100");
+                        dc.Add("水密整体正压风速", zZTFS.ToString());
+                        dc.Add("水密整体负压风速", fZTFS.ToString());
+                        if (zZTFS > fZTFS)
+                            dc.Add("整体平均风速", zZTFS.ToString());
+                        else
+                            dc.Add("整体平均风速", fZTFS.ToString());
+                        dc.Add("整体QA", resMJ.ToString());
+                    }
+                    else
+                    {
+                        dc.Add("整体正压pa", "--");
+                        dc.Add("整体负压pa", "--");
+                        dc.Add("整体使用pa", "--");
+                        dc.Add("水密整体正压风速", "--");
+                        dc.Add("水密整体负压风速", "--");
+                        dc.Add("整体平均风速", "--");
+                        dc.Add("整体QA", "--");
+                    }
+
+
+                    if (resFC > 0)
+                    {
+                        dc.Add("可开正压pa", "100");
+                        dc.Add("可开负压pa", "100");
+                        dc.Add("可开使用pa", "100");
+                        dc.Add("可开正压风速", zKKFS.ToString());
+                        dc.Add("可开负压风速", fKKFS.ToString());
+                        if (zKKFS > fKKFS)
+                            dc.Add("可开平均风速", zKKFS.ToString());
+                        else
+                            dc.Add("可开平均风速", fKKFS.ToString());
+                        dc.Add("可开QL", resFC.ToString());
+                    }
+                    else
+                    {
+                        dc.Add("可开正压pa", "--");
+                        dc.Add("可开负压pa", "--");
+                        dc.Add("可开使用pa", "--");
+                        dc.Add("可开正压风速", "--");
+                        dc.Add("可开负压风速", "--");
+                        dc.Add("可开平均风速", "--");
+                        dc.Add("可开QL", "--");
+                    }
+
                 }
                 else
                 {
@@ -1059,20 +1185,261 @@ namespace text.doors.Detection
             }
             dc.Add("检测方法2", "平行四边形法");
 
+
+            GetP1(settings, ref dc);
             //dc.Add("截留管直径", "");
             //dc.Add("气密性能等级", "");
             //dc.Add("淋水流量", "");
             return dc;
         }
 
+        #region  计算抗风压p1
 
+        private void GetP1(Model_dt_Settings settings, ref Dictionary<string, string> dc)
+        {
+            List<WindPressureDGV> windPressureDGV = new List<WindPressureDGV>();
+            var kfyTable = new DAL_dt_kfy_Info().GetkfyListByCode(_tempCode);
+            if (kfyTable != null && kfyTable.Rows.Count > 0)
+            {
+                int lengA = int.Parse(settings.ganAchang);
+                int lengB = int.Parse(settings.ganBchang);
+                int lengC = int.Parse(settings.ganBchang);
+                foreach (DataRow dr in kfyTable.Rows)
+                {
+                    var level = dr["level"].ToString();
+                    if (level == "A")
+                    {
+                        windPressureDGV = GetGroupData(dr, lengA, settings.dt_kfy_res_Info.defJC);
+                        double lx = double.Parse(settings.dt_kfy_res_Info.lx_a);
+                        List<double> list = new List<double>();
+                        double p1 = 0d;
+                        double _p1 = 0d;
+
+                        GetP1(windPressureDGV, lengA, lx, ref p1, ref _p1);
+                        if (p1 > 0)
+                            list.Add(p1);
+                        if (_p1 > 0)
+                            list.Add(_p1);
+                        if (list != null && list.Count > 0)
+                        {
+                            dc.Add("P1PA", list.Min().ToString());
+                        }
+                        else
+                        {
+                            dc.Add("P1PA", "--");
+                        }
+
+                    }
+                    else if (level == "B")
+                    {
+                        windPressureDGV = GetGroupData(dr, lengB, settings.dt_kfy_res_Info.defJC);
+                        if (settings.dt_kfy_res_Info.lx_b != "")
+                        {
+                            double lx = double.Parse(settings.dt_kfy_res_Info.lx_b);
+                            List<double> list = new List<double>();
+                            double p1 = 0d;
+                            double _p1 = 0d;
+                            if (p1 > 0)
+                                list.Add(p1);
+                            if (_p1 > 0)
+                                list.Add(_p1);
+                            GetP1(windPressureDGV, lengB, lx, ref p1, ref _p1);
+                            if (list != null && list.Count > 0)
+                            {
+                                dc.Add("P1PB", list.Min().ToString());
+                            }
+                            else
+                            {
+                                dc.Add("P1PB", "--");
+                            }
+                        }
+                        else
+                            dc.Add("P1PB", "--");
+                    }
+                    else if (level == "C")
+                    {
+                        windPressureDGV = GetGroupData(dr, lengC, settings.dt_kfy_res_Info.defJC);
+                        if (settings.dt_kfy_res_Info.lx_c != "")
+                        {
+                            double lx = double.Parse(settings.dt_kfy_res_Info.lx_c);
+                            List<double> list = new List<double>();
+                            double p1 = 0d;
+                            double _p1 = 0d;
+                            if (p1 > 0)
+                                list.Add(p1);
+                            if (_p1 > 0)
+                                list.Add(_p1);
+                            GetP1(windPressureDGV, lengC, lx, ref p1, ref _p1);
+                            if (list != null && list.Count > 0)
+                            {
+                                dc.Add("P1PC", list.Min().ToString());
+                            }
+                            else
+                            {
+                                dc.Add("P1PC", "--");
+                            }
+                        }
+                        else { dc.Add("P1PC", "--"); }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 分组获取数据
+        /// </summary>
+        /// <param name="dr"></param>
+        /// <returns></returns>
+        private List<WindPressureDGV> GetGroupData(DataRow dr, int ganJianChangDu, int jcValue)
+        {
+            List<WindPressureDGV> tempWindPressureDGV = new List<WindPressureDGV>();
+
+            var defKFYPa = new List<DefKFYPa>();
+            for (int i = 1; i < 9; i++)
+            {
+                defKFYPa.Add(new DefKFYPa() { Value = jcValue * i });
+            }
+
+            for (int i = 0; i < defKFYPa.Count; i++)
+            {
+                var paInfo = defKFYPa[i];
+                var dtValue = (i + 1) * 250;
+
+                tempWindPressureDGV.Add(new WindPressureDGV()
+                {
+                    Pa = paInfo.Value + "Pa",
+                    PaValue = paInfo.Value,
+                    zwy1 = string.IsNullOrWhiteSpace(dr["z_one_" + dtValue].ToString()) ? 0d : double.Parse(dr["z_one_" + dtValue].ToString()),
+                    zwy2 = string.IsNullOrWhiteSpace(dr["z_two_" + dtValue].ToString()) ? 0d : double.Parse(dr["z_two_" + dtValue].ToString()),
+                    zwy3 = string.IsNullOrWhiteSpace(dr["z_three_" + dtValue].ToString()) ? 0d : double.Parse(dr["z_three_" + dtValue].ToString()),
+
+                    fwy1 = string.IsNullOrWhiteSpace(dr["f_one_" + dtValue].ToString()) ? 0d : double.Parse(dr["f_one_" + dtValue].ToString()),
+                    fwy2 = string.IsNullOrWhiteSpace(dr["f_two_" + dtValue].ToString()) ? 0d : double.Parse(dr["f_two_" + dtValue].ToString()),
+                    fwy3 = string.IsNullOrWhiteSpace(dr["f_three_" + dtValue].ToString()) ? 0d : double.Parse(dr["f_three_" + dtValue].ToString()),
+                    GanJianChangDu = ganJianChangDu
+                }); ;
+            }
+
+            //极差
+            for (int i = 0; i < 2; i++)
+            {
+                var name = "";
+                var field = "";
+                if (i == 0)
+                {
+                    name = "P3";
+                    field = "p3";
+                }
+                else if (i == 1)
+                {
+                    name = "P3Max";
+                    field = "p3max";
+                }
+                tempWindPressureDGV.Add(new WindPressureDGV()
+                {
+                    Pa = name,
+                    PaValue = -1,
+                    zwy1 = string.IsNullOrWhiteSpace(dr["z_one_" + field].ToString()) ? 0d : double.Parse(dr["z_one_" + field].ToString()),
+                    zwy2 = string.IsNullOrWhiteSpace(dr["z_two_" + field].ToString()) ? 0d : double.Parse(dr["z_two_" + field].ToString()),
+                    zwy3 = string.IsNullOrWhiteSpace(dr["z_three_" + field].ToString()) ? 0d : double.Parse(dr["z_three_" + field].ToString()),
+
+                    fwy1 = string.IsNullOrWhiteSpace(dr["f_one_" + field].ToString()) ? 0d : double.Parse(dr["f_one_" + field].ToString()),
+                    fwy2 = string.IsNullOrWhiteSpace(dr["f_two_" + field].ToString()) ? 0d : double.Parse(dr["f_two_" + field].ToString()),
+                    fwy3 = string.IsNullOrWhiteSpace(dr["f_three_" + field].ToString()) ? 0d : double.Parse(dr["f_three_" + field].ToString()),
+                    GanJianChangDu = ganJianChangDu
+                });
+            }
+
+            return tempWindPressureDGV;
+        }
+
+        private void GetP1(List<WindPressureDGV> data, int leng, double lx,
+           ref double p1, ref double _p1)
+        {
+            var zdefPa = 2000;
+            var fdefPa = 2000;
+            int lengA = leng;
+
+            var tempData_z = data.FindAll(t => t.zlx > 0 && t.Pa != "P3" && t.Pa != "P3Max").ToList();
+            if (tempData_z != null && tempData_z.Count() > 0)
+            {
+                if (tempData_z[tempData_z.Count - 1] != null)
+                {
+                    zdefPa = tempData_z[tempData_z.Count - 1].PaValue;
+                }
+            }
+            var tempData_f = data.FindAll(t => t.flx > 0 && t.Pa != "P3" && t.Pa != "P3Max").ToList();
+            if (tempData_f != null && tempData_f.Count() > 0)
+            {
+                if (tempData_f[tempData_f.Count - 1] != null)
+                {
+                    fdefPa = tempData_f[tempData_f.Count - 1].PaValue;
+                }
+            }
+
+            var zone = new WindPressureDGV();
+            var ztwo = new WindPressureDGV();
+            zone = data.Find(t => t.Pa == (zdefPa - 250) + "Pa");
+            ztwo = data.Find(t => t.Pa == zdefPa + "Pa");
+            if (zone != null && ztwo != null)
+            {
+                var x1 = float.Parse(zone.zzd.ToString());
+                var x2 = float.Parse(ztwo.zzd.ToString());
+                var y1 = zdefPa - 250;
+                var y2 = zdefPa;
+
+                var p = Calculate(x1, x2, y1, y2, lengA, lx);
+
+                p1 = Math.Round(p, 0);
+            }
+
+            var fone = new WindPressureDGV();
+            var ftwo = new WindPressureDGV();
+            fone = data.Find(t => t.Pa == (fdefPa - 250) + "Pa");
+            ftwo = data.Find(t => t.Pa == fdefPa + "Pa");
+            if (zone != null && ztwo != null)
+            {
+                var _x1 = float.Parse(fone.fzd.ToString());
+                var _x2 = float.Parse(ftwo.fzd.ToString());
+                var y1 = fdefPa - 250;
+                var y2 = fdefPa;
+                var _p = Calculate(_x1, _x2, y1, y2, lengA, lx);
+                _p1 = Math.Round(_p, 0);
+            }
+        }
+
+        /// <summary>
+        /// 计算
+        /// </summary>
+        /// <returns></returns> 
+
+        private double Calculate(float x1, float x2, int y1, int y2, int gjcd, double lx)
+        {
+            float k = 0, b = 0;
+
+            Formula.Calculate(x1, x2, y1, y2, ref k, ref b);
+
+            double x = lx;
+
+            x = gjcd / x;
+
+            if (k == 0 && b == 0)
+                return Math.Round(x, 2);
+
+            return Math.Round(k * x + b, 2);
+        }
+        #endregion
         /// <summary>
         /// 气密正常 等级
         /// </summary>
         /// <param name="settings"></param>
         /// <param name="zhengtiLevel"></param>
         /// <param name="kekaiLevel"></param>
-        private void GetQMLevel(Model_dt_Settings settings, ref int zhengtiLevel, ref int kekaiLevel)
+        private void GetQMLevel(Model_dt_Settings settings, ref int zhengtiLevel, ref int kekaiLevel,
+            ref double zZTFS, ref double fZTFS,
+            ref double zKKFS, ref double fKKFS,
+            ref double resKK, ref double resZT
+            )
         {
             double kekaifengchang = 0d;
             double shijianmianji = 0d;
@@ -1094,30 +1461,40 @@ namespace text.doors.Detection
                 var fu_j = settings.dt_qm_Info.Find(t => t.Pa == "-100" && t.PaType == 2);
 
                 //逢长
-                var fcValue_z = (double.Parse(zheng_s.KKST) + double.Parse(zheng_j.KKST)) / 2;
-                var fcValue_f = (double.Parse(fu_s.KKST) + double.Parse(fu_j.KKST)) / 2;
+                var kkValue_z = (double.Parse(zheng_s.KKST) + double.Parse(zheng_j.KKST)) / 2;
+                var kkValue_f = (double.Parse(fu_s.KKST) + double.Parse(fu_j.KKST)) / 2;
 
                 //面积
-                var mjValue_z = (double.Parse(zheng_s.MQZT) + double.Parse(zheng_j.MQZT)) / 2;
-                var mjValue_f = (double.Parse(fu_s.MQZT) + double.Parse(fu_j.MQZT)) / 2;
+                var ztValue_z = (double.Parse(zheng_s.MQZT) + double.Parse(zheng_j.MQZT)) / 2;
+                var ztValue_f = (double.Parse(fu_s.MQZT) + double.Parse(fu_j.MQZT)) / 2;
 
-                var fcValue = 0d;
-                var mjValue = 0d;
 
-                if (fcValue_z > fcValue_f)
-                    fcValue = Formula.GetIndexStichLength(fcValue_z, fcValue_z, daqiyali, kekaifengchang, dangqianwendu);
+                var kkValue = 0d;
+                var ztValue = 0d;
+
+                if (kkValue_z > kkValue_f)
+                    kkValue = Formula.GetIndexStichLength(kkValue_z, kkValue_z, daqiyali, kekaifengchang, dangqianwendu);
                 else
-                    fcValue = Formula.GetIndexStichLength(fcValue_f, fcValue_f, daqiyali, kekaifengchang, dangqianwendu);
+                    kkValue = Formula.GetIndexStichLength(kkValue_f, kkValue_f, daqiyali, kekaifengchang, dangqianwendu);
 
-                if (mjValue_z > mjValue_f)
-                    mjValue = Formula.GetIndexStitchArea(mjValue_z, mjValue_z, daqiyali, shijianmianji, dangqianwendu);
+                if (ztValue_z > ztValue_f)
+                    ztValue = Formula.GetIndexStitchArea(ztValue_z, ztValue_z, daqiyali, shijianmianji, dangqianwendu);
                 else
-                    mjValue = Formula.GetIndexStitchArea(mjValue_f, mjValue_f, daqiyali, shijianmianji, dangqianwendu);
+                    ztValue = Formula.GetIndexStitchArea(ztValue_f, ztValue_f, daqiyali, shijianmianji, dangqianwendu);
+
+                zKKFS = kkValue_z;
+                fKKFS = kkValue_f;
+
+                zZTFS = ztValue_z;
+                fZTFS = ztValue_f;
 
 
-                kekaiLevel = Formula.GetStitchLengthLevel(fcValue);
+                resZT = ztValue;
+                resKK = kkValue;
 
-                zhengtiLevel = Formula.GetAreaLevel(mjValue);
+                kekaiLevel = Formula.GetStitchLengthLevel(kkValue);
+
+                zhengtiLevel = Formula.GetAreaLevel(ztValue);
             }
         }
 

@@ -21,7 +21,9 @@ namespace text.doors.Model
         {
             get
             {
-                return (double)Math.Round(decimal.Parse((this.zwy2 - (this.zwy1 + this.zwy3) / 2).ToString()), 2, MidpointRounding.AwayFromZero);
+                return Math.Round(this.zwy2 - ((this.zwy1 + this.zwy3) / 2), 2);
+
+                //return (double)Math.Round(decimal.Parse((this.zwy2 - (this.zwy1 + this.zwy3) / 2).ToString()), 2, MidpointRounding.AwayFromZero);
             }
         }
         public double zlx
@@ -32,7 +34,7 @@ namespace text.doors.Model
             }
         }
 
-      
+
 
         public double fwy1 { get; set; }
         public double fwy2 { get; set; }

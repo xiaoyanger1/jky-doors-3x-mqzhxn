@@ -155,7 +155,9 @@ namespace text.doors.Detection
                 this.txt_f_p3.Text = kfyResDataInfo._p3;
                 this.txt_zpmax.Text = kfyResDataInfo.pMax;
                 this.txt_fpmax.Text = kfyResDataInfo._pMax;
-                this.txt_lx.Text = kfyResDataInfo.lx;
+                this.txt_lx_a.Text = kfyResDataInfo.lx_a;
+                this.txt_lx_b.Text = kfyResDataInfo.lx_b;
+                this.txt_lx_c.Text = kfyResDataInfo.lx_c;
 
                 IsGCJC = kfyResDataInfo.testtype == 2 ? true : false;
 
@@ -861,55 +863,148 @@ namespace text.doors.Detection
             List<double> zyList = new List<double>();
             List<double> fyList = new List<double>();
 
-            double lx = 0;
-            double.TryParse(txt_lx.Text, out lx);
-
             if (selectTestType.Contains("A"))
             {
-                double zy = 0;
-                double fy = 0;
+                double lx_a = 0;
+                double.TryParse(txt_lx_a.Text, out lx_a);
+                double p1 = 0d;
+                double _p1 = 0d;
                 int lengA = int.Parse(tabSettings.Rows[0]["ganAchang"].ToString());
-                Formula.GetKFY_P1(windPressureDGV_A, lengA, lx, ref zy, ref fy);
+                GetP1(windPressureDGV_A, lengA, lx_a, ref p1, ref _p1);
 
-                zyList.Add(zy);
-                zyList.Add(fy);
+                if (p1 > 0)
+                    zyList.Add(p1);
+                if (_p1 > 0)
+                    fyList.Add(_p1);
                 currentPoint_A = 0;
             }
             if (selectTestType.Contains("B"))
             {
-                double zy = 0;
-                double fy = 0;
-                int lengB = int.Parse(tabSettings.Rows[0]["ganBchang"].ToString());
-                Formula.GetKFY_P1(windPressureDGV_A, lengB, lx, ref zy, ref fy);
-
-                zyList.Add(zy);
-                zyList.Add(fy);
+                double lx_b = 0;
+                double.TryParse(txt_lx_b.Text, out lx_b);
+                double p1 = 0d;
+                double _p1 = 0d;
+                int lengA = int.Parse(tabSettings.Rows[0]["ganBchang"].ToString());
+                GetP1(windPressureDGV_B, lengA, lx_b, ref p1, ref _p1);
+                if (p1 > 0)
+                    zyList.Add(p1);
+                if (_p1 > 0)
+                    fyList.Add(_p1);
                 currentPoint_B = 0;
             }
             if (selectTestType.Contains("C"))
             {
-                double zy = 0;
-                double fy = 0;
-                int lengC = int.Parse(tabSettings.Rows[0]["ganCchang"].ToString());
-                Formula.GetKFY_P1(windPressureDGV_A, lengC, lx, ref zy, ref fy);
+                double lx_c = 0;
+                double.TryParse(txt_lx_c.Text, out lx_c);
+                double p1 = 0d;
+                double _p1 = 0d;
+                int lengA = int.Parse(tabSettings.Rows[0]["ganCchang"].ToString());
+                if (p1 > 0)
+                    zyList.Add(p1);
+                if (_p1 > 0)
+                    fyList.Add(_p1);
+                GetP1(windPressureDGV_B, lengA, lx_c, ref p1, ref _p1);
 
-                zyList.Add(zy);
-                zyList.Add(fy);
                 currentPoint_C = 0;
             }
             var zyV = 0d;
             var fyV = 0d;
-            if (zyList?.FindAll(t => t != -100) != null && zyList?.FindAll(t => t != -100).Count > 0)
+            if (zyList?.FindAll(t => t > 0).Count > 0)
             {
-                zyV = zyList.FindAll(t => t != -100).Min();
+                //正负最小的在值
+                zyList.AddRange(fyList);
+                zyV = zyList.FindAll(t => t > 0).Min();
             }
-            if (fyList?.FindAll(t => t != -100) != null && fyList?.FindAll(t => t != -100).Count > 0)
+            if (fyList?.FindAll(t => t > 0).Count > 0)
             {
-                fyV = fyList.FindAll(t => t != -100).Min();
+                fyV = fyList.FindAll(t => t > 0).Min();
             }
 
             txt_p1.Text = zyV > 0 ? Math.Round(zyV, 0).ToString() : "0";
             txt_f_p1.Text = fyV > 0 ? Math.Round(fyV, 0).ToString() : "0";
+
+            txt_p2.Text = Math.Round(zyV * 1.5, 0).ToString();
+            txt_p3.Text = Math.Round(zyV * 2.5, 0).ToString();
+
+            txt_f_p2.Text = Math.Round(fyV * 1.5, 0).ToString();
+            txt_f_p3.Text = Math.Round(fyV * 2.5, 0).ToString();
+        }
+
+
+        private void GetP1(List<WindPressureDGV> data, int leng, double lx,
+            ref double p1, ref double _p1)
+        {
+            var zdefPa = 2000;
+            var fdefPa = 2000;
+            int lengA = leng;
+
+            var tempData_z = data.FindAll(t => t.zlx > 0 && t.Pa != "P3" && t.Pa != "P3Max").ToList();
+            if (tempData_z != null && tempData_z.Count() > 0)
+            {
+                if (tempData_z[tempData_z.Count - 1] != null)
+                {
+                    zdefPa = tempData_z[tempData_z.Count - 1].PaValue;
+                }
+            }
+            var tempData_f = data.FindAll(t => t.flx > 0 && t.Pa != "P3" && t.Pa != "P3Max").ToList();
+            if (tempData_f != null && tempData_f.Count() > 0)
+            {
+                if (tempData_f[tempData_f.Count - 1] != null)
+                {
+                    fdefPa = tempData_f[tempData_f.Count - 1].PaValue;
+                }
+            }
+
+            var zone = new WindPressureDGV();
+            var ztwo = new WindPressureDGV();
+            zone = data.Find(t => t.Pa == (zdefPa - 250) + "Pa");
+            ztwo = data.Find(t => t.Pa == zdefPa + "Pa");
+            if (zone != null && ztwo != null)
+            {
+                var x1 = float.Parse(zone.zzd.ToString());
+                var x2 = float.Parse(ztwo.zzd.ToString());
+                var y1 = zdefPa - 250;
+                var y2 = zdefPa;
+
+                var p = Calculate(x1, x2, y1, y2, lengA, lx);
+
+                p1 = Math.Round(p, 0);
+            }
+
+            var fone = new WindPressureDGV();
+            var ftwo = new WindPressureDGV();
+            fone = data.Find(t => t.Pa == (fdefPa - 250) + "Pa");
+            ftwo = data.Find(t => t.Pa == fdefPa + "Pa");
+            if (zone != null && ztwo != null)
+            {
+                var _x1 = float.Parse(fone.fzd.ToString());
+                var _x2 = float.Parse(ftwo.fzd.ToString());
+                var y1 = fdefPa - 250;
+                var y2 = fdefPa;
+                var _p = Calculate(_x1, _x2, y1, y2, lengA, lx);
+                _p1 = Math.Round(_p, 0);
+            }
+        }
+
+        /// <summary>
+        /// 计算
+        /// </summary>
+        /// <returns></returns> 
+
+        private double Calculate(float x1, float x2, int y1, int y2, int gjcd, double lx)
+        {
+            float k = 0, b = 0;
+
+            Formula.Calculate(x1, x2, y1, y2, ref k, ref b);
+
+            double x = lx;
+
+            x = gjcd / x;
+
+            if (k == 0 && b == 0)
+                return Math.Round(x, 2);
+
+            return Math.Round(k * x + b, 2);
         }
 
 
@@ -2705,7 +2800,9 @@ namespace text.doors.Detection
             model.pMax = txt_zpmax.Text;
             model._pMax = txt_fpmax.Text;
             model.desc = txt_desc.Text;
-            model.lx = txt_lx.Text;
+            model.lx_a = txt_lx_a.Text;
+            model.lx_b = txt_lx_b.Text;
+            model.lx_c = txt_lx_c.Text;
             return dalKfyResInfo.Add_kfy_res_Info(model);
         }
         #endregion

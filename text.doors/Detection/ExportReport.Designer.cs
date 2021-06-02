@@ -60,7 +60,6 @@
             // 
             this.cm_Report.FormattingEnabled = true;
             this.cm_Report.Items.AddRange(new object[] {
-            "-------请选择-----",
             "建筑幕墙抗风压性能检测记录表.doc"});
             this.cm_Report.Location = new System.Drawing.Point(112, 70);
             this.cm_Report.Name = "cm_Report";
