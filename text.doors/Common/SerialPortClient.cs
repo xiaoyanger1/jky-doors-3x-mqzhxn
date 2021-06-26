@@ -389,7 +389,15 @@ namespace text.doors.Common
             value = value / 100;
 
             var res = Formula.GetValues(enumDemarcate, float.Parse(value.ToString()));
-            return double.Parse(Math.Abs(Math.Round(res, 2)).ToString());
+            if (enumDemarcate == DemarcateType.位移传感器PM)
+            {
+                return double.Parse(Math.Round(res, 2).ToString());
+            }
+            else
+            {
+                return double.Parse(Math.Abs(Math.Round(res, 2)).ToString());
+
+            }
         }
 
 

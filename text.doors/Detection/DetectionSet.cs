@@ -289,8 +289,20 @@ namespace text.doors.Detection
             public bool ISOK { get { return _isok; } }
 
         }
+
         #endregion
 
+        AutoSizeFormClass asc = new AutoSizeFormClass();
+        private void DetectionSet_Load(object sender, EventArgs e)
+        {
+            //asc.controllInitializeSize(this);
+        }
 
+        private void DetectionSet_SizeChanged(object sender, EventArgs e)
+        {
+            //asc.controlAutoSize(this);
+            //this.WindowState = (System.Windows.Forms.FormWindowState)(2);//记录完控件的初始位置和大小后，再最大化
+
+        }
     }
 }

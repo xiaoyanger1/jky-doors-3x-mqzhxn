@@ -92,6 +92,8 @@
             this.txt_lqfhz = new System.Windows.Forms.TextBox();
             this.hsb_lqfControl = new System.Windows.Forms.HScrollBar();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lbl_wypm = new System.Windows.Forms.Label();
+            this.l = new System.Windows.Forms.Label();
             this.lbl_wy9 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.lbl_wy7 = new System.Windows.Forms.Label();
@@ -128,9 +130,6 @@
             this.btn_gyZero = new System.Windows.Forms.Button();
             this.pl_showItem = new System.Windows.Forms.Panel();
             this.tim_panelValue = new System.Windows.Forms.Timer(this.components);
-            this.tim_getdate = new System.Windows.Forms.Timer(this.components);
-            this.l = new System.Windows.Forms.Label();
-            this.lbl_wypm = new System.Windows.Forms.Label();
             this.ssp_button.SuspendLayout();
             this.pl_top.SuspendLayout();
             this.ts_pic.SuspendLayout();
@@ -154,7 +153,7 @@
             this.tsl_tcpclient});
             this.ssp_button.Location = new System.Drawing.Point(0, 792);
             this.ssp_button.Name = "ssp_button";
-            this.ssp_button.Size = new System.Drawing.Size(997, 22);
+            this.ssp_button.Size = new System.Drawing.Size(1078, 22);
             this.ssp_button.TabIndex = 6;
             this.ssp_button.Text = "statusStrip1";
             // 
@@ -199,7 +198,7 @@
             this.pl_top.Dock = System.Windows.Forms.DockStyle.Top;
             this.pl_top.Location = new System.Drawing.Point(0, 0);
             this.pl_top.Name = "pl_top";
-            this.pl_top.Size = new System.Drawing.Size(997, 61);
+            this.pl_top.Size = new System.Drawing.Size(1078, 61);
             this.pl_top.TabIndex = 7;
             // 
             // ts_pic
@@ -226,7 +225,7 @@
             this.ts_pic.Location = new System.Drawing.Point(0, 24);
             this.ts_pic.Name = "ts_pic";
             this.ts_pic.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.ts_pic.Size = new System.Drawing.Size(997, 36);
+            this.ts_pic.Size = new System.Drawing.Size(1078, 36);
             this.ts_pic.TabIndex = 2;
             this.ts_pic.Text = "toolStrip1";
             // 
@@ -367,7 +366,7 @@
             this.ms_emun.Location = new System.Drawing.Point(0, 0);
             this.ms_emun.Name = "ms_emun";
             this.ms_emun.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.ms_emun.Size = new System.Drawing.Size(997, 24);
+            this.ms_emun.Size = new System.Drawing.Size(1078, 24);
             this.ms_emun.TabIndex = 1;
             this.ms_emun.Text = "menuStrip1";
             // 
@@ -749,10 +748,28 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "测量结果：";
             // 
+            // lbl_wypm
+            // 
+            this.lbl_wypm.AutoSize = true;
+            this.lbl_wypm.Location = new System.Drawing.Point(93, 272);
+            this.lbl_wypm.Name = "lbl_wypm";
+            this.lbl_wypm.Size = new System.Drawing.Size(11, 12);
+            this.lbl_wypm.TabIndex = 45;
+            this.lbl_wypm.Text = "0";
+            // 
+            // l
+            // 
+            this.l.AutoSize = true;
+            this.l.Location = new System.Drawing.Point(1, 272);
+            this.l.Name = "l";
+            this.l.Size = new System.Drawing.Size(71, 12);
+            this.l.TabIndex = 44;
+            this.l.Text = "位移C1-C3：";
+            // 
             // lbl_wy9
             // 
             this.lbl_wy9.AutoSize = true;
-            this.lbl_wy9.Location = new System.Drawing.Point(137, 250);
+            this.lbl_wy9.Location = new System.Drawing.Point(149, 250);
             this.lbl_wy9.Name = "lbl_wy9";
             this.lbl_wy9.Size = new System.Drawing.Size(11, 12);
             this.lbl_wy9.TabIndex = 43;
@@ -779,7 +796,7 @@
             // lbl_wy8
             // 
             this.lbl_wy8.AutoSize = true;
-            this.lbl_wy8.Location = new System.Drawing.Point(77, 250);
+            this.lbl_wy8.Location = new System.Drawing.Point(93, 250);
             this.lbl_wy8.Name = "lbl_wy8";
             this.lbl_wy8.Size = new System.Drawing.Size(11, 12);
             this.lbl_wy8.TabIndex = 42;
@@ -788,7 +805,7 @@
             // lbl_wy6
             // 
             this.lbl_wy6.AutoSize = true;
-            this.lbl_wy6.Location = new System.Drawing.Point(137, 208);
+            this.lbl_wy6.Location = new System.Drawing.Point(149, 208);
             this.lbl_wy6.Name = "lbl_wy6";
             this.lbl_wy6.Size = new System.Drawing.Size(11, 12);
             this.lbl_wy6.TabIndex = 39;
@@ -815,7 +832,7 @@
             // lbl_wy5
             // 
             this.lbl_wy5.AutoSize = true;
-            this.lbl_wy5.Location = new System.Drawing.Point(78, 208);
+            this.lbl_wy5.Location = new System.Drawing.Point(94, 208);
             this.lbl_wy5.Name = "lbl_wy5";
             this.lbl_wy5.Size = new System.Drawing.Size(11, 12);
             this.lbl_wy5.TabIndex = 38;
@@ -824,7 +841,7 @@
             // lbl_wy3
             // 
             this.lbl_wy3.AutoSize = true;
-            this.lbl_wy3.Location = new System.Drawing.Point(139, 166);
+            this.lbl_wy3.Location = new System.Drawing.Point(151, 166);
             this.lbl_wy3.Name = "lbl_wy3";
             this.lbl_wy3.Size = new System.Drawing.Size(11, 12);
             this.lbl_wy3.TabIndex = 35;
@@ -851,7 +868,7 @@
             // lbl_wy2
             // 
             this.lbl_wy2.AutoSize = true;
-            this.lbl_wy2.Location = new System.Drawing.Point(77, 166);
+            this.lbl_wy2.Location = new System.Drawing.Point(93, 166);
             this.lbl_wy2.Name = "lbl_wy2";
             this.lbl_wy2.Size = new System.Drawing.Size(11, 12);
             this.lbl_wy2.TabIndex = 34;
@@ -1078,7 +1095,7 @@
             this.pl_showItem.ForeColor = System.Drawing.Color.Black;
             this.pl_showItem.Location = new System.Drawing.Point(196, 61);
             this.pl_showItem.Name = "pl_showItem";
-            this.pl_showItem.Size = new System.Drawing.Size(801, 731);
+            this.pl_showItem.Size = new System.Drawing.Size(882, 731);
             this.pl_showItem.TabIndex = 9;
             // 
             // tim_panelValue
@@ -1087,36 +1104,12 @@
             this.tim_panelValue.Interval = 1000;
             this.tim_panelValue.Tick += new System.EventHandler(this.tim_panelValue_Tick);
             // 
-            // tim_getdate
-            // 
-            this.tim_getdate.Enabled = true;
-            this.tim_getdate.Interval = 500;
-            this.tim_getdate.Tick += new System.EventHandler(this.tim_getdate_Tick);
-            // 
-            // l
-            // 
-            this.l.AutoSize = true;
-            this.l.Location = new System.Drawing.Point(1, 272);
-            this.l.Name = "l";
-            this.l.Size = new System.Drawing.Size(71, 12);
-            this.l.TabIndex = 44;
-            this.l.Text = "位移C1-C3：";
-            // 
-            // lbl_wypm
-            // 
-            this.lbl_wypm.AutoSize = true;
-            this.lbl_wypm.Location = new System.Drawing.Point(77, 272);
-            this.lbl_wypm.Name = "lbl_wypm";
-            this.lbl_wypm.Size = new System.Drawing.Size(11, 12);
-            this.lbl_wypm.TabIndex = 45;
-            this.lbl_wypm.Text = "0";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(997, 814);
+            this.ClientSize = new System.Drawing.Size(1078, 814);
             this.Controls.Add(this.pl_showItem);
             this.Controls.Add(this.pl_set);
             this.Controls.Add(this.pl_top);
@@ -1128,6 +1121,7 @@
             this.Text = "幕墙气密性能检测系统";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.ssp_button.ResumeLayout(false);
             this.ssp_button.PerformLayout();
             this.pl_top.ResumeLayout(false);
@@ -1216,7 +1210,6 @@
         private System.Windows.Forms.Label lbl_cydcgq;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Timer tim_getdate;
         private System.Windows.Forms.ToolStripMenuItem 基础设置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 传感器设定ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 系数设定ToolStripMenuItem1;

@@ -1349,6 +1349,9 @@ namespace text.doors.Detection
             btn_juststart.BackColor = Color.Transparent;
         }
 
+
+        
+
         private void tChart_sm_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)

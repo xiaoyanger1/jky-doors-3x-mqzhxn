@@ -91,7 +91,7 @@ namespace text.doors.Detection
                     lbl_message.Visible = false;
                     this.Hide();
                     MessageBox.Show("导出成功", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.None);
-                   
+
                 }
             }
             catch (Exception ex)
@@ -420,85 +420,85 @@ namespace text.doors.Detection
                     }
                     else if (item.level == "C")
                     {
-                        dc.Add("C_F250B1", item.z_one_250);
-                        dc.Add("C_F250B2", item.z_two_250);
-                        dc.Add("C_F250B3", item.z_three_250);
-                        dc.Add("C_F250ND", item.z_nd_250);
+                        dc.Add("C_F250B1", item.f_one_250);
+                        dc.Add("C_F250B2", item.f_two_250);
+                        dc.Add("C_F250B3", item.f_three_250);
+                        dc.Add("C_F250ND", item.f_nd_250);
 
-                        dc.Add("C_F500B1", item.z_one_500);
-                        dc.Add("C_F500B2", item.z_two_250);
-                        dc.Add("C_F500B3", item.z_three_250);
-                        dc.Add("C_F500ND", item.z_nd_500);
+                        dc.Add("C_F500B1", item.f_one_500);
+                        dc.Add("C_F500B2", item.f_two_250);
+                        dc.Add("C_F500B3", item.f_three_250);
+                        dc.Add("C_F500ND", item.f_nd_500);
 
-                        dc.Add("C_F750B1", item.z_one_750);
-                        dc.Add("C_F750B2", item.z_two_750);
-                        dc.Add("C_F750B3", item.z_three_750);
-                        dc.Add("C_F750ND", item.z_nd_750);
+                        dc.Add("C_F750B1", item.f_one_750);
+                        dc.Add("C_F750B2", item.f_two_750);
+                        dc.Add("C_F750B3", item.f_three_750);
+                        dc.Add("C_F750ND", item.f_nd_750);
 
-                        dc.Add("C_F1000B1", item.z_one_1000);
-                        dc.Add("C_F1000B2", item.z_two_1000);
-                        dc.Add("C_F1000B3", item.z_three_1000);
-                        dc.Add("C_F1000ND", item.z_nd_1000);
+                        dc.Add("C_F1000B1", item.f_one_1000);
+                        dc.Add("C_F1000B2", item.f_two_1000);
+                        dc.Add("C_F1000B3", item.f_three_1000);
+                        dc.Add("C_F1000ND", item.f_nd_1000);
 
-                        dc.Add("C_F1250B1", item.z_one_1250);
-                        dc.Add("C_F1250B2", item.z_two_1250);
-                        dc.Add("C_F1250B3", item.z_three_1250);
-                        dc.Add("C_F1250ND", item.z_nd_1250);
+                        dc.Add("C_F1250B1", item.f_one_1250);
+                        dc.Add("C_F1250B2", item.f_two_1250);
+                        dc.Add("C_F1250B3", item.f_three_1250);
+                        dc.Add("C_F1250ND", item.f_nd_1250);
 
-                        dc.Add("C_F1500B1", item.z_one_1500);
-                        dc.Add("C_F1500B2", item.z_two_1500);
-                        dc.Add("C_F1500B3", item.z_three_1500);
-                        dc.Add("C_F1500ND", item.z_nd_1500);
+                        dc.Add("C_F1500B1", item.f_one_1500);
+                        dc.Add("C_F1500B2", item.f_two_1500);
+                        dc.Add("C_F1500B3", item.f_three_1500);
+                        dc.Add("C_F1500ND", item.f_nd_1500);
 
-                        dc.Add("C_F1750B1", item.z_one_1750);
-                        dc.Add("C_F1750B2", item.z_two_1750);
-                        dc.Add("C_F1750B3", item.z_three_1750);
-                        dc.Add("C_F1750ND", item.z_nd_1750);
+                        dc.Add("C_F1750B1", item.f_one_1750);
+                        dc.Add("C_F1750B2", item.f_two_1750);
+                        dc.Add("C_F1750B3", item.f_three_1750);
+                        dc.Add("C_F1750ND", item.f_nd_1750);
 
-                        dc.Add("C_F2000B1", item.z_one_2000);
-                        dc.Add("C_F2000B2", item.z_two_2000);
-                        dc.Add("C_F2000B3", item.z_three_2000);
-                        dc.Add("C_F2000ND", item.z_nd_2000);
+                        dc.Add("C_F2000B1", item.f_one_2000);
+                        dc.Add("C_F2000B2", item.f_two_2000);
+                        dc.Add("C_F2000B3", item.f_three_2000);
+                        dc.Add("C_F2000ND", item.f_nd_2000);
 
-                        dc.Add("C_Z250C1", item.f_one_250);
-                        dc.Add("C_Z250C2", item.f_two_250);
-                        dc.Add("C_Z250C3", item.f_three_250);
-                        dc.Add("C_Z250ND", item.f_nd_250);
+                        dc.Add("C_Z250C1", item.z_one_250);
+                        dc.Add("C_Z250C2", item.z_two_250);
+                        dc.Add("C_Z250C3", item.z_three_250);
+                        dc.Add("C_Z250ND", item.z_nd_250);
 
-                        dc.Add("C_Z500C1", item.f_one_500);
-                        dc.Add("C_Z500C2", item.f_two_500);
-                        dc.Add("C_Z500C3", item.f_three_500);
-                        dc.Add("C_Z500ND", item.f_nd_500);
+                        dc.Add("C_Z500C1", item.z_one_500);
+                        dc.Add("C_Z500C2", item.z_two_500);
+                        dc.Add("C_Z500C3", item.z_three_500);
+                        dc.Add("C_Z500ND", item.z_nd_500);
 
-                        dc.Add("C_Z750C1", item.f_one_750);
-                        dc.Add("C_Z750C2", item.f_two_750);
-                        dc.Add("C_Z750C3", item.f_three_750);
-                        dc.Add("C_Z750ND", item.f_nd_750);
+                        dc.Add("C_Z750C1", item.z_one_750);
+                        dc.Add("C_Z750C2", item.z_two_750);
+                        dc.Add("C_Z750C3", item.z_three_750);
+                        dc.Add("C_Z750ND", item.z_nd_750);
 
-                        dc.Add("C_Z1000C1", item.f_one_1000);
-                        dc.Add("C_Z1000C2", item.f_two_1000);
-                        dc.Add("C_Z1000C3", item.f_three_1000);
-                        dc.Add("C_Z1000ND", item.f_nd_1000);
+                        dc.Add("C_Z1000C1", item.z_one_1000);
+                        dc.Add("C_Z1000C2", item.z_two_1000);
+                        dc.Add("C_Z1000C3", item.z_three_1000);
+                        dc.Add("C_Z1000ND", item.z_nd_1000);
 
-                        dc.Add("C_Z1250C1", item.f_one_1250);
-                        dc.Add("C_Z1250C2", item.f_two_1250);
-                        dc.Add("C_Z1250C3", item.f_three_1250);
-                        dc.Add("C_Z1250ND", item.f_nd_1250);
+                        dc.Add("C_Z1250C1", item.z_one_1250);
+                        dc.Add("C_Z1250C2", item.z_two_1250);
+                        dc.Add("C_Z1250C3", item.z_three_1250);
+                        dc.Add("C_Z1250ND", item.z_nd_1250);
 
-                        dc.Add("C_Z1500C1", item.f_one_1500);
-                        dc.Add("C_Z1500C2", item.f_two_1500);
-                        dc.Add("C_Z1500C3", item.f_three_1500);
-                        dc.Add("C_Z1500ND", item.f_nd_1500);
+                        dc.Add("C_Z1500C1", item.z_one_1500);
+                        dc.Add("C_Z1500C2", item.z_two_1500);
+                        dc.Add("C_Z1500C3", item.z_three_1500);
+                        dc.Add("C_Z1500ND", item.z_nd_1500);
 
-                        dc.Add("C_Z1750C1", item.f_one_1750);
-                        dc.Add("C_Z1750C2", item.f_two_1750);
-                        dc.Add("C_Z1750C3", item.f_three_1750);
-                        dc.Add("C_Z1750ND", item.f_nd_1750);
+                        dc.Add("C_Z1750C1", item.z_one_1750);
+                        dc.Add("C_Z1750C2", item.z_two_1750);
+                        dc.Add("C_Z1750C3", item.z_three_1750);
+                        dc.Add("C_Z1750ND", item.z_nd_1750);
 
-                        dc.Add("C_Z2000C1", item.f_one_2000);
-                        dc.Add("C_Z2000C2", item.f_two_2000);
-                        dc.Add("C_Z2000C3", item.f_three_2000);
-                        dc.Add("C_Z2000ND", item.f_nd_2000);
+                        dc.Add("C_Z2000C1", item.z_one_2000);
+                        dc.Add("C_Z2000C2", item.z_two_2000);
+                        dc.Add("C_Z2000C3", item.z_three_2000);
+                        dc.Add("C_Z2000ND", item.z_nd_2000);
 
                         dc.Add("Cp3C1", item.z_one_p3);
                         dc.Add("Cp3C2", item.z_two_p3);
@@ -791,7 +791,7 @@ namespace text.doors.Detection
                         dc.Add("可开正压pa", "100");
                         dc.Add("可开负压pa", "100");
                         dc.Add("可开使用pa", "100");
-                        dc.Add("可开正压风速", Math.Round(zKKFS,2).ToString());
+                        dc.Add("可开正压风速", Math.Round(zKKFS, 2).ToString());
                         dc.Add("可开负压风速", Math.Round(fKKFS, 2).ToString());
                         if (zKKFS > fKKFS)
                             dc.Add("可开平均风速", Math.Round(zKKFS, 2).ToString());
@@ -938,12 +938,12 @@ namespace text.doors.Detection
                         dc.Add("可开正压pa", "100");
                         dc.Add("可开负压pa", "100");
                         dc.Add("可开使用pa", "100");
-                        dc.Add("可开正压风速", Math.Round(zKKFS,2).ToString());
-                        dc.Add("可开负压风速", Math.Round(fKKFS,2).ToString());
+                        dc.Add("可开正压风速", Math.Round(zKKFS, 2).ToString());
+                        dc.Add("可开负压风速", Math.Round(fKKFS, 2).ToString());
                         if (zKKFS > fKKFS)
-                            dc.Add("可开平均风速", Math.Round(zKKFS,2).ToString());
+                            dc.Add("可开平均风速", Math.Round(zKKFS, 2).ToString());
                         else
-                            dc.Add("可开平均风速", Math.Round(fKKFS,2).ToString());
+                            dc.Add("可开平均风速", Math.Round(fKKFS, 2).ToString());
                         dc.Add("可开QL", resFC.ToString());
                     }
                     else
@@ -1150,35 +1150,31 @@ namespace text.doors.Detection
             }
             if (settings.dt_pd_Info != null)
             {
+                var testDesc = string.IsNullOrWhiteSpace(settings.dt_pd_Info.test_desc) ? "试件完好" : settings.dt_pd_Info.test_desc;
                 if (settings.dt_pd_Info.test_result == "第一级")
                 {
-                    dc.Add("平面等级1", "试件完好");
+                    dc.Add("平面等级1", testDesc);
                 }
                 if (settings.dt_pd_Info.test_result == "第二级")
                 {
-                    dc.Add("平面等级2", "试件完好");
+                    dc.Add("平面等级2", testDesc);
                 }
                 if (settings.dt_pd_Info.test_result == "第三级")
                 {
-                    dc.Add("平面等级3", "试件完好");
+                    dc.Add("平面等级3", testDesc);
                 }
                 if (settings.dt_pd_Info.test_result == "第四级")
                 {
-                    dc.Add("平面等级4", "试件完好");
+                    dc.Add("平面等级4", testDesc);
                 }
                 if (settings.dt_pd_Info.test_result == "第五级")
                 {
-                    dc.Add("平面等级5", "试件完好");
+                    dc.Add("平面等级5", testDesc);
                 }
 
-                if (!string.IsNullOrWhiteSpace(settings.dt_pd_Info.test_desc))
-                {
-                    dc.Add("幕墙整体备注", settings.dt_pd_Info.test_desc);
-                }
-                else
-                {
-                    dc.Add("幕墙整体备注", "--");
-                }
+                dc.Add("变形等级", settings.dt_pd_Info.test_result);
+                dc.Add("幕墙整体备注", "--");
+
             }
             else
             {
@@ -1221,18 +1217,24 @@ namespace text.doors.Detection
                         double _p1 = 0d;
 
                         GetP1(windPressureDGV, lengA, lx, ref p1, ref _p1);
-                        if (p1 > 0)
-                            list.Add(p1);
-                        if (_p1 > 0)
-                            list.Add(_p1);
-                        if (list != null && list.Count > 0)
-                        {
-                            dc.Add("P1PA", list.Min().ToString());
-                        }
-                        else
-                        {
-                            dc.Add("P1PA", "--");
-                        }
+                        dc.Add("P1PA", p1.ToString());
+                        dc.Add("FP1PA", _p1.ToString());
+                        //if (p1 > 0)
+                        //    list.Add(p1);
+                        //if (_p1 > 0)
+                        //    list.Add(_p1);
+                        //if (list != null && list.Count > 0)
+                        //{
+                        //    dc.Add("P1PA", list.Min().ToString());
+                        //}
+                        //else
+                        //{
+                        //    dc.Add("P1PA", "--");
+                        //}
+
+                        //FP1PA
+                        //FP1PB
+                        //FP1PC
 
                     }
                     else if (level == "B")
@@ -1245,19 +1247,21 @@ namespace text.doors.Detection
                             double p1 = 0d;
                             double _p1 = 0d;
                             GetP1(windPressureDGV, lengB, lx, ref p1, ref _p1);
-                            if (p1 > 0)
-                                list.Add(p1);
-                            if (_p1 > 0)
-                                list.Add(_p1);
-                          
-                            if (list != null && list.Count > 0)
-                            {
-                                dc.Add("P1PB", list.Min().ToString());
-                            }
-                            else
-                            {
-                                dc.Add("P1PB", "--");
-                            }
+                            dc.Add("P1PB", p1.ToString());
+                            dc.Add("FP1PB", _p1.ToString());
+                            //if (p1 > 0)
+                            //    list.Add(p1);
+                            //if (_p1 > 0)
+                            //    list.Add(_p1);
+
+                            //if (list != null && list.Count > 0)
+                            //{
+                            //    dc.Add("P1PB", list.Min().ToString());
+                            //}
+                            //else
+                            //{
+                            //    dc.Add("P1PB", "--");
+                            //}
                         }
                         else
                             dc.Add("P1PB", "--");
@@ -1272,19 +1276,23 @@ namespace text.doors.Detection
                             double p1 = 0d;
                             double _p1 = 0d;
                             GetP1(windPressureDGV, lengC, lx, ref p1, ref _p1);
-                            if (p1 > 0)
-                                list.Add(p1);
-                            if (_p1 > 0)
-                                list.Add(_p1);
-                         
-                            if (list != null && list.Count > 0)
-                            {
-                                dc.Add("P1PC", list.Min().ToString());
-                            }
-                            else
-                            {
-                                dc.Add("P1PC", "--");
-                            }
+
+                            dc.Add("P1PC", p1.ToString());
+                            dc.Add("FP1PC", _p1.ToString());
+
+                            //if (p1 > 0)
+                            //    list.Add(p1);
+                            //if (_p1 > 0)
+                            //    list.Add(_p1);
+
+                            //if (p1 != null && list.Count > 0)
+                            //{
+                            //    dc.Add("P1PC", list.Min().ToString());
+                            //}
+                            //else
+                            //{
+                            //    dc.Add("P1PC", "--");
+                            //}
                         }
                         else { dc.Add("P1PC", "--"); }
                     }
@@ -1388,7 +1396,7 @@ namespace text.doors.Detection
             var ztwo = new WindPressureDGV();
             zone = data.Find(t => t.Pa == (zdefPa - 250) + "Pa");
             ztwo = data.Find(t => t.Pa == zdefPa + "Pa");
-            if (zone != null && ztwo != null)
+            if (zone != null && ztwo != null && zone?.zzd > 0 && ztwo.zzd > 0)
             {
                 var x1 = float.Parse(zone.zzd.ToString());
                 var x2 = float.Parse(ztwo.zzd.ToString());
@@ -1404,7 +1412,7 @@ namespace text.doors.Detection
             var ftwo = new WindPressureDGV();
             fone = data.Find(t => t.Pa == (fdefPa - 250) + "Pa");
             ftwo = data.Find(t => t.Pa == fdefPa + "Pa");
-            if (zone != null && ztwo != null)
+            if (zone != null && ztwo != null && zone?.fzd > 0 && ztwo.fzd > 0)
             {
                 var _x1 = float.Parse(fone.fzd.ToString());
                 var _x2 = float.Parse(ftwo.fzd.ToString());

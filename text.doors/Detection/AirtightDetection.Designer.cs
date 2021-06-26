@@ -122,7 +122,7 @@
             this.page_airtight.Controls.Add(this.groupBox3);
             this.page_airtight.Location = new System.Drawing.Point(4, 30);
             this.page_airtight.Name = "page_airtight";
-            this.page_airtight.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.page_airtight.Padding = new System.Windows.Forms.Padding(3);
             this.page_airtight.Size = new System.Drawing.Size(1130, 681);
             this.page_airtight.TabIndex = 0;
             this.page_airtight.Text = "气密监控";
@@ -136,9 +136,9 @@
             this.groupBox5.Controls.Add(this.btn_ycjyf);
             this.groupBox5.Controls.Add(this.txt_ycjy_f);
             this.groupBox5.Location = new System.Drawing.Point(761, 468);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox5.Size = new System.Drawing.Size(357, 75);
             this.groupBox5.TabIndex = 30;
             this.groupBox5.TabStop = false;
@@ -148,7 +148,7 @@
             // 
             this.btn_ycjy_z.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_ycjy_z.Location = new System.Drawing.Point(158, 11);
-            this.btn_ycjy_z.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_ycjy_z.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ycjy_z.Name = "btn_ycjy_z";
             this.btn_ycjy_z.Size = new System.Drawing.Size(142, 28);
             this.btn_ycjy_z.TabIndex = 22;
@@ -159,7 +159,7 @@
             // txt_ycjy_z
             // 
             this.txt_ycjy_z.Location = new System.Drawing.Point(49, 15);
-            this.txt_ycjy_z.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txt_ycjy_z.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ycjy_z.Name = "txt_ycjy_z";
             this.txt_ycjy_z.Size = new System.Drawing.Size(76, 21);
             this.txt_ycjy_z.TabIndex = 21;
@@ -189,7 +189,7 @@
             // 
             this.btn_ycjyf.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btn_ycjyf.Location = new System.Drawing.Point(158, 40);
-            this.btn_ycjyf.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_ycjyf.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ycjyf.Name = "btn_ycjyf";
             this.btn_ycjyf.Size = new System.Drawing.Size(142, 28);
             this.btn_ycjyf.TabIndex = 25;
@@ -200,7 +200,7 @@
             // txt_ycjy_f
             // 
             this.txt_ycjy_f.Location = new System.Drawing.Point(49, 43);
-            this.txt_ycjy_f.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txt_ycjy_f.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ycjy_f.Name = "txt_ycjy_f";
             this.txt_ycjy_f.Size = new System.Drawing.Size(76, 21);
             this.txt_ycjy_f.TabIndex = 24;
@@ -571,7 +571,7 @@
             this.流量原始数据.Controls.Add(this.dgv_ll);
             this.流量原始数据.Location = new System.Drawing.Point(4, 22);
             this.流量原始数据.Name = "流量原始数据";
-            this.流量原始数据.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.流量原始数据.Padding = new System.Windows.Forms.Padding(3);
             this.流量原始数据.Size = new System.Drawing.Size(357, 328);
             this.流量原始数据.TabIndex = 1;
             this.流量原始数据.Text = "风速：米/秒";

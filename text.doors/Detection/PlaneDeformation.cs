@@ -32,42 +32,13 @@ namespace text.doors.Detection
 
         private DAL_dt_pd_Info dal_dt_pd_Info = new DAL_dt_pd_Info();
 
-        private void CreateTimer()
-        {
-            try
-            {
-                timRead = new System.Threading.Timer(readTimer, null, 800, 0);
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-        public void readTimer(object state)
-        {
-            try
-            {
-                //RegisterData.Displace10 = _serialPortClient.GetDisplace10();
-                txt_biaojilingdian.Invoke(new Action<string>(t =>
-                {
-                    txt_biaojilingdian.Text = t;
-                }), RegisterData.Displace10.ToString());
-
-                timRead.Change(100, 0);
-            }
-            catch (Exception ex)
-            {
-                timRead.Dispose();
-                timRead = null;
-            }
-        }
-
+      
         public PlaneDeformation(SerialPortClient serialPortClient, string tempCode)
         {
             InitializeComponent();
             this._serialPortClient = serialPortClient;
             this._tempCode = tempCode;
             Init();
-            CreateTimer();
         }
 
         public void Init()

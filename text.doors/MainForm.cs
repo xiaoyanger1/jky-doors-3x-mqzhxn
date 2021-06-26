@@ -31,15 +31,6 @@ namespace text.doors
 
 
         /// <summary>
-        /// 当前温度
-        /// </summary>
-        private double _temperature = 0;
-        /// <summary>
-        /// 当前压力
-        /// </summary>
-        private double _temppressure = 0;
-
-        /// <summary>
         /// 检验编号
         /// </summary>
         private string _tempCode = "";
@@ -49,6 +40,8 @@ namespace text.doors
         private string _tempTong = "";
 
         public static System.Threading.Timer timRead;
+
+        AutoSizeFormClass asc = new AutoSizeFormClass();
 
         public MainForm()
         {
@@ -177,19 +170,6 @@ namespace text.doors
                 timRead.Dispose();
                 timRead = null;
             }
-        }
-
-
-        private void tim_getdate_Tick(object sender, EventArgs e)
-        {
-            //todo:改
-            //_temperature = _serialPortClient.GetWDXS();
-            //_temppressure = _serialPortClient.GetDQYLXS();
-            //lbl_wdcgq.Text = _temperature.ToString();
-            //lbl_dqylcgq.Text = _temppressure.ToString();
-            //lbl_fscgq.Text = _serialPortClient.GetFSXS().ToString();
-            //lbl_cygcgq.Text = _serialPortClient.GetCY_High().ToString();
-            //lbl_cydcgq.Text = _serialPortClient.GetCY_Low().ToString();
         }
 
 
@@ -711,10 +691,6 @@ namespace text.doors
             }
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
-        }
 
         private void btn_kglkz_Click(object sender, EventArgs e)
         {
@@ -939,6 +915,16 @@ namespace text.doors
                 return;
             }
             btn_tghl.BackColor = Color.Transparent;
+        }
+
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+            //asc.controlAutoSize(this);
+            //this.WindowState = (System.Windows.Forms.FormWindowState)(2);//记录完控件的初始位置和大小后，再最大化
+        }
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            //  asc.controllInitializeSize(this);
         }
     }
 }

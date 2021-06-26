@@ -906,7 +906,7 @@ namespace text.doors.Detection
             var ztwo = new WindPressureDGV();
             zone = data.Find(t => t.Pa == (zdefPa - 250) + "Pa");
             ztwo = data.Find(t => t.Pa == zdefPa + "Pa");
-            if (zone != null && ztwo != null)
+            if (zone != null && ztwo != null && zone.zzd > 0 && ztwo.zzd > 0)
             {
                 var x1 = float.Parse(zone.zzd.ToString());
                 var x2 = float.Parse(ztwo.zzd.ToString());
@@ -922,7 +922,7 @@ namespace text.doors.Detection
             var ftwo = new WindPressureDGV();
             fone = data.Find(t => t.Pa == (fdefPa - 250) + "Pa");
             ftwo = data.Find(t => t.Pa == fdefPa + "Pa");
-            if (zone != null && ztwo != null)
+            if (zone != null && ztwo != null && fone.zzd > 0 && ftwo.zzd > 0)
             {
                 var _x1 = float.Parse(fone.fzd.ToString());
                 var _x2 = float.Parse(ftwo.fzd.ToString());

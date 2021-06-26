@@ -135,7 +135,7 @@
             this.groupBox7.Size = new System.Drawing.Size(211, 88);
             this.groupBox7.TabIndex = 23;
             this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "检测结果";
+            this.groupBox7.Text = "试件受损情况";
             // 
             // txt_desc
             // 
