@@ -252,12 +252,12 @@ namespace text.doors.Detection
             this.btn_delete.Enabled = false;
             this.btn_Ok.Enabled = true;
 
-            txt_DaQiYaLi.Text = _serialPortClient.GetDQYLXS().ToString();
+            txt_DaQiYaLi.Text = RegisterData.AtmospherePa_Value.ToString(); //_serialPortClient.GetDQYLXS().ToString();
 
-            txt_DangQianWenDu.Text = _serialPortClient.GetWDXS().ToString();
+            txt_DangQianWenDu.Text = RegisterData.Temperature_Value.ToString();//_serialPortClient.GetWDXS().ToString();
         }
 
-        
+
 
         #region 底部状态栏赋值
 
@@ -291,6 +291,6 @@ namespace text.doors.Detection
         }
         #endregion
 
-    
+
     }
 }

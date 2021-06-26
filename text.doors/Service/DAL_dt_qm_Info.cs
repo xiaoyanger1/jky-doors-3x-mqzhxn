@@ -53,7 +53,7 @@ namespace text.doors.dal
             SQLiteHelper.ExecuteNonQuery("delete from dt_qm_zb_info where  dt_Code='" + zb.dt_Code + "' ");
 
             var sql = string.Format(@"insert into dt_qm_zb_info (dt_Code,Z_MJ,F_MJ,Z_FC,F_FC,z_sjz_value,f_sjz_value,testtype,jlgzj) 
-                values('{0}','{1}',{2},'{3}','{4}','{5}','{6}',{7},'8')",
+                values('{0}','{1}',{2},'{3}','{4}','{5}','{6}',{7},'{8}')",
                  zb.dt_Code, zb.Z_MJ, zb.F_MJ, zb.Z_FC, zb.F_FC, zb.z_sjz_value, zb.f_sjz_value,zb.testtype,zb.jlgzj);
             return SQLiteHelper.ExecuteNonQuery(sql) > 0 ? true : false;
         }

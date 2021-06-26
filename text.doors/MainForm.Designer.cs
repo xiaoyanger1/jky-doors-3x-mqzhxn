@@ -91,8 +91,19 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txt_lqfhz = new System.Windows.Forms.TextBox();
             this.hsb_lqfControl = new System.Windows.Forms.HScrollBar();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lbl_wy9 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.lbl_wy7 = new System.Windows.Forms.Label();
+            this.lbl_wy8 = new System.Windows.Forms.Label();
+            this.lbl_wy6 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lbl_wy4 = new System.Windows.Forms.Label();
+            this.lbl_wy5 = new System.Windows.Forms.Label();
+            this.lbl_wy3 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lbl_wy1 = new System.Windows.Forms.Label();
+            this.lbl_wy2 = new System.Windows.Forms.Label();
             this.lbl_cydcgq = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
@@ -118,6 +129,8 @@
             this.pl_showItem = new System.Windows.Forms.Panel();
             this.tim_panelValue = new System.Windows.Forms.Timer(this.components);
             this.tim_getdate = new System.Windows.Forms.Timer(this.components);
+            this.l = new System.Windows.Forms.Label();
+            this.lbl_wypm = new System.Windows.Forms.Label();
             this.ssp_button.SuspendLayout();
             this.pl_top.SuspendLayout();
             this.ts_pic.SuspendLayout();
@@ -495,7 +508,6 @@
             this.pl_set.Controls.Add(this.btn_kglkz);
             this.pl_set.Controls.Add(this.groupBox4);
             this.pl_set.Controls.Add(this.groupBox5);
-            this.pl_set.Controls.Add(this.button1);
             this.pl_set.Controls.Add(this.groupBox3);
             this.pl_set.Controls.Add(this.groupBox2);
             this.pl_set.Controls.Add(this.groupBox1);
@@ -507,7 +519,7 @@
             // 
             // btn_kglkz
             // 
-            this.btn_kglkz.Location = new System.Drawing.Point(20, 70);
+            this.btn_kglkz.Location = new System.Drawing.Point(20, 55);
             this.btn_kglkz.Name = "btn_kglkz";
             this.btn_kglkz.Size = new System.Drawing.Size(75, 23);
             this.btn_kglkz.TabIndex = 2;
@@ -529,9 +541,9 @@
             this.groupBox4.Controls.Add(this.btn_bhfk);
             this.groupBox4.Controls.Add(this.btn_sbqd);
             this.groupBox4.Controls.Add(this.btn_fjqd);
-            this.groupBox4.Location = new System.Drawing.Point(12, 76);
+            this.groupBox4.Location = new System.Drawing.Point(12, 58);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(178, 195);
+            this.groupBox4.Size = new System.Drawing.Size(178, 191);
             this.groupBox4.TabIndex = 11;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "开关量控制";
@@ -663,7 +675,7 @@
             this.groupBox5.Controls.Add(this.label2);
             this.groupBox5.Controls.Add(this.txt_lqfhz);
             this.groupBox5.Controls.Add(this.hsb_lqfControl);
-            this.groupBox5.Location = new System.Drawing.Point(12, 273);
+            this.groupBox5.Location = new System.Drawing.Point(12, 254);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(178, 79);
             this.groupBox5.TabIndex = 12;
@@ -699,18 +711,22 @@
             this.hsb_lqfControl.Value = 1;
             this.hsb_lqfControl.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hsb_lqfControl_Scroll);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 688);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(178, 36);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "拍照";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.lbl_wypm);
+            this.groupBox3.Controls.Add(this.l);
+            this.groupBox3.Controls.Add(this.lbl_wy9);
+            this.groupBox3.Controls.Add(this.label38);
+            this.groupBox3.Controls.Add(this.lbl_wy7);
+            this.groupBox3.Controls.Add(this.lbl_wy8);
+            this.groupBox3.Controls.Add(this.lbl_wy6);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.lbl_wy4);
+            this.groupBox3.Controls.Add(this.lbl_wy5);
+            this.groupBox3.Controls.Add(this.lbl_wy3);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.lbl_wy1);
+            this.groupBox3.Controls.Add(this.lbl_wy2);
             this.groupBox3.Controls.Add(this.lbl_cydcgq);
             this.groupBox3.Controls.Add(this.label19);
             this.groupBox3.Controls.Add(this.label20);
@@ -726,12 +742,120 @@
             this.groupBox3.Controls.Add(this.lbl_fscgq);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Location = new System.Drawing.Point(13, 446);
+            this.groupBox3.Location = new System.Drawing.Point(13, 420);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(179, 151);
+            this.groupBox3.Size = new System.Drawing.Size(179, 304);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "测量结果：";
+            // 
+            // lbl_wy9
+            // 
+            this.lbl_wy9.AutoSize = true;
+            this.lbl_wy9.Location = new System.Drawing.Point(137, 250);
+            this.lbl_wy9.Name = "lbl_wy9";
+            this.lbl_wy9.Size = new System.Drawing.Size(11, 12);
+            this.lbl_wy9.TabIndex = 43;
+            this.lbl_wy9.Text = "0";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(2, 228);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(71, 12);
+            this.label38.TabIndex = 40;
+            this.label38.Text = "位移C1-C3：";
+            // 
+            // lbl_wy7
+            // 
+            this.lbl_wy7.AutoSize = true;
+            this.lbl_wy7.Location = new System.Drawing.Point(23, 250);
+            this.lbl_wy7.Name = "lbl_wy7";
+            this.lbl_wy7.Size = new System.Drawing.Size(11, 12);
+            this.lbl_wy7.TabIndex = 41;
+            this.lbl_wy7.Text = "0";
+            // 
+            // lbl_wy8
+            // 
+            this.lbl_wy8.AutoSize = true;
+            this.lbl_wy8.Location = new System.Drawing.Point(77, 250);
+            this.lbl_wy8.Name = "lbl_wy8";
+            this.lbl_wy8.Size = new System.Drawing.Size(11, 12);
+            this.lbl_wy8.TabIndex = 42;
+            this.lbl_wy8.Text = "0";
+            // 
+            // lbl_wy6
+            // 
+            this.lbl_wy6.AutoSize = true;
+            this.lbl_wy6.Location = new System.Drawing.Point(137, 208);
+            this.lbl_wy6.Name = "lbl_wy6";
+            this.lbl_wy6.Size = new System.Drawing.Size(11, 12);
+            this.lbl_wy6.TabIndex = 39;
+            this.lbl_wy6.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(2, 187);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(71, 12);
+            this.label6.TabIndex = 36;
+            this.label6.Text = "位移B1-B3：";
+            // 
+            // lbl_wy4
+            // 
+            this.lbl_wy4.AutoSize = true;
+            this.lbl_wy4.Location = new System.Drawing.Point(23, 208);
+            this.lbl_wy4.Name = "lbl_wy4";
+            this.lbl_wy4.Size = new System.Drawing.Size(11, 12);
+            this.lbl_wy4.TabIndex = 37;
+            this.lbl_wy4.Text = "0";
+            // 
+            // lbl_wy5
+            // 
+            this.lbl_wy5.AutoSize = true;
+            this.lbl_wy5.Location = new System.Drawing.Point(78, 208);
+            this.lbl_wy5.Name = "lbl_wy5";
+            this.lbl_wy5.Size = new System.Drawing.Size(11, 12);
+            this.lbl_wy5.TabIndex = 38;
+            this.lbl_wy5.Text = "0";
+            // 
+            // lbl_wy3
+            // 
+            this.lbl_wy3.AutoSize = true;
+            this.lbl_wy3.Location = new System.Drawing.Point(139, 166);
+            this.lbl_wy3.Name = "lbl_wy3";
+            this.lbl_wy3.Size = new System.Drawing.Size(11, 12);
+            this.lbl_wy3.TabIndex = 35;
+            this.lbl_wy3.Text = "0";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(2, 142);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(71, 12);
+            this.label5.TabIndex = 32;
+            this.label5.Text = "位移A1-A3：";
+            // 
+            // lbl_wy1
+            // 
+            this.lbl_wy1.AutoSize = true;
+            this.lbl_wy1.Location = new System.Drawing.Point(23, 166);
+            this.lbl_wy1.Name = "lbl_wy1";
+            this.lbl_wy1.Size = new System.Drawing.Size(11, 12);
+            this.lbl_wy1.TabIndex = 33;
+            this.lbl_wy1.Text = "0";
+            // 
+            // lbl_wy2
+            // 
+            this.lbl_wy2.AutoSize = true;
+            this.lbl_wy2.Location = new System.Drawing.Point(77, 166);
+            this.lbl_wy2.Name = "lbl_wy2";
+            this.lbl_wy2.Size = new System.Drawing.Size(11, 12);
+            this.lbl_wy2.TabIndex = 34;
+            this.lbl_wy2.Text = "0";
             // 
             // lbl_cydcgq
             // 
@@ -765,7 +889,7 @@
             // 
             this.lbl_dqylcgq.AutoSize = true;
             this.lbl_dqylcgq.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbl_dqylcgq.Location = new System.Drawing.Point(91, 116);
+            this.lbl_dqylcgq.Location = new System.Drawing.Point(91, 110);
             this.lbl_dqylcgq.Name = "lbl_dqylcgq";
             this.lbl_dqylcgq.Size = new System.Drawing.Size(16, 16);
             this.lbl_dqylcgq.TabIndex = 11;
@@ -774,7 +898,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(153, 119);
+            this.label13.Location = new System.Drawing.Point(153, 113);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(23, 12);
             this.label13.TabIndex = 9;
@@ -783,7 +907,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(8, 120);
+            this.label14.Location = new System.Drawing.Point(8, 114);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(65, 12);
             this.label14.TabIndex = 10;
@@ -878,7 +1002,7 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.txt_hz);
             this.groupBox2.Controls.Add(this.hsb_WindControl);
-            this.groupBox2.Location = new System.Drawing.Point(14, 358);
+            this.groupBox2.Location = new System.Drawing.Point(14, 340);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(178, 75);
             this.groupBox2.TabIndex = 5;
@@ -920,14 +1044,14 @@
             this.groupBox1.Controls.Add(this.btn_gyZero);
             this.groupBox1.Location = new System.Drawing.Point(10, 9);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(178, 53);
+            this.groupBox1.Size = new System.Drawing.Size(178, 46);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "压差传感器效准";
             // 
             // btn_dyZero
             // 
-            this.btn_dyZero.Location = new System.Drawing.Point(90, 24);
+            this.btn_dyZero.Location = new System.Drawing.Point(90, 17);
             this.btn_dyZero.Name = "btn_dyZero";
             this.btn_dyZero.Size = new System.Drawing.Size(75, 23);
             this.btn_dyZero.TabIndex = 1;
@@ -937,7 +1061,7 @@
             // 
             // btn_gyZero
             // 
-            this.btn_gyZero.Location = new System.Drawing.Point(6, 24);
+            this.btn_gyZero.Location = new System.Drawing.Point(6, 17);
             this.btn_gyZero.Name = "btn_gyZero";
             this.btn_gyZero.Size = new System.Drawing.Size(75, 23);
             this.btn_gyZero.TabIndex = 0;
@@ -968,6 +1092,24 @@
             this.tim_getdate.Enabled = true;
             this.tim_getdate.Interval = 500;
             this.tim_getdate.Tick += new System.EventHandler(this.tim_getdate_Tick);
+            // 
+            // l
+            // 
+            this.l.AutoSize = true;
+            this.l.Location = new System.Drawing.Point(1, 272);
+            this.l.Name = "l";
+            this.l.Size = new System.Drawing.Size(71, 12);
+            this.l.TabIndex = 44;
+            this.l.Text = "位移C1-C3：";
+            // 
+            // lbl_wypm
+            // 
+            this.lbl_wypm.AutoSize = true;
+            this.lbl_wypm.Location = new System.Drawing.Point(77, 272);
+            this.lbl_wypm.Name = "lbl_wypm";
+            this.lbl_wypm.Size = new System.Drawing.Size(11, 12);
+            this.lbl_wypm.TabIndex = 45;
+            this.lbl_wypm.Text = "0";
             // 
             // MainForm
             // 
@@ -1053,7 +1195,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStripStatusLabel tssl_SetCode;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripStatusLabel tsl_tcpclient;
         private System.Windows.Forms.ToolStripMenuItem 水密监控ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 气密监控ToolStripMenuItem;
@@ -1098,5 +1239,19 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton tsb_PlaneDeformation;
         private System.Windows.Forms.ToolStripMenuItem 平面内变形检测ToolStripMenuItem;
+        private System.Windows.Forms.Label lbl_wy3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lbl_wy1;
+        private System.Windows.Forms.Label lbl_wy2;
+        private System.Windows.Forms.Label lbl_wy6;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lbl_wy4;
+        private System.Windows.Forms.Label lbl_wy5;
+        private System.Windows.Forms.Label lbl_wy9;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label lbl_wy7;
+        private System.Windows.Forms.Label lbl_wy8;
+        private System.Windows.Forms.Label lbl_wypm;
+        private System.Windows.Forms.Label l;
     }
 }

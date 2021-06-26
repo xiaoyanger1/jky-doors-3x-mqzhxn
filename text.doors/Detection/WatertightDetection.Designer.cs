@@ -105,7 +105,6 @@
             this.cbb_2_500Pa_cf = new System.Windows.Forms.ComboBox();
             this.rdb_wdjy = new System.Windows.Forms.RadioButton();
             this.rdb_bdjy = new System.Windows.Forms.RadioButton();
-            this.tim_PainPic = new System.Windows.Forms.Timer(this.components);
             this.tim_upNext = new System.Windows.Forms.Timer(this.components);
             this.tim_sm = new System.Windows.Forms.Timer(this.components);
             this.tim_getType = new System.Windows.Forms.Timer(this.components);
@@ -404,6 +403,7 @@
             this.export_image_sm});
             this.chart_cms_sm_click.Name = "chart_cms_sm_click";
             this.chart_cms_sm_click.Size = new System.Drawing.Size(125, 26);
+            this.chart_cms_sm_click.Opening += new System.ComponentModel.CancelEventHandler(this.chart_cms_sm_click_Opening);
             // 
             // export_image_sm
             // 
@@ -1203,12 +1203,6 @@
             this.rdb_bdjy.UseVisualStyleBackColor = true;
             this.rdb_bdjy.CheckedChanged += new System.EventHandler(this.rdb_bdjy_CheckedChanged);
             // 
-            // tim_PainPic
-            // 
-            this.tim_PainPic.Enabled = true;
-            this.tim_PainPic.Interval = 800;
-            this.tim_PainPic.Tick += new System.EventHandler(this.tim_PainPic_Tick);
-            // 
             // tim_upNext
             // 
             this.tim_upNext.Interval = 2000;
@@ -1308,7 +1302,6 @@
         private System.Windows.Forms.Button btn_ksbd;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Timer tim_PainPic;
         private System.Windows.Forms.Timer tim_getType;
         public System.Windows.Forms.Timer tim_sm;
         private System.Windows.Forms.TabControl tabControl1;

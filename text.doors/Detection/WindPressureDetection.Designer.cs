@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WindPressureDetection));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.txt_lx_c = new System.Windows.Forms.TextBox();
@@ -137,7 +138,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.lbl_title = new System.Windows.Forms.Label();
             this.tim_PainPic = new System.Windows.Forms.Timer(this.components);
-            this.tim_fy = new System.Windows.Forms.Timer(this.components);
             this.tim_btnType = new System.Windows.Forms.Timer(this.components);
             this.tim_static = new System.Windows.Forms.Timer(this.components);
             this.char_cms_click = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -205,7 +205,7 @@
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(1109, 761);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "抗风压检测";
@@ -213,7 +213,7 @@
             // txt_lx_c
             // 
             this.txt_lx_c.Location = new System.Drawing.Point(995, 146);
-            this.txt_lx_c.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txt_lx_c.Margin = new System.Windows.Forms.Padding(4);
             this.txt_lx_c.Name = "txt_lx_c";
             this.txt_lx_c.Size = new System.Drawing.Size(65, 21);
             this.txt_lx_c.TabIndex = 65;
@@ -232,7 +232,7 @@
             // txt_lx_b
             // 
             this.txt_lx_b.Location = new System.Drawing.Point(996, 123);
-            this.txt_lx_b.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txt_lx_b.Margin = new System.Windows.Forms.Padding(4);
             this.txt_lx_b.Name = "txt_lx_b";
             this.txt_lx_b.Size = new System.Drawing.Size(65, 21);
             this.txt_lx_b.TabIndex = 63;
@@ -251,7 +251,7 @@
             // txt_lx_a
             // 
             this.txt_lx_a.Location = new System.Drawing.Point(995, 100);
-            this.txt_lx_a.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txt_lx_a.Margin = new System.Windows.Forms.Padding(4);
             this.txt_lx_a.Name = "txt_lx_a";
             this.txt_lx_a.Size = new System.Drawing.Size(65, 21);
             this.txt_lx_a.TabIndex = 30;
@@ -495,7 +495,7 @@
             this.A组.Controls.Add(this.panel3);
             this.A组.Location = new System.Drawing.Point(4, 22);
             this.A组.Name = "A组";
-            this.A组.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.A组.Padding = new System.Windows.Forms.Padding(3);
             this.A组.Size = new System.Drawing.Size(848, 289);
             this.A组.TabIndex = 0;
             this.A组.Text = "A组";
@@ -577,7 +577,7 @@
             this.B组.Controls.Add(this.panel6);
             this.B组.Location = new System.Drawing.Point(4, 22);
             this.B组.Name = "B组";
-            this.B组.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.B组.Padding = new System.Windows.Forms.Padding(3);
             this.B组.Size = new System.Drawing.Size(848, 289);
             this.B组.TabIndex = 1;
             this.B组.Text = "B组";
@@ -1314,12 +1314,8 @@
             // tim_PainPic
             // 
             this.tim_PainPic.Enabled = true;
-            this.tim_PainPic.Interval = 800;
+            this.tim_PainPic.Interval = 500;
             this.tim_PainPic.Tick += new System.EventHandler(this.tim_PainPic_Tick);
-            // 
-            // tim_fy
-            // 
-            this.tim_fy.Interval = 1000;
             // 
             // tim_btnType
             // 
@@ -1350,11 +1346,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1122, 766);
+            this.ClientSize = new System.Drawing.Size(1118, 797);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "WindPressureDetection";
             this.Text = "WindPressureDetection";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WindPressureDetection_FormClosing);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -1445,7 +1442,6 @@
         private System.Windows.Forms.DataGridView dgv_WindPressure_A;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Timer tim_fy;
         private Steema.TeeChart.TChart tChart_qm;
         private Steema.TeeChart.Styles.FastLine qm_Line;
         private System.Windows.Forms.Button btn_stop;

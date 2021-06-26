@@ -490,6 +490,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PlaneDeformation";
             this.Text = "PlaneDeformation";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlaneDeformation_FormClosing);
             this.tc_RealTimeSurveillance.ResumeLayout(false);
             this.page_airtight.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);

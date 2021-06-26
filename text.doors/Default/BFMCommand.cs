@@ -38,12 +38,13 @@ namespace text.doors.Default
         public const string 下一级 = "M42";
         public const string 急停 = "M120";
 
-        public const string 差压高显示 = "D130";
-        public const string 差压低显示 = "D432";
 
+        public const string 风速显示 = "D90";
+        public const string 差压高显示 = "D130";
         public const string 温度显示 = "D132";
         public const string 大气压力显示 = "D134";
-        public const string 风速显示 = "D90";
+        public const string 差压低显示 = "D432";
+       
 
 
         public const string 正压预备结束 = "D30";
@@ -77,9 +78,9 @@ namespace text.doors.Default
         public const string 负压预备_设定值 = "D2002";
         public const string 负压开始_设定值 = "D2005";
 
-        //public const string 正压依次加压 = "";
+        public const string 正压依次加压 = "T0";
 
-        //public const string 负压依次加压 = "";
+        public const string 负压依次加压 = "T2";
 
         public const string 平面停止 = "D20";
 

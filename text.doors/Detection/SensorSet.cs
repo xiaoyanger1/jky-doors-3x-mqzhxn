@@ -49,63 +49,71 @@ namespace text.doors.Detection
             double res = 0;
             ListViewItem lvi = new ListViewItem();
 
-
-
             if (name == "风速传感器 (米/秒)")
             {
-                res = _serialPortClient.GetFSXS();
+                //todo:改
+                //res = _serialPortClient.GetFSXS();
+                res = RegisterData.WindSpeed_Value;
             }
             if (name == "差压传感器高(Pa)")
             {
-                res = _serialPortClient.GetCY_High();
+                //todo:改
+                //res = _serialPortClient.GetCY_High();
+                res = RegisterData.CY_High_Value;
             }
             if (name == "差压传感器低(Pa)")
             {
-                res = _serialPortClient.GetCY_Low();
+                //todo:改
+                // res = _serialPortClient.GetCY_Low();
+                res = RegisterData.CY_Low_Value;
             }
             if (name == "温度传感器(℃)")
             {
-                res = _serialPortClient.GetWDXS();
+                //todo:改
+                // res = _serialPortClient.GetWDXS();
+                res = RegisterData.Temperature_Value;
             }
             if (name == "大气压力传感器(KPa)")
             {
-                res = _serialPortClient.GetDQYLXS();
+                //todo:改
+                //res = _serialPortClient.GetDQYLXS();
+                res = RegisterData.AtmospherePa_Value;
             }
             if (name == "位移传感器1(mm)")
             {
-                res = _serialPortClient.GetDisplace1("A");
+                res = RegisterData.DisplaceA1;
             }
             if (name == "位移传感器2(mm)")
             {
-                res = _serialPortClient.GetDisplace2("A");
+                res = RegisterData.DisplaceA2;
             }
             if (name == "位移传感器3(mm)")
             {
-                res = _serialPortClient.GetDisplace3("A");
+                res = RegisterData.DisplaceA3;
             }
             if (name == "位移传感器4(mm)")
             {
-                res = _serialPortClient.GetDisplace1("B");
+                res = RegisterData.DisplaceB1;
             }
             if (name == "位移传感器5(mm)")
             {
-                res = _serialPortClient.GetDisplace2("B");
+                res = RegisterData.DisplaceB2;
             }
             if (name == "位移传感器6(mm)")
             {
-                res = _serialPortClient.GetDisplace3("B");
+                res = RegisterData.DisplaceB3;
             }
             if (name == "位移传感器7(mm)")
             {
-                res = _serialPortClient.GetDisplace1("C");
+                res = RegisterData.DisplaceC1;
             }
             if (name == "位移传感器8(mm)")
             {
-                res = _serialPortClient.GetDisplace2("C");
+                res = RegisterData.DisplaceC2;
             }
             if (name == "位移传感器9(mm)")
             {
-                res = _serialPortClient.GetDisplace3("C");
+                res = RegisterData.DisplaceC3;
             }
             lvi.Text = res.ToString();
             lvi.SubItems.Add(DateTime.Now.ToString("HH:mm:ss"));

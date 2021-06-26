@@ -48,39 +48,148 @@ namespace text.doors
         /// </summary>
         private string _tempTong = "";
 
-        public static Thread bindLableThread;
-
-
-        public static System.Timers.Timer register_tim;
-
-
-
-        public static System.Timers.Timer bind_tim;
+        public static System.Threading.Timer timRead;
 
         public MainForm()
         {
-
             InitializeComponent();
             OpenSerialPortClient();
-
             ShowDetectionSet();
+
+            timRead = new System.Threading.Timer(readTimer, null, 100, 0);
         }
+        public void readTimer(object state)
+        {
+            try
+            {
+                if (_serialPortClient.sp.IsOpen)
+                {
+                    List<double> showList = _serialPortClient.ReadHoldingRegisters_Show();
+
+                    if (showList != null && showList.Count > 0 && showList.Count == 4)
+                    {
+                        RegisterData.WindSpeed_Value = showList[0];
+                        // RegisterData.CY_High_Value = (int)showList[1];
+                        RegisterData.Temperature_Value = showList[2];
+                        RegisterData.AtmospherePa_Value = showList[3];
+                        RegisterData.CY_Low_Value = _serialPortClient.GetCY_Low();
+                    }
+                    RegisterData.CY_High_Value = _serialPortClient.GetCY_High();
+                    List<double> displace = _serialPortClient.ReadHoldingRegisters();
+                    if (displace != null && displace.Count > 0)
+                    {
+                        if (displace.Count > 0)
+                        {
+                            RegisterData.DisplaceA1 = displace[0];
+                            RegisterData.DisplaceA2 = displace[1];
+                            RegisterData.DisplaceA3 = displace[2];
+                            RegisterData.DisplaceB1 = displace[3];
+                            RegisterData.DisplaceB2 = displace[4];
+                            RegisterData.DisplaceB3 = displace[5];
+                            RegisterData.DisplaceC1 = displace[6];
+                            RegisterData.DisplaceC2 = displace[7];
+                            RegisterData.DisplaceC3 = displace[8];
+                            RegisterData.Displace10 = displace[9];
+                        }
+                    }
+
+
+                    lbl_wy1.Invoke(new Action<string>(t =>
+                    {
+                        lbl_wy1.Text = t;
+                    }), RegisterData.DisplaceA1.ToString());
+                    lbl_wy2.Invoke(new Action<string>(t =>
+                    {
+                        lbl_wy2.Text = t;
+                    }), RegisterData.DisplaceA2.ToString());
+
+                    lbl_wy3.Invoke(new Action<string>(t =>
+                    {
+                        lbl_wy3.Text = t;
+                    }), RegisterData.DisplaceA3.ToString());
+
+                    lbl_wy4.Invoke(new Action<string>(t =>
+                    {
+                        lbl_wy4.Text = t;
+                    }), RegisterData.DisplaceB1.ToString());
+                    lbl_wy5.Invoke(new Action<string>(t =>
+                    {
+                        lbl_wy5.Text = t;
+                    }), RegisterData.DisplaceB2.ToString());
+
+                    lbl_wy6.Invoke(new Action<string>(t =>
+                    {
+                        lbl_wy6.Text = t;
+                    }), RegisterData.DisplaceB3.ToString());
+
+                    lbl_wy7.Invoke(new Action<string>(t =>
+                    {
+                        lbl_wy7.Text = t;
+                    }), RegisterData.DisplaceC1.ToString());
+                    lbl_wy8.Invoke(new Action<string>(t =>
+                    {
+                        lbl_wy8.Text = t;
+                    }), RegisterData.DisplaceC2.ToString());
+
+                    lbl_wy9.Invoke(new Action<string>(t =>
+                    {
+                        lbl_wy9.Text = t;
+                    }), RegisterData.DisplaceC3.ToString());
+                    lbl_wypm.Invoke(new Action<string>(t =>
+                    {
+                        lbl_wypm.Text = t;
+                    }), RegisterData.Displace10.ToString());
+
+
+                    //风速
+                    lbl_fscgq.Invoke(new Action<string>(t =>
+                    {
+                        lbl_fscgq.Text = t;
+                    }), RegisterData.WindSpeed_Value.ToString());
+                    //差压高
+                    lbl_cygcgq.Invoke(new Action<string>(t =>
+                    {
+                        lbl_cygcgq.Text = t;
+                    }), RegisterData.CY_High_Value.ToString());
+
+                    //差压低
+                    lbl_cydcgq.Invoke(new Action<string>(t =>
+                    {
+                        lbl_cydcgq.Text = t;
+                    }), RegisterData.CY_Low_Value.ToString());
+
+                    //温度
+                    lbl_wdcgq.Invoke(new Action<string>(t =>
+                    {
+                        lbl_wdcgq.Text = t;
+                    }), RegisterData.Temperature_Value.ToString());
+                    //大气压力
+                    lbl_dqylcgq.Invoke(new Action<string>(t =>
+                    {
+                        lbl_dqylcgq.Text = t;
+                    }), RegisterData.AtmospherePa_Value.ToString());
+
+                    timRead.Change(500, 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                timRead.Dispose();
+                timRead = null;
+            }
+        }
+
 
         private void tim_getdate_Tick(object sender, EventArgs e)
         {
-            if (_serialPortClient.sp.IsOpen)
-            {
-
-                _temperature = _serialPortClient.GetWDXS();
-                _temppressure = _serialPortClient.GetDQYLXS();
-
-
-                lbl_wdcgq.Text = _temperature.ToString();
-                lbl_dqylcgq.Text = _temppressure.ToString();
-                lbl_fscgq.Text = _serialPortClient.GetFSXS().ToString();
-                lbl_cygcgq.Text = _serialPortClient.GetCY_High().ToString();
-                lbl_cydcgq.Text = _serialPortClient.GetCY_Low().ToString();
-            }
+            //todo:改
+            //_temperature = _serialPortClient.GetWDXS();
+            //_temppressure = _serialPortClient.GetDQYLXS();
+            //lbl_wdcgq.Text = _temperature.ToString();
+            //lbl_dqylcgq.Text = _temppressure.ToString();
+            //lbl_fscgq.Text = _serialPortClient.GetFSXS().ToString();
+            //lbl_cygcgq.Text = _serialPortClient.GetCY_High().ToString();
+            //lbl_cydcgq.Text = _serialPortClient.GetCY_Low().ToString();
         }
 
 
@@ -166,7 +275,7 @@ namespace text.doors
             }
 
             this.pl_showItem.Controls.Clear();
-            DetectionSet ds = new DetectionSet(_serialPortClient, _temperature, _temppressure, _tempCode);
+            DetectionSet ds = new DetectionSet(_serialPortClient, RegisterData.Temperature_Value, RegisterData.AtmospherePa_Value, _tempCode);
             ds.deleBottomTypeEvent += new DetectionSet.deleBottomType(SelectDangHao);
             ds.GetDangHaoTrigger();
             ds.TopLevel = false;
@@ -567,6 +676,7 @@ namespace text.doors
                 return;
             var value = int.Parse(e.Result.ToString()) / 320;
             txt_lqfhz.Text = value.ToString();
+            hsb_lqfControl.Value = value;
         }
 
 
@@ -608,7 +718,7 @@ namespace text.doors
 
         private void btn_kglkz_Click(object sender, EventArgs e)
         {
-            if (!_serialPortClient.Sendkglkz())
+            if (!_serialPortClient.SendSingleCoilControl(BFMCommand.开关量控制))
             {
                 MessageBox.Show("开关量控制异常,请确认服务器连接是否成功!", "设置", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }

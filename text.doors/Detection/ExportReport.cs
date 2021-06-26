@@ -89,9 +89,9 @@ namespace text.doors.Detection
                 if (wu.GenerateWordByBookmarks(dc))
                 {
                     lbl_message.Visible = false;
-
-                    MessageBox.Show("导出成功", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.None);
                     this.Hide();
+                    MessageBox.Show("导出成功", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.None);
+                   
                 }
             }
             catch (Exception ex)
@@ -766,13 +766,13 @@ namespace text.doors.Detection
                         dc.Add("整体正压pa", "100");
                         dc.Add("整体负压pa", "100");
                         dc.Add("整体使用pa", "100");
-                        dc.Add("水密整体正压风速", zZTFS.ToString());
-                        dc.Add("水密整体负压风速", fZTFS.ToString());
+                        dc.Add("水密整体正压风速", Math.Round(zZTFS, 2).ToString());
+                        dc.Add("水密整体负压风速", Math.Round(fZTFS, 2).ToString());
                         if (zZTFS > fZTFS)
-                            dc.Add("整体平均风速", zZTFS.ToString());
+                            dc.Add("整体平均风速", Math.Round(zZTFS, 2).ToString());
                         else
-                            dc.Add("整体平均风速", fZTFS.ToString());
-                        dc.Add("整体QA", resZT.ToString());
+                            dc.Add("整体平均风速", Math.Round(fZTFS, 2).ToString());
+                        dc.Add("整体QA", Math.Round(resZT, 2).ToString());
                     }
                     else
                     {
@@ -791,13 +791,13 @@ namespace text.doors.Detection
                         dc.Add("可开正压pa", "100");
                         dc.Add("可开负压pa", "100");
                         dc.Add("可开使用pa", "100");
-                        dc.Add("可开正压风速", zKKFS.ToString());
-                        dc.Add("可开负压风速", fKKFS.ToString());
+                        dc.Add("可开正压风速", Math.Round(zKKFS,2).ToString());
+                        dc.Add("可开负压风速", Math.Round(fKKFS, 2).ToString());
                         if (zKKFS > fKKFS)
-                            dc.Add("可开平均风速", zKKFS.ToString());
+                            dc.Add("可开平均风速", Math.Round(zKKFS, 2).ToString());
                         else
-                            dc.Add("可开平均风速", fKKFS.ToString());
-                        dc.Add("可开QL", resKK.ToString());
+                            dc.Add("可开平均风速", Math.Round(fKKFS, 2).ToString());
+                        dc.Add("可开QL", Math.Round(resKK, 2).ToString());
                     }
                     else
                     {
@@ -913,12 +913,12 @@ namespace text.doors.Detection
                         dc.Add("整体正压pa", "100");
                         dc.Add("整体负压pa", "100");
                         dc.Add("整体使用pa", "100");
-                        dc.Add("水密整体正压风速", zZTFS.ToString());
-                        dc.Add("水密整体负压风速", fZTFS.ToString());
+                        dc.Add("水密整体正压风速", Math.Round(zZTFS, 2).ToString());
+                        dc.Add("水密整体负压风速", Math.Round(fZTFS, 2).ToString());
                         if (zZTFS > fZTFS)
-                            dc.Add("整体平均风速", zZTFS.ToString());
+                            dc.Add("整体平均风速", Math.Round(zZTFS, 2).ToString());
                         else
-                            dc.Add("整体平均风速", fZTFS.ToString());
+                            dc.Add("整体平均风速", Math.Round(fZTFS, 2).ToString());
                         dc.Add("整体QA", resMJ.ToString());
                     }
                     else
@@ -938,12 +938,12 @@ namespace text.doors.Detection
                         dc.Add("可开正压pa", "100");
                         dc.Add("可开负压pa", "100");
                         dc.Add("可开使用pa", "100");
-                        dc.Add("可开正压风速", zKKFS.ToString());
-                        dc.Add("可开负压风速", fKKFS.ToString());
+                        dc.Add("可开正压风速", Math.Round(zKKFS,2).ToString());
+                        dc.Add("可开负压风速", Math.Round(fKKFS,2).ToString());
                         if (zKKFS > fKKFS)
-                            dc.Add("可开平均风速", zKKFS.ToString());
+                            dc.Add("可开平均风速", Math.Round(zKKFS,2).ToString());
                         else
-                            dc.Add("可开平均风速", fKKFS.ToString());
+                            dc.Add("可开平均风速", Math.Round(fKKFS,2).ToString());
                         dc.Add("可开QL", resFC.ToString());
                     }
                     else
@@ -995,10 +995,15 @@ namespace text.doors.Detection
                 if (settings?.dt_qm_zb_Info?.jlgzj != null)
                 {
                     dc.Add("集流管直径", settings?.dt_qm_zb_Info?.jlgzj);
+
+                    var jmj = Formula.MathJieArea(double.Parse(settings.dt_qm_zb_Info.jlgzj));
+
+                    dc.Add("截留管直径", (jmj * 1000).ToString());
                 }
                 else
                 {
                     dc.Add("集流管直径", "--");
+                    dc.Add("截留管直径", "--");
                 }
             }
 
@@ -1020,15 +1025,15 @@ namespace text.doors.Detection
                     }
                     if (settings.dt_sm_Info.sm_Pa == 350)
                     {
-                        sm_Pa = 250;
+                        sm_Pa = 500;
                     }
                     if (settings.dt_sm_Info.sm_Pa == 500)
                     {
-                        sm_Pa = 350;
+                        sm_Pa = 700;
                     }
                     if (settings.dt_sm_Info.sm_Pa == 700)
                     {
-                        sm_Pa = 500;
+                        sm_Pa = 1000;
                     }
                     if (settings.dt_sm_Info.sm_Pa == 1000)
                     {
@@ -1050,69 +1055,69 @@ namespace text.doors.Detection
                     }
                     if (settings.dt_sm_Info.sm_Pa2 == 700)
                     {
-                        sm_Pa2 = 500;
+                        sm_Pa2 = 1000;
                     }
                     if (settings.dt_sm_Info.sm_Pa2 == 1000)
                     {
-                        sm_Pa2 = 750;
+                        sm_Pa2 = 1500;
                     }
                     if (settings.dt_sm_Info.sm_Pa2 == 1500)
                     {
-                        sm_Pa2 = 1000;
+                        sm_Pa2 = 2000;
                     }
                     if (settings.dt_sm_Info.sm_Pa2 == 2000)
                     {
-                        sm_Pa2 = 1500;
+                        sm_Pa2 = 2000;
                     }
                 }
 
-                if (settings.dt_sm_Info.sm_Pa == 250)
+                if (sm_Pa == 250)
                 {
                     dc.Add("可开250", settings.dt_sm_Info.sm_PaDesc);
                 }
-                if (settings.dt_sm_Info.sm_Pa == 350)
+                if (sm_Pa == 350)
                 {
                     dc.Add("可开350", settings.dt_sm_Info.sm_PaDesc);
                 }
-                if (settings.dt_sm_Info.sm_Pa == 500)
+                if (sm_Pa == 500)
                 {
                     dc.Add("可开500", settings.dt_sm_Info.sm_PaDesc);
                 }
-                if (settings.dt_sm_Info.sm_Pa == 700)
+                if (sm_Pa == 700)
                 {
                     dc.Add("可开700", settings.dt_sm_Info.sm_PaDesc);
                 }
-                if (settings.dt_sm_Info.sm_Pa == 1000)
+                if (sm_Pa == 1000)
                 {
                     dc.Add("可开1000", settings.dt_sm_Info.sm_PaDesc);
                 }
 
-                if (settings.dt_sm_Info.sm_Pa2 == 500)
+                if (sm_Pa2 == 500)
                 {
                     dc.Add("固定500", settings.dt_sm_Info.sm_PaDesc2);
                 }
-                if (settings.dt_sm_Info.sm_Pa2 == 700)
+                if (sm_Pa2 == 700)
                 {
                     dc.Add("固定700", settings.dt_sm_Info.sm_PaDesc2);
                 }
-                if (settings.dt_sm_Info.sm_Pa2 == 1000)
+                if (sm_Pa2 == 1000)
                 {
                     dc.Add("固定1000", settings.dt_sm_Info.sm_PaDesc2);
                 }
-                if (settings.dt_sm_Info.sm_Pa2 == 1500)
+                if (sm_Pa2 == 1500)
                 {
                     dc.Add("固定1500", settings.dt_sm_Info.sm_PaDesc2);
                 }
-                if (settings.dt_sm_Info.sm_Pa2 == 2000)
+                if (sm_Pa2 == 2000)
                 {
                     dc.Add("固定2000", settings.dt_sm_Info.sm_PaDesc2);
                 }
 
                 if (settings.dt_sm_Info.sm_Pa != null)
                 {
-                    dc.Add("可开未渗漏风压", sm_Pa.ToString());
+                    dc.Add("可开未渗漏风压", settings.dt_sm_Info.sm_Pa.ToString());
 
-                    var level = Formula.GetWaterTightLevel_KeKaiQi(sm_Pa);
+                    var level = Formula.GetWaterTightLevel_KeKaiQi(settings.dt_sm_Info.sm_Pa.Value);
                     dc.Add("可开水密性能等级", level.ToString());
                 }
                 else
@@ -1123,8 +1128,8 @@ namespace text.doors.Detection
                 }
                 if (settings.dt_sm_Info.sm_Pa2 != null)
                 {
-                    dc.Add("固定未渗漏风压", sm_Pa2.ToString());
-                    var level = Formula.GetWaterTightLevel_GuDing(sm_Pa2);
+                    dc.Add("固定未渗漏风压", settings.dt_sm_Info.sm_Pa2.ToString());
+                    var level = Formula.GetWaterTightLevel_GuDing(settings.dt_sm_Info.sm_Pa2.Value);
 
                     dc.Add("固定水密等级", level.ToString());
                 }
@@ -1187,7 +1192,7 @@ namespace text.doors.Detection
 
 
             GetP1(settings, ref dc);
-            //dc.Add("截留管直径", "");
+
             //dc.Add("气密性能等级", "");
             //dc.Add("淋水流量", "");
             return dc;
@@ -1239,11 +1244,12 @@ namespace text.doors.Detection
                             List<double> list = new List<double>();
                             double p1 = 0d;
                             double _p1 = 0d;
+                            GetP1(windPressureDGV, lengB, lx, ref p1, ref _p1);
                             if (p1 > 0)
                                 list.Add(p1);
                             if (_p1 > 0)
                                 list.Add(_p1);
-                            GetP1(windPressureDGV, lengB, lx, ref p1, ref _p1);
+                          
                             if (list != null && list.Count > 0)
                             {
                                 dc.Add("P1PB", list.Min().ToString());
@@ -1265,11 +1271,12 @@ namespace text.doors.Detection
                             List<double> list = new List<double>();
                             double p1 = 0d;
                             double _p1 = 0d;
+                            GetP1(windPressureDGV, lengC, lx, ref p1, ref _p1);
                             if (p1 > 0)
                                 list.Add(p1);
                             if (_p1 > 0)
                                 list.Add(_p1);
-                            GetP1(windPressureDGV, lengC, lx, ref p1, ref _p1);
+                         
                             if (list != null && list.Count > 0)
                             {
                                 dc.Add("P1PC", list.Min().ToString());

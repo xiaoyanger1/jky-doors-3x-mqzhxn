@@ -276,6 +276,7 @@ namespace text.doors.Detection
                     var info = qm_Info.Find(t => t.PaType == 3);
                     if (info != null)
                     {
+                        z_sjz.Pa = qm_zb_info.z_sjz_value.ToString();
                         z_sjz.ZDST = double.Parse(info.ZDST);
                         z_sjz.FJST = double.Parse(info.FJST);
                         z_sjz.GFZH = double.Parse(info.GFZH);
@@ -288,6 +289,7 @@ namespace text.doors.Detection
                     var info = qm_Info.Find(t => t.PaType == 4);
                     if (info != null)
                     {
+                        f_sjz.Pa = qm_zb_info.z_sjz_value.ToString();
                         f_sjz.ZDST = double.Parse(info.ZDST);
                         f_sjz.FJST = double.Parse(info.FJST);
                         f_sjz.GFZH = double.Parse(info.GFZH);
@@ -387,6 +389,31 @@ namespace text.doors.Detection
                 if (this.tim_Top10.Enabled == false)
                     SetCurrType();
             }
+
+            if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.ZYCJY)
+            {
+                if (this.tim_Top10.Enabled == false)
+                {
+                    var start = _serialPortClient.ReadQMTimeStart(BFMCommand.正压依次加压);
+                    if (start)
+                    {
+                        kpa_Level = PublicEnum.Kpa_Level.Z_YCJY;
+                        tim_Top10.Enabled = true;
+                    }
+                }
+            }
+            else if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.FYCJY)
+            {
+                if (this.tim_Top10.Enabled == false)
+                {
+                    var start = _serialPortClient.ReadQMTimeStart(BFMCommand.负压依次加压);
+                    if (start)
+                    {
+                        kpa_Level = PublicEnum.Kpa_Level.Z_YCJY;
+                        tim_Top10.Enabled = true;
+                    }
+                }
+            }
         }
 
         private void tim_PainPic_Tick(object sender, EventArgs e)
@@ -394,7 +421,7 @@ namespace text.doors.Detection
             if (!_serialPortClient.sp.IsOpen)
                 return;
 
-            int c = _serialPortClient.GetCY_Low();
+            int c = RegisterData.CY_Low_Value;
             lbl_dqyl.Text = c.ToString();
 
             AnimateSeries(this.tChart_qm, c);
@@ -427,111 +454,111 @@ namespace text.doors.Detection
             }
             gv_list.Enabled = true;
 
-            var cyvalue = _serialPortClient.GetCY_Low();
-            var fsvalue = _serialPortClient.GetFSXS();//获取风速
+            var cyValue = RegisterData.CY_Low_Value;
+            var fsValue = RegisterData.WindSpeed_Value;
 
             if (rdb_fjstl.Checked)
             {
                 if (kpa_Level == PublicEnum.Kpa_Level.liter50)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter50);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_FJST(fsValue, PublicEnum.Kpa_Level.liter50);
                     else
-                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.liter50);
+                        windSpeedInfo.AddFY_FJST(fsValue, PublicEnum.Kpa_Level.liter50);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter100);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_FJST(fsValue, PublicEnum.Kpa_Level.liter100);
                     else
-                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.liter100);
+                        windSpeedInfo.AddFY_FJST(fsValue, PublicEnum.Kpa_Level.liter100);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.liter150);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_FJST(fsValue, PublicEnum.Kpa_Level.liter150);
                     else
-                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.liter150);
+                        windSpeedInfo.AddFY_FJST(fsValue, PublicEnum.Kpa_Level.liter150);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.drop100);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_FJST(fsValue, PublicEnum.Kpa_Level.drop100);
                     else
-                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.drop100);
+                        windSpeedInfo.AddFY_FJST(fsValue, PublicEnum.Kpa_Level.drop100);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.drop50);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_FJST(fsValue, PublicEnum.Kpa_Level.drop50);
                     else
-                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.drop50);
+                        windSpeedInfo.AddFY_FJST(fsValue, PublicEnum.Kpa_Level.drop50);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.Z_YCJY)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_FJST(fsValue, PublicEnum.Kpa_Level.Z_YCJY);
                     else
-                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                        windSpeedInfo.AddFY_FJST(fsValue, PublicEnum.Kpa_Level.Z_YCJY);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.F_YCJY)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_FJST(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_FJST(fsValue, PublicEnum.Kpa_Level.F_YCJY);
                     else
-                        windSpeedInfo.AddFY_FJST(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                        windSpeedInfo.AddFY_FJST(fsValue, PublicEnum.Kpa_Level.F_YCJY);
                 }
             }
             else if (rdb_gfzh.Checked) //固附之和
             {
                 if (kpa_Level == PublicEnum.Kpa_Level.liter50)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.liter50);
                     else
-                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
+                        windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.liter50);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter100);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.liter100);
                     else
-                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter100);
+                        windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.liter100);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.liter150);
                     else
-                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
+                        windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.liter150);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop100);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.drop100);
                     else
-                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop100);
+                        windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.drop100);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.drop50);
                     else
-                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
+                        windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.drop50);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.Z_YCJY)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.Z_YCJY);
                     else
-                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                        windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.Z_YCJY);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.F_YCJY)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.F_YCJY);
                     else
-                        windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                        windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.F_YCJY);
                 }
             }
             else if (rdb_zdstl.Checked)
@@ -541,102 +568,102 @@ namespace text.doors.Detection
                 {
                     if (kpa_Level == PublicEnum.Kpa_Level.liter50)
                     {
-                        if (cyvalue > 0)
-                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
+                        if (cyValue > 0)
+                            windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.liter50);
                         else
-                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter50);
+                            windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.liter50);
                     }
                     else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
                     {
-                        if (cyvalue > 0)
-                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter100);
+                        if (cyValue > 0)
+                            windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.liter100);
                         else
-                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter100);
+                            windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.liter100);
                     }
                     else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
                     {
-                        if (cyvalue > 0)
-                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter150);
+                        if (cyValue > 0)
+                            windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.liter150);
                         else
-                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.liter150);
+                            windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.liter150);
                     }
                     else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
                     {
-                        if (cyvalue > 0)
-                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop100);
+                        if (cyValue > 0)
+                            windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.drop100);
                         else
-                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop100);
+                            windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.drop100);
                     }
                     else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
                     {
-                        if (cyvalue > 0)
-                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
+                        if (cyValue > 0)
+                            windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.drop50);
                         else
-                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.drop50);
+                            windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.drop50);
                     }
                     else if (kpa_Level == PublicEnum.Kpa_Level.Z_YCJY)
                     {
-                        if (cyvalue > 0)
-                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                        if (cyValue > 0)
+                            windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.Z_YCJY);
                         else
-                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                            windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.Z_YCJY);
                     }
                     else if (kpa_Level == PublicEnum.Kpa_Level.F_YCJY)
                     {
-                        if (cyvalue > 0)
-                            windSpeedInfo.AddZY_GFZH(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                        if (cyValue > 0)
+                            windSpeedInfo.AddZY_GFZH(fsValue, PublicEnum.Kpa_Level.F_YCJY);
                         else
-                            windSpeedInfo.Add_FY_GFZH(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                            windSpeedInfo.Add_FY_GFZH(fsValue, PublicEnum.Kpa_Level.F_YCJY);
                     }
                 }
                 if (kpa_Level == PublicEnum.Kpa_Level.liter50)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter50);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsValue, PublicEnum.Kpa_Level.liter50);
                     else
-                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter50);
+                        windSpeedInfo.Add_FY_ZDST(fsValue, PublicEnum.Kpa_Level.liter50);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.liter100)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter100);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsValue, PublicEnum.Kpa_Level.liter100);
                     else
-                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter100);
+                        windSpeedInfo.Add_FY_ZDST(fsValue, PublicEnum.Kpa_Level.liter100);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.liter150)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter150);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsValue, PublicEnum.Kpa_Level.liter150);
                     else
-                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.liter150);
+                        windSpeedInfo.Add_FY_ZDST(fsValue, PublicEnum.Kpa_Level.liter150);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.drop100)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.drop100);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsValue, PublicEnum.Kpa_Level.drop100);
                     else
-                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.drop100);
+                        windSpeedInfo.Add_FY_ZDST(fsValue, PublicEnum.Kpa_Level.drop100);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.drop50)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.drop50);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsValue, PublicEnum.Kpa_Level.drop50);
                     else
-                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.drop50);
+                        windSpeedInfo.Add_FY_ZDST(fsValue, PublicEnum.Kpa_Level.drop50);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.Z_YCJY)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsValue, PublicEnum.Kpa_Level.Z_YCJY);
                     else
-                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.Z_YCJY);
+                        windSpeedInfo.Add_FY_ZDST(fsValue, PublicEnum.Kpa_Level.Z_YCJY);
                 }
                 else if (kpa_Level == PublicEnum.Kpa_Level.F_YCJY)
                 {
-                    if (cyvalue > 0)
-                        windSpeedInfo.AddZY_ZDST(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                    if (cyValue > 0)
+                        windSpeedInfo.AddZY_ZDST(fsValue, PublicEnum.Kpa_Level.F_YCJY);
                     else
-                        windSpeedInfo.Add_FY_ZDST(fsvalue, PublicEnum.Kpa_Level.F_YCJY);
+                        windSpeedInfo.Add_FY_ZDST(fsValue, PublicEnum.Kpa_Level.F_YCJY);
                 }
             }
         }
@@ -657,7 +684,7 @@ namespace text.doors.Detection
             {
                 if (notRead?.Key == BFMCommand.正压50TimeStart)
                 {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    start = _serialPortClient.ReadQMTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.liter50;
@@ -668,7 +695,7 @@ namespace text.doors.Detection
 
                 else if (notRead?.Key == BFMCommand.正压100TimeStart)
                 {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    start = _serialPortClient.ReadQMTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.liter100;
@@ -678,7 +705,7 @@ namespace text.doors.Detection
                 }
                 else if (notRead?.Key == BFMCommand.正压150TimeStart)
                 {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    start = _serialPortClient.ReadQMTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.liter150;
@@ -688,7 +715,7 @@ namespace text.doors.Detection
                 }
                 else if (notRead?.Key == BFMCommand.正压_100TimeStart)
                 {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    start = _serialPortClient.ReadQMTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.drop100;
@@ -698,7 +725,7 @@ namespace text.doors.Detection
                 }
                 else if (notRead?.Key == BFMCommand.正压_50TimeStart)
                 {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    start = _serialPortClient.ReadQMTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.drop50;
@@ -712,7 +739,7 @@ namespace text.doors.Detection
             {
                 if (notRead?.Key == BFMCommand.负压50TimeStart)
                 {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    start = _serialPortClient.ReadQMTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.liter50;
@@ -722,7 +749,7 @@ namespace text.doors.Detection
                 }
                 else if (notRead?.Key == BFMCommand.负压100TimeStart)
                 {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    start = _serialPortClient.ReadQMTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.liter100;
@@ -732,7 +759,7 @@ namespace text.doors.Detection
                 }
                 else if (notRead?.Key == BFMCommand.负压150TimeStart)
                 {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    start = _serialPortClient.ReadQMTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.liter150;
@@ -742,7 +769,7 @@ namespace text.doors.Detection
                 }
                 else if (notRead?.Key == BFMCommand.负压_100TimeStart)
                 {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    start = _serialPortClient.ReadQMTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.drop100;
@@ -752,7 +779,7 @@ namespace text.doors.Detection
                 }
                 else if (notRead?.Key == BFMCommand.负压_50TimeStart)
                 {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    start = _serialPortClient.ReadQMTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.drop50;
@@ -762,7 +789,7 @@ namespace text.doors.Detection
                 }
                 else if (notRead?.Key == BFMCommand.负压_50TimeStart)
                 {
-                    start = _serialPortClient.GetQiMiTimeStart(notRead?.Key);
+                    start = _serialPortClient.ReadQMTimeStart(notRead?.Key);
                     if (start)
                     {
                         kpa_Level = PublicEnum.Kpa_Level.drop50;
@@ -782,7 +809,7 @@ namespace text.doors.Detection
             if (!_serialPortClient.sp.IsOpen)
                 return;
 
-            var res = _serialPortClient.SetZYYB();
+            var res = _serialPortClient.SendBtnSingleCoil(BFMCommand.正压预备);
             if (!res)
                 return;
 
@@ -803,7 +830,7 @@ namespace text.doors.Detection
         /// </summary>
         private void Stop()
         {
-            var res = _serialPortClient.Stop();
+            var res = _serialPortClient.SendSingleCoilControl(BFMCommand.急停);
             if (!res)
                 MessageBox.Show("急停异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
@@ -817,7 +844,7 @@ namespace text.doors.Detection
         {
             index = 0;
 
-            var res = _serialPortClient.SendZYKS();
+            var res = _serialPortClient.SendBtnSingleCoil(BFMCommand.正压开始);
             if (!res)
                 return;
 
@@ -846,7 +873,7 @@ namespace text.doors.Detection
 
         private void btn_loseready_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SendFYYB();
+            var res = _serialPortClient.SendBtnSingleCoil(BFMCommand.负压预备);
             if (!res)
                 return;
 
@@ -870,15 +897,15 @@ namespace text.doors.Detection
             this.btn_losestart.Enabled = false;
             this.btn_juststart.Enabled = false;
 
-            btn_ycjy_z.Enabled = false;
-            btn_ycjyf.Enabled = false;
+            this.btn_ycjy_z.Enabled = false;
+            this.btn_ycjyf.Enabled = false;
 
-            btn_justready.BackColor = Color.Transparent;
-            btn_loseready.BackColor = Color.Transparent;
-            btn_losestart.BackColor = Color.Transparent;
-            btn_juststart.BackColor = Color.Transparent;
-            btn_ycjy_z.BackColor = Color.Transparent;
-            btn_ycjyf.BackColor = Color.Transparent;
+            this.btn_justready.BackColor = Color.Transparent;
+            this.btn_loseready.BackColor = Color.Transparent;
+            this.btn_losestart.BackColor = Color.Transparent;
+            this.btn_juststart.BackColor = Color.Transparent;
+            this.btn_ycjy_z.BackColor = Color.Transparent;
+            this.btn_ycjyf.BackColor = Color.Transparent;
         }
 
         /// <summary>
@@ -891,16 +918,16 @@ namespace text.doors.Detection
             this.btn_losestart.Enabled = true;
             this.btn_datadispose.Enabled = true;
             this.btn_juststart.Enabled = true;
-            btn_ycjy_z.Enabled = true;
-            btn_ycjyf.Enabled = true;
+            this.btn_ycjy_z.Enabled = true;
+            this.btn_ycjyf.Enabled = true;
 
 
-            btn_justready.BackColor = Color.Transparent;
-            btn_loseready.BackColor = Color.Transparent;
-            btn_losestart.BackColor = Color.Transparent;
-            btn_juststart.BackColor = Color.Transparent;
-            btn_ycjy_z.BackColor = Color.Transparent;
-            btn_ycjyf.BackColor = Color.Transparent;
+            this.btn_justready.BackColor = Color.Transparent;
+            this.btn_loseready.BackColor = Color.Transparent;
+            this.btn_losestart.BackColor = Color.Transparent;
+            this.btn_juststart.BackColor = Color.Transparent;
+            this.btn_ycjy_z.BackColor = Color.Transparent;
+            this.btn_ycjyf.BackColor = Color.Transparent;
         }
 
         /// <summary>
@@ -912,7 +939,7 @@ namespace text.doors.Detection
         {
             index = 0;
 
-            var res = _serialPortClient.SendFYKS();
+            var res = _serialPortClient.SendBtnSingleCoil(BFMCommand.负压开始);
             if (!res)
                 return;
             DisableBtnType();
@@ -997,7 +1024,6 @@ namespace text.doors.Detection
                 model.ZDST = double.Parse(this.dgv_ll.Rows[i].Cells[4].Value.ToString()).ToString("f2");
                 model.MQZT = double.Parse(this.dgv_ll.Rows[i].Cells[5].Value.ToString()).ToString("f2");
                 model.KKST = double.Parse(this.dgv_ll.Rows[i].Cells[6].Value.ToString()).ToString("f2");
-                //model.testtype = int.Parse(sjzValue) > 0 ? "2" : "1";
                 list.Add(model);
             }
             return list;
@@ -1047,9 +1073,9 @@ namespace text.doors.Detection
             if (txt_ycjy_z.Text == "0" && txt_ycjy_f.Text == "0")
             {
                 zFc = Formula.GetIndexStichLength(
-                double.Parse(this.dgv_ll.Rows[1].Cells[6].Value.ToString()),
-                double.Parse(this.dgv_ll.Rows[3].Cells[6].Value.ToString()),
-                daqiyali, kekaifengchang, dangqianwendu);
+                    double.Parse(this.dgv_ll.Rows[1].Cells[6].Value.ToString()),
+                    double.Parse(this.dgv_ll.Rows[3].Cells[6].Value.ToString()),
+                    daqiyali, kekaifengchang, dangqianwendu);
 
                 fFc = Formula.GetIndexStichLength(
                     double.Parse(this.dgv_ll.Rows[6].Cells[6].Value.ToString()),
@@ -1069,9 +1095,9 @@ namespace text.doors.Detection
             else
             {
                 zFc = Formula.GetIndexStichLength(
-                double.Parse(this.dgv_ll.Rows[10].Cells[6].Value.ToString()),
-                double.Parse(this.dgv_ll.Rows[10].Cells[6].Value.ToString()),
-                daqiyali, kekaifengchang, dangqianwendu);
+                    double.Parse(this.dgv_ll.Rows[10].Cells[6].Value.ToString()),
+                    double.Parse(this.dgv_ll.Rows[10].Cells[6].Value.ToString()),
+                    daqiyali, kekaifengchang, dangqianwendu);
 
                 fFc = Formula.GetIndexStichLength(
                     double.Parse(this.dgv_ll.Rows[11].Cells[6].Value.ToString()),
@@ -1092,7 +1118,7 @@ namespace text.doors.Detection
 
         private void btn_stop_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.Stop();
+            var res = _serialPortClient.SendSingleCoilControl(BFMCommand.急停);
             if (!res)
                 return;
             this.btn_justready.Enabled = true;
@@ -1101,11 +1127,17 @@ namespace text.doors.Detection
             this.btn_datadispose.Enabled = true;
             this.btn_juststart.Enabled = true;
 
+            this.btn_ycjyf.Enabled = true;
+            this.btn_ycjy_z.Enabled = true;
+
             btn_datadispose.BackColor = Color.Transparent;
             btn_justready.BackColor = Color.Transparent;
             btn_loseready.BackColor = Color.Transparent;
             btn_losestart.BackColor = Color.Transparent;
             btn_juststart.BackColor = Color.Transparent;
+
+            btn_ycjy_z.BackColor = Color.Transparent;
+            btn_ycjyf.BackColor = Color.Transparent;
 
             this.tim_Top10.Enabled = false;
             BindFlowBase();
@@ -1125,7 +1157,8 @@ namespace text.doors.Detection
 
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.ZReady)
             {
-                int value = _serialPortClient.GetZYYBJS();
+                int value = _serialPortClient.ReadEndState(BFMCommand.正压预备结束);
+                // int value = _serialPortClient.GetZYYBJS();
                 if (value == 3)
                 {
                     airtightPropertyTest = PublicEnum.AirtightPropertyTest.Stop;
@@ -1134,8 +1167,8 @@ namespace text.doors.Detection
             }
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.ZStart)
             {
-                double value = _serialPortClient.GetZYKSJS();
-
+                // double value = _serialPortClient.GetZYKSJS();
+                int value = _serialPortClient.ReadEndState(BFMCommand.正压开始结束);
                 if (value >= 15)
                 {
                     airtightPropertyTest = PublicEnum.AirtightPropertyTest.Stop;
@@ -1145,8 +1178,8 @@ namespace text.doors.Detection
 
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.FReady)
             {
-                int value = _serialPortClient.GetFYYBJS();
-
+                //int value = _serialPortClient.GetFYYBJS();
+                int value = _serialPortClient.ReadEndState(BFMCommand.负压预备结束);
                 if (value == 3)
                 {
                     airtightPropertyTest = PublicEnum.AirtightPropertyTest.Stop;
@@ -1156,7 +1189,8 @@ namespace text.doors.Detection
 
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.FStart)
             {
-                double value = _serialPortClient.GetFYKSJS();
+                int value = _serialPortClient.ReadEndState(BFMCommand.负压开始结束);
+                // double value = _serialPortClient.GetFYKSJS();
                 if (value >= 15)
                 {
                     airtightPropertyTest = PublicEnum.AirtightPropertyTest.Stop;
@@ -1197,6 +1231,7 @@ namespace text.doors.Detection
             if (value == 0)
             {
                 this.btn_ycjy_z.Enabled = true;
+                btn_ycjy_z.BackColor = Color.Transparent;
                 return;
             }
 
@@ -1266,6 +1301,7 @@ namespace text.doors.Detection
             if (value == 0)
             {
                 this.btn_ycjyf.Enabled = true;
+                btn_ycjyf.BackColor = Color.Transparent;
                 return;
             }
             //添加表格默认
@@ -1327,7 +1363,7 @@ namespace text.doors.Detection
 
         private void btn_exit_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.Stop();
+            var res = _serialPortClient.SendSingleCoilControl(BFMCommand.急停);
 
             this.Close();
         }

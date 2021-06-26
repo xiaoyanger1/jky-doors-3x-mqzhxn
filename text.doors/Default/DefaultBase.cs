@@ -12,6 +12,7 @@ namespace text.doors.Default
     /// </summary>
     public static class DefaultBase
     {
+
         #region --系统默认
 
         public static bool isRelease = false;
@@ -39,42 +40,6 @@ namespace text.doors.Default
         /// </summary>
         public static string F_Factor = System.Configuration.ConfigurationSettings.AppSettings["F_Factor"].ToString();
 
-
-
-        public static PublicEnum.DetectionItem? _TestItem
-        {
-            get
-            {
-                #region
-                PublicEnum.DetectionItem? res = null;
-                switch (base_TestItem)
-                {
-                    case "气密性能检测":
-                        res = PublicEnum.DetectionItem.气密性能检测;
-                        break;
-                    case "水密性能检测":
-                        res = PublicEnum.DetectionItem.水密性能检测;
-                        break;
-                    case "抗风压性能检测":
-                        res = PublicEnum.DetectionItem.抗风压性能检测;
-                        break;
-                    case "气密性能及水密性能检测":
-                        res = PublicEnum.DetectionItem.气密性能及水密性能检测;
-                        break;
-                    case "气密、水密、抗风压性能检测":
-                        res = PublicEnum.DetectionItem.气密水密抗风压性能检测;
-                        break;
-                    case "气密性能及抗风压性能检测":
-                        res = PublicEnum.DetectionItem.气密性能及抗风压性能检测;
-                        break;
-                    case "水密性能及抗风压性能检测":
-                        res = PublicEnum.DetectionItem.水密性能及抗风压性能检测;
-                        break;
-                }
-                #endregion
-                return res;
-            }
-        }
 
         /// <summary>
         /// 气密、水密等级字典
@@ -105,6 +70,7 @@ namespace text.doors.Default
         public static double DisplaceC1 = 0;
         public static double DisplaceC2 = 0;
         public static double DisplaceC3 = 0;
+        public static double Displace10 = 0;
         //差压高
         public static int CY_High_Value = 0;
         //差压低        

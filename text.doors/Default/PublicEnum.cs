@@ -135,10 +135,6 @@ namespace text.doors.Default
             /// </summary>
             FSafety,
             /// <summary>
-            /// 结束
-            /// </summary>
-            /// 
-            /// <summary>
             /// 正pmax
             /// </summary>
             ZPmax,
@@ -172,42 +168,6 @@ namespace text.doors.Default
             位移传感器C2,
             位移传感器C3,
             位移传感器PM
-        }
-
-        /// <summary>
-        /// 检测项
-        /// </summary>
-        public enum DetectionItem
-        {
-            气密水密抗风压性能检测,
-            气密性能检测,
-            水密性能检测,
-            抗风压性能检测,
-            气密性能及水密性能检测,
-            气密性能及抗风压性能检测,
-            水密性能及抗风压性能检测
-        }
-
-        /// <summary>
-        /// 位移
-        /// </summary>
-        public enum DisplaceEnum
-        {
-            位移A1,
-            位移A2,
-            位移A3,
-            位移B1,
-            位移B2,
-            位移B3,
-            位移C1,
-            位移C2,
-            位移C3
-        }
-
-        public enum QM_TestCount
-        {
-            第一次 = 1,
-            第二次 = 2
         }
 
 

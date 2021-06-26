@@ -297,6 +297,23 @@ namespace text.doors.Detection
         #endregion
 
         #region 图表控制
+        private void tim_sm_Tick(object sender, EventArgs e)
+        {
+            if (!_serialPortClient.sp.IsOpen)
+                return;
+
+            var c = 0;
+            if (waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Ready)
+                c = RegisterData.CY_Low_Value;
+            else
+            {
+                c = RegisterData.CY_High_Value;
+            }
+            int value = int.Parse(c.ToString());
+
+            lbldqyl.Text = value.ToString();
+            AnimateSeries(this.tChart_sm, value);
+        }
 
         /// <summary>
         /// 水密
@@ -313,16 +330,23 @@ namespace text.doors.Detection
             this.tChart_sm.Axes.Bottom.SetMinMax(dtnow, DateTime.Now.AddSeconds(20));
         }
 
-        private void tim_PainPic_Tick(object sender, EventArgs e)
-        {
-            if (!_serialPortClient.sp.IsOpen)
-                return;
+        //private void tim_PainPic_Tick(object sender, EventArgs e)
+        //{
+        //    if (!_serialPortClient.sp.IsOpen)
+        //        return;
+            
+        //    var c = 0;
+        //    if (waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Ready)
+        //        c = RegisterData.CY_Low_Value;
+        //    else
+        //    {
+        //        c = RegisterData.CY_Low_Value;
+        //    }
+        //    int value = int.Parse(c.ToString());
 
-            var c = _serialPortClient.GetCY_High();
-            int value = int.Parse(c.ToString());
-
-            AnimateSeries(this.tChart_sm, value);
-        }
+        //    lbldqyl.Text = value.ToString();
+        //    AnimateSeries(this.tChart_sm, value);
+        //}
         #endregion
 
 
@@ -345,7 +369,7 @@ namespace text.doors.Detection
         /// </summary>
         private void Stop()
         {
-            var res = _serialPortClient.Stop();
+            var res = _serialPortClient.SendSingleCoilControl(BFMCommand.急停);
             if (!res)
                 MessageBox.Show("急停异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
@@ -387,7 +411,8 @@ namespace text.doors.Detection
                     return;
                 }
             }
-            var res = _serialPortClient.SendSMXXYJ();
+            //var res = _serialPortClient.SendSMXXYJ();
+            var res = _serialPortClient.SendBtnSingleCoil(BFMCommand.下一级);
             if (!res)
             {
                 MessageBox.Show("设置水密性下一级异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -417,7 +442,8 @@ namespace text.doors.Detection
         #region 水密性能检测按钮事件
         private void btn_ready_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SetSMYB();
+            //var res = _serialPortClient.SetSMYB();
+            var res = _serialPortClient.SendBtnSingleCoil(BFMCommand.水密性预备加压);
             if (!res)
             {
                 MessageBox.Show("水密预备异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
@@ -436,7 +462,8 @@ namespace text.doors.Detection
 
         private void btn_start_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SendSMXKS();
+            var res = _serialPortClient.SendBtnSingleCoil(BFMCommand.水密性开始);
+            // var res = _serialPortClient.SendSMXKS();
             if (!res)
             {
                 MessageBox.Show("水密开始异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
@@ -744,34 +771,7 @@ namespace text.doors.Detection
             this.tChart_sm.Export.ShowExportDialog();
         }
 
-        private void tim_sm_Tick(object sender, EventArgs e)
-        {
-            if (!_serialPortClient.sp.IsOpen)
-                return;
-
-            var value = _serialPortClient.GetCY_High();
-
-            lbldqyl.Text = value.ToString();
-
-            //if (waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Next ||
-            //    waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Start ||
-            //    waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Next ||
-            //    waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.SrartBD)
-            //{
-            //    if (this.rdb_bdjy.Checked == true)
-            //    {
-            //        lbl_max.Visible = true;
-
-            //        var minVal = 0;
-            //        var maxVal = 0;
-
-            //        _serialPortClient.GetCYXS_BODONG(ref IsSeccess, ref minVal, ref maxVal);
-
-            //        lbl_sdyl.Text = minVal.ToString();
-            //        lbl_max.Text = maxVal.ToString();
-            //    }
-            //}
-        }
+       
 
         private void btn_ksbd_Click(object sender, EventArgs e)
         {
@@ -811,7 +811,8 @@ namespace text.doors.Detection
 
         private void btn_tzbd_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.StopBoDong();
+            var res = _serialPortClient.SendSingleCoilControl(BFMCommand.工程检测水密性停止加压);
+            // var res = _serialPortClient.StopBoDong();
             if (!res)
             {
                 MessageBox.Show("停止波动", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
@@ -844,9 +845,7 @@ namespace text.doors.Detection
             //水密预备
             if (waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Ready)
             {
-                int value = _serialPortClient.GetSMYBJS(ref IsSeccess);
-                if (!IsSeccess)
-                    return;
+                int value = _serialPortClient.ReadEndState(BFMCommand.水密预备结束);
                 if (value == 3)
                 {
                     waterTightPropertyTest = PublicEnum.WaterTightPropertyTest.Stop;
@@ -1067,6 +1066,11 @@ namespace text.doors.Detection
         private void btn_next_MouseUp(object sender, MouseEventArgs e)
         {
             btn_next.BackColor = Color.Transparent;
+        }
+
+        private void chart_cms_sm_click_Opening(object sender, CancelEventArgs e)
+        {
+
         }
     }
 }

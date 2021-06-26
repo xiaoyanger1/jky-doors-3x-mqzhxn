@@ -110,7 +110,7 @@ namespace Young.Core.Common
                             bm.Range.Text = dc[item];
                         }
                     }
-                    Logger.Info(bmName);
+                    //Logger.Info(bmName);
                 }
 
                 wDoc.SaveAs(ref saveFile, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing,

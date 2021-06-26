@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using text.doors.Common;
 using text.doors.dal;
+using text.doors.Default;
 using text.doors.Model;
 using text.doors.Model.DataBase;
 using static text.doors.Detection.WindPressureDetection;
@@ -31,7 +32,34 @@ namespace text.doors.Detection
 
         private DAL_dt_pd_Info dal_dt_pd_Info = new DAL_dt_pd_Info();
 
-        public static Thread td;
+        private void CreateTimer()
+        {
+            try
+            {
+                timRead = new System.Threading.Timer(readTimer, null, 800, 0);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        public void readTimer(object state)
+        {
+            try
+            {
+                //RegisterData.Displace10 = _serialPortClient.GetDisplace10();
+                txt_biaojilingdian.Invoke(new Action<string>(t =>
+                {
+                    txt_biaojilingdian.Text = t;
+                }), RegisterData.Displace10.ToString());
+
+                timRead.Change(100, 0);
+            }
+            catch (Exception ex)
+            {
+                timRead.Dispose();
+                timRead = null;
+            }
+        }
 
         public PlaneDeformation(SerialPortClient serialPortClient, string tempCode)
         {
@@ -39,11 +67,7 @@ namespace text.doors.Detection
             this._serialPortClient = serialPortClient;
             this._tempCode = tempCode;
             Init();
-
-            td = new Thread(BindFromInput);
-            td.IsBackground = true;
-            td.Start();
-
+            CreateTimer();
         }
 
         public void Init()
@@ -62,35 +86,6 @@ namespace text.doors.Detection
                 txt_desc.Text = model.test_desc;
                 txt_reslevel.Text = model.test_result;
             }
-        }
-
-        /// <summary>
-        /// 实时绑定数据
-        /// </summary>
-        private void BindFromInput()
-        {
-            SetRealTimeData st1 = new SetRealTimeData(Update_wy10_Text);
-
-            while (true)
-            {
-                try
-                {
-                    if (txt_biaojilingdian.InvokeRequired)
-                        txt_biaojilingdian.Invoke(st1, _serialPortClient.GetDisplace10().ToString());
-                    else
-                        txt_biaojilingdian.Text = _serialPortClient.GetDisplace10().ToString();
-                }
-                catch (Exception ex)
-                {
-                    td.Abort();
-                }
-            }
-        }
-        public delegate void SetRealTimeData(string value);
-
-        private void Update_wy10_Text(string value)
-        {
-            txt_biaojilingdian.Text = value;
         }
 
 
@@ -208,7 +203,7 @@ namespace text.doors.Detection
         {
             if (!_serialPortClient.sp.IsOpen)
                 return;
-            _serialPortClient.SendWYGL_PM();
+            _serialPortClient.SendDisplaceZero(BFMCommand.位移10标零);
         }
 
         private void btn_level1_Click(object sender, EventArgs e)
@@ -349,7 +344,8 @@ namespace text.doors.Detection
 
         private void btn_stop1_Click(object sender, EventArgs e)
         {
-            var res = _serialPortClient.SP_Stop();
+            var res = _serialPortClient.SendSingleCoilControl(BFMCommand.水平停止);
+            //var res = _serialPortClient.SP_Stop();
             if (!res)
             {
                 MessageBox.Show("急停异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -399,9 +395,11 @@ namespace text.doors.Detection
             if (!_serialPortClient.sp.IsOpen)
                 return;
 
-            double c = _serialPortClient.GetDisplace10();
+            double c = RegisterData.Displace10;//_serialPortClient.GetDisplace10();
 
             lbl_dqyl.Text = c.ToString();
+
+            txt_biaojilingdian.Text = c.ToString();
 
             AnimateSeries(this.tChart_pm, (int)c);
         }
@@ -533,6 +531,11 @@ namespace text.doors.Detection
         private void tim_getType_Tick(object sender, EventArgs e)
         {
 
+        }
+
+        private void PlaneDeformation_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timRead.Dispose();
         }
     }
 }

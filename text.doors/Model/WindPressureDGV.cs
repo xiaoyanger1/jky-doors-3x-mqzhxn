@@ -21,19 +21,16 @@ namespace text.doors.Model
         {
             get
             {
-                return Math.Round(this.zwy2 - ((this.zwy1 + this.zwy3) / 2), 2);
-
-                //return (double)Math.Round(decimal.Parse((this.zwy2 - (this.zwy1 + this.zwy3) / 2).ToString()), 2, MidpointRounding.AwayFromZero);
+                return (double)Math.Round((decimal)(this.zwy2 - (this.zwy1 + this.zwy3) / 2), 2, MidpointRounding.AwayFromZero);
             }
         }
         public double zlx
         {
             get
             {
-                return this.zzd == 0 ? 0d : Convert.ToInt32(GanJianChangDu / this.zzd);
+                return this.zzd == 0 ? 0d : Math.Round(GanJianChangDu / this.zzd);
             }
         }
-
 
 
         public double fwy1 { get; set; }
@@ -45,7 +42,8 @@ namespace text.doors.Model
         {
             get
             {
-                return System.Math.Abs(Math.Round(this.fwy2 - (this.fwy1 + this.fwy3) / 2, 2));
+                return (double)Math.Round((decimal)(this.fwy2 - (this.fwy1 + this.fwy3) / 2), 2, MidpointRounding.AwayFromZero);
+                //return System.Math.Abs(Math.Round(this.fwy2 - (this.fwy1 + this.fwy3) / 2, 2));
             }
         }
 

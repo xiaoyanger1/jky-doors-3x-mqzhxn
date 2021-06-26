@@ -201,9 +201,9 @@ namespace text.doors.Model
             if (fs == PublicEnum.Kpa_Level.drop50)
                 FJST_Z_J_50.Add(data);
             if (fs == PublicEnum.Kpa_Level.Z_YCJY)
-                GFZH_Z_YCJY.Add(data);
+                FJST_Z_YCJY.Add(data);
             if (fs == PublicEnum.Kpa_Level.F_YCJY)
-                GFZH_F_YCJY.Add(data);
+                FJST_Z_YCJY.Add(data);
         }
 
         /// <summary>
@@ -224,9 +224,9 @@ namespace text.doors.Model
             if (fs == PublicEnum.Kpa_Level.drop50)
                 FJST_F_J_50.Add(data);
             if (fs == PublicEnum.Kpa_Level.Z_YCJY)
-                GFZH_Z_YCJY.Add(data);
+                FJST_F_YCJY.Add(data);
             if (fs == PublicEnum.Kpa_Level.F_YCJY)
-                GFZH_F_YCJY.Add(data);
+                FJST_F_YCJY.Add(data);
         }
 
 
@@ -252,7 +252,7 @@ namespace text.doors.Model
             if (fs == PublicEnum.Kpa_Level.Z_YCJY)
                 GFZH_Z_YCJY.Add(data);
             if (fs == PublicEnum.Kpa_Level.F_YCJY)
-                GFZH_F_YCJY.Add(data);
+                GFZH_Z_YCJY.Add(data);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace text.doors.Model
             if (fs == PublicEnum.Kpa_Level.drop50)
                 GFZH_F_J_50.Add(data);
             if (fs == PublicEnum.Kpa_Level.Z_YCJY)
-                GFZH_Z_YCJY.Add(data);
+                GFZH_F_YCJY.Add(data);
             if (fs == PublicEnum.Kpa_Level.F_YCJY)
                 GFZH_F_YCJY.Add(data);
         }
@@ -300,9 +300,9 @@ namespace text.doors.Model
             if (fs == PublicEnum.Kpa_Level.drop50)
                 ZDST_Z_J_50.Add(data);
             if (fs == PublicEnum.Kpa_Level.Z_YCJY)
-                GFZH_Z_YCJY.Add(data);
+                ZDST_Z_YCJY.Add(data);
             if (fs == PublicEnum.Kpa_Level.F_YCJY)
-                GFZH_F_YCJY.Add(data);
+                ZDST_F_YCJY.Add(data);
         }
 
         /// <summary>
@@ -325,9 +325,9 @@ namespace text.doors.Model
             if (fs == PublicEnum.Kpa_Level.drop50)
                 ZDST_F_J_50.Add(data);
             if (fs == PublicEnum.Kpa_Level.Z_YCJY)
-                GFZH_Z_YCJY.Add(data);
+                ZDST_F_YCJY.Add(data);
             if (fs == PublicEnum.Kpa_Level.F_YCJY)
-                GFZH_F_YCJY.Add(data);
+                ZDST_F_YCJY.Add(data);
         }
 
 
@@ -488,9 +488,9 @@ namespace text.doors.Model
             WindSpeedInfo model = new WindSpeedInfo();
             model.Pa = "--";
             model.PaType = 3;
-            model.FJST = FJST_Z_YCJY.Count() == 0 ? 0d : Math.Round(FJST_F_J_50.Sum(t => t) / FJST_F_J_50.Count(), 2);
-            model.GFZH = GFZH_Z_YCJY.Count() == 0 ? 0d : Math.Round(GFZH_F_J_50.Sum(t => t) / GFZH_F_J_50.Count(), 2);
-            model.ZDST = ZDST_Z_YCJY.Count() == 0 ? 0d : Math.Round(ZDST_F_J_50.Sum(t => t) / ZDST_F_J_50.Count(), 2);
+            model.FJST = FJST_Z_YCJY.Count() == 0 ? 0d : Math.Round(FJST_Z_YCJY.Sum(t => t) / FJST_Z_YCJY.Count(), 2);
+            model.GFZH = GFZH_Z_YCJY.Count() == 0 ? 0d : Math.Round(GFZH_Z_YCJY.Sum(t => t) / GFZH_Z_YCJY.Count(), 2);
+            model.ZDST = ZDST_Z_YCJY.Count() == 0 ? 0d : Math.Round(ZDST_Z_YCJY.Sum(t => t) / ZDST_Z_YCJY.Count(), 2);
             list.Add(model);
         }
 
@@ -503,9 +503,9 @@ namespace text.doors.Model
             WindSpeedInfo model = new WindSpeedInfo();
             model.Pa = "--";
             model.PaType = 4;
-            model.FJST = FJST_F_YCJY.Count() == 0 ? 0d : Math.Round(FJST_F_J_50.Sum(t => t) / FJST_F_J_50.Count(), 2);
-            model.GFZH = GFZH_F_YCJY.Count() == 0 ? 0d : Math.Round(GFZH_F_J_50.Sum(t => t) / GFZH_F_J_50.Count(), 2);
-            model.ZDST = ZDST_F_YCJY.Count() == 0 ? 0d : Math.Round(ZDST_F_J_50.Sum(t => t) / ZDST_F_J_50.Count(), 2);
+            model.FJST = FJST_F_YCJY.Count() == 0 ? 0d : Math.Round(FJST_F_YCJY.Sum(t => t) / FJST_F_YCJY.Count(), 2);
+            model.GFZH = GFZH_F_YCJY.Count() == 0 ? 0d : Math.Round(GFZH_F_YCJY.Sum(t => t) / GFZH_F_YCJY.Count(), 2);
+            model.ZDST = ZDST_F_YCJY.Count() == 0 ? 0d : Math.Round(ZDST_F_YCJY.Sum(t => t) / ZDST_F_YCJY.Count(), 2);
             list.Add(model);
         }
 

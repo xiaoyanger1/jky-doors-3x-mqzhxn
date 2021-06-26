@@ -11,6 +11,21 @@
     <AssemblyName>建筑幕墙综合性能检测系统</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -114,7 +129,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ExportExcel.cs" />
-    <Compile Include="Common\LAN.cs" />
     <Compile Include="Common\SerialPortClient.cs" />
     <Compile Include="Detection\AirtightDetection.cs">
       <SubType>Form</SubType>
@@ -178,7 +192,6 @@
     <Compile Include="Detection\SystemManager.Designer.cs">
       <DependentUpon>SystemManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\AirtightCalculation.cs" />
     <Compile Include="Model\Calibrating_Dict.cs" />
     <Compile Include="Model\DataBase\Model_dt_kfy_Info.cs" />
     <Compile Include="Model\DataBase\Model_dt_kfy_res_Info.cs" />
@@ -228,7 +241,6 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\DataBase\Model_dt_Info.cs" />
-    <Compile Include="Model\LevelIndex.cs" />
     <Compile Include="Model\DataBase\Model_dt_qm_Info.cs" />
     <Compile Include="Model\DataBase\Model_dt_Settings.cs" />
     <Compile Include="Model\DataBase\Model_dt_sm_Info.cs" />
@@ -336,7 +348,13 @@
     <Content Include="readme\readme.txt" />
     <Content Include="Sql\dt_kfy_Info_sql.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

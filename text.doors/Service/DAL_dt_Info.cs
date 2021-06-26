@@ -65,32 +65,6 @@ namespace text.doors.dal
             }
             return list;
         }
-        ///// <summary>
-        ///// 获取检验记录
-        ///// </summary>
-        ///// <param name="code"></param>
-        ///// <returns></returns>
-        //public List<Model_dt_Info> GetInfoByCode(string code)
-        //{
-        //    List<Model_dt_Info> list = new List<Model.DataBase.Model_dt_Info>();
-        //    var res = SQLiteHelper.ExecuteDataRow("select * from dt_Info where dt_Code='" + code + "'").Table;
-        //    if (res != null)
-        //    {
-
-        //        foreach (DataRow item in res.Rows)
-        //        {
-        //            Model_dt_Info model = new Model_dt_Info();
-        //            model.Airtight = Convert.ToInt32(item["Airtight"].ToString());
-        //            model.dt_Code = item["dt_Code"].ToString();
-        //            model.info_DangH = item["info_DangH"].ToString();
-        //            model.Watertight = Convert.ToInt32(item["Watertight"].ToString());
-        //            model.WindPressure = Convert.ToInt32(item["WindPressure"].ToString());
-        //            list.Add(model);
-        //        }
-        //    }
-        //    return list;
-        //}
-
 
         /// <summary>
         /// 删除当前编号数据
