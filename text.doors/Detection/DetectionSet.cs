@@ -296,12 +296,14 @@ namespace text.doors.Detection
         private void DetectionSet_Load(object sender, EventArgs e)
         {
             //asc.controllInitializeSize(this);
+            //asc.controlAutoSize(this);
+            //this.WindowState = FormWindowState.Maximized;//记录完控件的初始位置和大小后，再最大化
         }
 
         private void DetectionSet_SizeChanged(object sender, EventArgs e)
         {
             //asc.controlAutoSize(this);
-            //this.WindowState = (System.Windows.Forms.FormWindowState)(2);//记录完控件的初始位置和大小后，再最大化
+            //this.WindowState = FormWindowState.Maximized;//记录完控件的初始位置和大小后，再最大化
 
         }
     }

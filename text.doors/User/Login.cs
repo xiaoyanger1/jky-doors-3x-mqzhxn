@@ -5,6 +5,10 @@ using System.Drawing;
 using System.Windows.Forms;
 using Young.Core.SQLite;
 using System.IO;
+using text.doors.Model.DataBase;
+using System.Collections.Generic;
+using System.Drawing.Drawing2D;
+using text.doors.dal;
 
 namespace text.doors
 {
@@ -14,23 +18,13 @@ namespace text.doors
         public Login()
         {
             InitializeComponent();
-
-
-            //var _tempCode = "20210114-4";
-            //string _name = "建筑外窗（门）气密、水密、抗风压性能检测报告" + "_" + _tempCode + ".xls";
-
-            //var saveExcelUrl = "E:\\" + _name;
-
-            //ExportExcel exportExcel = new ExportExcel(_tempCode);
-            //var res = exportExcel.ExportData(saveExcelUrl);
-
             Init();
         }
 
         private string administrator = "administrator";
         private void Init()
         {
-            var file= System.Environment.CurrentDirectory+ "/tempImage";
+            var file = System.Environment.CurrentDirectory + "/tempImage";
             var path = Path.GetFullPath(file);
             if (!Directory.Exists(path))
             {

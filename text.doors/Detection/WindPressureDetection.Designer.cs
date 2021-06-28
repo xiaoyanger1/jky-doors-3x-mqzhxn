@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WindPressureDetection));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.txt_lx_c = new System.Windows.Forms.TextBox();
@@ -217,7 +216,7 @@
             this.txt_lx_c.Name = "txt_lx_c";
             this.txt_lx_c.Size = new System.Drawing.Size(65, 21);
             this.txt_lx_c.TabIndex = 65;
-            this.txt_lx_c.Text = "375";
+            this.txt_lx_c.Text = "150";
             // 
             // label35
             // 
@@ -236,7 +235,7 @@
             this.txt_lx_b.Name = "txt_lx_b";
             this.txt_lx_b.Size = new System.Drawing.Size(65, 21);
             this.txt_lx_b.TabIndex = 63;
-            this.txt_lx_b.Text = "375";
+            this.txt_lx_b.Text = "625";
             // 
             // label2
             // 
@@ -255,7 +254,7 @@
             this.txt_lx_a.Name = "txt_lx_a";
             this.txt_lx_a.Size = new System.Drawing.Size(65, 21);
             this.txt_lx_a.TabIndex = 30;
-            this.txt_lx_a.Text = "375";
+            this.txt_lx_a.Text = "625";
             // 
             // label26
             // 
@@ -876,6 +875,7 @@
             this.txt_desc.Name = "txt_desc";
             this.txt_desc.Size = new System.Drawing.Size(227, 85);
             this.txt_desc.TabIndex = 25;
+            this.txt_desc.Text = "试件正常";
             // 
             // groupBox5
             // 

@@ -446,17 +446,17 @@ namespace text.doors.Common
                     {
                         _StartAddress = BFMCommand.GetCommandDict(commandValue);
                         _MASTER.WriteSingleRegister(_SlaveID, _StartAddress, (ushort)(value));
-
+                        
                         _StartAddress = BFMCommand.GetCommandDict(commandStr);
                         _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, false);
-                        _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, true);
+                        _MASTER.WriteSingleCoil(this._SlaveID, _StartAddress, true);                        
                     }
                 }
                 return true;
             }
             catch (Exception ex)
             {
-
+                Logger.Error(ex);
                 return false;
             }
         }
@@ -469,6 +469,7 @@ namespace text.doors.Common
         {
             try
             {
+                Logger.Info("获取风压计时开始commandStr:" + commandStr);
                 if (sp.IsOpen)
                 {
                     lock (syncLock)

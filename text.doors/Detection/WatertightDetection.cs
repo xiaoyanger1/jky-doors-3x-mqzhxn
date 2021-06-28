@@ -20,8 +20,6 @@ using Young.Core.Common;
 using text.doors.Model.DataBase;
 using text.doors.Default;
 using text.doors.Service;
-using static text.doors.Default.PublicEnum;
-using NPOI.SS.Formula.Functions;
 
 namespace text.doors.Detection
 {
@@ -330,23 +328,6 @@ namespace text.doors.Detection
             this.tChart_sm.Axes.Bottom.SetMinMax(dtnow, DateTime.Now.AddSeconds(20));
         }
 
-        //private void tim_PainPic_Tick(object sender, EventArgs e)
-        //{
-        //    if (!_serialPortClient.sp.IsOpen)
-        //        return;
-            
-        //    var c = 0;
-        //    if (waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Ready)
-        //        c = RegisterData.CY_Low_Value;
-        //    else
-        //    {
-        //        c = RegisterData.CY_Low_Value;
-        //    }
-        //    int value = int.Parse(c.ToString());
-
-        //    lbldqyl.Text = value.ToString();
-        //    AnimateSeries(this.tChart_sm, value);
-        //}
         #endregion
 
 
@@ -411,7 +392,6 @@ namespace text.doors.Detection
                     return;
                 }
             }
-            //var res = _serialPortClient.SendSMXXYJ();
             var res = _serialPortClient.SendBtnSingleCoil(BFMCommand.下一级);
             if (!res)
             {
@@ -442,7 +422,6 @@ namespace text.doors.Detection
         #region 水密性能检测按钮事件
         private void btn_ready_Click(object sender, EventArgs e)
         {
-            //var res = _serialPortClient.SetSMYB();
             var res = _serialPortClient.SendBtnSingleCoil(BFMCommand.水密性预备加压);
             if (!res)
             {
@@ -463,14 +442,12 @@ namespace text.doors.Detection
         private void btn_start_Click(object sender, EventArgs e)
         {
             var res = _serialPortClient.SendBtnSingleCoil(BFMCommand.水密性开始);
-            // var res = _serialPortClient.SendSMXKS();
             if (!res)
             {
                 MessageBox.Show("水密开始异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
             }
             this.btn_start.Enabled = false;
             this.btn_next.Enabled = true;
-            this.tim_upNext.Enabled = true;
             this.btn_ready.Enabled = false;
 
             btn_start.BackColor = Color.Green;
@@ -508,57 +485,11 @@ namespace text.doors.Detection
                 waterTightPropertyTest = PublicEnum.WaterTightPropertyTest.Stop;
                 return;
             }
-            tim_upNext.Enabled = false;
             waterTightPropertyTest = PublicEnum.WaterTightPropertyTest.CycleLoading;
         }
         #endregion
 
-        private void tim_upNext_Tick(object sender, EventArgs e)
-        {
-            if (waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Stop)
-                return;
-
-            if (!_serialPortClient.sp.IsOpen)
-                return;
-
-            string TEMP = "";
-            if (waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Ready)
-                TEMP = "SMYB";
-            if (waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.CycleLoading)
-                TEMP = "SMKS";
-            if (waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Start)
-                TEMP = "SMKS";
-            if (waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Next)
-                TEMP = "XYJ";
-
-            //double yl = _serialPortClient.GetSMYBSDYL(ref IsSeccess, TEMP);
-
-            //if (!IsSeccess)
-            //{
-            //    return;
-            //}
-            //lbl_sdyl.Text = yl.ToString();
-
-
-            //if (waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Next ||
-            // waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Start ||
-            // waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.Next ||
-            // waterTightPropertyTest == PublicEnum.WaterTightPropertyTest.SrartBD)
-            //{
-            //    if (this.rdb_bdjy.Checked == true)
-            //    {
-            //        lbl_max.Visible = true;
-
-            //        var minVal = 0;
-            //        var maxVal = 0;
-
-            //        _serialPortClient.GetCYXS_BODONG(ref IsSeccess, ref minVal, ref maxVal);
-
-            //        lbl_sdyl.Text = minVal.ToString();
-            //        lbl_max.Text = maxVal.ToString();
-            //    }
-            //}
-        }
+      
 
         #region -- 水密选择
 
@@ -798,7 +729,6 @@ namespace text.doors.Detection
             this.btn_start.Enabled = false;
             this.btn_next.Enabled = false;
 
-            tim_upNext.Enabled = false;
 
             btn_ksbd.BackColor = Color.Green;
             btn_tzbd.BackColor = Color.Transparent;
@@ -812,7 +742,6 @@ namespace text.doors.Detection
         private void btn_tzbd_Click(object sender, EventArgs e)
         {
             var res = _serialPortClient.SendSingleCoilControl(BFMCommand.工程检测水密性停止加压);
-            // var res = _serialPortClient.StopBoDong();
             if (!res)
             {
                 MessageBox.Show("停止波动", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning); return;

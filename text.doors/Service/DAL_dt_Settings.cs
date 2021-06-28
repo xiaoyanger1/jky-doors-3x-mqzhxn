@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using text.doors.Model.DataBase;
 using Young.Core.SQLite;
-using System.Runtime.InteropServices.WindowsRuntime;
-using NPOI.SS.Formula.Functions;
 using System.Windows.Forms;
 using text.doors.Detection;
 using text.doors.Service;

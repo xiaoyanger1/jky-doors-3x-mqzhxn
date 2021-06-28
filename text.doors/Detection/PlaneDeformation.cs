@@ -1,4 +1,4 @@
-﻿using NPOI.SS.Formula.Functions;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,7 +32,7 @@ namespace text.doors.Detection
 
         private DAL_dt_pd_Info dal_dt_pd_Info = new DAL_dt_pd_Info();
 
-      
+
         public PlaneDeformation(SerialPortClient serialPortClient, string tempCode)
         {
             InitializeComponent();
@@ -316,7 +316,6 @@ namespace text.doors.Detection
         private void btn_stop1_Click(object sender, EventArgs e)
         {
             var res = _serialPortClient.SendSingleCoilControl(BFMCommand.水平停止);
-            //var res = _serialPortClient.SP_Stop();
             if (!res)
             {
                 MessageBox.Show("急停异常", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -366,7 +365,7 @@ namespace text.doors.Detection
             if (!_serialPortClient.sp.IsOpen)
                 return;
 
-            double c = RegisterData.Displace10;//_serialPortClient.GetDisplace10();
+            double c = RegisterData.Displace10;
 
             lbl_dqyl.Text = c.ToString();
 
@@ -499,14 +498,5 @@ namespace text.doors.Detection
             btn_stop.BackColor = Color.Green;
         }
 
-        private void tim_getType_Tick(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PlaneDeformation_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            timRead.Dispose();
-        }
     }
 }

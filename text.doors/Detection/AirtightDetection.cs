@@ -18,8 +18,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using text.doors.Model.DataBase;
 using text.doors.Default;
-using static text.doors.Default.PublicEnum;
-using NPOI.SS.Formula.Functions;
 
 namespace text.doors.Detection
 {
@@ -1158,7 +1156,6 @@ namespace text.doors.Detection
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.ZReady)
             {
                 int value = _serialPortClient.ReadEndState(BFMCommand.正压预备结束);
-                // int value = _serialPortClient.GetZYYBJS();
                 if (value == 3)
                 {
                     airtightPropertyTest = PublicEnum.AirtightPropertyTest.Stop;
@@ -1167,7 +1164,6 @@ namespace text.doors.Detection
             }
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.ZStart)
             {
-                // double value = _serialPortClient.GetZYKSJS();
                 int value = _serialPortClient.ReadEndState(BFMCommand.正压开始结束);
                 if (value >= 15)
                 {
@@ -1178,7 +1174,6 @@ namespace text.doors.Detection
 
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.FReady)
             {
-                //int value = _serialPortClient.GetFYYBJS();
                 int value = _serialPortClient.ReadEndState(BFMCommand.负压预备结束);
                 if (value == 3)
                 {
@@ -1190,7 +1185,6 @@ namespace text.doors.Detection
             if (airtightPropertyTest == PublicEnum.AirtightPropertyTest.FStart)
             {
                 int value = _serialPortClient.ReadEndState(BFMCommand.负压开始结束);
-                // double value = _serialPortClient.GetFYKSJS();
                 if (value >= 15)
                 {
                     airtightPropertyTest = PublicEnum.AirtightPropertyTest.Stop;

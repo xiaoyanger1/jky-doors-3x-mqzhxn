@@ -13,14 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AForge;
-using AForge.Controls;
-using AForge.Imaging;
-using AForge.Video;
-using AForge.Video.DirectShow;
-using Young.Core.Common;
 using text.doors.Default;
-using text.doors.Model;
 
 namespace text.doors
 {
@@ -547,18 +540,6 @@ namespace text.doors
                 MessageBox.Show("请先检测设定", "检测", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (!DefaultBase.IsSetTong)
-            {
-                MessageBox.Show("请先检测设定", "检测", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            TakePhotos takePhotos = new TakePhotos(_tempCode);
-            takePhotos.Show();
-            takePhotos.TopMost = true;
-        }
-
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
             SystemManager sm = new SystemManager();
@@ -920,11 +901,13 @@ namespace text.doors
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
             //asc.controlAutoSize(this);
-            //this.WindowState = (System.Windows.Forms.FormWindowState)(2);//记录完控件的初始位置和大小后，再最大化
+            //this.WindowState = FormWindowState.Maximized;//记录完控件的初始位置和大小后，再最大化
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //  asc.controllInitializeSize(this);
+            //asc.controllInitializeSize(this);
+            //asc.controlAutoSize(this);
+            //this.WindowState = FormWindowState.Maximized;//记录完控件的初始位置和大小后，再最大化
         }
     }
 }

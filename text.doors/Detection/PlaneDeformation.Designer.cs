@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlaneDeformation));
             this.tc_RealTimeSurveillance = new System.Windows.Forms.TabControl();
             this.page_airtight = new System.Windows.Forms.TabPage();
             this.btn_stop = new System.Windows.Forms.Button();
@@ -62,7 +63,6 @@
             this.txt_reslevel = new System.Windows.Forms.ComboBox();
             this.tim_PainPic = new System.Windows.Forms.Timer(this.components);
             this.tim_WY = new System.Windows.Forms.Timer(this.components);
-            this.tim_getType = new System.Windows.Forms.Timer(this.components);
             this.tc_RealTimeSurveillance.SuspendLayout();
             this.page_airtight.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -475,12 +475,6 @@
             this.tim_WY.Interval = 500;
             this.tim_WY.Tick += new System.EventHandler(this.tim_WY_Tick);
             // 
-            // tim_getType
-            // 
-            this.tim_getType.Enabled = true;
-            this.tim_getType.Interval = 500;
-            this.tim_getType.Tick += new System.EventHandler(this.tim_getType_Tick);
-            // 
             // PlaneDeformation
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -490,7 +484,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PlaneDeformation";
             this.Text = "PlaneDeformation";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlaneDeformation_FormClosing);
             this.tc_RealTimeSurveillance.ResumeLayout(false);
             this.page_airtight.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
@@ -544,6 +537,5 @@
         private System.Windows.Forms.Timer tim_WY;
         private System.Windows.Forms.Button btn_tgstart;
         private System.Windows.Forms.Button btn_stop;
-        private System.Windows.Forms.Timer tim_getType;
     }
 }

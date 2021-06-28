@@ -30,6 +30,9 @@ namespace text.doors.Detection
             InitializeComponent();
             this._tempCode = code;
             cm_Report.SelectedIndex = 0;
+
+
+
         }
 
 
@@ -40,7 +43,6 @@ namespace text.doors.Detection
 
         private void btn_ok_Click(object sender, EventArgs e)
         {
-
             Eexport(cm_Report.SelectedItem.ToString());
         }
 
@@ -88,6 +90,7 @@ namespace text.doors.Detection
                 WordUtility wu = new WordUtility(strFile, saveExcelUrl);
                 if (wu.GenerateWordByBookmarks(dc))
                 {
+                    DrawLine(saveExcelUrl, settings.dt_Code, settings.dt_kfy_Info);
                     lbl_message.Visible = false;
                     this.Hide();
                     MessageBox.Show("导出成功", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.None);
@@ -102,76 +105,6 @@ namespace text.doors.Detection
             }
         }
 
-        #region old
-
-        /// <summary>
-        /// 导入图片到word
-        /// </summary>
-        protected void InsertPtctureToExcel(string file, string tag, string imageName)
-        {
-            object Nothing = System.Reflection.Missing.Value;
-            //创建一个名为wordApp的组件对象
-            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
-
-            //word文档位置
-
-            object filename = file;
-
-            //定义该插入图片是否为外部链接
-            object linkToFile = true;
-
-            //定义插入图片是否随word文档一起保存
-            object saveWithDocument = true;
-
-            //打开word文档
-            Microsoft.Office.Interop.Word.Document doc = wordApp.Documents.Open(ref filename, ref Nothing, ref Nothing, ref Nothing,
-               ref Nothing, ref Nothing, ref Nothing, ref Nothing,
-               ref Nothing, ref Nothing, ref Nothing, ref Nothing,
-               ref Nothing, ref Nothing, ref Nothing, ref Nothing);
-            try
-            {
-                //标签
-                object bookMark = tag;
-                //图片
-                string replacePic = imageName;
-
-                if (doc.Bookmarks.Exists(Convert.ToString(bookMark)) == true)
-                {
-                    //查找书签
-                    doc.Bookmarks.get_Item(ref bookMark).Select();
-                    //设置图片位置
-                    wordApp.Selection.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphLeft;
-
-                    //在书签的位置添加图片
-                    InlineShape inlineShape = wordApp.Selection.InlineShapes.AddPicture(replacePic, ref linkToFile, ref saveWithDocument, ref Nothing);
-                    inlineShape.ConvertToShape().WrapFormat.Type = WdWrapType.wdWrapFront;
-                    //设置图片大小
-                    if (tag == "图片")
-                    {
-                        inlineShape.Width = 500;
-                        inlineShape.Height = 300;
-                    }
-                    else
-                    {
-                        inlineShape.Width = 250;
-                        inlineShape.Height = 215;
-                    }
-                    doc.Save();
-                }
-                else
-                {
-                    doc.Close(ref Nothing, ref Nothing, ref Nothing);
-                }
-            }
-            catch
-            {
-            }
-            finally
-            {
-                //word文档中不存在该书签，关闭文档
-                doc.Close(ref Nothing, ref Nothing, ref Nothing);
-            }
-        }
 
         /// <summary>
         /// 获取门窗检测报告文档
@@ -235,280 +168,280 @@ namespace text.doors.Detection
                 {
                     if (item.level == "A")
                     {
-                        dc.Add("A_Z250A1", item.z_one_250);
-                        dc.Add("A_Z250A2", item.z_two_250);
-                        dc.Add("A_Z250A3", item.z_three_250);
-                        dc.Add("A_Z250ND", item.z_nd_250);
+                        dc.Add("A_Z250A1", item.z_one_250 == "0.00" ? "--" : item.z_one_250);
+                        dc.Add("A_Z250A2", item.z_two_250 == "0.00" ? "--" : item.z_two_250);
+                        dc.Add("A_Z250A3", item.z_three_250 == "0.00" ? "--" : item.z_three_250);
+                        dc.Add("A_Z250ND", item.z_nd_250 == "0.00" ? "--" : item.z_nd_250);
 
-                        dc.Add("A_Z500A1", item.z_one_500);
-                        dc.Add("A_Z500A2", item.z_two_250);
-                        dc.Add("A_Z500A3", item.z_three_250);
-                        dc.Add("A_Z500ND", item.z_nd_500);
+                        dc.Add("A_Z500A1", item.z_one_500 == "0.00" ? "--" : item.z_one_500);
+                        dc.Add("A_Z500A2", item.z_two_500 == "0.00" ? "--" : item.z_two_250);
+                        dc.Add("A_Z500A3", item.z_three_500 == "0.00" ? "--" : item.z_three_250);
+                        dc.Add("A_Z500ND", item.z_nd_500 == "0.00" ? "--" : item.z_nd_500);
 
-                        dc.Add("A_Z750A1", item.z_one_750);
-                        dc.Add("A_Z750A2", item.z_two_750);
-                        dc.Add("A_Z750A3", item.z_three_750);
-                        dc.Add("A_Z750ND", item.z_nd_750);
+                        dc.Add("A_Z750A1", item.z_one_750 == "0.00" ? "--" : item.z_one_750);
+                        dc.Add("A_Z750A2", item.z_two_750 == "0.00" ? "--" : item.z_two_750);
+                        dc.Add("A_Z750A3", item.z_three_750 == "0.00" ? "--" : item.z_three_750);
+                        dc.Add("A_Z750ND", item.z_nd_750 == "0.00" ? "--" : item.z_nd_750);
 
-                        dc.Add("A_Z1000A1", item.z_one_1000);
-                        dc.Add("A_Z1000A2", item.z_two_1000);
-                        dc.Add("A_Z1000A3", item.z_three_1000);
-                        dc.Add("A_Z1000ND", item.z_nd_1000);
+                        dc.Add("A_Z1000A1", item.z_one_1000 == "0.00" ? "--" : item.z_one_1000);
+                        dc.Add("A_Z1000A2", item.z_two_1000 == "0.00" ? "--" : item.z_two_1000);
+                        dc.Add("A_Z1000A3", item.z_three_1000 == "0.00" ? "--" : item.z_three_1000);
+                        dc.Add("A_Z1000ND", item.z_nd_1000 == "0.00" ? "--" : item.z_nd_1000);
 
-                        dc.Add("A_Z1250A1", item.z_one_1250);
-                        dc.Add("A_Z1250A2", item.z_two_1250);
-                        dc.Add("A_Z1250A3", item.z_three_1250);
-                        dc.Add("A_Z1250ND", item.z_nd_1250);
+                        dc.Add("A_Z1250A1", item.z_one_1250 == "0.00" ? "--" : item.z_one_1250);
+                        dc.Add("A_Z1250A2", item.z_two_1250 == "0.00" ? "--" : item.z_two_1250);
+                        dc.Add("A_Z1250A3", item.z_three_1250 == "0.00" ? "--" : item.z_three_1250);
+                        dc.Add("A_Z1250ND", item.z_nd_1250 == "0.00" ? "--" : item.z_nd_1250);
 
-                        dc.Add("A_Z1500A1", item.z_one_1500);
-                        dc.Add("A_Z1500A2", item.z_two_1500);
-                        dc.Add("A_Z1500A3", item.z_three_1500);
-                        dc.Add("A_Z1500ND", item.z_nd_1500);
+                        dc.Add("A_Z1500A1", item.z_one_1500 == "0.00" ? "--" : item.z_one_1500);
+                        dc.Add("A_Z1500A2", item.z_two_1500 == "0.00" ? "--" : item.z_two_1500);
+                        dc.Add("A_Z1500A3", item.z_three_1500 == "0.00" ? "--" : item.z_three_1500);
+                        dc.Add("A_Z1500ND", item.z_nd_1500 == "0.00" ? "--" : item.z_nd_1500);
 
-                        dc.Add("A_Z1750A1", item.z_one_1750);
-                        dc.Add("A_Z1750A2", item.z_two_1750);
-                        dc.Add("A_Z1750A3", item.z_three_1750);
-                        dc.Add("A_Z1750ND", item.z_nd_1750);
+                        dc.Add("A_Z1750A1", item.z_one_1750 == "0.00" ? "--" : item.z_one_1750);
+                        dc.Add("A_Z1750A2", item.z_two_1750 == "0.00" ? "--" : item.z_two_1750);
+                        dc.Add("A_Z1750A3", item.z_three_1750 == "0.00" ? "--" : item.z_three_1750);
+                        dc.Add("A_Z1750ND", item.z_nd_1750 == "0.00" ? "--" : item.z_nd_1750);
 
-                        dc.Add("A_Z2000A1", item.z_one_2000);
-                        dc.Add("A_Z2000A2", item.z_two_2000);
-                        dc.Add("A_Z2000A3", item.z_three_2000);
-                        dc.Add("A_Z2000ND", item.z_nd_2000);
+                        dc.Add("A_Z2000A1", item.z_one_2000 == "0.00" ? "--" : item.z_one_2000);
+                        dc.Add("A_Z2000A2", item.z_two_2000 == "0.00" ? "--" : item.z_two_2000);
+                        dc.Add("A_Z2000A3", item.z_three_2000 == "0.00" ? "--" : item.z_three_2000);
+                        dc.Add("A_Z2000ND", item.z_nd_2000 == "0.00" ? "--" : item.z_nd_2000);
 
-                        dc.Add("A_F250A1", item.f_one_250);
-                        dc.Add("A_F250A2", item.f_two_250);
-                        dc.Add("A_F250A3", item.f_three_250);
-                        dc.Add("A_F250ND", item.f_nd_250);
+                        dc.Add("A_F250A1", item.f_one_250 == "0.00" ? "--" : item.f_one_250);
+                        dc.Add("A_F250A2", item.f_two_250 == "0.00" ? "--" : item.f_two_250);
+                        dc.Add("A_F250A3", item.f_three_250 == "0.00" ? "--" : item.f_three_250);
+                        dc.Add("A_F250ND", item.f_nd_250 == "0.00" ? "--" : item.f_nd_250);
 
-                        dc.Add("A_F500A1", item.f_one_500);
-                        dc.Add("A_F500A2", item.f_two_500);
-                        dc.Add("A_F500A3", item.f_three_500);
-                        dc.Add("A_F500ND", item.f_nd_500);
+                        dc.Add("A_F500A1", item.f_one_500 == "0.00" ? "--" : item.f_one_500);
+                        dc.Add("A_F500A2", item.f_two_500 == "0.00" ? "--" : item.f_two_500);
+                        dc.Add("A_F500A3", item.f_three_500 == "0.00" ? "--" : item.f_three_500);
+                        dc.Add("A_F500ND", item.f_nd_500 == "0.00" ? "--" : item.f_nd_500);
 
-                        dc.Add("A_F750A1", item.f_one_750);
-                        dc.Add("A_F750A2", item.f_two_750);
-                        dc.Add("A_F750A3", item.f_three_750);
-                        dc.Add("A_F750ND", item.f_nd_750);
+                        dc.Add("A_F750A1", item.f_one_750 == "0.00" ? "--" : item.f_one_750);
+                        dc.Add("A_F750A2", item.f_two_750 == "0.00" ? "--" : item.f_two_750);
+                        dc.Add("A_F750A3", item.f_three_750 == "0.00" ? "--" : item.f_three_750);
+                        dc.Add("A_F750ND", item.f_nd_750 == "0.00" ? "--" : item.f_nd_750);
 
-                        dc.Add("A_F1000A1", item.f_one_1000);
-                        dc.Add("A_F1000A2", item.f_two_1000);
-                        dc.Add("A_F1000A3", item.f_three_1000);
-                        dc.Add("A_F1000ND", item.f_nd_1000);
+                        dc.Add("A_F1000A1", item.f_one_1000 == "0.00" ? "--" : item.f_one_1000);
+                        dc.Add("A_F1000A2", item.f_two_1000 == "0.00" ? "--" : item.f_two_1000);
+                        dc.Add("A_F1000A3", item.f_three_1000 == "0.00" ? "--" : item.f_three_1000);
+                        dc.Add("A_F1000ND", item.f_nd_1000 == "0.00" ? "--" : item.f_nd_1000);
 
-                        dc.Add("A_F1250A1", item.f_one_1250);
-                        dc.Add("A_F1250A2", item.f_two_1250);
-                        dc.Add("A_F1250A3", item.f_three_1250);
-                        dc.Add("A_F1250ND", item.f_nd_1250);
+                        dc.Add("A_F1250A1", item.f_one_1250 == "0.00" ? "--" : item.f_one_1250);
+                        dc.Add("A_F1250A2", item.f_two_1250 == "0.00" ? "--" : item.f_two_1250);
+                        dc.Add("A_F1250A3", item.f_three_1250 == "0.00" ? "--" : item.f_three_1250);
+                        dc.Add("A_F1250ND", item.f_nd_1250 == "0.00" ? "--" : item.f_nd_1250);
 
-                        dc.Add("A_F1500A1", item.f_one_1500);
-                        dc.Add("A_F1500A2", item.f_two_1500);
-                        dc.Add("A_F1500A3", item.f_three_1500);
-                        dc.Add("A_F1500ND", item.f_nd_1500);
+                        dc.Add("A_F1500A1", item.f_one_1500 == "0.00" ? "--" : item.f_one_1500);
+                        dc.Add("A_F1500A2", item.f_two_1500 == "0.00" ? "--" : item.f_two_1500);
+                        dc.Add("A_F1500A3", item.f_three_1500 == "0.00" ? "--" : item.f_three_1500);
+                        dc.Add("A_F1500ND", item.f_nd_1500 == "0.00" ? "--" : item.f_nd_1500);
 
-                        dc.Add("A_F1750A1", item.f_one_1750);
-                        dc.Add("A_F1750A2", item.f_two_1750);
-                        dc.Add("A_F1750A3", item.f_three_1750);
-                        dc.Add("A_F1750ND", item.f_nd_1750);
+                        dc.Add("A_F1750A1", item.f_one_1750 == "0.00" ? "--" : item.f_one_1750);
+                        dc.Add("A_F1750A2", item.f_two_1750 == "0.00" ? "--" : item.f_two_1750);
+                        dc.Add("A_F1750A3", item.f_three_1750 == "0.00" ? "--" : item.f_three_1750);
+                        dc.Add("A_F1750ND", item.f_nd_1750 == "0.00" ? "--" : item.f_nd_1750);
 
-                        dc.Add("A_F2000A1", item.f_one_2000);
-                        dc.Add("A_F2000A2", item.f_two_2000);
-                        dc.Add("A_F2000A3", item.f_three_2000);
-                        dc.Add("A_F2000ND", item.f_nd_2000);
+                        dc.Add("A_F2000A1", item.f_one_2000 == "0.00" ? "--" : item.f_one_2000);
+                        dc.Add("A_F2000A2", item.f_two_2000 == "0.00" ? "--" : item.f_two_2000);
+                        dc.Add("A_F2000A3", item.f_three_2000 == "0.00" ? "--" : item.f_three_2000);
+                        dc.Add("A_F2000ND", item.f_nd_2000 == "0.00" ? "--" : item.f_nd_2000);
 
-                        dc.Add("Ap3A1", item.z_one_p3);
-                        dc.Add("Ap3A2", item.z_two_p3);
-                        dc.Add("Ap3A3", item.z_three_p3);
-                        dc.Add("Ap3ND", item.z_nd_p3);
+                        dc.Add("Ap3A1", item.z_one_p3 == "0.00" ? "--" : item.z_one_p3);
+                        dc.Add("Ap3A2", item.z_two_p3 == "0.00" ? "--" : item.z_two_p3);
+                        dc.Add("Ap3A3", item.z_three_p3 == "0.00" ? "--" : item.z_three_p3);
+                        dc.Add("Ap3ND", item.z_nd_p3 == "0.00" ? "--" : item.z_nd_p3);
 
-                        dc.Add("A_p3A1", item.f_one_p3);
-                        dc.Add("A_p3A2", item.f_two_p3);
-                        dc.Add("A_p3A3", item.f_three_p3);
-                        dc.Add("A_p3ND", item.f_nd_p3);
+                        dc.Add("A_p3A1", item.f_one_p3 == "0.00" ? "--" : item.f_one_p3);
+                        dc.Add("A_p3A2", item.f_two_p3 == "0.00" ? "--" : item.f_two_p3);
+                        dc.Add("A_p3A3", item.f_three_p3 == "0.00" ? "--" : item.f_three_p3);
+                        dc.Add("A_p3ND", item.f_nd_p3 == "0.00" ? "--" : item.f_nd_p3);
                     }
                     else if (item.level == "B")
                     {
-                        dc.Add("B_Z250B1", item.z_one_250);
-                        dc.Add("B_Z250B2", item.z_two_250);
-                        dc.Add("B_Z250B3", item.z_three_250);
-                        dc.Add("B_Z250ND", item.z_nd_250);
+                        dc.Add("B_Z250B1", item.z_one_250 == "0.00" ? "--" : item.z_one_250);
+                        dc.Add("B_Z250B2", item.z_two_250 == "0.00" ? "--" : item.z_two_250);
+                        dc.Add("B_Z250B3", item.z_three_250 == "0.00" ? "--" : item.z_three_250);
+                        dc.Add("B_Z250ND", item.z_nd_250 == "0.00" ? "--" : item.z_nd_250);
 
-                        dc.Add("B_Z500B1", item.z_one_500);
-                        dc.Add("B_Z500B2", item.z_two_250);
-                        dc.Add("B_Z500B3", item.z_three_250);
-                        dc.Add("B_Z500ND", item.z_nd_500);
+                        dc.Add("B_Z500B1", item.z_one_500 == "0.00" ? "--" : item.z_one_500);
+                        dc.Add("B_Z500B2", item.z_two_500 == "0.00" ? "--" : item.z_two_250);
+                        dc.Add("B_Z500B3", item.z_three_500 == "0.00" ? "--" : item.z_three_250);
+                        dc.Add("B_Z500ND", item.z_nd_500 == "0.00" ? "--" : item.z_nd_500);
 
-                        dc.Add("B_Z750B1", item.z_one_750);
-                        dc.Add("B_Z750B2", item.z_two_750);
-                        dc.Add("B_Z750B3", item.z_three_750);
-                        dc.Add("B_Z750ND", item.z_nd_750);
+                        dc.Add("B_Z750B1", item.z_one_750 == "0.00" ? "--" : item.z_one_750);
+                        dc.Add("B_Z750B2", item.z_two_750 == "0.00" ? "--" : item.z_two_750);
+                        dc.Add("B_Z750B3", item.z_three_750 == "0.00" ? "--" : item.z_three_750);
+                        dc.Add("B_Z750ND", item.z_nd_750 == "0.00" ? "--" : item.z_nd_750);
 
-                        dc.Add("B_Z1000B1", item.z_one_1000);
-                        dc.Add("B_Z1000B2", item.z_two_1000);
-                        dc.Add("B_Z1000B3", item.z_three_1000);
-                        dc.Add("B_Z1000ND", item.z_nd_1000);
+                        dc.Add("B_Z1000B1", item.z_one_1000 == "0.00" ? "--" : item.z_one_1000);
+                        dc.Add("B_Z1000B2", item.z_two_1000 == "0.00" ? "--" : item.z_two_1000);
+                        dc.Add("B_Z1000B3", item.z_three_1000 == "0.00" ? "--" : item.z_three_1000);
+                        dc.Add("B_Z1000ND", item.z_nd_1000 == "0.00" ? "--" : item.z_nd_1000);
 
-                        dc.Add("B_Z1250B1", item.z_one_1250);
-                        dc.Add("B_Z1250B2", item.z_two_1250);
-                        dc.Add("B_Z1250B3", item.z_three_1250);
-                        dc.Add("B_Z1250ND", item.z_nd_1250);
+                        dc.Add("B_Z1250B1", item.z_one_1250 == "0.00" ? "--" : item.z_one_1250);
+                        dc.Add("B_Z1250B2", item.z_two_1250 == "0.00" ? "--" : item.z_two_1250);
+                        dc.Add("B_Z1250B3", item.z_three_1250 == "0.00" ? "--" : item.z_three_1250);
+                        dc.Add("B_Z1250ND", item.z_nd_1250 == "0.00" ? "--" : item.z_nd_1250);
 
-                        dc.Add("B_Z1500B1", item.z_one_1500);
-                        dc.Add("B_Z1500B2", item.z_two_1500);
-                        dc.Add("B_Z1500B3", item.z_three_1500);
-                        dc.Add("B_Z1500ND", item.z_nd_1500);
+                        dc.Add("B_Z1500B1", item.z_one_1500 == "0.00" ? "--" : item.z_one_1500);
+                        dc.Add("B_Z1500B2", item.z_two_1500 == "0.00" ? "--" : item.z_two_1500);
+                        dc.Add("B_Z1500B3", item.z_three_1500 == "0.00" ? "--" : item.z_three_1500);
+                        dc.Add("B_Z1500ND", item.z_nd_1500 == "0.00" ? "--" : item.z_nd_1500);
 
-                        dc.Add("B_Z1750B1", item.z_one_1750);
-                        dc.Add("B_Z1750B2", item.z_two_1750);
-                        dc.Add("B_Z1750B3", item.z_three_1750);
-                        dc.Add("B_Z1750BND", item.z_nd_1750);
+                        dc.Add("B_Z1750B1", item.z_one_1750 == "0.00" ? "--" : item.z_one_1750);
+                        dc.Add("B_Z1750B2", item.z_two_1750 == "0.00" ? "--" : item.z_two_1750);
+                        dc.Add("B_Z1750B3", item.z_three_1750 == "0.00" ? "--" : item.z_three_1750);
+                        dc.Add("B_Z1750BND", item.z_nd_1750 == "0.00" ? "--" : item.z_nd_1750);
 
-                        dc.Add("B_Z2000B1", item.z_one_2000);
-                        dc.Add("B_Z2000B2", item.z_two_2000);
-                        dc.Add("B_Z2000B3", item.z_three_2000);
-                        dc.Add("B_Z2000ND", item.z_nd_2000);
+                        dc.Add("B_Z2000B1", item.z_one_2000 == "0.00" ? "--" : item.z_one_2000);
+                        dc.Add("B_Z2000B2", item.z_two_2000 == "0.00" ? "--" : item.z_two_2000);
+                        dc.Add("B_Z2000B3", item.z_three_2000 == "0.00" ? "--" : item.z_three_2000);
+                        dc.Add("B_Z2000ND", item.z_nd_2000 == "0.00" ? "--" : item.z_nd_2000);
 
-                        dc.Add("B_F250B1", item.f_one_250);
-                        dc.Add("B_F250B2", item.f_two_250);
-                        dc.Add("B_F250B3", item.f_three_250);
-                        dc.Add("B_F250ND", item.f_nd_250);
+                        dc.Add("B_F250B1", item.f_one_250 == "0.00" ? "--" : item.f_one_250);
+                        dc.Add("B_F250B2", item.f_two_250 == "0.00" ? "--" : item.f_two_250);
+                        dc.Add("B_F250B3", item.f_three_250 == "0.00" ? "--" : item.f_three_250);
+                        dc.Add("B_F250ND", item.f_nd_250 == "0.00" ? "--" : item.f_nd_250);
 
-                        dc.Add("B_F500B1", item.f_one_500);
-                        dc.Add("B_F500B2", item.f_two_500);
-                        dc.Add("B_F500B3", item.f_three_500);
-                        dc.Add("B_F500ND", item.f_nd_500);
+                        dc.Add("B_F500B1", item.f_one_500 == "0.00" ? "--" : item.f_one_500);
+                        dc.Add("B_F500B2", item.f_two_500 == "0.00" ? "--" : item.f_two_500);
+                        dc.Add("B_F500B3", item.f_three_500 == "0.00" ? "--" : item.f_three_500);
+                        dc.Add("B_F500ND", item.f_nd_500 == "0.00" ? "--" : item.f_nd_500);
 
-                        dc.Add("B_F750B1", item.f_one_750);
-                        dc.Add("B_F750B2", item.f_two_750);
-                        dc.Add("B_F750B3", item.f_three_750);
-                        dc.Add("B_F750ND", item.f_nd_750);
+                        dc.Add("B_F750B1", item.f_one_750 == "0.00" ? "--" : item.f_one_750);
+                        dc.Add("B_F750B2", item.f_two_750 == "0.00" ? "--" : item.f_two_750);
+                        dc.Add("B_F750B3", item.f_three_750 == "0.00" ? "--" : item.f_three_750);
+                        dc.Add("B_F750ND", item.f_nd_750 == "0.00" ? "--" : item.f_nd_750);
 
-                        dc.Add("B_F1000B1", item.f_one_1000);
-                        dc.Add("B_F1000B2", item.f_two_1000);
-                        dc.Add("B_F1000B3", item.f_three_1000);
-                        dc.Add("B_F1000ND", item.f_nd_1000);
+                        dc.Add("B_F1000B1", item.f_one_1000 == "0.00" ? "--" : item.f_one_1000);
+                        dc.Add("B_F1000B2", item.f_two_1000 == "0.00" ? "--" : item.f_two_1000);
+                        dc.Add("B_F1000B3", item.f_three_1000 == "0.00" ? "--" : item.f_three_1000);
+                        dc.Add("B_F1000ND", item.f_nd_1000 == "0.00" ? "--" : item.f_nd_1000);
 
-                        dc.Add("B_F1250B1", item.f_one_1250);
-                        dc.Add("B_F1250B2", item.f_two_1250);
-                        dc.Add("B_F1250B3", item.f_three_1250);
-                        dc.Add("B_F1250ND", item.f_nd_1250);
+                        dc.Add("B_F1250B1", item.f_one_1250 == "0.00" ? "--" : item.f_one_1250);
+                        dc.Add("B_F1250B2", item.f_two_1250 == "0.00" ? "--" : item.f_two_1250);
+                        dc.Add("B_F1250B3", item.f_three_1250 == "0.00" ? "--" : item.f_three_1250);
+                        dc.Add("B_F1250ND", item.f_nd_1250 == "0.00" ? "--" : item.f_nd_1250);
 
-                        dc.Add("B_F1500B1", item.f_one_1500);
-                        dc.Add("B_F1500B2", item.f_two_1500);
-                        dc.Add("B_F1500B3", item.f_three_1500);
-                        dc.Add("B_F1500ND", item.f_nd_1500);
+                        dc.Add("B_F1500B1", item.f_one_1500 == "0.00" ? "--" : item.f_one_1500);
+                        dc.Add("B_F1500B2", item.f_two_1500 == "0.00" ? "--" : item.f_two_1500);
+                        dc.Add("B_F1500B3", item.f_three_1500 == "0.00" ? "--" : item.f_three_1500);
+                        dc.Add("B_F1500ND", item.f_nd_1500 == "0.00" ? "--" : item.f_nd_1500);
 
-                        dc.Add("B_F1750B1", item.f_one_1750);
-                        dc.Add("B_F1750B2", item.f_two_1750);
-                        dc.Add("B_F1750B3", item.f_three_1750);
-                        dc.Add("B_F1750ND", item.f_nd_1750);
+                        dc.Add("B_F1750B1", item.f_one_1750 == "0.00" ? "--" : item.f_one_1750);
+                        dc.Add("B_F1750B2", item.f_two_1750 == "0.00" ? "--" : item.f_two_1750);
+                        dc.Add("B_F1750B3", item.f_three_1750 == "0.00" ? "--" : item.f_three_1750);
+                        dc.Add("B_F1750ND", item.f_nd_1750 == "0.00" ? "--" : item.f_nd_1750);
 
-                        dc.Add("B_F2000B1", item.f_one_2000);
-                        dc.Add("B_F2000B2", item.f_two_2000);
-                        dc.Add("B_F2000B3", item.f_three_2000);
-                        dc.Add("B_F2000ND", item.f_nd_2000);
+                        dc.Add("B_F2000B1", item.f_one_2000 == "0.00" ? "--" : item.f_one_2000);
+                        dc.Add("B_F2000B2", item.f_two_2000 == "0.00" ? "--" : item.f_two_2000);
+                        dc.Add("B_F2000B3", item.f_three_2000 == "0.00" ? "--" : item.f_three_2000);
+                        dc.Add("B_F2000ND", item.f_nd_2000 == "0.00" ? "--" : item.f_nd_2000);
 
-                        dc.Add("Bp3B1", item.z_one_p3);
-                        dc.Add("Bp3B2", item.z_two_p3);
-                        dc.Add("Bp3B3", item.z_three_p3);
-                        dc.Add("Bp3ND", item.z_nd_p3);
+                        dc.Add("Bp3B1", item.z_one_p3 == "0.00" ? "--" : item.z_one_p3);
+                        dc.Add("Bp3B2", item.z_two_p3 == "0.00" ? "--" : item.z_two_p3);
+                        dc.Add("Bp3B3", item.z_three_p3 == "0.00" ? "--" : item.z_three_p3);
+                        dc.Add("Bp3ND", item.z_nd_p3 == "0.00" ? "--" : item.z_nd_p3);
 
-                        dc.Add("B_p3B1", item.f_one_p3);
-                        dc.Add("B_p3B2", item.f_two_p3);
-                        dc.Add("B_p3B3", item.f_three_p3);
-                        dc.Add("B_p3ND", item.f_nd_p3);
+                        dc.Add("B_p3B1", item.f_one_p3 == "0.00" ? "--" : item.f_one_p3);
+                        dc.Add("B_p3B2", item.f_two_p3 == "0.00" ? "--" : item.f_two_p3);
+                        dc.Add("B_p3B3", item.f_three_p3 == "0.00" ? "--" : item.f_three_p3);
+                        dc.Add("B_p3ND", item.f_nd_p3 == "0.00" ? "--" : item.f_nd_p3);
 
                     }
                     else if (item.level == "C")
                     {
-                        dc.Add("C_F250B1", item.f_one_250);
-                        dc.Add("C_F250B2", item.f_two_250);
-                        dc.Add("C_F250B3", item.f_three_250);
-                        dc.Add("C_F250ND", item.f_nd_250);
+                        dc.Add("C_F250B1", item.f_one_250 == "0.00" ? "--" : item.f_one_250);
+                        dc.Add("C_F250B2", item.f_two_250 == "0.00" ? "--" : item.f_two_250);
+                        dc.Add("C_F250B3", item.f_three_250 == "0.00" ? "--" : item.f_three_250);
+                        dc.Add("C_F250ND", item.f_nd_250 == "0.00" ? "--" : item.f_nd_250);
 
-                        dc.Add("C_F500B1", item.f_one_500);
-                        dc.Add("C_F500B2", item.f_two_250);
-                        dc.Add("C_F500B3", item.f_three_250);
-                        dc.Add("C_F500ND", item.f_nd_500);
+                        dc.Add("C_F500B1", item.f_one_500 == "0.00" ? "--" : item.f_one_500);
+                        dc.Add("C_F500B2", item.f_two_500 == "0.00" ? "--" : item.f_two_500);
+                        dc.Add("C_F500B3", item.f_three_500 == "0.00" ? "--" : item.f_three_500);
+                        dc.Add("C_F500ND", item.f_nd_500 == "0.00" ? "--" : item.f_nd_500);
 
-                        dc.Add("C_F750B1", item.f_one_750);
-                        dc.Add("C_F750B2", item.f_two_750);
-                        dc.Add("C_F750B3", item.f_three_750);
-                        dc.Add("C_F750ND", item.f_nd_750);
+                        dc.Add("C_F750B1", item.f_one_750 == "0.00" ? "--" : item.f_one_750);
+                        dc.Add("C_F750B2", item.f_two_750 == "0.00" ? "--" : item.f_two_750);
+                        dc.Add("C_F750B3", item.f_three_750 == "0.00" ? "--" : item.f_three_750);
+                        dc.Add("C_F750ND", item.f_nd_750 == "0.00" ? "--" : item.f_nd_750);
 
-                        dc.Add("C_F1000B1", item.f_one_1000);
-                        dc.Add("C_F1000B2", item.f_two_1000);
-                        dc.Add("C_F1000B3", item.f_three_1000);
-                        dc.Add("C_F1000ND", item.f_nd_1000);
+                        dc.Add("C_F1000B1", item.f_one_1000 == "0.00" ? "--" : item.f_one_1000);
+                        dc.Add("C_F1000B2", item.f_two_1000 == "0.00" ? "--" : item.f_two_1000);
+                        dc.Add("C_F1000B3", item.f_three_1000 == "0.00" ? "--" : item.f_three_1000);
+                        dc.Add("C_F1000ND", item.f_nd_1000 == "0.00" ? "--" : item.f_nd_1000);
 
-                        dc.Add("C_F1250B1", item.f_one_1250);
-                        dc.Add("C_F1250B2", item.f_two_1250);
-                        dc.Add("C_F1250B3", item.f_three_1250);
-                        dc.Add("C_F1250ND", item.f_nd_1250);
+                        dc.Add("C_F1250B1", item.f_one_1250 == "0.00" ? "--" : item.f_one_1250);
+                        dc.Add("C_F1250B2", item.f_two_1250 == "0.00" ? "--" : item.f_two_1250);
+                        dc.Add("C_F1250B3", item.f_three_1250 == "0.00" ? "--" : item.f_three_1250);
+                        dc.Add("C_F1250ND", item.f_nd_1250 == "0.00" ? "--" : item.f_nd_1250);
 
-                        dc.Add("C_F1500B1", item.f_one_1500);
-                        dc.Add("C_F1500B2", item.f_two_1500);
-                        dc.Add("C_F1500B3", item.f_three_1500);
-                        dc.Add("C_F1500ND", item.f_nd_1500);
+                        dc.Add("C_F1500B1", item.f_one_1500 == "0.00" ? "--" : item.f_one_1500);
+                        dc.Add("C_F1500B2", item.f_two_1500 == "0.00" ? "--" : item.f_two_1500);
+                        dc.Add("C_F1500B3", item.f_three_1500 == "0.00" ? "--" : item.f_three_1500);
+                        dc.Add("C_F1500ND", item.f_nd_1500 == "0.00" ? "--" : item.f_nd_1500);
 
-                        dc.Add("C_F1750B1", item.f_one_1750);
-                        dc.Add("C_F1750B2", item.f_two_1750);
-                        dc.Add("C_F1750B3", item.f_three_1750);
-                        dc.Add("C_F1750ND", item.f_nd_1750);
+                        dc.Add("C_F1750B1", item.f_one_1750 == "0.00" ? "--" : item.f_one_1750);
+                        dc.Add("C_F1750B2", item.f_two_1750 == "0.00" ? "--" : item.f_two_1750);
+                        dc.Add("C_F1750B3", item.f_three_1750 == "0.00" ? "--" : item.f_three_1750);
+                        dc.Add("C_F1750ND", item.f_nd_1750 == "0.00" ? "--" : item.f_nd_1750);
 
-                        dc.Add("C_F2000B1", item.f_one_2000);
-                        dc.Add("C_F2000B2", item.f_two_2000);
-                        dc.Add("C_F2000B3", item.f_three_2000);
-                        dc.Add("C_F2000ND", item.f_nd_2000);
+                        dc.Add("C_F2000B1", item.f_one_2000 == "0.00" ? "--" : item.f_one_2000);
+                        dc.Add("C_F2000B2", item.f_two_2000 == "0.00" ? "--" : item.f_two_2000);
+                        dc.Add("C_F2000B3", item.f_three_2000 == "0.00" ? "--" : item.f_three_2000);
+                        dc.Add("C_F2000ND", item.f_nd_2000 == "0.00" ? "--" : item.f_nd_2000);
 
-                        dc.Add("C_Z250C1", item.z_one_250);
-                        dc.Add("C_Z250C2", item.z_two_250);
-                        dc.Add("C_Z250C3", item.z_three_250);
-                        dc.Add("C_Z250ND", item.z_nd_250);
+                        dc.Add("C_Z250C1", item.z_one_250 == "0.00" ? "--" : item.z_one_250);
+                        dc.Add("C_Z250C2", item.z_two_250 == "0.00" ? "--" : item.z_two_250);
+                        dc.Add("C_Z250C3", item.z_three_250 == "0.00" ? "--" : item.z_three_250);
+                        dc.Add("C_Z250ND", item.z_nd_250 == "0.00" ? "--" : item.z_nd_250);
 
-                        dc.Add("C_Z500C1", item.z_one_500);
-                        dc.Add("C_Z500C2", item.z_two_500);
-                        dc.Add("C_Z500C3", item.z_three_500);
-                        dc.Add("C_Z500ND", item.z_nd_500);
+                        dc.Add("C_Z500C1", item.z_one_500 == "0.00" ? "--" : item.z_one_500);
+                        dc.Add("C_Z500C2", item.z_two_500 == "0.00" ? "--" : item.z_two_500);
+                        dc.Add("C_Z500C3", item.z_three_500 == "0.00" ? "--" : item.z_three_500);
+                        dc.Add("C_Z500ND", item.z_nd_500 == "0.00" ? "--" : item.z_nd_500);
 
-                        dc.Add("C_Z750C1", item.z_one_750);
-                        dc.Add("C_Z750C2", item.z_two_750);
-                        dc.Add("C_Z750C3", item.z_three_750);
-                        dc.Add("C_Z750ND", item.z_nd_750);
+                        dc.Add("C_Z750C1", item.z_one_750 == "0.00" ? "--" : item.z_one_750);
+                        dc.Add("C_Z750C2", item.z_two_750 == "0.00" ? "--" : item.z_two_750);
+                        dc.Add("C_Z750C3", item.z_three_750 == "0.00" ? "--" : item.z_three_750);
+                        dc.Add("C_Z750ND", item.z_nd_750 == "0.00" ? "--" : item.z_nd_750);
 
-                        dc.Add("C_Z1000C1", item.z_one_1000);
-                        dc.Add("C_Z1000C2", item.z_two_1000);
-                        dc.Add("C_Z1000C3", item.z_three_1000);
-                        dc.Add("C_Z1000ND", item.z_nd_1000);
+                        dc.Add("C_Z1000C1", item.z_one_1000 == "0.00" ? "--" : item.z_one_1000);
+                        dc.Add("C_Z1000C2", item.z_two_1000 == "0.00" ? "--" : item.z_two_1000);
+                        dc.Add("C_Z1000C3", item.z_three_1000 == "0.00" ? "--" : item.z_three_1000);
+                        dc.Add("C_Z1000ND", item.z_nd_1000 == "0.00" ? "--" : item.z_nd_1000);
 
-                        dc.Add("C_Z1250C1", item.z_one_1250);
-                        dc.Add("C_Z1250C2", item.z_two_1250);
-                        dc.Add("C_Z1250C3", item.z_three_1250);
-                        dc.Add("C_Z1250ND", item.z_nd_1250);
+                        dc.Add("C_Z1250C1", item.z_one_1250 == "0.00" ? "--" : item.z_one_1250);
+                        dc.Add("C_Z1250C2", item.z_two_1250 == "0.00" ? "--" : item.z_two_1250);
+                        dc.Add("C_Z1250C3", item.z_three_1250 == "0.00" ? "--" : item.z_three_1250);
+                        dc.Add("C_Z1250ND", item.z_nd_1250 == "0.00" ? "--" : item.z_nd_1250);
 
-                        dc.Add("C_Z1500C1", item.z_one_1500);
-                        dc.Add("C_Z1500C2", item.z_two_1500);
-                        dc.Add("C_Z1500C3", item.z_three_1500);
-                        dc.Add("C_Z1500ND", item.z_nd_1500);
+                        dc.Add("C_Z1500C1", item.z_one_1500 == "0.00" ? "--" : item.z_one_1500);
+                        dc.Add("C_Z1500C2", item.z_two_1500 == "0.00" ? "--" : item.z_two_1500);
+                        dc.Add("C_Z1500C3", item.z_three_1500 == "0.00" ? "--" : item.z_three_1500);
+                        dc.Add("C_Z1500ND", item.z_nd_1500 == "0.00" ? "--" : item.z_nd_1500);
 
-                        dc.Add("C_Z1750C1", item.z_one_1750);
-                        dc.Add("C_Z1750C2", item.z_two_1750);
-                        dc.Add("C_Z1750C3", item.z_three_1750);
-                        dc.Add("C_Z1750ND", item.z_nd_1750);
+                        dc.Add("C_Z1750C1", item.z_one_1750 == "0.00" ? "--" : item.z_one_1750);
+                        dc.Add("C_Z1750C2", item.z_two_1750 == "0.00" ? "--" : item.z_two_1750);
+                        dc.Add("C_Z1750C3", item.z_three_1750 == "0.00" ? "--" : item.z_three_1750);
+                        dc.Add("C_Z1750ND", item.z_nd_1750 == "0.00" ? "--" : item.z_nd_1750);
 
-                        dc.Add("C_Z2000C1", item.z_one_2000);
-                        dc.Add("C_Z2000C2", item.z_two_2000);
-                        dc.Add("C_Z2000C3", item.z_three_2000);
-                        dc.Add("C_Z2000ND", item.z_nd_2000);
+                        dc.Add("C_Z2000C1", item.z_one_2000 == "0.00" ? "--" : item.z_one_2000);
+                        dc.Add("C_Z2000C2", item.z_two_2000 == "0.00" ? "--" : item.z_two_2000);
+                        dc.Add("C_Z2000C3", item.z_three_2000 == "0.00" ? "--" : item.z_three_2000);
+                        dc.Add("C_Z2000ND", item.z_nd_2000 == "0.00" ? "--" : item.z_nd_2000);
 
-                        dc.Add("Cp3C1", item.z_one_p3);
-                        dc.Add("Cp3C2", item.z_two_p3);
-                        dc.Add("Cp3C3", item.z_three_p3);
-                        dc.Add("Cp3ND", item.z_nd_p3);
+                        dc.Add("Cp3C1", item.z_one_p3 == "0.00" ? "--" : item.z_one_p3);
+                        dc.Add("Cp3C2", item.z_two_p3 == "0.00" ? "--" : item.z_two_p3);
+                        dc.Add("Cp3C3", item.z_three_p3 == "0.00" ? "--" : item.z_three_p3);
+                        dc.Add("Cp3ND", item.z_nd_p3 == "0.00" ? "--" : item.z_nd_p3);
 
-                        dc.Add("C_p3C1", item.f_one_p3);
-                        dc.Add("C_p3C2", item.f_two_p3);
-                        dc.Add("C_p3C3", item.f_three_p3);
-                        dc.Add("C_p3ND", item.f_nd_p3);
+                        dc.Add("C_p3C1", item.f_one_p3 == "0.00" ? "--" : item.f_one_p3);
+                        dc.Add("C_p3C2", item.f_two_p3 == "0.00" ? "--" : item.f_two_p3);
+                        dc.Add("C_p3C3", item.f_three_p3 == "0.00" ? "--" : item.f_three_p3);
+                        dc.Add("C_p3ND", item.f_nd_p3 == "0.00" ? "--" : item.f_nd_p3);
                     }
                 }
             }
@@ -681,83 +614,83 @@ namespace text.doors.Detection
 
                         if (i == 0)
                         {
-                            dc.Add("S50FJ", qmOne.FJST);
-                            dc.Add("S50GF", qmOne.GFZH);
-                            dc.Add("S50ZD", qmOne.ZDST);
-                            dc.Add("S50ZT", qmOne.MQZT);
-                            dc.Add("S50KK", qmOne.KKST);
+                            dc.Add("S50FJ", qmOne.FJST == "0.00" ? "--" : qmOne.FJST);
+                            dc.Add("S50GF", qmOne.GFZH == "0.00" ? "--" : qmOne.GFZH);
+                            dc.Add("S50ZD", qmOne.ZDST == "0.00" ? "--" : qmOne.ZDST);
+                            dc.Add("S50ZT", qmOne.MQZT == "0.00" ? "--" : qmOne.MQZT);
+                            dc.Add("S50KK", qmOne.KKST == "0.00" ? "--" : qmOne.KKST);
                         }
                         if (i == 1)
                         {
-                            dc.Add("S100FJ", qmOne.FJST);
-                            dc.Add("S100GF", qmOne.GFZH);
-                            dc.Add("S100ZD", qmOne.ZDST);
-                            dc.Add("S100ZT", qmOne.MQZT);
-                            dc.Add("S100KK", qmOne.KKST);
+                            dc.Add("S100FJ", qmOne.FJST == "0.00" ? "--" : qmOne.FJST);
+                            dc.Add("S100GF", qmOne.GFZH == "0.00" ? "--" : qmOne.GFZH);
+                            dc.Add("S100ZD", qmOne.ZDST == "0.00" ? "--" : qmOne.ZDST);
+                            dc.Add("S100ZT", qmOne.MQZT == "0.00" ? "--" : qmOne.MQZT);
+                            dc.Add("S100KK", qmOne.KKST == "0.00" ? "--" : qmOne.KKST);
                         }
                         if (i == 2)
                         {
-                            dc.Add("S150FJ", qmOne.FJST);
-                            dc.Add("S150GF", qmOne.GFZH);
-                            dc.Add("S150ZD", qmOne.ZDST);
-                            dc.Add("S150ZT", qmOne.MQZT);
-                            dc.Add("S150KK", qmOne.KKST);
+                            dc.Add("S150FJ", qmOne.FJST == "0.00" ? "--" : qmOne.FJST);
+                            dc.Add("S150GF", qmOne.GFZH == "0.00" ? "--" : qmOne.GFZH);
+                            dc.Add("S150ZD", qmOne.ZDST == "0.00" ? "--" : qmOne.ZDST);
+                            dc.Add("S150ZT", qmOne.MQZT == "0.00" ? "--" : qmOne.MQZT);
+                            dc.Add("S150KK", qmOne.KKST == "0.00" ? "--" : qmOne.KKST);
                         }
                         if (i == 3)
                         {
-                            dc.Add("J100FJ", qmOne.FJST);
-                            dc.Add("J100GF", qmOne.GFZH);
-                            dc.Add("J100ZD", qmOne.ZDST);
-                            dc.Add("J100ZT", qmOne.MQZT);
-                            dc.Add("J100KK", qmOne.KKST);
+                            dc.Add("J100FJ", qmOne.FJST == "0.00" ? "--" : qmOne.FJST);
+                            dc.Add("J100GF", qmOne.GFZH == "0.00" ? "--" : qmOne.GFZH);
+                            dc.Add("J100ZD", qmOne.ZDST == "0.00" ? "--" : qmOne.ZDST);
+                            dc.Add("J100ZT", qmOne.MQZT == "0.00" ? "--" : qmOne.MQZT);
+                            dc.Add("J100KK", qmOne.KKST == "0.00" ? "--" : qmOne.KKST);
                         }
                         if (i == 4)
                         {
-                            dc.Add("J50FJ", qmOne.FJST);
-                            dc.Add("J50GF", qmOne.GFZH);
-                            dc.Add("J50ZD", qmOne.ZDST);
-                            dc.Add("J50ZT", qmOne.MQZT);
-                            dc.Add("J50KK", qmOne.KKST);
+                            dc.Add("J50FJ", qmOne.FJST == "0.00" ? "--" : qmOne.FJST);
+                            dc.Add("J50GF", qmOne.GFZH == "0.00" ? "--" : qmOne.GFZH);
+                            dc.Add("J50ZD", qmOne.ZDST == "0.00" ? "--" : qmOne.ZDST);
+                            dc.Add("J50ZT", qmOne.MQZT == "0.00" ? "--" : qmOne.MQZT);
+                            dc.Add("J50KK", qmOne.KKST == "0.00" ? "--" : qmOne.KKST);
                         }
                         if (i == 5)
                         {
-                            dc.Add("S_50FJ", qmOne.FJST);
-                            dc.Add("S_50GF", qmOne.GFZH);
-                            dc.Add("S_50ZD", qmOne.ZDST);
-                            dc.Add("S_50ZT", qmOne.MQZT);
-                            dc.Add("S_50KK", qmOne.KKST);
+                            dc.Add("S_50FJ", qmOne.FJST == "0.00" ? "--" : qmOne.FJST);
+                            dc.Add("S_50GF", qmOne.GFZH == "0.00" ? "--" : qmOne.GFZH);
+                            dc.Add("S_50ZD", qmOne.ZDST == "0.00" ? "--" : qmOne.ZDST);
+                            dc.Add("S_50ZT", qmOne.MQZT == "0.00" ? "--" : qmOne.MQZT);
+                            dc.Add("S_50KK", qmOne.KKST == "0.00" ? "--" : qmOne.KKST);
                         }
                         if (i == 6)
                         {
-                            dc.Add("S_100FJ", qmOne.FJST);
-                            dc.Add("S_100GF", qmOne.GFZH);
-                            dc.Add("S_100ZD", qmOne.ZDST);
-                            dc.Add("S_100ZT", qmOne.MQZT);
-                            dc.Add("S_100KK", qmOne.KKST);
+                            dc.Add("S_100FJ", qmOne.FJST == "0.00" ? "--" : qmOne.FJST);
+                            dc.Add("S_100GF", qmOne.GFZH == "0.00" ? "--" : qmOne.GFZH);
+                            dc.Add("S_100ZD", qmOne.ZDST == "0.00" ? "--" : qmOne.ZDST);
+                            dc.Add("S_100ZT", qmOne.MQZT == "0.00" ? "--" : qmOne.MQZT);
+                            dc.Add("S_100KK", qmOne.KKST == "0.00" ? "--" : qmOne.KKST);
                         }
                         if (i == 7)
                         {
-                            dc.Add("S_150FJ", qmOne.FJST);
-                            dc.Add("S_150GF", qmOne.GFZH);
-                            dc.Add("S_150ZD", qmOne.ZDST);
-                            dc.Add("S_150ZT", qmOne.MQZT);
-                            dc.Add("S_150KK", qmOne.KKST);
+                            dc.Add("S_150FJ", qmOne.FJST == "0.00" ? "--" : qmOne.FJST);
+                            dc.Add("S_150GF", qmOne.GFZH == "0.00" ? "--" : qmOne.GFZH);
+                            dc.Add("S_150ZD", qmOne.ZDST == "0.00" ? "--" : qmOne.ZDST);
+                            dc.Add("S_150ZT", qmOne.MQZT == "0.00" ? "--" : qmOne.MQZT);
+                            dc.Add("S_150KK", qmOne.KKST == "0.00" ? "--" : qmOne.KKST);
                         }
                         if (i == 8)
                         {
-                            dc.Add("J_100FJ", qmOne.FJST);
-                            dc.Add("J_100GF", qmOne.GFZH);
-                            dc.Add("J_100ZD", qmOne.ZDST);
-                            dc.Add("J_100ZT", qmOne.MQZT);
-                            dc.Add("J_100KK", qmOne.KKST);
+                            dc.Add("J_100FJ", qmOne.FJST == "0.00" ? "--" : qmOne.FJST);
+                            dc.Add("J_100GF", qmOne.GFZH == "0.00" ? "--" : qmOne.GFZH);
+                            dc.Add("J_100ZD", qmOne.ZDST == "0.00" ? "--" : qmOne.ZDST);
+                            dc.Add("J_100ZT", qmOne.MQZT == "0.00" ? "--" : qmOne.MQZT);
+                            dc.Add("J_100KK", qmOne.KKST == "0.00" ? "--" : qmOne.KKST);
                         }
                         if (i == 9)
                         {
-                            dc.Add("J_50FJ", qmOne.FJST);
-                            dc.Add("J_50GF", qmOne.GFZH);
-                            dc.Add("J_50ZD", qmOne.ZDST);
-                            dc.Add("J_50ZT", qmOne.MQZT);
-                            dc.Add("J_50KK", qmOne.KKST);
+                            dc.Add("J_50FJ", qmOne.FJST == "0.00" ? "--" : qmOne.FJST);
+                            dc.Add("J_50GF", qmOne.GFZH == "0.00" ? "--" : qmOne.GFZH);
+                            dc.Add("J_50ZD", qmOne.ZDST == "0.00" ? "--" : qmOne.ZDST);
+                            dc.Add("J_50ZT", qmOne.MQZT == "0.00" ? "--" : qmOne.MQZT);
+                            dc.Add("J_50KK", qmOne.KKST == "0.00" ? "--" : qmOne.KKST);
                         }
                     }
 
@@ -1204,7 +1137,7 @@ namespace text.doors.Detection
             {
                 int lengA = int.Parse(settings.ganAchang);
                 int lengB = int.Parse(settings.ganBchang);
-                int lengC = int.Parse(settings.ganBchang);
+                int lengC = int.Parse(settings.ganCchang);
                 foreach (DataRow dr in kfyTable.Rows)
                 {
                     var level = dr["level"].ToString();
@@ -1219,22 +1152,6 @@ namespace text.doors.Detection
                         GetP1(windPressureDGV, lengA, lx, ref p1, ref _p1);
                         dc.Add("P1PA", p1.ToString());
                         dc.Add("FP1PA", _p1.ToString());
-                        //if (p1 > 0)
-                        //    list.Add(p1);
-                        //if (_p1 > 0)
-                        //    list.Add(_p1);
-                        //if (list != null && list.Count > 0)
-                        //{
-                        //    dc.Add("P1PA", list.Min().ToString());
-                        //}
-                        //else
-                        //{
-                        //    dc.Add("P1PA", "--");
-                        //}
-
-                        //FP1PA
-                        //FP1PB
-                        //FP1PC
 
                     }
                     else if (level == "B")
@@ -1249,19 +1166,6 @@ namespace text.doors.Detection
                             GetP1(windPressureDGV, lengB, lx, ref p1, ref _p1);
                             dc.Add("P1PB", p1.ToString());
                             dc.Add("FP1PB", _p1.ToString());
-                            //if (p1 > 0)
-                            //    list.Add(p1);
-                            //if (_p1 > 0)
-                            //    list.Add(_p1);
-
-                            //if (list != null && list.Count > 0)
-                            //{
-                            //    dc.Add("P1PB", list.Min().ToString());
-                            //}
-                            //else
-                            //{
-                            //    dc.Add("P1PB", "--");
-                            //}
                         }
                         else
                             dc.Add("P1PB", "--");
@@ -1280,19 +1184,6 @@ namespace text.doors.Detection
                             dc.Add("P1PC", p1.ToString());
                             dc.Add("FP1PC", _p1.ToString());
 
-                            //if (p1 > 0)
-                            //    list.Add(p1);
-                            //if (_p1 > 0)
-                            //    list.Add(_p1);
-
-                            //if (p1 != null && list.Count > 0)
-                            //{
-                            //    dc.Add("P1PC", list.Min().ToString());
-                            //}
-                            //else
-                            //{
-                            //    dc.Add("P1PC", "--");
-                            //}
                         }
                         else { dc.Add("P1PC", "--"); }
                     }
@@ -1347,7 +1238,7 @@ namespace text.doors.Detection
                 }
                 else if (i == 1)
                 {
-                    name = "P3Max";
+                    name = "PMax";
                     field = "p3max";
                 }
                 tempWindPressureDGV.Add(new WindPressureDGV()
@@ -1375,7 +1266,7 @@ namespace text.doors.Detection
             var fdefPa = 2000;
             int lengA = leng;
 
-            var tempData_z = data.FindAll(t => t.zlx > 0 && t.Pa != "P3" && t.Pa != "P3Max").ToList();
+            var tempData_z = data.FindAll(t => t.zlx > 0 && t.Pa != "P3" && t.Pa != "PMax").ToList();
             if (tempData_z != null && tempData_z.Count() > 0)
             {
                 if (tempData_z[tempData_z.Count - 1] != null)
@@ -1383,7 +1274,7 @@ namespace text.doors.Detection
                     zdefPa = tempData_z[tempData_z.Count - 1].PaValue;
                 }
             }
-            var tempData_f = data.FindAll(t => t.flx > 0 && t.Pa != "P3" && t.Pa != "P3Max").ToList();
+            var tempData_f = data.FindAll(t => t.flx > 0 && t.Pa != "P3" && t.Pa != "PMax").ToList();
             if (tempData_f != null && tempData_f.Count() > 0)
             {
                 if (tempData_f[tempData_f.Count - 1] != null)
@@ -1412,7 +1303,7 @@ namespace text.doors.Detection
             var ftwo = new WindPressureDGV();
             fone = data.Find(t => t.Pa == (fdefPa - 250) + "Pa");
             ftwo = data.Find(t => t.Pa == fdefPa + "Pa");
-            if (zone != null && ztwo != null && zone?.fzd > 0 && ztwo.fzd > 0)
+            if (fone != null && ftwo != null && fone?.fzd > 0 && ftwo.fzd > 0)
             {
                 var _x1 = float.Parse(fone.fzd.ToString());
                 var _x2 = float.Parse(ftwo.fzd.ToString());
@@ -1513,59 +1404,7 @@ namespace text.doors.Detection
             }
         }
 
-        /// <summary>
-        /// 工程
-        /// </summary>
-        /// <param name="settings"></param>
-        /// <param name="zhengtiLevel"></param>
-        /// <param name="kekaiLevel"></param>
-        private void GetQM_GCLevel(Model_dt_Settings settings, ref int zhengtiLevel, ref int kekaiLevel)
-        {
-            double kekaifengchang = 0d;
-            double shijianmianji = 0d;
-            double daqiyali = 0d;
-            double dangqianwendu = 0d;
 
-            if (settings != null)
-            {
-                kekaifengchang = double.Parse(settings.kekaifengchang);
-                shijianmianji = double.Parse(settings.shijianmianji);
-                daqiyali = double.Parse(settings.DaQiYaLi);
-                dangqianwendu = double.Parse(settings.DangQianWenDu);
-            }
-            if (settings.dt_qm_Info != null && settings.dt_qm_Info.Count > 0)
-            {
-                var zhengya = settings.dt_qm_Info.Find(t => t.PaType == 3);
-                var fuya = settings.dt_qm_Info.Find(t => t.PaType == 4);
-
-
-                //逢长
-                var fcValue_z = double.Parse(zhengya.KKST);
-                var fcValue_f = double.Parse(fuya.KKST);
-
-                //面积
-                var mjValue_z = double.Parse(zhengya.MQZT);
-                var mjValue_f = double.Parse(fuya.MQZT);
-
-                var fcValue = 0d;
-                var mjValue = 0d;
-
-                if (fcValue_z > fcValue_f)
-                    fcValue = Formula.GetIndexStichLength(fcValue_z, fcValue_z, daqiyali, kekaifengchang, dangqianwendu);
-                else
-                    fcValue = Formula.GetIndexStichLength(fcValue_f, fcValue_f, daqiyali, kekaifengchang, dangqianwendu);
-
-                if (mjValue_z > mjValue_f)
-                    mjValue = Formula.GetIndexStitchArea(mjValue_z, mjValue_z, daqiyali, shijianmianji, dangqianwendu);
-                else
-                    mjValue = Formula.GetIndexStitchArea(mjValue_f, mjValue_f, daqiyali, shijianmianji, dangqianwendu);
-
-
-                zhengtiLevel = Formula.GetAreaLevel(mjValue);
-
-                kekaiLevel = Formula.GetStitchLengthLevel(fcValue);
-            }
-        }
         private List<SortInfo> GetSort()
         {
             List<SortInfo> sortInfo = new List<SortInfo>();
@@ -1584,9 +1423,58 @@ namespace text.doors.Detection
             return sortInfo;
         }
 
-        private void ImageLine(string file, string name, List<double> zitem, List<double> fitem)
+        private void DrawLine(string saveFile, string code, List<Model_dt_kfy_Info> kfyList)
         {
-            int height = 350, width = 350;
+            var index = 0;
+            List<ImgInfo> imgList = new List<ImgInfo>();
+            foreach (var item in kfyList)
+            {
+                index++;
+                var zitem = new List<double>() { 0d };
+                var fitem = new List<double>() { 0d };
+                zitem.Add(double.Parse(item.z_nd_250));
+                zitem.Add(double.Parse(item.z_nd_500));
+                zitem.Add(double.Parse(item.z_nd_750));
+                zitem.Add(double.Parse(item.z_nd_1000));
+                zitem.Add(double.Parse(item.z_nd_1250));
+                zitem.Add(double.Parse(item.z_nd_1500));
+                zitem.Add(double.Parse(item.z_nd_1750));
+                zitem.Add(double.Parse(item.z_nd_2000));
+
+                fitem.Add(double.Parse(item.f_nd_250));
+                fitem.Add(double.Parse(item.f_nd_500));
+                fitem.Add(double.Parse(item.f_nd_750));
+                fitem.Add(double.Parse(item.f_nd_1000));
+                fitem.Add(double.Parse(item.f_nd_1250));
+                fitem.Add(double.Parse(item.f_nd_1500));
+                fitem.Add(double.Parse(item.f_nd_1750));
+                fitem.Add(double.Parse(item.f_nd_2000));
+
+                var imgUrl = System.Windows.Forms.Application.StartupPath + ($"\\tempImage\\{code}\\");
+
+                //判断文件的存在
+                if (!System.IO.Directory.Exists(imgUrl))
+                {
+                    System.IO.Directory.CreateDirectory(imgUrl);
+                }
+                var imgPath = imgUrl + $"{item.level}-{DateTime.Now.ToString("hhmmddfff")}.jpg";
+                ImageLine(imgPath, zitem, fitem);
+                imgList.Add(new ImgInfo() { url = imgPath, key = item.level, tag = item.level + "组挠度" });
+            }
+            InsertPtctureToWord(saveFile, imgList);
+        }
+
+
+        private void ImageLine(string file, List<double> zitem, List<double> fitem)
+        {
+            int height = 300, width = 500;
+
+            var xCount = 30;
+            var yCount = 16;
+
+            var xSpacing = width / xCount;
+            var ySpacing = height / yCount;
+
             Bitmap image = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(image);
             try
@@ -1598,142 +1486,52 @@ namespace text.doors.Detection
                 System.Drawing.Font font2 = new System.Drawing.Font("Arial", 8, FontStyle.Regular);
                 LinearGradientBrush brush = new LinearGradientBrush(
                 new System.Drawing.Rectangle(0, 0, image.Width, image.Height), Color.Black, Color.Black, 1.2f, true);
-                g.FillRectangle(Brushes.AliceBlue, 0, 0, width, height);
+
+                g.FillRectangle(Brushes.White, 0, 0, width, height);
                 Brush brush1 = new SolidBrush(Color.Black);
                 Brush brush2 = new SolidBrush(Color.SaddleBrown);
 
-                g.DrawString(name, font1, brush1, new PointF(85, 30));
-                //画图片的边框线
-                g.DrawRectangle(new Pen(Color.Black), 0, 0, image.Width - 1, image.Height - 1);
+                LinearGradientBrush brush3 = new LinearGradientBrush(
+       new System.Drawing.Rectangle(0, 0, image.Width, image.Height), Color.Gray, Color.Gray, 1.2f, true);
 
-                Pen mypen = new Pen(brush, 1);
+                CreateBackground(g, image.Width, image.Height, xCount, yCount, xSpacing, ySpacing);
 
-                //绘制线条
-                //绘制纵向线条
-                //int x = 15;
-                //for (int i = 0; i < 21; i++)
-                //{
-                //    g.DrawLine(mypen, x, 80, x, 335);
-                //    x = x + 15;
-                //}
-
-                int x = 15;
-                for (int i = 0; i < 21; i++)
-                {
-                    g.DrawLine(mypen, x, 196, x, 204);
-                    x = x + 15;
-                }
-
-                Pen mypen1 = new Pen(Color.Black, 3);
-                x = 165;
-                g.DrawLine(mypen1, x, 80, x, 335);
-
-                //绘制横向线条
-                //int y = 15;
-                //for (int i = 0; i < 18; i++)
-                //{
-                //    if (i == 0)
-                //    {
-                //        g.DrawLine(mypen, 15, 80, 330, 80);
-                //    }
-                //    else
-                //    {
-                //        g.DrawLine(mypen, 15, 80 + y, 330, 80 + y);
-                //        y = y + 15;
-                //    }
-                //}
-
-                int y = 15;
-                for (int i = 0; i < 18; i++)
-                {
-                    if (i == 0)
-                    {
-                        g.DrawLine(mypen, 167, 80, 173, 80);
-
-                    }
-                    else
-                    {
-                        g.DrawLine(mypen, 167, 80 + y, 173, 80 + y);
-                        y = y + 15;
-                    }
-                }
-                y = 200;
-                g.DrawLine(mypen1, 15, y, 330, y);
-
-                // x轴
-                String[] n = { "-10", "-9", "-8", "-7", "-6", "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
-                x = 11;
-                for (int i = 0; i < 21; i++)
-                {
-                    if (i % 2 == 0)
-                    {
-                        g.DrawString(n[i].ToString(), font, Brushes.Black, x, 205); //设置文字内容及输出位置
-                    }
-                    x = x + 15;
-                }
-
-                //y轴
-                String[] m = { "2000", "1750", "1500", "1250", "1000", "750", "500", "250", "0", "-250", "-500", "-750", "-1000", "-1250", "-1500", "-1750", "-2000" };
-                y = 74;
-                for (int i = 0; i < 17; i++)
-                {
-                    if (m[i] == "0")
-                    { y = y + 15; continue; }
-
-                    if (Convert.ToInt32(m[i]) > -1)
-                    {
-                        g.DrawString(m[i].ToString(), font, Brushes.Black, 130, y); //设置文字内容及输出位置
-                    }
-                    else
-                    {
-                        g.DrawString(m[i].ToString(), font, Brushes.Black, 173, y); //设置文字内容及输出位置
-                    }
-                    y = y + 15;
-                }
-
-                //double[] z_item1 = new double[9] { 0, 0.55, 1.19, 1.85, 2.40, 3.15, 3.65, 4.01, 4.80 };
-                //double[] z_item2 = new double[9] { 0, 0.5, 1.0, 1.48, 2.01, 2.50, 2.99, 3.49, 4.88 };
-
+                #region  绘制折线
                 //显示折线效果
                 System.Drawing.Font font3 = new System.Drawing.Font("Arial", 10, FontStyle.Bold);
                 SolidBrush mybrush = new SolidBrush(Color.Red);
+
+
+                var zSize = zitem.FindAll(t => t > 0).Count + 1;
+                var fSize = fitem.FindAll(t => t > 0).Count + 1;
+
                 //正压
-                System.Drawing.Point[] points1 = new System.Drawing.Point[9];
-                Pen mypen2 = new Pen(Color.Black, 1);
-                double initialx = 165;
-                double initialy = 200;
+                System.Drawing.Point[] points1 = new System.Drawing.Point[zSize];
+                Pen brokenLinePan_Z = new Pen(Color.Black, 2);
+                double initialx = width / 2;
+                double initialy = height / 2;
 
-                for (int i = 0; i < zitem.Count; i++)
+                for (int i = 0; i < zSize; i++)
                 {
-                    points1[i].X = Convert.ToInt32(initialx + zitem[i] * 10 * 1.5);
-                    points1[i].Y = (int)initialy - i * 15;
-                    g.DrawRectangle(mypen2, points1[i].X - 1, points1[i].Y - 1, 2, 2);
+                    points1[i].X = Convert.ToInt32(initialx + zitem[i] * xSpacing);
+                    points1[i].Y = (int)initialy - i * ySpacing;
+                    g.DrawRectangle(brokenLinePan_Z, points1[i].X - 1, points1[i].Y - 1, 2, 2);
                 }
-                g.DrawLines(mypen2, points1); //绘制折线
+                g.DrawLines(brokenLinePan_Z, points1); //绘制折线
 
-                //绘制数字
-                for (int i = 1; i < zitem.Count; i++)
-                {
-                    g.DrawString(fitem[i].ToString(), font3, Brushes.Red, 15, points1[i].Y - 20);
-                }
 
                 //负压
-                System.Drawing.Point[] points2 = new System.Drawing.Point[9];
-                Pen mypen3 = new Pen(Color.Black, 1);
+                System.Drawing.Point[] points2 = new System.Drawing.Point[fSize];
+                Pen brokenLinePan_F = new Pen(Color.Black, 2);
 
-                for (int i = 0; i < 9; i++)
+                for (int i = 0; i < fSize; i++)
                 {
-                    points2[i].X = Convert.ToInt32(initialx - fitem[i] * 10 * 1.5);
-                    points2[i].Y = (int)initialy + i * 15;
-                    g.DrawRectangle(mypen3, points2[i].X - 1, points2[i].Y - 1, 2, 2);
+                    points2[i].X = Convert.ToInt32(initialx - fitem[i] * ySpacing);
+                    points2[i].Y = (int)initialy + i * xSpacing;
+                    g.DrawRectangle(brokenLinePan_F, points2[i].X - 1, points2[i].Y - 1, 2, 2);
                 }
-                g.DrawLines(mypen3, points2); //绘制折线
-
-                //绘制数字
-                for (int i = 1; i < fitem.Count; i++)
-                {
-                    g.DrawString("-" + fitem[i].ToString(), font3, Brushes.Red, 15, 205 + 15 * i);
-                }
+                g.DrawLines(brokenLinePan_F, points2); //绘制折线
+                #endregion
 
                 image.Save(file, System.Drawing.Imaging.ImageFormat.Jpeg);
 
@@ -1748,13 +1546,171 @@ namespace text.doors.Detection
                 image.Dispose();
             }
         }
-        #endregion
 
+
+        /// <summary>
+        /// 背景
+        /// </summary>
+        /// <param name="g"></param>
+        private void CreateBackground(Graphics g, int width, int height, int xCount, int yCount, int xSpacing, int ySpacing)
+        {
+
+            LinearGradientBrush brush = new LinearGradientBrush(
+    new System.Drawing.Rectangle(0, 0, width, height), Color.Gray, Color.Gray, 1.2f, true);
+
+            LinearGradientBrush brush1 = new LinearGradientBrush(
+new System.Drawing.Rectangle(0, 0, width, height), Color.Black, Color.Black, 1.2f, true);
+
+            System.Drawing.Font font = new System.Drawing.Font("Arial", 9, FontStyle.Regular);
+
+            //四周矩形
+            g.DrawRectangle(new Pen(Color.Black), 0, 0, width - 1, height - 1);
+
+            Pen mypen = new Pen(brush, 1);
+
+
+            #region  背景表格
+            String[] yStr = { "-15", "-14", "-13", "-12", "-11", "-10", "-9", "-8", "-7", "-6", "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
+            String[] xStr = { "2000", "1750", "1500", "1250", "1000", "750", "500", "250", "0", "-250", "-500", "-750", "-1000", "-1250", "-1500", "-1750", "-2000" };
+
+            //绘制纵向线条
+            int xWidth = xSpacing;
+            for (int x = 1; x <= xCount; x++)
+            {
+                //标点
+                // g.DrawString(yStr[x].ToString(), font, Brushes.Black, width / 2 + 10, height / 2); //设置文字内容及输出位置
+                if (x == xCount / 2)
+                {
+                    mypen = new Pen(brush1, 2);
+                    g.DrawLine(mypen, xWidth, 1, xWidth, height);
+
+                    xWidth = xWidth + xSpacing;
+                }
+                else
+                {
+                    mypen = new Pen(brush, 1);
+                    g.DrawLine(mypen, xWidth, 1, xWidth, height);
+                    xWidth = xWidth + xSpacing;
+                }
+            }
+
+            //绘制横向线条
+            int yHeight = ySpacing;
+            for (int y = 1; y <= yCount; y++)
+            {
+                //标点
+                // g.DrawString(xStr[x].ToString(), font, Brushes.Black, width / 2 + 10, 205); //设置文字内容及输出位置
+
+                if (y == yCount / 2)
+                {
+                    mypen = new Pen(brush1, 2);
+                    g.DrawLine(mypen, 1, yHeight, width, yHeight);
+                    yHeight = yHeight + ySpacing;
+                }
+                else
+                {
+                    mypen = new Pen(brush, 1);
+                    g.DrawLine(mypen, 1, yHeight, width, yHeight);
+                    yHeight = yHeight + ySpacing;
+                }
+            }
+            #endregion
+            #region xy描述
+            System.Drawing.Font font1 = new System.Drawing.Font("宋体", 10, FontStyle.Regular);
+            Brush brush2 = new SolidBrush(Color.Black);
+            g.DrawString("2000Pa", font1, brush2, new PointF(width / 2, 0 + 10));
+            g.DrawString("-2000Pa", font1, brush2, new PointF(width / 2, height - 20));
+
+            g.DrawString("-15mm", font1, brush2, new PointF(0 + 10, height / 2 - 20));
+            g.DrawString("15mm", font1, brush2, new PointF(width - 40, height / 2 - 20));
+            #endregion
+        }
+
+
+        /// <summary>
+        /// 导入图片到word
+        /// </summary>
+        protected void InsertPtctureToWord(string file, List<ImgInfo> imgs)
+        {
+            object Nothing = System.Reflection.Missing.Value;
+            //创建一个名为wordApp的组件对象
+            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
+
+            //word文档位置
+            object filename = file;
+
+            //定义该插入图片是否为外部链接
+            object linkToFile = true;
+
+            //定义插入图片是否随word文档一起保存
+            object saveWithDocument = true;
+
+            //打开word文档
+            Microsoft.Office.Interop.Word.Document doc = wordApp.Documents.Open(ref filename, ref Nothing, ref Nothing, ref Nothing,
+               ref Nothing, ref Nothing, ref Nothing, ref Nothing,
+               ref Nothing, ref Nothing, ref Nothing, ref Nothing,
+               ref Nothing, ref Nothing, ref Nothing, ref Nothing);
+            try
+            {
+                foreach (var item in imgs)
+                {
+                    //标签
+                    object bookMark = item.tag;
+                    //图片
+                    string replacePic = item.url;
+
+                    if (doc.Bookmarks.Exists(Convert.ToString(bookMark)) == true)
+                    {
+                        //查找书签
+                        doc.Bookmarks.get_Item(ref bookMark).Select();
+                        //设置图片位置
+                        wordApp.Selection.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphLeft;
+
+                        //在书签的位置添加图片
+                        InlineShape inlineShape = wordApp.Selection.InlineShapes.AddPicture(replacePic, ref linkToFile, ref saveWithDocument, ref Nothing);
+                        inlineShape.ConvertToShape().WrapFormat.Type = WdWrapType.wdWrapFront;
+                        //设置图片大小
+                        //if (tag == "图片")
+                        //{
+                        //    inlineShape.Width = 500;
+                        //    inlineShape.Height = 300;
+                        //}
+                        //else
+                        //{
+                        //    inlineShape.Width = 250;
+                        //    inlineShape.Height = 215;
+                        //}
+                        //inlineShape.Width = 300;
+                        //inlineShape.Height = 200;
+                        doc.Save();
+                    }
+                    else
+                    {
+                        doc.Close(ref Nothing, ref Nothing, ref Nothing);
+                    }
+                }
+            }
+            catch
+            {
+            }
+            finally
+            {
+                //word文档中不存在该书签，关闭文档
+                doc.Close(ref Nothing, ref Nothing, ref Nothing);
+            }
+        }
     }
 
     public class SortInfo
     {
         public int val { get; set; }
         public int index { get; set; }
+    }
+    public class ImgInfo
+    {
+
+        public string url { get; set; }
+        public string tag { get; set; }
+        public string key { get; set; }
     }
 }

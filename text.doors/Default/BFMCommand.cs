@@ -59,7 +59,7 @@ namespace text.doors.Default
         public const string 风压正压开始结束 = "T24";
         public const string 风压负压开始结束 = "T27";
 
-        //五次
+        //十次
         public const string 正反复结束 = "D35";
         public const string 负反复结束 = "D36";
 

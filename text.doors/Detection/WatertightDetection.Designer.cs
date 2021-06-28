@@ -105,7 +105,6 @@
             this.cbb_2_500Pa_cf = new System.Windows.Forms.ComboBox();
             this.rdb_wdjy = new System.Windows.Forms.RadioButton();
             this.rdb_bdjy = new System.Windows.Forms.RadioButton();
-            this.tim_upNext = new System.Windows.Forms.Timer(this.components);
             this.tim_sm = new System.Windows.Forms.Timer(this.components);
             this.tim_getType = new System.Windows.Forms.Timer(this.components);
             this.tc_RealTimeSurveillance.SuspendLayout();
@@ -1203,11 +1202,6 @@
             this.rdb_bdjy.UseVisualStyleBackColor = true;
             this.rdb_bdjy.CheckedChanged += new System.EventHandler(this.rdb_bdjy_CheckedChanged);
             // 
-            // tim_upNext
-            // 
-            this.tim_upNext.Interval = 2000;
-            this.tim_upNext.Tick += new System.EventHandler(this.tim_upNext_Tick);
-            // 
             // tim_sm
             // 
             this.tim_sm.Enabled = true;
@@ -1291,7 +1285,6 @@
         private System.Windows.Forms.Label lbldqyl;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label lbl_smjc;
-        private System.Windows.Forms.Timer tim_upNext;
         private System.Windows.Forms.ContextMenuStrip chart_cms_sm_click;
         private System.Windows.Forms.ToolStripMenuItem export_image_sm;
         private System.Windows.Forms.RadioButton rdb_wdjy;

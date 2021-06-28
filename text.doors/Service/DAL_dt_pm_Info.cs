@@ -8,9 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using text.doors.Default;
 using Young.Core.SQLite;
-using text.doors.Service;
-using NPOI.SS.Formula.Functions;
-using Org.BouncyCastle.Asn1.Microsoft;
 
 namespace text.doors.dal
 {

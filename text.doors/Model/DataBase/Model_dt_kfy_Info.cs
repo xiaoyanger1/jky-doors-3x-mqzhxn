@@ -104,59 +104,36 @@ namespace text.doors.Model.DataBase
         public string z_one_p3 { get; set; }
 
         public string z_one_p3max { get; set; }
-        //public string z_one_p3canyubianxing { get; set; }
-        //public string z_one_pMaxcanyubianxing { get; set; }
+
 
         public string z_two_p3 { get; set; }
         public string z_two_p3max { get; set; }
-        //public string z_two_p3canyubianxing { get; set; }
-        //public string z_two_pMaxcanyubianxing { get; set; }
+
 
         public string z_three_p3 { get; set; }
         public string z_three_p3max { get; set; }
-        //public string z_three_p3canyubianxing { get; set; }
-        //public string z_three_pMaxcanyubianxing { get; set; }
+
 
         public string z_nd_p3 { get; set; }
         public string z_nd_p3max { get; set; }
 
-        //public string z_nd_p3canyubianxing { get; set; }
-        //public string z_nd_pMaxcanyubianxing { get; set; }
-
         public string z_ix_p3 { get; set; }
         public string z_ix_p3max { get; set; }
-        //public string z_ix_p3canyubianxing { get; set; }
-        //public string z_ix_pMaxcanyubianxing { get; set; }
-
-
-
+        
         public string f_one_p3 { get; set; }
         public string f_one_p3max { get; set; }
-        //public string f_one_p3canyubianxing { get; set; }
-        //public string f_one_pMaxcanyubianxing { get; set; }
-
-
+        
         public string f_two_p3 { get; set; }
         public string f_two_p3max { get; set; }
-        //public string f_two_p3canyubianxing { get; set; }
-        //public string f_two_pMaxcanyubianxing { get; set; }
 
         public string f_three_p3 { get; set; }
         public string f_three_p3max { get; set; }
 
-        //public string f_three_p3canyubianxing { get; set; }
-        //public string f_three_pMaxcanyubianxing { get; set; }
-
         public string f_nd_p3 { get; set; }
         public string f_nd_p3max { get; set; }
 
-        //public string f_nd_p3canyubianxing { get; set; }
-        //public string f_nd_pMaxcanyubianxing { get; set; }
-
         public string f_ix_p3 { get; set; }
         public string f_ix_p3max { get; set; }
-        //public string f_ix_p3canyubianxing { get; set; }
-        //public string f_ix_pMaxcanyubianxing { get; set; }
 
         public string level{ get; set; }
     }

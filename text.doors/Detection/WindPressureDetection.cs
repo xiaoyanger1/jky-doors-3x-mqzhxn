@@ -1,4 +1,4 @@
-﻿using NPOI.SS.Formula.Functions;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -575,7 +575,7 @@ namespace text.doors.Detection
                 else if (i == 1)
                 {
                     pa = -2;
-                    name = "P3Max";
+                    name = "PMax";
                     field = "p3max";
                 }
                 tempWindPressureDGV.Add(new WindPressureDGV()
@@ -631,7 +631,7 @@ namespace text.doors.Detection
                 }
                 else if (i == 1)
                 {
-                    name = "P3Max";
+                    name = "PMax";
                     paValue = -2;
                 }
                 tempWindPressureDGV.Add(new WindPressureDGV()
@@ -644,6 +644,7 @@ namespace text.doors.Detection
                     fwy1 = 0.00,
                     fwy2 = 0.00,
                     fwy3 = 0.00,
+                    GanJianChangDu = leng
                 });
             }
             return tempWindPressureDGV;
@@ -858,8 +859,7 @@ namespace text.doors.Detection
             var fyV = 0d;
             if (zyList?.FindAll(t => t > 0).Count > 0)
             {
-                //正负最小的在值
-                zyList.AddRange(fyList);
+
                 zyV = zyList.FindAll(t => t > 0).Min();
             }
             if (fyList?.FindAll(t => t > 0).Count > 0)
@@ -885,7 +885,7 @@ namespace text.doors.Detection
             var fdefPa = 2000;
             int lengA = leng;
 
-            var tempData_z = data.FindAll(t => t.zlx > 0 && t.Pa != "P3" && t.Pa != "P3Max").ToList();
+            var tempData_z = data.FindAll(t => t.zlx > 0 && t.Pa != "P3" && t.Pa != "PMax").ToList();
             if (tempData_z != null && tempData_z.Count() > 0)
             {
                 if (tempData_z[tempData_z.Count - 1] != null)
@@ -893,7 +893,7 @@ namespace text.doors.Detection
                     zdefPa = tempData_z[tempData_z.Count - 1].PaValue;
                 }
             }
-            var tempData_f = data.FindAll(t => t.flx > 0 && t.Pa != "P3" && t.Pa != "P3Max").ToList();
+            var tempData_f = data.FindAll(t => t.flx > 0 && t.Pa != "P3" && t.Pa != "PMax").ToList();
             if (tempData_f != null && tempData_f.Count() > 0)
             {
                 if (tempData_f[tempData_f.Count - 1] != null)
@@ -989,7 +989,8 @@ namespace text.doors.Detection
             var res = _serialPortClient.Set_FY_Value(BFMCommand.正安全数值, BFMCommand.正安全, value);
             if (!res)
             {
-                MessageBox.Show("正安全异常！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
+                MessageBox.Show("正安全异常！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
             complete_A = new List<int>();
             complete_B = new List<int>();
@@ -1008,24 +1009,24 @@ namespace text.doors.Detection
             btn_zaq.BackColor = Color.Green;
 
 
-            //if (selectTestType.Contains("A"))
-            //{
-            tim_fy_A = new System.Timers.Timer(1000);
-            tim_fy_A.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_A);
-            tim_fy_A.Enabled = true;
-            //}
-            //if (selectTestType.Contains("B"))
-            //{
-            tim_fy_B = new System.Timers.Timer(1000);
-            tim_fy_B.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_B);
-            tim_fy_B.Enabled = true;
-            //}
-            //if (selectTestType.Contains("C"))
-            //{
-            tim_fy_C = new System.Timers.Timer(1000);
-            tim_fy_C.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_C);
-            tim_fy_C.Enabled = true;
-            //}
+            if (selectTestType.Contains("A"))
+            {
+                tim_fy_A = new System.Timers.Timer(1000);
+                tim_fy_A.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_A);
+                tim_fy_A.Enabled = true;
+            }
+            if (selectTestType.Contains("B"))
+            {
+                tim_fy_B = new System.Timers.Timer(1000);
+                tim_fy_B.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_B);
+                tim_fy_B.Enabled = true;
+            }
+            if (selectTestType.Contains("C"))
+            {
+                tim_fy_C = new System.Timers.Timer(1000);
+                tim_fy_C.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_C);
+                tim_fy_C.Enabled = true;
+            }
         }
 
         private void btnfaq_Click(object sender, EventArgs e)
@@ -1061,24 +1062,24 @@ namespace text.doors.Detection
             DisableBtnType();
 
             btnfaq.BackColor = Color.Green;
-            //if (selectTestType.Contains("A"))
-            //{
-            tim_fy_A = new System.Timers.Timer(1000);
-            tim_fy_A.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_A);
-            tim_fy_A.Enabled = true;
-            //}
-            //if (selectTestType.Contains("B"))
-            //{
-            tim_fy_B = new System.Timers.Timer(1000);
-            tim_fy_B.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_B);
-            tim_fy_B.Enabled = true;
-            //}
-            //if (selectTestType.Contains("C"))
-            //{
-            tim_fy_C = new System.Timers.Timer(1000);
-            tim_fy_C.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_C);
-            tim_fy_C.Enabled = true;
-            //}
+            if (selectTestType.Contains("A"))
+            {
+                tim_fy_A = new System.Timers.Timer(1000);
+                tim_fy_A.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_A);
+                tim_fy_A.Enabled = true;
+            }
+            if (selectTestType.Contains("B"))
+            {
+                tim_fy_B = new System.Timers.Timer(1000);
+                tim_fy_B.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_B);
+                tim_fy_B.Enabled = true;
+            }
+            if (selectTestType.Contains("C"))
+            {
+                tim_fy_C = new System.Timers.Timer(1000);
+                tim_fy_C.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_C);
+                tim_fy_C.Enabled = true;
+            }
         }
 
         private void btn_wygl_Click(object sender, EventArgs e)
@@ -1093,6 +1094,18 @@ namespace text.doors.Detection
             Stop();
             OpenBtnType();
             windPressureTest = PublicEnum.WindPressureTest.Stop;
+
+            complete_A = new List<int>();
+            complete_B = new List<int>();
+            complete_C = new List<int>();
+
+            currentPoint_A = 0;
+            currentPoint_B = 0;
+            currentPoint_C = 0;
+
+            indexCollection_A = 0;
+            indexCollection_B = 0;
+            indexCollection_C = 0;
         }
 
         private void button11_Click(object sender, EventArgs e)
@@ -1121,28 +1134,37 @@ namespace text.doors.Detection
             complete_C = new List<int>();
 
 
+            currentPoint_A = 0;
+            currentPoint_B = 0;
+            currentPoint_C = 0;
+
+            indexCollection_A = 0;
+            indexCollection_B = 0;
+            indexCollection_C = 0;
+
+
             windPressureTest = PublicEnum.WindPressureTest.ZPmax;
             DisableBtnType();
             btn_zpmax.BackColor = Color.Green;
 
-            //if (selectTestType.Contains("A"))
-            //{
-            tim_fy_A = new System.Timers.Timer(1000);
-            tim_fy_A.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_A);
-            tim_fy_A.Enabled = true;
-            //}
-            //if (selectTestType.Contains("B"))
-            //{
-            tim_fy_B = new System.Timers.Timer(1000);
-            tim_fy_B.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_B);
-            tim_fy_B.Enabled = true;
-            //}
-            //if (selectTestType.Contains("C"))
-            //{
-            tim_fy_C = new System.Timers.Timer(1000);
-            tim_fy_C.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_C);
-            tim_fy_C.Enabled = true;
-            //}
+            if (selectTestType.Contains("A"))
+            {
+                tim_fy_A = new System.Timers.Timer(1000);
+                tim_fy_A.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_A);
+                tim_fy_A.Enabled = true;
+            }
+            if (selectTestType.Contains("B"))
+            {
+                tim_fy_B = new System.Timers.Timer(1000);
+                tim_fy_B.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_B);
+                tim_fy_B.Enabled = true;
+            }
+            if (selectTestType.Contains("C"))
+            {
+                tim_fy_C = new System.Timers.Timer(1000);
+                tim_fy_C.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_C);
+                tim_fy_C.Enabled = true;
+            }
 
         }
 
@@ -1159,27 +1181,36 @@ namespace text.doors.Detection
             complete_B = new List<int>();
             complete_C = new List<int>();
 
+
+            currentPoint_A = 0;
+            currentPoint_B = 0;
+            currentPoint_C = 0;
+
+            indexCollection_A = 0;
+            indexCollection_B = 0;
+            indexCollection_C = 0;
+
             windPressureTest = PublicEnum.WindPressureTest.FPmax;
             DisableBtnType();
             btn_fpmax.BackColor = Color.Green;
-            //if (selectTestType.Contains("A"))
-            //{
-            tim_fy_A = new System.Timers.Timer(1000);
-            tim_fy_A.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_A);
-            tim_fy_A.Enabled = true;
-            //}
-            //if (selectTestType.Contains("B"))
-            //{
-            tim_fy_B = new System.Timers.Timer(1000);
-            tim_fy_B.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_B);
-            tim_fy_B.Enabled = true;
-            //}
-            //if (selectTestType.Contains("C"))
-            //{
-            tim_fy_C = new System.Timers.Timer(1000);
-            tim_fy_C.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_C);
-            tim_fy_C.Enabled = true;
-            // }
+            if (selectTestType.Contains("A"))
+            {
+                tim_fy_A = new System.Timers.Timer(1000);
+                tim_fy_A.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_A);
+                tim_fy_A.Enabled = true;
+            }
+            if (selectTestType.Contains("B"))
+            {
+                tim_fy_B = new System.Timers.Timer(1000);
+                tim_fy_B.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_B);
+                tim_fy_B.Enabled = true;
+            }
+            if (selectTestType.Contains("C"))
+            {
+                tim_fy_C = new System.Timers.Timer(1000);
+                tim_fy_C.Elapsed += new System.Timers.ElapsedEventHandler(fyTimer_C);
+                tim_fy_C.Enabled = true;
+            }
 
         }
         private void button12_Click(object sender, EventArgs e)
@@ -1223,153 +1254,6 @@ namespace text.doors.Detection
             BindData_C();
         }
 
-        //private void btn_zp3cybx_Click(object sender, EventArgs e)
-        //{
-        //    if (selectTestType.Contains("A"))
-        //    {
-        //        var info = windPressureDGV_A.Find(t => t.PaValue == -2);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceA1;
-        //            info.zwy2 = RegisterData.DisplaceA2;
-        //            info.zwy3 = RegisterData.DisplaceA3;
-        //        }
-        //        BindData_A();
-        //    }
-        //    if (selectTestType.Contains("B"))
-        //    {
-        //        var info = windPressureDGV_B.Find(t => t.PaValue == -2);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceB1;
-        //            info.zwy2 = RegisterData.DisplaceB2;
-        //            info.zwy3 = RegisterData.DisplaceB3;
-        //        }
-        //        BindData_B();
-        //    }
-        //    if (selectTestType.Contains("C"))
-        //    {
-        //        var info = windPressureDGV_C.Find(t => t.PaValue == -2);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceC1;
-        //            info.zwy2 = RegisterData.DisplaceC2;
-        //            info.zwy3 = RegisterData.DisplaceC3;
-        //        }
-        //        BindData_C();
-        //    }
-        //}
-
-        //private void btn_fp3cybx_Click(object sender, EventArgs e)
-        //{
-        //    if (selectTestType.Contains("A"))
-        //    {
-        //        var info = windPressureDGV_A.Find(t => t.PaValue == -2);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceA1;
-        //            info.zwy2 = RegisterData.DisplaceA2;
-        //            info.zwy3 = RegisterData.DisplaceA3;
-        //        }
-        //        BindData_A();
-        //    }
-        //    if (selectTestType.Contains("B"))
-        //    {
-        //        var info = windPressureDGV_B.Find(t => t.PaValue == -2);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceB1;
-        //            info.zwy2 = RegisterData.DisplaceB2;
-        //            info.zwy3 = RegisterData.DisplaceB3;
-        //        }
-        //        BindData_B();
-        //    }
-        //    if (selectTestType.Contains("C"))
-        //    {
-        //        var info = windPressureDGV_C.Find(t => t.PaValue == -2);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceC1;
-        //            info.zwy2 = RegisterData.DisplaceC2;
-        //            info.zwy3 = RegisterData.DisplaceC3;
-        //        }
-        //        BindData_C();
-        //    }
-        //}
-
-        //private void btn_zpmax_cybx_Click(object sender, EventArgs e)
-        //{
-        //    if (selectTestType.Contains("A"))
-        //    {
-        //        var info = windPressureDGV_A.Find(t => t.PaValue == -3);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceA1;
-        //            info.zwy2 = RegisterData.DisplaceA2;
-        //            info.zwy3 = RegisterData.DisplaceA3;
-        //        }
-        //        BindData_A();
-        //    }
-        //    if (selectTestType.Contains("B"))
-        //    {
-        //        var info = windPressureDGV_B.Find(t => t.PaValue == -3);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceB1;
-        //            info.zwy2 = RegisterData.DisplaceB2;
-        //            info.zwy3 = RegisterData.DisplaceB3;
-        //        }
-        //        BindData_B();
-        //    }
-        //    if (selectTestType.Contains("C"))
-        //    {
-        //        var info = windPressureDGV_C.Find(t => t.PaValue == -3);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceC1;
-        //            info.zwy2 = RegisterData.DisplaceC2;
-        //            info.zwy3 = RegisterData.DisplaceC3;
-        //        }
-        //        BindData_C();
-        //    }
-        //}
-
-        //private void btn_fpmax_cybx_Click(object sender, EventArgs e)
-        //{
-        //    if (selectTestType.Contains("A"))
-        //    {
-        //        var info = windPressureDGV_A.Find(t => t.PaValue == -3);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceA1;
-        //            info.zwy2 = RegisterData.DisplaceA2;
-        //            info.zwy3 = RegisterData.DisplaceA3;
-        //        }
-        //        BindData_A();
-        //    }
-        //    if (selectTestType.Contains("B"))
-        //    {
-        //        var info = windPressureDGV_B.Find(t => t.PaValue == -3);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceB1;
-        //            info.zwy2 = RegisterData.DisplaceB2;
-        //            info.zwy3 = RegisterData.DisplaceB3;
-        //        }
-        //        BindData_B();
-        //    }
-        //    if (selectTestType.Contains("C"))
-        //    {
-        //        var info = windPressureDGV_C.Find(t => t.PaValue == -3);
-        //        if (info != null)
-        //        {
-        //            info.zwy1 = RegisterData.DisplaceC1;
-        //            info.zwy2 = RegisterData.DisplaceC2;
-        //            info.zwy3 = RegisterData.DisplaceC3;
-        //        }
-        //        BindData_C();
-        //    }
-        //}
         #endregion
 
         private void tim_PainPic_Tick(object sender, EventArgs e)
@@ -1465,9 +1349,12 @@ namespace text.doors.Detection
             isComplete_A = false;
 
             int maxIndex = 0;
-            string common = "";
-            if (!GetIsTimeStart(ref maxIndex, ref common))
+            if (!GetIsTimeStart(ref maxIndex))
             {
+                //tim_static_A.Enabled = false;
+                //average_A = new List<Tuple<double, double, double>>();
+                //indexCollection_A = 0;
+                //isComplete_A = true;
                 return;
             }
 
@@ -1513,8 +1400,9 @@ namespace text.doors.Detection
             indexCollection_A++;
         }
 
-        private bool GetIsTimeStart(ref int maxIndex, ref string common)
+        private bool GetIsTimeStart(ref int maxIndex)
         {
+            string common = "";
             if (windPressureTest == PublicEnum.WindPressureTest.ZStart)
             {
                 common = BFMCommand.风压_正压是否计时;
@@ -1535,7 +1423,14 @@ namespace text.doors.Detection
                 common = BFMCommand.风压安全_负压是否计时;
                 maxIndex = 4;
             }
+            else
+            {
+                return true;
+            }
+
+
             return _serialPortClient.Read_FY_Static_IsStart(common);
+
         }
 
         private void fyTimer_B(object source, System.Timers.ElapsedEventArgs e)
@@ -1603,9 +1498,12 @@ namespace text.doors.Detection
             isComplete_B = false;
 
             int maxIndex = 0;
-            string common = "";
-            if (!GetIsTimeStart(ref maxIndex, ref common))
+            if (!GetIsTimeStart(ref maxIndex))
             {
+                //tim_static_B.Enabled = false;
+                //average_B = new List<Tuple<double, double, double>>();
+                //indexCollection_B = 0;
+                //isComplete_B = true;
                 return;
             }
 
@@ -1716,9 +1614,12 @@ namespace text.doors.Detection
             isComplete_C = false;
 
             int maxIndex = 0;
-            string common = "";
-            if (!GetIsTimeStart(ref maxIndex, ref common))
+            if (!GetIsTimeStart(ref maxIndex))
             {
+                //tim_static_C.Enabled = false;
+                //average_C = new List<Tuple<double, double, double>>();
+                //indexCollection_C = 0;
+                //isComplete_C = true;
                 return;
             }
 
@@ -1840,6 +1741,7 @@ namespace text.doors.Detection
                 if (value >= 15)
                 {
                     IsStartUp = false;
+                    windPressureTest = PublicEnum.WindPressureTest.Stop;
                     OpenBtnType();
 
                     tim_fy_A.Enabled = false;
@@ -1859,8 +1761,9 @@ namespace text.doors.Detection
                 {
                     return;
                 }
-                if (value == 5)
+                if (value > 10)
                 {
+                    windPressureTest = PublicEnum.WindPressureTest.Stop;
                     OpenBtnType();
 
                     tim_fy_A.Enabled = false;
@@ -1880,8 +1783,9 @@ namespace text.doors.Detection
                 {
                     return;
                 }
-                if (value == 5)
+                if (value > 10)
                 {
+                    windPressureTest = PublicEnum.WindPressureTest.Stop;
                     OpenBtnType();
                     tim_fy_A.Enabled = false;
                     tim_static_A.Enabled = false;
@@ -1895,7 +1799,6 @@ namespace text.doors.Detection
             }
             else if (windPressureTest == PublicEnum.WindPressureTest.ZSafety || windPressureTest == PublicEnum.WindPressureTest.ZPmax)
             {
-
                 int value = _serialPortClient.ReadHoldingRegistersBtnType(BFMCommand.正安全结束, ref IsSeccess);
 
                 if (!IsSeccess)
@@ -1904,6 +1807,7 @@ namespace text.doors.Detection
                 }
                 if (value > 10)
                 {
+                    windPressureTest = PublicEnum.WindPressureTest.Stop;
                     OpenBtnType();
                     tim_fy_A.Enabled = false;
                     tim_static_A.Enabled = false;
@@ -1924,6 +1828,7 @@ namespace text.doors.Detection
                 }
                 if (value > 10)
                 {
+                    windPressureTest = PublicEnum.WindPressureTest.Stop;
                     OpenBtnType();
                     tim_fy_A.Enabled = false;
                     tim_static_A.Enabled = false;
