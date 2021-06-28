@@ -1467,7 +1467,7 @@ namespace text.doors.Detection
 
         private void ImageLine(string file, List<double> zitem, List<double> fitem)
         {
-            int height = 300, width = 500;
+            int height = 304, width = 510;
 
             var xCount = 30;
             var yCount = 16;
@@ -1554,7 +1554,6 @@ namespace text.doors.Detection
         /// <param name="g"></param>
         private void CreateBackground(Graphics g, int width, int height, int xCount, int yCount, int xSpacing, int ySpacing)
         {
-
             LinearGradientBrush brush = new LinearGradientBrush(
     new System.Drawing.Rectangle(0, 0, width, height), Color.Gray, Color.Gray, 1.2f, true);
 
@@ -1618,11 +1617,13 @@ new System.Drawing.Rectangle(0, 0, width, height), Color.Black, Color.Black, 1.2
             #region xy描述
             System.Drawing.Font font1 = new System.Drawing.Font("宋体", 10, FontStyle.Regular);
             Brush brush2 = new SolidBrush(Color.Black);
-            g.DrawString("2000Pa", font1, brush2, new PointF(width / 2, 0 + 10));
-            g.DrawString("-2000Pa", font1, brush2, new PointF(width / 2, height - 20));
+             g.DrawString("Pa", font1, brush2, new PointF(width / 2, 0 + 10));
+            //g.DrawString("2000Pa", font1, brush2, new PointF(width / 2, 0 + 10));
+            // g.DrawString("-2000Pa", font1, brush2, new PointF(width / 2, height - 20));
 
-            g.DrawString("-15mm", font1, brush2, new PointF(0 + 10, height / 2 - 20));
-            g.DrawString("15mm", font1, brush2, new PointF(width - 40, height / 2 - 20));
+            g.DrawString("mm", font1, brush2, new PointF(width - 40, height / 2 - 20));
+            //g.DrawString("-15mm", font1, brush2, new PointF(0 + 10, height / 2 - 20));
+            //g.DrawString("15mm", font1, brush2, new PointF(width - 40, height / 2 - 20));
             #endregion
         }
 
