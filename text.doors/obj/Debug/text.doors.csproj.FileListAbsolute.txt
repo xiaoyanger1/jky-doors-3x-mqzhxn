@@ -158,7 +158,6 @@ E:\08-GitHub\jky-doors-3x-new\text.doors\obj\Debug\text.doors.Detection.Correcti
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\建筑幕墙综合性能检测系统.exe.config
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\建筑幕墙综合性能检测系统.exe
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\建筑幕墙综合性能检测系统.pdb
-E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\ICSharpCode.SharpZipLib.dll
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\log4net.dll
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\nmodbuspc.dll
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\RegDLL.dll
@@ -171,8 +170,6 @@ E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\NPOI.OpenXmlFormats.dll
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\NPOI.OpenXml4Net.dll
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\Young.Core.pdb
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\Young.Core.dll.config
-E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\ICSharpCode.SharpZipLib.pdb
-E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\ICSharpCode.SharpZipLib.xml
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\log4net.xml
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\bin\Debug\NPOI.xml
 E:\08-GitHub\jky-doors-3x-mqzhxn\text.doors\obj\Debug\text.doors.csprojAssemblyReference.cache
