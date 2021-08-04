@@ -26,7 +26,7 @@ namespace text.doors
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             //处理UI线程异常  
             Application.ThreadException += Application_ThreadException;
-            //处理非UI线程异常  
+            //处理非UI线程异常     
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
 
